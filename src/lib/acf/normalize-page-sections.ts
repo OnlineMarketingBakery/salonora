@@ -75,6 +75,7 @@ function mapLayout(i: number, row: RawRow): AnySectionT | null {
         type: "cost_comparison",
         title: asString(row.title),
         text: asHtml(row.text),
+        lossCardTitle: asString(row.loss_card_title),
         ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
         lossItems: Array.isArray(row.loss_items)
           ? (row.loss_items as { label?: string; value?: string }[]).map((h) => ({

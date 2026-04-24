@@ -1438,6 +1438,27 @@
                                 "append": ""
                             },
                             {
+                                "key": "field_omb_loss_card_title",
+                                "label": "Comparison card — header line",
+                                "name": "loss_card_title",
+                                "aria-label": "",
+                                "type": "text",
+                                "instructions": "e.g. “Wekelijkse verliezen zonder Salonora” (above the loss rows).",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "maxlength": "",
+                                "allow_in_bindings": 0,
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": ""
+                            },
+                            {
                                 "key": "field_image_text_text",
                                 "label": "Text",
                                 "name": "text",

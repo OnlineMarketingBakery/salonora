@@ -43,6 +43,8 @@ export type CostComparisonSectionT = CoreSection & {
   type: "cost_comparison";
   title: string;
   text: string;
+  /** e.g. “Wekelijkse verliezen zonder Salonora” (comparison card) */
+  lossCardTitle: string;
   ctas: CtaItem[];
   lossItems: LossItem[];
   priceLabel: string;
