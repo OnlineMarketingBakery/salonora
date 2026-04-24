@@ -1,40 +1,96 @@
 import { Container } from "@/components/ui/Container";
 import { RichText } from "@/components/ui/RichText";
-import { Button } from "@/components/ui/Button";
+import { PrimaryCtaLink } from "@/components/ui/PrimaryCtaLink";
 import { resolveLink } from "@/lib/utils/links";
 import type { PricingCtaSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 
+const introProse = [
+  "!prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-none",
+  "!prose-p:text-center",
+  "!prose-p:font-sans",
+  "!prose-p:text-base",
+  "!prose-p:font-normal",
+  "!prose-p:leading-[1.4]",
+  "!prose-p:text-navy",
+  "[&>p+_p]:!mt-3.5",
+  /* Figma: 24px after the 3-paragraph block before the “teaser” (4th p) */
+  "[&>p:nth-of-type(3)+p]:!mt-6",
+  "[&>p:nth-of-type(4)]:!font-semibold",
+].join(" ");
+
+const cardCtaClassName =
+  "!h-[42px] w-full !min-h-0 !max-w-full !justify-between !gap-0 !rounded-[24px] !pl-[18px] !pr-3.5 !text-sm !font-medium !leading-6 !text-white !shadow-none";
+
 export function PricingCtaSection({ section, lang }: { section: PricingCtaSectionT; lang: Locale }) {
   return (
-    <section className="border-t border-surface py-16 md:py-24">
-      <Container>
-        {section.title && (
-          <h2 className="text-center text-3xl font-bold leading-tight tracking-[-0.04em] text-navy sm:text-4xl lg:text-[48px] lg:leading-[56px]">
-            {section.title}
-          </h2>
-        )}
-        {section.intro && <RichText html={section.intro} className="mx-auto mt-4 max-w-2xl text-center text-muted" />}
-        {section.cardsTitle && <RichText html={section.cardsTitle} className="mt-8 text-center text-lg font-semibold" />}
-        <div className="mt-6 grid gap-6 md:grid-cols-2">
-          {section.pricingCards.map((c, i) => (
-            <div key={i} className="rounded-2xl border-2 border-dashed border-brand/30 bg-white/80 p-6">
-              <h3 className="text-lg font-bold text-foreground">{c.title}</h3>
-              {c.description && <RichText html={c.description} className="mt-2 text-sm text-muted" />}
-              <div className="mt-4 flex flex-wrap gap-2">
-                {c.ctas.map((x, j) => {
-                  const l = resolveLink(x.url, lang);
-                  return (
-                    <Button key={j} href={l?.href} variant="primary" target={l?.target}>
-                      {x.text || l?.label}
-                    </Button>
-                  );
-                })}
+    <section className="bg-[#F0F7FF] py-16 sm:py-20 md:py-24">
+      <Container className="!max-w-[85rem]">
+        <div className="mx-auto flex w-full max-w-[1100px] flex-col items-center gap-6">
+          <div className="w-full max-w-[826px] text-center">
+            {section.title && (
+              <h2 className="text-[40px] font-bold leading-tight tracking-[-0.04em] text-navy-deep sm:text-[48px] sm:leading-[56px] [text-wrap:balance]">
+                {section.title}
+              </h2>
+            )}
+            {section.intro && (
+              <div className={section.title ? "mt-6" : ""}>
+                <RichText html={section.intro} className={introProse} />
               </div>
+            )}
+          </div>
+
+          {section.cardsTitle && (
+            <RichText
+              html={section.cardsTitle}
+              className="w-full !prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-none !prose-p:text-center !prose-p:font-sans !prose-p:text-[24px] !prose-p:font-bold !prose-p:leading-[140%] !prose-p:not-italic !prose-p:!text-[#3990F0] [&_p]:!m-0 [&_p]:!text-center [&_p]:!text-[24px] [&_p]:!font-bold [&_p]:!leading-[140%] [&_p]:!not-italic [&_p]:!text-[#3990F0]"
+            />
+          )}
+
+          <div className="flex w-full max-w-[1080px] flex-col items-stretch gap-6">
+            <div className="grid w-full grid-cols-1 items-stretch justify-items-center gap-6 lg:grid-cols-2">
+              {section.pricingCards.map((c, i) => (
+                <div
+                  key={i}
+                  className="flex w-full min-w-0 max-w-[528px] flex-col items-center justify-center rounded-[14px] bg-white p-10 lg:min-h-[205px]"
+                >
+                  <div className="flex w-full min-w-0 max-w-[383px] flex-col items-center justify-center gap-[17px]">
+                    {c.title && <h3 className="w-full text-center text-lg font-bold text-navy">{c.title}</h3>}
+                    {c.description && (
+                      <RichText
+                        html={c.description}
+                        className="w-full !prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-none !prose-p:text-center !prose-p:font-sans !prose-p:text-[16px] !prose-p:font-semibold !prose-p:leading-[140%] !prose-p:not-italic !prose-p:!text-[#152951] [&_p]:!m-0 [&_p]:!text-center [&_p]:!text-[16px] [&_p]:!font-semibold [&_p]:!leading-[140%] [&_p]:!not-italic [&_p]:!text-[#152951]"
+                      />
+                    )}
+                    {c.ctas.map((x, j) => {
+                      const link = resolveLink(x.url, lang);
+                      if (!link?.href) return null;
+                      return (
+                        <PrimaryCtaLink
+                          key={j}
+                          href={link.href}
+                          target={link.target}
+                          className={cardCtaClassName}
+                        >
+                          {x.text || link.label}
+                        </PrimaryCtaLink>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
+
+            {section.bottomContactText && (
+              <div className="flex w-full min-h-16 max-w-full items-center justify-center rounded-[14px] bg-white p-5 text-center sm:min-h-[64px]">
+                <RichText
+                  html={section.bottomContactText}
+                  className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-none !prose-p:text-center !prose-p:font-sans !prose-p:text-base !prose-p:font-semibold !prose-p:leading-[1.4] !prose-p:text-navy !prose-p:whitespace-normal [&_a]:!font-semibold [&_a]:!text-brand [&_a]:!no-underline hover:[&_a]:!underline"
+                />
+              </div>
+            )}
+          </div>
         </div>
-        {section.bottomContactText && <RichText html={section.bottomContactText} className="mt-10 text-center text-sm text-muted" />}
       </Container>
     </section>
   );
