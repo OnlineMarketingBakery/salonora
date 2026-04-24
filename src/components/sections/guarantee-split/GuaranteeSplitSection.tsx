@@ -10,7 +10,11 @@ export function GuaranteeSplitSection({ section, lang }: { section: GuaranteeSpl
   const imageFirst = section.mediaPosition === "left";
   const body = (
     <div>
-      {section.title && <h2 className="text-2xl font-bold text-foreground sm:text-3xl">{section.title}</h2>}
+      {section.title && (
+        <h2 className="text-3xl font-bold leading-tight tracking-[-0.04em] text-navy sm:text-4xl lg:text-[48px] lg:leading-[56px]">
+          {section.title}
+        </h2>
+      )}
       {section.text && <RichText html={section.text} className="mt-4 text-muted" />}
       {section.points.length > 0 && (
         <ul className="mt-6 space-y-3">

@@ -42,6 +42,7 @@ function mapLayout(i: number, row: RawRow): AnySectionT | null {
         title: asString(row.title),
         text: asHtml(row.text),
         offerText: asHtml(row.offer_text),
+        trustLine: asHtml(row.trust_caption),
         ctas,
         trustImage: asImage(row.trust_image),
         image: asImage(row.image),

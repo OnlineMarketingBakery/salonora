@@ -11,7 +11,11 @@ export function TestimonialsSection({ section, lang }: { section: TestimonialsSe
   return (
     <section className="bg-surface/60 py-16 md:py-24">
       <Container>
-        {section.title && <h2 className="text-center text-2xl font-bold text-foreground sm:text-3xl">{section.title}</h2>}
+        {section.title && (
+          <h2 className="text-center text-3xl font-bold leading-tight tracking-[-0.04em] text-navy sm:text-4xl lg:text-[48px] lg:leading-[56px]">
+            {section.title}
+          </h2>
+        )}
         {section.intro && <RichText html={section.intro} className="mx-auto mt-4 max-w-2xl text-center text-muted" />}
         <div className="mt-10 grid gap-6 md:grid-cols-2">
           {section.items.map((t) => (

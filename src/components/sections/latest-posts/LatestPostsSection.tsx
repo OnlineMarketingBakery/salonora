@@ -7,7 +7,11 @@ export function LatestPostsSection({ section }: { section: LatestPostsSectionT; 
   return (
     <section className="py-16 md:py-24">
       <Container>
-        {section.title && <h2 className="text-2xl font-bold text-foreground sm:text-3xl">{section.title}</h2>}
+        {section.title && (
+          <h2 className="text-3xl font-bold leading-tight tracking-[-0.04em] text-navy sm:text-4xl lg:text-[48px] lg:leading-[56px]">
+            {section.title}
+          </h2>
+        )}
         <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {section.items.map((p) => (
             <Link

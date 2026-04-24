@@ -33,8 +33,8 @@ export function LanguageSwitcher({ lang, className = "", variant = "default" }: 
               href={buildLocalePath(l, pathRest)}
               className={
                 l === lang
-                  ? "rounded-full border border-surface bg-white px-3 py-1 text-[11px] font-semibold tracking-[0.14em] text-navy shadow-sm"
-                  : "rounded-full px-2.5 py-1 text-[11px] font-medium tracking-[0.14em] text-muted/60 transition hover:text-navy"
+                  ? "rounded-full bg-zinc-100/95 px-3 py-1.5 text-[12px] font-semibold tracking-[0.1em] text-navy"
+                  : "rounded-full px-2.5 py-1.5 text-[12px] font-medium tracking-[0.1em] text-muted/70 transition hover:text-navy"
               }
               hrefLang={l}
             >

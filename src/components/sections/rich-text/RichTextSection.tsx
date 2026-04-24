@@ -13,7 +13,11 @@ export function RichTextSection({ section }: { section: RichTextSectionT; lang: 
   return (
     <section className="py-12">
       <Container>
-        {section.title && <h2 className="text-xl font-bold text-foreground sm:text-2xl">{section.title}</h2>}
+        {section.title && (
+          <h2 className="text-3xl font-bold leading-tight tracking-[-0.04em] text-navy sm:text-4xl lg:text-[48px] lg:leading-[56px]">
+            {section.title}
+          </h2>
+        )}
         {section.body && <RichText html={section.body} className={`mt-4 text-muted ${w[section.contentWidth]}`} />}
       </Container>
     </section>

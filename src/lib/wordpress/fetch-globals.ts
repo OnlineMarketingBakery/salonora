@@ -131,6 +131,7 @@ function fromFooter(o: Record<string, unknown> | null) {
       footerLogo: null,
       footerCopyright: "",
       showFooterLanguageSwitcher: true,
+      footerCta2Link: null,
     };
   }
   return {
@@ -139,6 +140,7 @@ function fromFooter(o: Record<string, unknown> | null) {
     footerLogo: asImage(o.footer_logo),
     footerCopyright: asString(o.footer_copyright),
     showFooterLanguageSwitcher: asBool(o.show_footer_language_switcher),
+    footerCta2Link: asLink(o.footer_cta_2_link) ?? asLink(o.footer_cta2_link),
   };
 }
 

@@ -17,10 +17,12 @@ const colMap: Record<string, string> = {
 export function CardsSection({ section, lang }: { section: CardsSectionT; lang: Locale }) {
   const g = colMap[section.columns] || colMap["3"];
   return (
-    <section className="py-16 md:py-20">
+    <section className="bg-white/90 py-16 md:py-20">
       <Container>
         {section.title && (
-          <h2 className="mb-10 text-center text-2xl font-bold text-foreground sm:text-3xl">{section.title}</h2>
+          <h2 className="mb-12 text-center text-3xl font-bold leading-tight tracking-[-0.04em] text-navy sm:text-4xl lg:mb-14 lg:text-[48px] lg:leading-[56px]">
+            {section.title}
+          </h2>
         )}
         <div className={`grid gap-6 ${g}`}>
           {section.items.map((c, i) => {

@@ -16,6 +16,8 @@ export type FooterSettings = {
   footerLogo: WpImage | null;
   footerCopyright: string;
   showFooterLanguageSwitcher: boolean;
+  /** Optional second CTA in footer left column (e.g. "Or start complete…") */
+  footerCta2Link: WpAcfLink | null;
 };
 
 export type ContactSocialSettings = {

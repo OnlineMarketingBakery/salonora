@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Media } from "@/components/ui/Media";
+import { ArrowInCircle } from "@/components/ui/ArrowInCircle";
 import { resolveLink } from "@/lib/utils/links";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import type { GlobalSettings } from "@/types/globals";
@@ -21,84 +22,68 @@ function resolveHeaderLogo(header: GlobalSettings["header"]): GlobalSettings["he
   return headerLogo ?? headerLogoDark;
 }
 
-function HeaderCtaArrow() {
-  return (
-    <span
-      className="flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full border border-white/80 transition-transform duration-200 ease-out group-hover:translate-x-px"
-      aria-hidden
-    >
-      <svg width="10" height="10" viewBox="0 0 14 14" fill="none" className="text-white">
-        <path
-          d="M2 7h9M8 3l4 4-4 4"
-          stroke="currentColor"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </span>
-  );
-}
-
 export function SiteHeader({ globals, lang, menu }: Props) {
   const logo = resolveHeaderLogo(globals.header);
   const c = resolveLink(globals.header.headerCtaLink, lang);
   const sticky = globals.header.headerSticky;
   const hasAnnouncement = Boolean(globals.site.enableAnnouncement && globals.site.announcementText);
-  /* Pull <main> up so the hero sits under the bar; larger pull when an announcement bar sits above the header. */
   const overlapPull = hasAnnouncement ? "-mb-[7.5rem]" : "-mb-24";
 
   return (
     <header
       className={
         sticky
-          ? `sticky top-3 z-50 w-full bg-transparent px-4 py-2 sm:px-6 lg:px-8 ${overlapPull}`
-          : `relative z-50 w-full bg-transparent px-4 pt-5 sm:px-6 sm:pt-6 lg:px-8 ${overlapPull}`
+          ? `sticky top-3 z-50 w-full bg-transparent px-4 py-2 sm:px-6 md:px-8 lg:px-10 xl:px-12 ${overlapPull}`
+          : `relative z-50 w-full bg-transparent px-4 pt-5 sm:px-6 sm:pt-6 md:px-8 md:pt-5 lg:px-10 lg:pt-5 xl:px-12 ${overlapPull}`
       }
     >
-      <div className="mx-auto max-w-6xl">
-        <div
-          className={
-            "flex min-h-[52px] items-center justify-between gap-3 rounded-full border border-surface bg-white px-4 py-2.5 shadow-[0_10px_25px_-5px_rgba(0,39,82,0.06),0_12px_32px_-10px_rgba(21,41,81,0.1)] outline outline-1 outline-offset-[3px] outline-brand/25 sm:gap-5 sm:px-6 sm:py-3"
-          }
-        >
-          <Link href={buildLocalePath(lang, "")} className="flex shrink-0 items-center gap-2" aria-label="Home">
-            {logo ? (
-              <Media image={logo} width={180} height={40} className="h-8 w-auto sm:h-9" />
-            ) : (
-              <span className="text-[17px] font-semibold tracking-tight text-navy">Salonora</span>
-            )}
-          </Link>
-
-          <nav
-            className="mx-auto hidden min-w-0 max-w-[min(100%,520px)] flex-1 items-center justify-center gap-6 px-2 md:flex lg:gap-8"
-            aria-label="Primary"
+      <div className="mx-auto w-full max-w-[82rem]">
+        <div className="rounded-[40px] border border-[rgba(57,144,240,0.14)] p-1.5 sm:p-1.5">
+          <div
+            className="flex min-h-[68px] w-full items-center justify-between gap-2 rounded-[34px] bg-white pl-4 pr-2.5 py-2.5 shadow-[0_4px_28px_0px_rgba(48,89,133,0.17)] sm:pl-5"
           >
-            {menu.map((m) => (
-              <Link
-                key={m.id}
-                href={m.href}
-                className="relative whitespace-nowrap py-1 text-[14px] font-medium tracking-wide text-muted transition-colors duration-200 after:absolute after:inset-x-0 after:bottom-0 after:h-px after:origin-left after:scale-x-0 after:bg-navy/50 after:transition-transform after:duration-200 after:ease-out hover:text-navy hover:after:scale-x-100"
-                target={m.target}
-              >
-                {m.label}
-              </Link>
-            ))}
-          </nav>
+            <Link
+              href={buildLocalePath(lang, "")}
+              className="flex min-w-0 shrink-0 items-center gap-2.5 pl-0 sm:pl-1"
+              aria-label="Home"
+            >
+              {logo ? (
+                <Media image={logo} width={180} height={40} className="h-8 w-auto sm:h-9" />
+              ) : (
+                <span className="text-[17px] font-semibold tracking-[-0.04em] text-navy">Salonora</span>
+              )}
+            </Link>
 
-          <div className="flex shrink-0 items-center gap-3 sm:gap-4">
-            {globals.header.showLanguageSwitcher && <LanguageSwitcher lang={lang} variant="header" />}
-            {globals.header.showHeaderCta && c && (
-              <Link
-                href={c.href}
-                target={c.target}
-                rel={c.target === "_blank" ? "noopener noreferrer" : undefined}
-                className="group inline-flex items-center gap-2 rounded-full bg-navy px-4 py-2 text-[14px] font-medium tracking-wide text-white shadow-sm transition-all duration-200 ease-out hover:-translate-y-px hover:brightness-110 hover:shadow-md hover:shadow-navy-deep/18 active:translate-y-0 active:scale-[0.98] focus:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-2 sm:px-6 sm:py-2.5 sm:text-[15px]"
-              >
-                <span className="max-w-[9rem] truncate sm:max-w-none">{c.label}</span>
-                <HeaderCtaArrow />
-              </Link>
-            )}
+            <nav
+              className="mx-auto hidden min-w-0 max-w-[min(100%,560px)] flex-1 items-center justify-center gap-8 px-1 md:flex lg:gap-[38px]"
+              aria-label="Primary"
+            >
+              {menu.map((m) => (
+                <Link
+                  key={m.id}
+                  href={m.href}
+                  className="relative whitespace-nowrap py-1 text-[16px] font-medium tracking-[-0.04em] text-navy transition-colors duration-200 hover:opacity-85"
+                  target={m.target}
+                >
+                  {m.label}
+                </Link>
+              ))}
+            </nav>
+
+            <div className="flex min-w-0 shrink-0 items-center gap-2.5 sm:gap-3">
+              {globals.header.showLanguageSwitcher && <LanguageSwitcher lang={lang} variant="header" />}
+              {globals.header.showHeaderCta && c && (
+                <Link
+                  href={c.href}
+                  target={c.target}
+                  rel={c.target === "_blank" ? "noopener noreferrer" : undefined}
+                  className="group inline-flex h-12 min-w-0 max-w-[11.5rem] items-center justify-center gap-2 rounded-[24px] bg-navy px-3.5 text-[16px] font-thin tracking-[-0.04em] text-white shadow-sm transition hover:brightness-110 sm:max-w-none sm:px-4 sm:pl-5"
+                >
+                  <span className="truncate sm:whitespace-nowrap">{c.label}</span>
+                  <ArrowInCircle variant="on-dark" className="h-5 w-5" />
+                </Link>
+              )}
+            </div>
           </div>
         </div>
       </div>

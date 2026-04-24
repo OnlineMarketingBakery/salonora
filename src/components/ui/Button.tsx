@@ -9,6 +9,9 @@ const variants = {
   ghost: "bg-transparent text-white border-2 border-white/80 hover:bg-white/10",
   dark: "bg-navy-deep text-white hover:bg-navy",
   white: "bg-white text-foreground hover:bg-surface",
+  /** Figma: white card CTA in footer & secondary hero */
+  elevated:
+    "bg-white text-navy shadow-[0px_6px_20px_0px_rgba(57,144,240,0.54)] border-0 hover:brightness-[0.99]",
 } as const;
 
 type Variant = keyof typeof variants;

@@ -12,6 +12,8 @@ export type HeroSectionT = CoreSection & {
   title: string;
   text: string;
   offerText: string;
+  /** Optional: line next to avatars + stars, e.g. "Al 100+ salon-eigenaren…" */
+  trustLine: string;
   ctas: CtaItem[];
   trustImage: WpImage | null;
   image: WpImage | null;
