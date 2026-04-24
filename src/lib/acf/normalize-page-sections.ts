@@ -25,7 +25,16 @@ function mapLayout(i: number, row: RawRow): AnySectionT | null {
   const _key = keyOf(i, row);
   const base = { _key, id };
   switch (row.acf_fc_layout) {
-    case "hero":
+    case "hero": {
+      let ctas = mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]);
+      if (!ctas.length) {
+        const legacy: { cta_url?: unknown }[] = [];
+        const primary = asLink(row.primary_cta);
+        const secondary = asLink(row.secondary_cta);
+        if (primary) legacy.push({ cta_url: primary });
+        if (secondary) legacy.push({ cta_url: secondary });
+        ctas = mapCtaRepeater(legacy);
+      }
       return {
         ...base,
         type: "hero",
@@ -33,11 +42,11 @@ function mapLayout(i: number, row: RawRow): AnySectionT | null {
         title: asString(row.title),
         text: asHtml(row.text),
         offerText: asHtml(row.offer_text),
-        primaryCta: asLink(row.primary_cta),
-        secondaryCta: asLink(row.secondary_cta),
+        ctas,
         trustImage: asImage(row.trust_image),
         image: asImage(row.image),
       };
+    }
     case "cards":
       return {
         ...base,
@@ -45,14 +54,17 @@ function mapLayout(i: number, row: RawRow): AnySectionT | null {
         title: asString(row.title),
         columns: (asString(row.columns) as "2" | "3" | "4" | "6") || "3",
         items: Array.isArray(row.items)
-          ? (row.items as Record<string, unknown>[]).map((c) => ({
-              icon: asImage(c.icon),
-              title: asString(c.title),
-              text: asHtml(c.text),
-              link: asLink(c.link),
-              ctaText: asString(c.cta_text),
-              highlight: asBool(c.highlight),
-            }))
+          ? (row.items as Record<string, unknown>[]).map((c) => {
+              const link = asLink(c.link);
+              return {
+                icon: asImage(c.icon),
+                title: asString(c.title),
+                text: asHtml(c.text),
+                link,
+                ctaText: asString(c.cta_text) || link?.title || "",
+                highlight: asBool(c.highlight),
+              };
+            })
           : [],
       };
     case "cost_comparison":
@@ -61,7 +73,7 @@ function mapLayout(i: number, row: RawRow): AnySectionT | null {
         type: "cost_comparison",
         title: asString(row.title),
         text: asHtml(row.text),
-        ctas: mapCtaRepeater(row.ctas as { cta_text?: string; cta_url?: import("@/types/wordpress").WpAcfLink }[]),
+        ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
         lossItems: Array.isArray(row.loss_items)
           ? (row.loss_items as { label?: string; value?: string }[]).map((h) => ({
               label: asString(h.label),
@@ -90,9 +102,7 @@ function mapLayout(i: number, row: RawRow): AnySectionT | null {
         bannerLeftImage: asImage(row.banner_left_image),
         bannerRightImage: asImage(row.banner_right_image),
         bannerText: asHtml(row.banner_text),
-        ctas: mapCtaRepeater(
-          row.ctas as { cta_text?: string; cta_url?: import("@/types/wordpress").WpAcfLink }[]
-        ),
+        ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
       };
     case "pricing_packages":
       return {
@@ -123,15 +133,11 @@ function mapLayout(i: number, row: RawRow): AnySectionT | null {
               note: asHtml(p.note),
               smallPrint: asString(p.small_print),
               featured: asBool(p.featured),
-              ctas: mapCtaRepeater(
-                p.ctas as { cta_text?: string; cta_url?: import("@/types/wordpress").WpAcfLink }[]
-              ),
+              ctas: mapCtaRepeater(p.ctas as Parameters<typeof mapCtaRepeater>[0]),
             }))
           : [],
         bottomNote: asHtml(row.bottom_note),
-        ctas: mapCtaRepeater(
-          row.ctas as { cta_text?: string; cta_url?: import("@/types/wordpress").WpAcfLink }[]
-        ),
+        ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
       };
     case "guarantee_split":
       return {
@@ -146,9 +152,7 @@ function mapLayout(i: number, row: RawRow): AnySectionT | null {
               text: asString(p.text),
             }))
           : [],
-        ctas: mapCtaRepeater(
-          row.ctas as { cta_text?: string; cta_url?: import("@/types/wordpress").WpAcfLink }[]
-        ),
+        ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
         mediaPosition: (asString(row.media_position) as "left" | "right") || "left",
       };
     case "testimonials": {
@@ -189,9 +193,7 @@ function mapLayout(i: number, row: RawRow): AnySectionT | null {
               })
             )
           : [],
-        ctas: mapCtaRepeater(
-          row.ctas as { cta_text?: string; cta_url?: import("@/types/wordpress").WpAcfLink }[]
-        ),
+        ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
       };
     case "faq_contact_split": {
       const ctaform = asString(row.ctaform);
@@ -255,9 +257,7 @@ function mapLayout(i: number, row: RawRow): AnySectionT | null {
         items: [],
       };
     case "cta": {
-      let ctas = mapCtaRepeater(
-        row.ctas as { cta_text?: string; cta_url?: import("@/types/wordpress").WpAcfLink }[]
-      );
+      let ctas = mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]);
       const single = asLink(row.link);
       if (!ctas.length && single) {
         ctas = [{ text: single.title || "Meer informatie", url: single }];
@@ -282,13 +282,15 @@ function mapLayout(i: number, row: RawRow): AnySectionT | null {
         intro: asHtml(row.intro),
         cardsTitle: asHtml(row.cards_title),
         pricingCards: Array.isArray(row.pricing_cards)
-          ? (row.pricing_cards as { title?: unknown; description?: unknown; ctas_copy?: unknown }[]).map((c) => ({
-              title: asString(c.title),
-              description: asHtml(c.description),
-              ctas: mapCtaRepeater(
-                c.ctas_copy as { cta_text?: string; cta_url?: import("@/types/wordpress").WpAcfLink }[]
-              ),
-            }))
+          ? (row.pricing_cards as { title?: unknown; description?: unknown; ctas?: unknown; ctas_copy?: unknown }[]).map(
+              (c) => ({
+                title: asString(c.title),
+                description: asHtml(c.description),
+                ctas: mapCtaRepeater(
+                  (c.ctas ?? c.ctas_copy) as Parameters<typeof mapCtaRepeater>[0]
+                ),
+              })
+            )
           : [],
         bottomContactText: asHtml(row.bottom_contact_text),
       };

@@ -2,14 +2,15 @@ import type { WpAcfLink, WpImage } from "@/types/wordpress";
 import type { CtaItem } from "@/types/sections";
 
 export function mapCtaRepeater(
-  rows: Array<{ cta_text?: string; cta_url?: WpAcfLink }> | null | undefined
+  rows: Array<{ cta_text?: unknown; cta_url?: unknown }> | null | undefined
 ): CtaItem[] {
   if (!rows?.length) return [];
   return rows
-    .map((r) => ({
-      text: r.cta_text || "",
-      url: r.cta_url || null,
-    }))
+    .map((r) => {
+      const url = asLink(r.cta_url);
+      const text = asString(r.cta_text) || url?.title || "";
+      return { text, url };
+    })
     .filter((r) => r.text || r.url);
 }
 

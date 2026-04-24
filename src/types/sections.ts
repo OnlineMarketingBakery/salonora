@@ -12,8 +12,7 @@ export type HeroSectionT = CoreSection & {
   title: string;
   text: string;
   offerText: string;
-  primaryCta: WpAcfLink | null;
-  secondaryCta: WpAcfLink | null;
+  ctas: CtaItem[];
   trustImage: WpImage | null;
   image: WpImage | null;
 };

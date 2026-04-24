@@ -7,8 +7,6 @@ import type { HeroSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 
 export function HeroSection({ section, lang }: { section: HeroSectionT; lang: Locale }) {
-  const p = resolveLink(section.primaryCta, lang);
-  const s = resolveLink(section.secondaryCta, lang);
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-surface via-surface/80 to-white pb-16 pt-36 md:pt-40">
       <Container>
@@ -25,8 +23,16 @@ export function HeroSection({ section, lang }: { section: HeroSectionT; lang: Lo
             {section.text && <RichText html={section.text} className="mt-4 text-muted" />}
             {section.offerText && <RichText html={section.offerText} className="mt-3 text-sm text-foreground/90" />}
             <div className="mt-8 flex flex-wrap gap-3">
-              {p && <Button href={p.href} variant="primary" target={p.target}>{p.label}</Button>}
-              {s && <Button href={s.href} variant="secondary" target={s.target}>{s.label}</Button>}
+              {section.ctas.map((cta, i) => {
+                const r = resolveLink(cta.url, lang);
+                if (!r) return null;
+                const variant = i === 0 ? "primary" : "secondary";
+                return (
+                  <Button key={`${section.id}-cta-${i}`} href={r.href} variant={variant} target={r.target}>
+                    {cta.text || r.label}
+                  </Button>
+                );
+              })}
             </div>
             {section.trustImage && (
               <div className="mt-8 flex items-center gap-3">
