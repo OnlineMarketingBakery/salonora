@@ -1,116 +1,278 @@
+import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { RichText } from "@/components/ui/RichText";
 import { Media } from "@/components/ui/Media";
 import { Button } from "@/components/ui/Button";
+import { ArrowInCircle } from "@/components/ui/ArrowInCircle";
+import { PrimaryCtaLink } from "@/components/ui/PrimaryCtaLink";
+import { WhiteCtaLink } from "@/components/ui/WhiteCtaLink";
 import { resolveLink } from "@/lib/utils/links";
 import type { PricingPackagesSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
+import type { WpImage } from "@/types/wordpress";
 
-const titleClass =
-  "text-3xl font-bold leading-tight tracking-[-0.04em] text-navy sm:text-4xl lg:text-[48px] lg:leading-[56px]";
+function CheckIconFallback() {
+  return (
+    <svg
+      className="h-6 w-[27px] shrink-0"
+      viewBox="0 0 27 23"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <rect width="24" height="24" x="0" y="-0.5" rx="12" className="fill-[#3990F0]" />
+      <path
+        d="M6 11.5l4 4 8-8"
+        stroke="white"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function CrownIcon() {
+  return (
+    <svg className="h-5 w-5 shrink-0 text-white" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path
+        d="M4 10.5L6.5 8.5L10 3.5L12.5 6.5L15 3.5L18.5 8.5L21 10.5L19.5 20H4.5L4 10.5Z"
+        fill="currentColor"
+        fillOpacity="0.95"
+      />
+    </svg>
+  );
+}
+
+function PackageInclude({ icon, text }: { icon: WpImage | null; text: string }) {
+  return (
+    <div className="flex w-full min-h-[42px] items-center justify-start gap-1.5 rounded-[21px] bg-pill py-0 pl-3 pr-2.5">
+      {icon ? (
+        <div className="flex h-6 w-[27px] shrink-0 items-center justify-center">
+          <Media image={icon} width={27} height={24} className="h-6 w-[27px] object-contain" />
+        </div>
+      ) : (
+        <CheckIconFallback />
+      )}
+      <p className="min-w-0 text-sm font-normal leading-[1.6] text-navy-deep">{text}</p>
+    </div>
+  );
+}
 
 export function PricingPackagesSection({ section, lang }: { section: PricingPackagesSectionT; lang: Locale }) {
   return (
-    <section className="bg-surface py-16 md:py-24">
-      <Container>
-        <div className="mb-10 flex flex-col items-center text-center sm:mb-12">
-          {section.eyebrow && (
-            <p className="mb-2 inline-block rounded-full bg-white px-4 py-2.5 text-base font-bold text-brand shadow-sm sm:px-5">
-              {section.eyebrow}
-            </p>
-          )}
-          {section.title && <h2 className={`${titleClass} max-w-3xl`}>{section.title}</h2>}
-        </div>
-        {section.intro && (
-          <RichText html={section.intro} className="mx-auto mt-3 max-w-2xl text-center text-sm text-muted" />
-        )}
-        <div className="mt-10 grid gap-6 md:grid-cols-2 md:gap-8 lg:mt-12">
-          {section.items.map((p, i) => (
-            <div
-              key={i}
-              className={`flex h-full flex-col rounded-[20px] p-6 sm:p-8 lg:p-10 ${
-                p.featured
-                  ? "border-2 border-brand bg-white shadow-lg shadow-brand/20"
-                  : "border border-surface/60 bg-white shadow-sm"
-              }`}
-            >
-              {p.badge && (
-                <span className="w-fit rounded-full bg-brand/10 px-3 py-0.5 text-xs font-bold uppercase text-brand">
-                  {p.badge}
-                </span>
-              )}
-              <h3 className="mt-2 text-2xl font-bold leading-tight text-navy-deep sm:text-3xl">
-                {p.title}
-              </h3>
-              {p.intro && <RichText html={p.intro} className="mt-2.5 text-sm text-muted" />}
-              {p.priceLine && <RichText html={p.priceLine} className="mt-3 text-xl font-bold text-navy-deep" />}
-              {p.includes.length > 0 && (
-                <ul className="mt-4 space-y-2.5 text-sm text-navy-deep">
-                  {p.includes.map((x, j) => (
-                    <li
-                      key={j}
-                      className="flex min-h-10 items-center gap-1.5 rounded-full bg-pill px-3.5 py-1.5 sm:px-3"
-                    >
-                      {x.icon && <Media image={x.icon} width={22} height={22} className="h-5 w-5 shrink-0" />}
-                      <span className="text-sm font-normal leading-relaxed text-navy-deep sm:text-sm">{x.text}</span>
-                    </li>
-                  ))}
-                </ul>
-              )}
-              {p.solvesTitle && <RichText html={p.solvesTitle} className="mt-5 text-sm font-bold text-navy-deep" />}
-              {p.solvesItems.length > 0 && (
-                <ul className="mt-2.5 list-disc space-y-1.5 pl-4 text-sm text-muted marker:text-navy/40">
-                  {p.solvesItems.map((x, j) => (
-                    <li key={j} className="flex items-start gap-1.5 pl-0.5">
-                      {x.icon && <Media image={x.icon} width={16} height={16} className="mt-0.5 h-3.5 w-3.5 shrink-0" />}
-                      <span className="leading-relaxed">{x.text}</span>
-                    </li>
-                  ))}
-                </ul>
-              )}
-              {p.note && <RichText html={p.note} className="mt-3 text-sm font-semibold text-[#1d5898]" />}
-              {p.smallPrint && <p className="mt-1 text-xs text-muted/80">{p.smallPrint}</p>}
-              <div className="mt-6 flex flex-1 flex-col justify-end gap-2">
-                {p.ctas.map((c, j) => {
-                  const l = resolveLink(c.url, lang);
-                  return (
-                    <Button
-                      key={j}
-                      href={l?.href}
-                      variant={p.featured ? "dark" : "primary"}
-                      className={`h-12 w-full rounded-full text-base font-medium ${
-                        p.featured
-                          ? "px-4 shadow-md"
-                          : "rounded-[31.5px] border-0 bg-brand py-3.5 text-white shadow-lg shadow-brand/30"
-                      }`}
-                      target={l?.target}
-                    >
-                      {c.text || l?.label}
-                    </Button>
-                  );
-                })}
+    <section className="bg-surface py-[72px] pb-[116px] sm:pt-[72px] sm:pb-[116px]">
+      <Container className="!max-w-[85rem]">
+        <div className="mx-auto flex max-w-[1300px] flex-col items-center gap-10 sm:gap-12 lg:gap-[64px]">
+          <div className="flex max-w-[634px] flex-col items-center gap-5 text-center sm:gap-5">
+            {section.eyebrow && (
+              <div className="inline-flex h-[42px] min-w-[6.2rem] items-center justify-center rounded-full bg-white px-6 text-base font-bold leading-[1.6] text-brand shadow-sm">
+                {section.eyebrow}
               </div>
+            )}
+            {section.title && (
+              <h2 className="text-3xl font-bold leading-tight tracking-[-0.04em] text-navy sm:text-4xl sm:leading-tight lg:text-[48px] lg:leading-[56px] lg:tracking-[-0.04em]">
+                {section.title}
+              </h2>
+            )}
+            {section.intro && (
+              <RichText
+                html={section.intro}
+                className="w-full !prose-p:mt-0 !prose-p:max-w-none !prose-p:text-center !prose-p:text-sm !prose-p:leading-normal !prose-p:text-muted"
+              />
+            )}
+          </div>
+
+          <div className="grid w-full max-w-[1300px] grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-2 lg:items-start lg:justify-center lg:gap-6">
+            {section.items.map((p, i) => {
+              const hasBadge = Boolean(p.badge);
+              return (
+                <div
+                  key={i}
+                  className={[
+                    "relative box-border flex h-full w-full min-w-0 max-w-[638px] flex-col justify-between rounded-[20px] bg-white p-10 sm:p-10 lg:justify-self-center",
+                    p.featured ? "border-2 border-brand" : "border-0",
+                  ].join(" ")}
+                >
+                  {hasBadge && (
+                    <div className="absolute -top-3 left-1/2 z-20 flex h-[47px] min-w-[169px] -translate-x-1/2 items-center justify-center gap-1.5 rounded-[15px] bg-brand px-4 text-base font-bold text-white">
+                      <CrownIcon />
+                      {p.badge}
+                    </div>
+                  )}
+
+                  <div
+                    className={[
+                      "mt-0 flex w-full min-w-0 flex-col items-stretch gap-[18px]",
+                      hasBadge ? "pt-4" : "pt-0",
+                    ].join(" ")}
+                  >
+                    <div className="flex flex-col gap-6">
+                      <div className="flex flex-col gap-4 sm:gap-4">
+                        <h3
+                          className="text-2xl font-bold leading-[1.1] text-navy-deep"
+                          // #002752
+                        >
+                          {p.title}
+                        </h3>
+                        {p.intro && (
+                          <RichText
+                            html={p.intro}
+                            className="!prose-p:mt-0 !prose-p:max-w-full !prose-p:text-left !prose-p:text-sm !prose-p:font-normal !prose-p:leading-[1.6] !prose-p:tracking-[-0.28px] !prose-p:text-muted"
+                          />
+                        )}
+                      </div>
+
+                      <div className="h-px w-full max-w-full bg-surface/60" aria-hidden />
+
+                      {p.includes.length > 0 && (
+                        <div className="flex w-full min-w-0 max-w-full flex-col gap-4 sm:max-w-full">
+                          <p className="text-xl font-bold leading-[1.6] tracking-[-0.4px] text-navy-deep">
+                            Wat je krijgt:
+                          </p>
+                          <div className="flex w-full min-w-0 max-w-full flex-col gap-3">
+                            {p.includes.map((x, j) => (
+                              <PackageInclude key={j} icon={x.icon} text={x.text} />
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {(p.solvesTitle || p.solvesItems.length > 0) && (
+                        <div className="w-full min-w-0 max-w-full rounded-[12px] bg-pill p-5 sm:max-w-full sm:min-h-[7.5rem] sm:p-6">
+                          {p.solvesTitle && (
+                            <RichText
+                              html={p.solvesTitle}
+                              className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-full !prose-p:text-left !prose-p:text-xl !prose-p:font-bold !prose-p:leading-[1.6] !prose-p:tracking-[-0.4px] !prose-p:text-navy-deep"
+                            />
+                          )}
+                          {p.solvesItems.length > 0 && (
+                            <ul
+                              className="mt-1.5 w-full list-disc pl-[1.3rem] text-left text-sm font-normal leading-[1.8] tracking-[-0.28px] text-muted marker:text-navy/30"
+                            >
+                              {p.solvesItems.map((s, j) => (
+                                <li key={j} className="[&:not(:last-child)]:mb-0.5 [padding-start:0.2rem]">
+                                  {s.text}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      )}
+
+                      {p.priceLine && (
+                        <div className="w-full min-w-0 text-base">
+                          <RichText
+                            html={p.priceLine}
+                            className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-full !prose-p:text-left !prose-p:font-semibold !prose-p:leading-[1.22] !prose-p:text-[#1d5898] [&_a]:!text-brand [&_a]:!font-semibold"
+                          />
+                        </div>
+                      )}
+
+                      {p.note && (
+                        <div className="w-full min-w-0 text-base text-navy-deep">
+                          <RichText
+                            html={p.note}
+                            className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-full !prose-p:font-bold !prose-p:leading-[1.6] !prose-p:tracking-[-0.4px] !prose-p:text-navy-deep"
+                          />
+                        </div>
+                      )}
+
+                      {p.smallPrint && <p className="text-sm font-normal leading-[1.6] text-navy-deep">{p.smallPrint}</p>}
+                    </div>
+
+                    <div className="mt-0 flex w-full min-w-0 max-w-full flex-col gap-2">
+                      {p.ctas.map((c, j) => {
+                        const l = resolveLink(c.url, lang);
+                        if (!l?.href) return null;
+                        if (p.featured) {
+                          return (
+                            <Link
+                              key={j}
+                              href={l.href}
+                              target={l.target}
+                              rel={l.target === "_blank" ? "noopener noreferrer" : undefined}
+                              className="inline-flex h-[55px] w-full min-w-0 max-w-[332px] items-center justify-between self-start gap-2 rounded-[31.5px] bg-navy py-0 pl-[18px] pr-3 text-base font-medium leading-[normal] text-white shadow-sm transition hover:bg-navy/95"
+                            >
+                              <span className="min-w-0 break-words">{c.text || l.label}</span>
+                              <ArrowInCircle
+                                variant="on-dark"
+                                className="!h-[27px] !w-[27px] !border-white/80 [&>svg]:h-3.5 [&>svg]:w-3.5 [&_path]:!text-white"
+                              />
+                            </Link>
+                          );
+                        }
+                        return (
+                          <PrimaryCtaLink
+                            key={j}
+                            href={l.href}
+                            target={l.target}
+                            className="!h-[55px] !min-h-0 w-full !max-w-[16rem] justify-center !gap-2 !rounded-[31.5px] !px-4"
+                          >
+                            {c.text || l.label}
+                          </PrimaryCtaLink>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {section.bottomNote && (
+            <div className="w-full max-w-[1000px] text-balance font-sans text-center text-[#002752]">
+              <RichText
+                html={section.bottomNote}
+                className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:text-center !prose-p:text-[24px] !prose-p:font-bold !prose-p:leading-[110%] !prose-p:not-italic !prose-p:text-[#002752] [&_p]:!m-0 [&_p]:!text-center [&_p]:!text-[24px] [&_p]:!font-bold [&_p]:!leading-[110%] [&_p]:!text-[#002752] [&_p]:!not-italic"
+              />
             </div>
-          ))}
-        </div>
-        {section.bottomNote && (
-          <RichText html={section.bottomNote} className="mt-8 text-center text-sm text-muted" />
-        )}
-        <div className="mt-8 flex flex-wrap justify-center gap-2.5">
-          {section.ctas.map((c, i) => {
-            const l = resolveLink(c.url, lang);
-            return (
-              <Button
-                key={i}
-                href={l?.href}
-                variant="secondary"
-                className="h-11 rounded-full border-2 px-4 text-sm font-medium"
-                target={l?.target}
-              >
-                {c.text || l?.label}
-              </Button>
-            );
-          })}
+          )}
+
+          {section.ctas.length > 0 && (
+            <div className="flex w-full max-w-full flex-col items-stretch justify-center gap-2.5 sm:max-w-[min(100%,800px)] sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:gap-2.5 sm:pt-0">
+              {section.ctas.map((c, i) => {
+                const l = resolveLink(c.url, lang);
+                if (!l?.href) return null;
+                const t = c.text || l.label;
+                if (i === 0) {
+                  return (
+                    <PrimaryCtaLink
+                      key={i}
+                      href={l.href}
+                      target={l.target}
+                      className="!h-12 w-full !max-w-[321px] !justify-center !px-4 !text-lg !font-medium !leading-6"
+                    >
+                      {t}
+                    </PrimaryCtaLink>
+                  );
+                }
+                if (i === 1) {
+                  return (
+                    <WhiteCtaLink
+                      key={i}
+                      href={l.href}
+                      target={l.target}
+                      className="!h-12 !max-h-12 w-full !max-w-[321px] !border-0 !px-4 !text-lg !font-medium !leading-6 !shadow-[0px_6px_10px_rgba(57,144,240,0.54)]"
+                    >
+                      {t}
+                    </WhiteCtaLink>
+                  );
+                }
+                return (
+                  <Button
+                    key={i}
+                    href={l.href}
+                    variant="secondary"
+                    className="h-12 w-full min-w-0 max-w-md rounded-3xl border-2"
+                    target={l.target}
+                  >
+                    {t}
+                  </Button>
+                );
+              })}
+            </div>
+          )}
         </div>
       </Container>
     </section>
