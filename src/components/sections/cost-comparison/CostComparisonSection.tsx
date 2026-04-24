@@ -26,11 +26,8 @@ export function CostComparisonSection({ section, lang }: { section: CostComparis
             </div>
           </div>
           <div className="rounded-2xl border border-sky-100 bg-white/95 p-6 shadow-lg">
-            {section.priceLabel && <p className="text-sm font-medium text-slate-500">{section.priceLabel}</p>}
-            {section.price && <p className="mt-1 text-3xl font-bold text-[#1e5bb8]">{section.price}</p>}
-            {section.priceSubtext && <p className="mt-1 text-sm text-slate-500">{section.priceSubtext}</p>}
             {section.lossItems.length > 0 && (
-              <ul className="mt-6 space-y-2 text-sm text-slate-600">
+              <ul className="space-y-2 text-sm text-slate-600">
                 {section.lossItems.map((x, i) => (
                   <li key={i} className="flex justify-between border-b border-slate-100 py-1">
                     <span>{x.label}</span>
@@ -39,7 +36,9 @@ export function CostComparisonSection({ section, lang }: { section: CostComparis
                 ))}
               </ul>
             )}
-            <div className="mt-4 rounded-lg bg-sky-50/80 p-3 text-center text-sm text-slate-600">Betaal now — mockup</div>
+            {section.priceLabel && <p className="mt-6 text-sm font-medium text-slate-500">{section.priceLabel}</p>}
+            {section.price && <p className="mt-1 text-3xl font-bold text-[#1e5bb8]">{section.price}</p>}
+            {section.priceSubtext && <p className="mt-1 text-sm text-slate-500">{section.priceSubtext}</p>}
           </div>
         </div>
       </Container>
