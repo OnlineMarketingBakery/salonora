@@ -3,6 +3,7 @@ import { Media } from "@/components/ui/Media";
 import { ArrowInCircle } from "@/components/ui/ArrowInCircle";
 import { resolveLink } from "@/lib/utils/links";
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { MobileNavDrawer } from "./MobileNavDrawer";
 import type { GlobalSettings } from "@/types/globals";
 import type { MenuItem } from "@/types/menu";
 import type { Locale } from "@/lib/i18n/locales";
@@ -25,6 +26,8 @@ function resolveHeaderLogo(header: GlobalSettings["header"]): GlobalSettings["he
 export function SiteHeader({ globals, lang, menu }: Props) {
   const logo = resolveHeaderLogo(globals.header);
   const c = resolveLink(globals.header.headerCtaLink, lang);
+  const mobileCta =
+    globals.header.showHeaderCta && c ? { href: c.href, label: c.label, target: c.target } : null;
   const sticky = globals.header.headerSticky;
   const hasAnnouncement = Boolean(globals.site.enableAnnouncement && globals.site.announcementText);
   const overlapPull = hasAnnouncement ? "-mb-[7.5rem]" : "-mb-24";
@@ -70,19 +73,30 @@ export function SiteHeader({ globals, lang, menu }: Props) {
               ))}
             </nav>
 
-            <div className="flex min-w-0 shrink-0 items-center gap-2.5 sm:gap-3">
-              {globals.header.showLanguageSwitcher && <LanguageSwitcher lang={lang} variant="header" />}
+            <div className="ml-auto flex min-w-0 shrink-0 items-center gap-2.5 sm:gap-3 md:ml-0">
+              {globals.header.showLanguageSwitcher && (
+                <div className="hidden md:block">
+                  <LanguageSwitcher lang={lang} variant="header" />
+                </div>
+              )}
               {globals.header.showHeaderCta && c && (
                 <Link
                   href={c.href}
                   target={c.target}
                   rel={c.target === "_blank" ? "noopener noreferrer" : undefined}
-                  className="group inline-flex h-12 min-w-0 max-w-[11.5rem] items-center justify-center gap-2 rounded-[24px] bg-navy px-3.5 text-[16px] font-thin tracking-[-0.04em] text-white shadow-sm transition hover:brightness-110 sm:max-w-none sm:px-4 sm:pl-5"
+                  className="group hidden h-12 min-w-0 max-w-[11.5rem] items-center justify-center gap-2 rounded-[24px] bg-navy px-3.5 text-[16px] font-thin tracking-[-0.04em] text-white shadow-sm transition hover:brightness-110 sm:max-w-none sm:px-4 sm:pl-5 md:inline-flex"
                 >
                   <span className="truncate sm:whitespace-nowrap">{c.label}</span>
                   <ArrowInCircle variant="on-dark" className="h-5 w-5" />
                 </Link>
               )}
+              <MobileNavDrawer
+                className="md:hidden"
+                menu={menu}
+                lang={lang}
+                showLanguageSwitcher={globals.header.showLanguageSwitcher}
+                cta={mobileCta}
+              />
             </div>
           </div>
         </div>
