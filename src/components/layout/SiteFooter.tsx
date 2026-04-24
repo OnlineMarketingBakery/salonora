@@ -24,15 +24,15 @@ type Props = {
 
 export function SiteFooter({ globals, lang, footerMenu, legalMenu }: Props) {
   return (
-    <footer className="mt-auto bg-[#0c1d3a] text-sky-100/90">
+    <footer className="mt-auto bg-navy-deep text-surface/90">
       {globals.site.globalCtaTitle && (
         <div className="border-b border-white/10 py-10 text-center">
           <h2 className="text-2xl font-bold text-white">{globals.site.globalCtaTitle}</h2>
-          {globals.site.globalCtaText && <p className="mt-2 text-sm text-sky-200">{globals.site.globalCtaText}</p>}
+          {globals.site.globalCtaText && <p className="mt-2 text-sm text-surface/85">{globals.site.globalCtaText}</p>}
           {globals.site.globalCtaLink && (
             <a
               href={resolveLink(globals.site.globalCtaLink, lang)?.href}
-              className="mt-4 inline-block rounded-full bg-[#1e5bb8] px-6 py-2 text-sm font-semibold text-white"
+              className="mt-4 inline-block rounded-full bg-brand px-6 py-2 text-sm font-semibold text-white"
             >
               {globals.site.globalCtaLink.title}
             </a>
@@ -76,10 +76,10 @@ export function SiteFooter({ globals, lang, footerMenu, legalMenu }: Props) {
       </div>
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 py-6 sm:flex-row sm:px-6 lg:px-8">
-          <p className="text-xs text-sky-200/80">{globals.footer.footerCopyright || `© ${new Date().getFullYear()} Salonora`}</p>
+          <p className="text-xs text-surface/75">{globals.footer.footerCopyright || `© ${new Date().getFullYear()} Salonora`}</p>
           <div className="flex items-center gap-3">
             {legalMenu.map((m) => (
-              <Link key={m.id} href={m.href} className="text-xs text-sky-200/80 hover:underline" target={m.target}>
+              <Link key={m.id} href={m.href} className="text-xs text-surface/75 hover:underline" target={m.target}>
                 {m.label}
               </Link>
             ))}

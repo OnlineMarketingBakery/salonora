@@ -57,7 +57,7 @@ export function CF7Form({ formId, definition, successMode, redirectUrl, tracking
           <CF7FieldRenderer key={f.name} field={f} />
         ))}
       {(!definition || !definition.fields.length) && (
-        <p className="text-sm text-slate-500">Could not load form fields. Ensure the CF7 REST API is available.</p>
+        <p className="text-sm text-muted">Could not load form fields. Ensure the CF7 REST API is available.</p>
       )}
       <Button type="submit" disabled={pending}>
         {pending ? "…" : "Send"}

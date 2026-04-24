@@ -16,8 +16,8 @@ export function FaqContactSplitSection({ section, lang }: { section: FaqContactS
   return (
     <section className="py-16 md:py-24">
       <Container>
-        {section.title && <h2 className="text-2xl font-bold text-[#0c1d3a] sm:text-3xl">{section.title}</h2>}
-        {section.intro && <RichText html={section.intro} className="mt-4 max-w-2xl text-slate-600" />}
+        {section.title && <h2 className="text-2xl font-bold text-foreground sm:text-3xl">{section.title}</h2>}
+        {section.intro && <RichText html={section.intro} className="mt-4 max-w-2xl text-muted" />}
         <div className="mt-10 grid gap-10 lg:grid-cols-2">
           <div>
             <Accordion items={accItems} />
@@ -36,7 +36,7 @@ export function FaqContactSplitSection({ section, lang }: { section: FaqContactS
           </div>
           <div>
             {section.useForm && (section.defaultFormId || section.customForm?.id) ? (
-              <div className="rounded-2xl border border-sky-100 bg-white p-6 shadow-sm">
+              <div className="rounded-2xl border border-surface bg-white p-6 shadow-sm">
                 <CF7Form
                   formId={section.defaultFormId || section.customForm?.id || 0}
                   definition={section.formDefinition}
@@ -44,9 +44,9 @@ export function FaqContactSplitSection({ section, lang }: { section: FaqContactS
                 />
               </div>
             ) : (
-              <div className="rounded-2xl bg-[#1e5bb8] p-8 text-white">
+              <div className="rounded-2xl bg-brand p-8 text-white">
                 {section.cardTitle && <h3 className="text-lg font-bold">{section.cardTitle}</h3>}
-                {section.cardText && <RichText html={section.cardText} className="mt-3 text-sm text-sky-100" />}
+                {section.cardText && <RichText html={section.cardText} className="mt-3 text-sm text-white/90" />}
                 {section.contactCtas.length > 0 && (
                   <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                     {section.contactCtas.map((c, i) => {

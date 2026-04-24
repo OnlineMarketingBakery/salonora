@@ -10,12 +10,12 @@ export function GuaranteeSplitSection({ section, lang }: { section: GuaranteeSpl
   const imageFirst = section.mediaPosition === "left";
   const body = (
     <div>
-      {section.title && <h2 className="text-2xl font-bold text-[#0c1d3a] sm:text-3xl">{section.title}</h2>}
-      {section.text && <RichText html={section.text} className="mt-4 text-slate-600" />}
+      {section.title && <h2 className="text-2xl font-bold text-foreground sm:text-3xl">{section.title}</h2>}
+      {section.text && <RichText html={section.text} className="mt-4 text-muted" />}
       {section.points.length > 0 && (
         <ul className="mt-6 space-y-3">
           {section.points.map((p, i) => (
-            <li key={i} className="flex gap-3 text-sm text-slate-700">
+            <li key={i} className="flex gap-3 text-sm text-muted">
               {p.icon && <Media image={p.icon} width={24} height={24} className="h-6 w-6 shrink-0" />}
               <span>{p.text}</span>
             </li>
@@ -35,7 +35,7 @@ export function GuaranteeSplitSection({ section, lang }: { section: GuaranteeSpl
     </div>
   );
   const img = section.image && (
-    <div className="overflow-hidden rounded-2xl border border-sky-100">
+    <div className="overflow-hidden rounded-2xl border border-surface">
       <Media image={section.image} width={640} height={480} className="h-full w-full object-cover" />
     </div>
   );

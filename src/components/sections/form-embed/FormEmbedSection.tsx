@@ -10,8 +10,8 @@ export function FormEmbedSection({ section, lang }: { section: FormEmbedSectionT
   return (
     <section className="py-16 md:py-24">
       <Container>
-        {section.title && <h2 className="text-2xl font-bold text-[#0c1d3a]">{section.title}</h2>}
-        {section.intro && <RichText html={section.intro} className="mt-4 text-slate-600" />}
+        {section.title && <h2 className="text-2xl font-bold text-foreground">{section.title}</h2>}
+        {section.intro && <RichText html={section.intro} className="mt-4 text-muted" />}
         <div className="mt-8 max-w-lg">
           <CF7Form
             formId={section.formId}

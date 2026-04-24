@@ -40,8 +40,10 @@ export default async function LangLayout({ children, params }: Props) {
       )}
       <div className="flex min-h-screen flex-col" data-site={getSiteName(globals)}>
         <GlobalAnnouncementBar globals={globals} lang={lang} />
-        <SiteHeader globals={globals} lang={lang} menu={primary} />
-        <main className="flex-1">{children}</main>
+        <div className="relative flex min-h-0 flex-1 flex-col">
+          <SiteHeader globals={globals} lang={lang} menu={primary} />
+          <main className="relative z-0 flex-1">{children}</main>
+        </div>
         <SiteFooter globals={globals} lang={lang} footerMenu={footer} legalMenu={legal} />
       </div>
     </>

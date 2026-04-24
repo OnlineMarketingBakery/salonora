@@ -11,8 +11,8 @@ export function CostComparisonSection({ section, lang }: { section: CostComparis
       <Container>
         <div className="grid items-start gap-10 lg:grid-cols-2">
           <div>
-            {section.title && <h2 className="text-2xl font-bold text-[#0c1d3a] sm:text-3xl">{section.title}</h2>}
-            {section.text && <RichText html={section.text} className="mt-4 text-slate-600" />}
+            {section.title && <h2 className="text-2xl font-bold text-foreground sm:text-3xl">{section.title}</h2>}
+            {section.text && <RichText html={section.text} className="mt-4 text-muted" />}
             <div className="mt-6 flex flex-wrap gap-3">
               {section.ctas.map((c, i) => {
                 const l = resolveLink(c.url, lang);
@@ -25,20 +25,20 @@ export function CostComparisonSection({ section, lang }: { section: CostComparis
               })}
             </div>
           </div>
-          <div className="rounded-2xl border border-sky-100 bg-white/95 p-6 shadow-lg">
+          <div className="rounded-2xl border border-surface bg-white/95 p-6 shadow-lg">
             {section.lossItems.length > 0 && (
-              <ul className="space-y-2 text-sm text-slate-600">
+              <ul className="space-y-2 text-sm text-muted">
                 {section.lossItems.map((x, i) => (
-                  <li key={i} className="flex justify-between border-b border-slate-100 py-1">
+                  <li key={i} className="flex justify-between border-b border-surface py-1">
                     <span>{x.label}</span>
                     <span className="font-medium">{x.value}</span>
                   </li>
                 ))}
               </ul>
             )}
-            {section.priceLabel && <p className="mt-6 text-sm font-medium text-slate-500">{section.priceLabel}</p>}
-            {section.price && <p className="mt-1 text-3xl font-bold text-[#1e5bb8]">{section.price}</p>}
-            {section.priceSubtext && <p className="mt-1 text-sm text-slate-500">{section.priceSubtext}</p>}
+            {section.priceLabel && <p className="mt-6 text-sm font-medium text-muted">{section.priceLabel}</p>}
+            {section.price && <p className="mt-1 text-3xl font-bold text-brand">{section.price}</p>}
+            {section.priceSubtext && <p className="mt-1 text-sm text-muted">{section.priceSubtext}</p>}
           </div>
         </div>
       </Container>

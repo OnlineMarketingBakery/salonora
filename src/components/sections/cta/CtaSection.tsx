@@ -6,9 +6,9 @@ import type { CtaSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 
 const themeClass: Record<NonNullable<CtaSectionT["theme"]>, string> = {
-  light: "bg-slate-50 text-[#0c1d3a]",
-  dark: "bg-[#0c1d3a] text-white",
-  brand: "bg-gradient-to-r from-[#1e5bb8] to-sky-500 text-white",
+  light: "bg-surface text-foreground",
+  dark: "bg-navy-deep text-white",
+  brand: "bg-gradient-to-r from-brand to-navy-deep text-white",
 };
 
 export function CtaSection({ section, lang }: { section: CtaSectionT; lang: Locale }) {
@@ -24,7 +24,7 @@ export function CtaSection({ section, lang }: { section: CtaSectionT; lang: Loca
           aria-hidden
         />
       )}
-      <Container className={`relative rounded-2xl p-8 md:p-10 ${!hasBg ? themeClass[theme] : "bg-slate-900/80 text-white"}`}>
+      <Container className={`relative rounded-2xl p-8 md:p-10 ${!hasBg ? themeClass[theme] : "bg-navy-deep/80 text-white"}`}>
         <div className={align}>
           {section.title && <h2 className="text-2xl font-bold sm:text-3xl">{section.title}</h2>}
           {section.text && <RichText html={section.text} className={`mt-3 text-sm opacity-90 ${align === "text-center" ? "mx-auto max-w-2xl" : ""}`} />}
@@ -33,7 +33,7 @@ export function CtaSection({ section, lang }: { section: CtaSectionT; lang: Loca
               const l = resolveLink(c.url, lang);
               if (!c.text && !l) return null;
               return (
-                <Button key={i} href={l?.href} variant="white" target={l?.target} className={theme === "light" ? "border-[#0c1d3a] text-[#0c1d3a] hover:bg-slate-100" : ""}>
+                <Button key={i} href={l?.href} variant="white" target={l?.target} className={theme === "light" ? "border-foreground text-foreground hover:bg-surface" : ""}>
                   {c.text || l?.label}
                 </Button>
               );

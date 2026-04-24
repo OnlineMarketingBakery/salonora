@@ -8,13 +8,13 @@ export function PageTemplate({ document: doc, lang }: { document: PageDocument; 
   return (
     <article>
       {!doc.hidePageTitle && (
-        <Container className="pt-10">
-          <h1 className="text-3xl font-bold text-[#0c1d3a] md:text-4xl">{doc.title}</h1>
+        <Container className="pt-28 md:pt-32">
+          <h1 className="text-3xl font-bold text-foreground md:text-4xl">{doc.title}</h1>
         </Container>
       )}
       {doc.content && !doc.sections.length && (
         <Container className="py-8">
-          <RichText html={doc.content} className="text-slate-700" />
+          <RichText html={doc.content} className="text-muted" />
         </Container>
       )}
       <SectionRenderer sections={doc.sections} lang={lang} />

@@ -10,20 +10,20 @@ export function HeroSection({ section, lang }: { section: HeroSectionT; lang: Lo
   const p = resolveLink(section.primaryCta, lang);
   const s = resolveLink(section.secondaryCta, lang);
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-sky-100/90 via-sky-50/80 to-white pb-16 pt-8 md:pt-12">
+    <section className="relative overflow-hidden bg-gradient-to-b from-surface via-surface/80 to-white pb-16 pt-36 md:pt-40">
       <Container>
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
           <div>
             {section.eyebrow && (
-              <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-[#1e5bb8]">
+              <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-brand">
                 {section.eyebrow}
               </p>
             )}
-            <h1 className="text-3xl font-bold leading-tight text-[#0c1d3a] sm:text-4xl md:text-[2.4rem] md:leading-tight">
+            <h1 className="text-3xl font-bold leading-tight text-foreground sm:text-4xl md:text-[2.4rem] md:leading-tight">
               {section.title}
             </h1>
-            {section.text && <RichText html={section.text} className="mt-4 text-slate-600" />}
-            {section.offerText && <RichText html={section.offerText} className="mt-3 text-sm text-[#0c1d3a]/90" />}
+            {section.text && <RichText html={section.text} className="mt-4 text-muted" />}
+            {section.offerText && <RichText html={section.offerText} className="mt-3 text-sm text-foreground/90" />}
             <div className="mt-8 flex flex-wrap gap-3">
               {p && <Button href={p.href} variant="primary" target={p.target}>{p.label}</Button>}
               {s && <Button href={s.href} variant="secondary" target={s.target}>{s.label}</Button>}
@@ -36,7 +36,7 @@ export function HeroSection({ section, lang }: { section: HeroSectionT; lang: Lo
           </div>
           <div className="relative flex justify-center lg:justify-end">
             {section.image && (
-              <div className="relative aspect-[4/5] w-full max-w-sm overflow-hidden rounded-3xl border border-sky-100/80 bg-white/60 shadow-lg shadow-sky-200/40">
+              <div className="relative aspect-[4/5] w-full max-w-sm overflow-hidden rounded-3xl border border-surface bg-white/60 shadow-lg shadow-brand/15">
                 <Media
                   image={section.image}
                   className="h-full w-full rounded-3xl"

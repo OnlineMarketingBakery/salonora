@@ -4,7 +4,7 @@ export function RichText({ html, className = "" }: Props) {
   if (!html) return null;
   return (
     <div
-      className={`prose prose-slate max-w-none prose-p:leading-relaxed prose-a:text-[#1e5bb8] ${className}`}
+      className={`prose max-w-none font-sans prose-p:leading-relaxed prose-headings:text-foreground prose-p:text-muted prose-li:text-muted prose-strong:text-foreground prose-a:text-brand ${className}`}
       dangerouslySetInnerHTML={{ __html: html }}
     />
   );

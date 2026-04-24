@@ -20,7 +20,7 @@ export function CardsSection({ section, lang }: { section: CardsSectionT; lang: 
     <section className="py-16 md:py-20">
       <Container>
         {section.title && (
-          <h2 className="mb-10 text-center text-2xl font-bold text-[#0c1d3a] sm:text-3xl">{section.title}</h2>
+          <h2 className="mb-10 text-center text-2xl font-bold text-foreground sm:text-3xl">{section.title}</h2>
         )}
         <div className={`grid gap-6 ${g}`}>
           {section.items.map((c, i) => {
@@ -30,7 +30,9 @@ export function CardsSection({ section, lang }: { section: CardsSectionT; lang: 
                 <div className="flex h-full flex-col">
                   {c.icon && <Media image={c.icon} width={48} height={48} className="mb-3 h-12 w-12 object-contain" />}
                   <h3 className="text-lg font-bold text-inherit">{c.title}</h3>
-                  {c.text && <RichText html={c.text} className="mt-2 flex-1 text-sm text-slate-600" />}
+                  {c.text && (
+                    <RichText html={c.text} className={`mt-2 flex-1 text-sm ${c.highlight ? "text-inherit opacity-90" : "text-muted"}`} />
+                  )}
                   {c.ctaText && l && (
                     <Button href={l.href} variant="primary" className="mt-4 self-start" target={l.target}>
                       {c.ctaText}

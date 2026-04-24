@@ -20,7 +20,12 @@ export function asString(v: unknown): string {
 }
 
 export function asBool(v: unknown): boolean {
-  return v === true || v === 1 || v === "1";
+  if (v === true || v === 1 || v === "1") return true;
+  if (typeof v === "string") {
+    const s = v.trim().toLowerCase();
+    return s === "yes" || s === "true" || s === "on";
+  }
+  return false;
 }
 
 export function asImage(v: unknown): WpImage | null {

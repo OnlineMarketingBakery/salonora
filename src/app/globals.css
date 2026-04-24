@@ -1,16 +1,31 @@
+@import url("https://fonts.googleapis.com/css2?family=Fustat:wght@200..900&display=swap");
+
 @import "tailwindcss";
 
+/* Design palette — single source of truth */
 :root {
-  --background: #f8fbff;
-  --foreground: #0c1d3a;
-  --brand: #1e5bb8;
-  --brand-dark: #0c1d3a;
+  --palette-white: #ffffff;
+  --palette-brand: #3990f0;
+  --palette-navy: #152951;
+  --palette-navy-deep: #002752;
+  --palette-muted: #435780;
+  --palette-surface: #ebf3fe;
+
+  --background: var(--palette-surface);
+  --foreground: var(--palette-navy-deep);
+  --brand: var(--palette-brand);
+  --brand-dark: var(--palette-navy-deep);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --color-brand: var(--palette-brand);
+  --color-navy: var(--palette-navy);
+  --color-navy-deep: var(--palette-navy-deep);
+  --color-muted: var(--palette-muted);
+  --color-surface: var(--palette-surface);
+  --font-sans: "Fustat", ui-sans-serif, system-ui, sans-serif;
 }
 
 body {

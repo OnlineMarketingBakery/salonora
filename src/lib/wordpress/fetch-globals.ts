@@ -1,15 +1,73 @@
-import { getWordpressApiUrl } from "./config";
+import { getWordpressApiUrl, getWordpressAuthorizationHeader } from "./config";
 import type { GlobalSettings } from "@/types/globals";
-import { asBool, asImage, asString } from "@/lib/acf/field-mappers";
-import type { WpAcfLink } from "@/types/wordpress";
+import { asBool, asImage, asLink, asString } from "@/lib/acf/field-mappers";
 import { logger } from "@/lib/utils/logger";
 import type { Locale } from "@/lib/i18n/locales";
 
-function asLink(v: unknown): WpAcfLink | null {
-  if (!v || typeof v !== "object" || !("url" in v)) return null;
-  return (v as { url: string; title?: string; target?: string }).url
-    ? (v as WpAcfLink)
-    : null;
+/** OMB REST / some stacks expose ACF keys as camelCase; WP REST uses snake_case. */
+function acfPick(o: Record<string, unknown>, snake: string, camel: string): unknown {
+  if (Object.prototype.hasOwnProperty.call(o, snake)) return o[snake];
+  if (Object.prototype.hasOwnProperty.call(o, camel)) return o[camel];
+  return undefined;
+}
+
+/**
+ * ACF options GET responses may expose fields at the JSON root or under `acf`
+ * (same pattern as `wp/v2/*` objects). Merge `acf` onto the payload so OMB
+ * field names (`header_logo`, etc.) resolve whether the API nests them or not,
+ * without dropping root-level fields when `acf` is an empty object.
+ */
+function unwrapAcfOptionsPayload(data: Record<string, unknown> | null): Record<string, unknown> | null {
+  if (!data) return null;
+  const acf = data.acf;
+  const acfRecord =
+    acf && typeof acf === "object" && !Array.isArray(acf) ? (acf as Record<string, unknown>) : null;
+  if (!acfRecord) return data;
+  return { ...data, ...acfRecord };
+}
+
+type OmbGlobalsRestPayload = {
+  header?: Record<string, unknown>;
+  footer?: Record<string, unknown>;
+  contact?: Record<string, unknown>;
+  site?: Record<string, unknown>;
+  integrations?: Record<string, unknown>;
+  defaultSeo?: Record<string, unknown>;
+};
+
+/**
+ * Loads all ACF option groups in one request via OMB Headless Core. Use this when
+ * WordPress does not register the `acf` REST namespace (common); native
+ * `acf/v1/options/…` and `acf/v3/options/…` routes then return 404 and globals stay empty.
+ */
+async function fetchGlobalsViaOmbRest(lang: Locale): Promise<OmbGlobalsRestPayload | null> {
+  const base = getWordpressApiUrl();
+  if (!base) return null;
+  const url = new URL(`${base}/omb-headless/v1/globals`);
+  url.searchParams.set("lang", lang);
+  const headers = new Headers();
+  const auth = getWordpressAuthorizationHeader();
+  if (auth) {
+    headers.set("Authorization", auth);
+  }
+  try {
+    const res = await fetch(url.toString(), { headers, next: { revalidate: 60 } });
+    if (res.status === 404) {
+      return null;
+    }
+    if (!res.ok) {
+      logger.warn("omb-headless globals", url.toString(), res.status);
+      return null;
+    }
+    const body = (await res.json()) as OmbGlobalsRestPayload;
+    if (!body || typeof body !== "object") {
+      return null;
+    }
+    return body;
+  } catch (e) {
+    logger.warn("omb-headless globals fetch", url.toString(), e);
+    return null;
+  }
 }
 
 async function fetchAcfOptions(path: string, lang: Locale): Promise<Record<string, unknown> | null> {
@@ -19,9 +77,18 @@ async function fetchAcfOptions(path: string, lang: Locale): Promise<Record<strin
     `${base}/acf/v1/options/${path}`,
     `${base}/acf/v3/options/${path}`,
   ];
+  const headers = new Headers();
+  const auth = getWordpressAuthorizationHeader();
+  if (auth) {
+    headers.set("Authorization", auth);
+  }
   for (const p of tryPaths) {
     try {
-      const res = await fetch(`${p}?lang=${lang}`, { next: { revalidate: 60 } });
+      const url = new URL(p);
+      url.searchParams.set("lang", lang);
+      // Ensures image/link fields match WpImage / app expectations (url, not bare attachment ID).
+      url.searchParams.set("acf_format", "standard");
+      const res = await fetch(url.toString(), { headers, next: { revalidate: 60 } });
       if (res.ok) {
         return (await res.json()) as Record<string, unknown>;
       }
@@ -45,13 +112,14 @@ function fromHeader(o: Record<string, unknown> | null) {
     };
   }
   return {
-    headerLogo: asImage(o.header_logo),
-    headerLogoDark: asImage(o.header_logo_dark),
-    headerStyle: (asString(o.header_style) as "light" | "dark" | "transparent") || "light",
-    headerSticky: asBool(o.header_sticky),
-    showLanguageSwitcher: asBool(o.show_language_switcher),
-    showHeaderCta: asBool(o.show_header_cta),
-    headerCtaLink: asLink(o.header_cta_link),
+    headerLogo: asImage(acfPick(o, "header_logo", "headerLogo")),
+    headerLogoDark: asImage(acfPick(o, "header_logo_dark", "headerLogoDark")),
+    headerStyle:
+      (asString(acfPick(o, "header_style", "headerStyle")) as "light" | "dark" | "transparent") || "light",
+    headerSticky: asBool(acfPick(o, "header_sticky", "headerSticky")),
+    showLanguageSwitcher: asBool(acfPick(o, "show_language_switcher", "showLanguageSwitcher")),
+    showHeaderCta: asBool(acfPick(o, "show_header_cta", "showHeaderCta")),
+    headerCtaLink: asLink(acfPick(o, "header_cta_link", "headerCtaLink")),
   };
 }
 
@@ -167,6 +235,18 @@ function fromDefaultSeo(o: Record<string, unknown> | null) {
 }
 
 export async function fetchGlobals(lang: Locale): Promise<GlobalSettings> {
+  const omb = await fetchGlobalsViaOmbRest(lang);
+  if (omb != null) {
+    return {
+      header: fromHeader(unwrapAcfOptionsPayload(omb.header ?? null)),
+      footer: fromFooter(unwrapAcfOptionsPayload(omb.footer ?? null)),
+      contact: fromContact(unwrapAcfOptionsPayload(omb.contact ?? null)),
+      site: fromSite(unwrapAcfOptionsPayload(omb.site ?? null)),
+      integrations: fromIntegrations(unwrapAcfOptionsPayload(omb.integrations ?? null)),
+      defaultSeo: fromDefaultSeo(unwrapAcfOptionsPayload(omb.defaultSeo ?? null)),
+    };
+  }
+
   const [headerRaw, footerRaw, contactRaw, siteRaw, integrationsRaw, defaultSeoRaw] = await Promise.all([
     fetchAcfOptions("omb-header-settings", lang),
     fetchAcfOptions("omb-footer-settings", lang),
@@ -177,11 +257,11 @@ export async function fetchGlobals(lang: Locale): Promise<GlobalSettings> {
   ]);
 
   return {
-    header: fromHeader(headerRaw),
-    footer: fromFooter(footerRaw),
-    contact: fromContact(contactRaw),
-    site: fromSite(siteRaw),
-    integrations: fromIntegrations(integrationsRaw),
-    defaultSeo: fromDefaultSeo(defaultSeoRaw),
+    header: fromHeader(unwrapAcfOptionsPayload(headerRaw)),
+    footer: fromFooter(unwrapAcfOptionsPayload(footerRaw)),
+    contact: fromContact(unwrapAcfOptionsPayload(contactRaw)),
+    site: fromSite(unwrapAcfOptionsPayload(siteRaw)),
+    integrations: fromIntegrations(unwrapAcfOptionsPayload(integrationsRaw)),
+    defaultSeo: fromDefaultSeo(unwrapAcfOptionsPayload(defaultSeoRaw)),
   };
 }
