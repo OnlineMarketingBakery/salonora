@@ -13,6 +13,8 @@ type Props = {
   globals: GlobalSettings;
   lang: Locale;
   menu: MenuItem[];
+  languageSwitcherPathname: string;
+  languageSwitcherHrefs: Record<Locale, string> | null;
 };
 
 function resolveHeaderLogo(header: GlobalSettings["header"]): GlobalSettings["header"]["headerLogo"] {
@@ -23,7 +25,13 @@ function resolveHeaderLogo(header: GlobalSettings["header"]): GlobalSettings["he
   return headerLogo ?? headerLogoDark;
 }
 
-export function SiteHeader({ globals, lang, menu }: Props) {
+export function SiteHeader({
+  globals,
+  lang,
+  menu,
+  languageSwitcherPathname,
+  languageSwitcherHrefs,
+}: Props) {
   const logo = resolveHeaderLogo(globals.header);
   const c = resolveLink(globals.header.headerCtaLink, lang);
   const mobileCta =
@@ -76,7 +84,12 @@ export function SiteHeader({ globals, lang, menu }: Props) {
             <div className="ml-auto flex min-w-0 shrink-0 items-center gap-2.5 sm:gap-3 md:ml-0">
               {globals.header.showLanguageSwitcher && (
                 <div className="hidden md:block">
-                  <LanguageSwitcher lang={lang} variant="header" />
+                  <LanguageSwitcher
+                    lang={lang}
+                    variant="header"
+                    serverPathname={languageSwitcherPathname}
+                    serverLocaleHrefs={languageSwitcherHrefs}
+                  />
                 </div>
               )}
               {globals.header.showHeaderCta && c && (
@@ -96,6 +109,8 @@ export function SiteHeader({ globals, lang, menu }: Props) {
                 lang={lang}
                 showLanguageSwitcher={globals.header.showLanguageSwitcher}
                 cta={mobileCta}
+                languageSwitcherPathname={languageSwitcherPathname}
+                languageSwitcherHrefs={languageSwitcherHrefs}
               />
             </div>
           </div>

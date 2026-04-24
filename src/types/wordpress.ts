@@ -20,6 +20,9 @@ export type WpImage = {
 export type WpPageRaw = {
   id: number;
   slug: string;
+  /** Polylang: translation post IDs by language code (e.g. { en: 12, nl: 5 }) */
+  translations?: Record<string, number> | null;
+  link?: string;
   title: { rendered: string };
   content: { rendered: string; protected: boolean };
   excerpt: { rendered: string; protected: boolean };

@@ -21,6 +21,8 @@ type Props = {
   lang: Locale;
   footerMenu: MenuItem[];
   legalMenu: MenuItem[];
+  languageSwitcherPathname: string;
+  languageSwitcherHrefs: Record<Locale, string> | null;
 };
 
 function FacebookIcon() {
@@ -63,7 +65,14 @@ function socialIcon(label: string) {
   return null;
 }
 
-export function SiteFooter({ globals, lang, footerMenu, legalMenu }: Props) {
+export function SiteFooter({
+  globals,
+  lang,
+  footerMenu,
+  legalMenu,
+  languageSwitcherPathname,
+  languageSwitcherHrefs,
+}: Props) {
   const g = globals;
   const primaryCta = resolveLink(g.site.globalCtaLink, lang);
   const secondaryCta = resolveLink(g.footer.footerCta2Link, lang);
@@ -192,7 +201,14 @@ export function SiteFooter({ globals, lang, footerMenu, legalMenu }: Props) {
                 {m.label}
               </Link>
             ))}
-            {g.footer.showFooterLanguageSwitcher && <LanguageSwitcher lang={lang} className="text-surface/75" />}
+            {g.footer.showFooterLanguageSwitcher && (
+              <LanguageSwitcher
+                lang={lang}
+                className="text-surface/75"
+                serverPathname={languageSwitcherPathname}
+                serverLocaleHrefs={languageSwitcherHrefs}
+              />
+            )}
           </div>
         </div>
       </div>

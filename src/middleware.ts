@@ -7,9 +7,11 @@ export function middleware(request: NextRequest) {
   if (p === "/") {
     return NextResponse.redirect(new URL(`/${defaultLocale}/`, request.url));
   }
-  return NextResponse.next();
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-pathname", p);
+  return NextResponse.next({ request: { headers: requestHeaders } });
 }
 
 export const config = {
-  matcher: ["/"],
+  matcher: ["/", "/((?!api|_next/static|_next/image|favicon\\.ico|.*\\..*).*)"],
 };

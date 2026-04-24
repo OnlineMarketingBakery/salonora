@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation";
 import Script from "next/script";
+import { headers } from "next/headers";
 import { isLocale } from "@/lib/i18n/config";
 import type { Locale } from "@/lib/i18n/locales";
 import { fetchGlobals } from "@/lib/wordpress/fetch-globals";
 import { fetchMenu } from "@/lib/wordpress/fetch-menu";
+import { getLocaleHrefsForPathname } from "@/lib/wordpress/polylang-locale-hrefs";
 import { GlobalAnnouncementBar } from "@/components/layout/GlobalAnnouncementBar";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
@@ -23,6 +25,9 @@ export default async function LangLayout({ children, params }: Props) {
     fetchMenu("footer", lang),
     fetchMenu("legal", lang),
   ]);
+  const h = await headers();
+  const pathname = h.get("x-pathname") ?? `/${lang}/`;
+  const languageSwitcherHrefs = await getLocaleHrefsForPathname(pathname);
   return (
     <>
       {globals.integrations.gtmId && (
@@ -41,10 +46,23 @@ export default async function LangLayout({ children, params }: Props) {
       <div className="flex min-h-screen flex-col" data-site={getSiteName(globals)}>
         <GlobalAnnouncementBar globals={globals} lang={lang} />
         <div className="relative flex min-h-0 flex-1 flex-col">
-          <SiteHeader globals={globals} lang={lang} menu={primary} />
+          <SiteHeader
+            globals={globals}
+            lang={lang}
+            menu={primary}
+            languageSwitcherPathname={pathname}
+            languageSwitcherHrefs={languageSwitcherHrefs}
+          />
           <main className="relative z-0 flex-1">{children}</main>
         </div>
-        <SiteFooter globals={globals} lang={lang} footerMenu={footer} legalMenu={legal} />
+        <SiteFooter
+          globals={globals}
+          lang={lang}
+          footerMenu={footer}
+          legalMenu={legal}
+          languageSwitcherPathname={pathname}
+          languageSwitcherHrefs={languageSwitcherHrefs}
+        />
       </div>
     </>
   );

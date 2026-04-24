@@ -24,9 +24,13 @@ function mapUrlToHref(url: string, lang: Locale): string {
       if (p === "" || p === "/") return `/${lang}`;
       return buildLocalePath(lang, p.replace(/^\//, "").replace(new RegExp(`^${lang}/`), ""));
     }
-    if (url.startsWith(wp)) {
+    if (url.startsWith(wp) || url.startsWith(`${wp}/`)) {
       const p = new URL(url).pathname;
-      return buildLocalePath(lang, p.replace(/^\//, "").replace("wp-content", "").replace(/^\/$/, "")) || `/${lang}`;
+      if (p.startsWith(`/${lang}/`) || p === `/${lang}`) return p;
+      if (p === "" || p === "/") return `/${lang}`;
+      const rest = p.replace(/^\//, "").replace("wp-content", "");
+      if (!rest || rest === "/") return `/${lang}`;
+      return buildLocalePath(lang, rest);
     }
   } catch {
     /* keep url */

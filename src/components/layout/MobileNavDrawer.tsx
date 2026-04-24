@@ -16,6 +16,8 @@ type Props = {
   showLanguageSwitcher: boolean;
   cta: Cta | null;
   className?: string;
+  languageSwitcherPathname: string;
+  languageSwitcherHrefs: Record<Locale, string> | null;
 };
 
 function normalizePath(p: string) {
@@ -96,7 +98,15 @@ function NavLinks({
   );
 }
 
-export function MobileNavDrawer({ menu, lang, showLanguageSwitcher, cta, className = "" }: Props) {
+export function MobileNavDrawer({
+  menu,
+  lang,
+  showLanguageSwitcher,
+  cta,
+  className = "",
+  languageSwitcherPathname,
+  languageSwitcherHrefs,
+}: Props) {
   const [open, setOpen] = useState(false);
   const [panelEnter, setPanelEnter] = useState(false);
   const panelId = useId();
@@ -190,7 +200,13 @@ export function MobileNavDrawer({ menu, lang, showLanguageSwitcher, cta, classNa
             <div className="flex items-center justify-between gap-3 border-b border-zinc-200/80 px-5 py-4">
               {showLanguageSwitcher ? (
                 <div className="shrink-0 rounded-full border border-white/80 bg-white/90 px-1.5 py-0.5 shadow-[0_1px_3px_rgba(48,89,133,0.12)]">
-                  <LanguageSwitcher lang={lang} variant="header" className="!gap-0.5" />
+                  <LanguageSwitcher
+                    lang={lang}
+                    variant="header"
+                    className="!gap-0.5"
+                    serverPathname={languageSwitcherPathname}
+                    serverLocaleHrefs={languageSwitcherHrefs}
+                  />
                 </div>
               ) : (
                 <span aria-hidden className="inline-block min-w-px" />
