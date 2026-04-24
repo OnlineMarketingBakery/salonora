@@ -25,6 +25,8 @@ export type CardItemT = {
   text: string;
   link: WpAcfLink | null;
   ctaText: string;
+  /** Optional subline under the CTA on the highlighted (dark) card, Figma */
+  ctaSubtext: string;
   highlight: boolean;
 };
 

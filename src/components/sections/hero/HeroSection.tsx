@@ -4,12 +4,10 @@ import { RichText } from "@/components/ui/RichText";
 import { Media } from "@/components/ui/Media";
 import { resolveLink } from "@/lib/utils/links";
 import { ArrowInCircle } from "@/components/ui/ArrowInCircle";
+import { PrimaryCtaLink } from "@/components/ui/PrimaryCtaLink";
 import { StarRating } from "@/components/ui/StarRating";
 import type { HeroSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
-
-const heroPrimary =
-  "group inline-flex h-12 max-w-full items-center justify-center gap-[17px] rounded-[24px] bg-brand px-3.5 text-[16px] font-medium leading-6 text-white shadow-[0px_6px_20px_0px_rgba(57,144,240,0.54)] transition hover:brightness-105 sm:text-[18px]";
 
 const heroSecondary =
   "group inline-flex h-12 w-full min-w-0 max-w-full items-center justify-center gap-[17px] rounded-[24px] bg-white px-3.5 text-[16px] font-medium leading-6 text-navy shadow-[0px_6px_20px_0px_rgba(57,144,240,0.54)] transition hover:brightness-[0.99] sm:text-[18px]";
@@ -49,16 +47,27 @@ export function HeroSection({ section, lang }: { section: HeroSectionT; lang: Lo
               {section.ctas.map((cta, i) => {
                 const r = resolveLink(cta.url, lang);
                 if (!r) return null;
+                if (i === 0) {
+                  return (
+                    <PrimaryCtaLink
+                      key={`${section.id}-cta-${i}`}
+                      href={r.href}
+                      target={r.target}
+                    >
+                      {cta.text || r.label}
+                    </PrimaryCtaLink>
+                  );
+                }
                 return (
                   <Link
                     key={`${section.id}-cta-${i}`}
                     href={r.href}
                     target={r.target}
                     rel={r.target === "_blank" ? "noopener noreferrer" : undefined}
-                    className={i === 0 ? heroPrimary : heroSecondary}
+                    className={heroSecondary}
                   >
                     <span className="min-w-0 break-words text-balance sm:whitespace-nowrap">{cta.text || r.label}</span>
-                    <ArrowInCircle variant={i === 0 ? "on-brand" : "on-light"} />
+                    <ArrowInCircle variant="on-light" />
                   </Link>
                 );
               })}

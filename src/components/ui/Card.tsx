@@ -9,13 +9,18 @@ export function Card({
   className?: string;
   highlight?: boolean;
 }) {
+  if (highlight) {
+    return (
+      <div
+        className={`box-border flex min-h-[282px] w-full max-w-[417px] flex-col justify-center rounded-[12px] border-0 bg-gradient-to-b from-[#152951] to-[#224D88] p-12 text-white [background-size:100%] ${className}`.trim()}
+      >
+        {children}
+      </div>
+    );
+  }
   return (
     <div
-      className={`rounded-[20px] border p-6 ${
-        highlight
-          ? "border-navy-deep bg-navy-deep text-white shadow-lg"
-          : "border-surface/80 bg-white shadow-[0_2px_24px_-4px_rgba(21,41,81,0.08),0_4px_12px_-2px_rgba(57,144,240,0.08)]"
-      } ${className}`}
+      className={`box-border flex h-full min-h-[282px] w-full max-w-[417px] flex-col items-start justify-start rounded-[12px] border-0 bg-[#EBF3FE] p-6 text-navy [background-size:100%] ${className}`.trim()}
     >
       {children}
     </div>

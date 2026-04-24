@@ -10,6 +10,8 @@
   --palette-navy-deep: #002752;
   --palette-muted: #435780;
   --palette-surface: #ebf3fe;
+  /** Figma: cards “Herken je dit” standard tiles */
+  --palette-card: #ebf3fe; 
   --palette-pill: #ecf4fe;
   /* Hero offer line + some labels in Figma */
   --palette-accent: #1d5898;
@@ -30,6 +32,7 @@
   --color-navy-deep: var(--palette-navy-deep);
   --color-muted: var(--palette-muted);
   --color-surface: var(--palette-surface);
+  --color-card: var(--palette-card);
   --color-pill: var(--palette-pill);
   --color-accent: var(--palette-accent);
   --color-brand-soft: var(--palette-brand-soft);

@@ -63,6 +63,7 @@ function mapLayout(i: number, row: RawRow): AnySectionT | null {
                 text: asHtml(c.text),
                 link,
                 ctaText: asString(c.cta_text) || link?.title || "",
+                ctaSubtext: asString(c.cta_subtext),
                 highlight: asBool(c.highlight),
               };
             })

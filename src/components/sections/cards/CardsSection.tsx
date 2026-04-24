@@ -2,7 +2,7 @@ import { Container } from "@/components/ui/Container";
 import { Card } from "@/components/ui/Card";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
-import { Button } from "@/components/ui/Button";
+import { PrimaryCtaLink } from "@/components/ui/PrimaryCtaLink";
 import { resolveLink } from "@/lib/utils/links";
 import type { CardsSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
@@ -17,29 +17,77 @@ const colMap: Record<string, string> = {
 export function CardsSection({ section, lang }: { section: CardsSectionT; lang: Locale }) {
   const g = colMap[section.columns] || colMap["3"];
   return (
-    <section className="bg-white/90 py-16 md:py-20">
+    <section className="bg-white py-20 md:py-24">
       <Container>
         {section.title && (
-          <h2 className="mb-12 text-center text-3xl font-bold leading-tight tracking-[-0.04em] text-navy sm:text-4xl lg:mb-14 lg:text-[48px] lg:leading-[56px]">
+          <h2 className="mb-10 text-center text-3xl font-bold leading-tight tracking-[-0.04em] text-navy sm:text-4xl lg:mb-12 lg:text-[48px] lg:leading-[56px]">
             {section.title}
           </h2>
         )}
-        <div className={`grid gap-6 ${g}`}>
+        <div className={`grid w-full auto-rows-[minmax(0,1fr)] justify-items-center gap-6 ${g}`}>
           {section.items.map((c, i) => {
             const l = resolveLink(c.link, lang);
+            if (c.highlight) {
+              return (
+                <Card key={i} highlight>
+                  <div className="mx-auto flex w-full max-w-[248px] flex-col items-center gap-5 text-center">
+                    <h3 className="w-full text-2xl font-bold leading-[1.24] text-white">{c.title}</h3>
+                    {c.text && (
+                      <RichText
+                        html={c.text}
+                        className="w-full text-center text-base font-normal leading-[1.4] text-white/90 prose-p:text-center prose-p:leading-[1.4] prose-p:text-white/90 first:prose-p:mt-0 prose-headings:text-white [&_a]:text-white [&_a]:underline"
+                      />
+                    )}
+                    {c.ctaText && l && (
+                      <PrimaryCtaLink href={l.href} target={l.target} className="w-full">
+                        {c.ctaText}
+                      </PrimaryCtaLink>
+                    )}
+                    {c.ctaSubtext && (
+                      <div
+                        className="w-full max-w-[12.5rem] text-balance text-center text-base font-bold leading-[1.24] text-white"
+                      >
+                        {c.ctaSubtext
+                          .split("\n")
+                          .filter((line) => line.trim() !== "")
+                          .map((line, idx) => (
+                            <p key={idx} className="[&:not(:last-child)]:mb-1.5 last:mb-0">
+                              {line}
+                            </p>
+                          ))}
+                      </div>
+                    )}
+                  </div>
+                </Card>
+              );
+            }
             return (
-              <Card key={i} highlight={c.highlight}>
-                <div className="flex h-full flex-col">
-                  {c.icon && <Media image={c.icon} width={48} height={48} className="mb-3 h-12 w-12 object-contain" />}
-                  <h3 className="text-lg font-bold text-inherit">{c.title}</h3>
-                  {c.text && (
-                    <RichText html={c.text} className={`mt-2 flex-1 text-sm ${c.highlight ? "text-inherit opacity-90" : "text-muted"}`} />
+              <Card key={i} highlight={false}>
+                <div className="flex w-full min-w-0 flex-1 flex-col items-stretch gap-10">
+                  {c.icon && (
+                    <div className="box-border flex size-[54px] shrink-0 items-center justify-center self-start rounded-[10px] border border-[#dde9f9] bg-white p-[15px]">
+                      <Media
+                        image={c.icon}
+                        width={24}
+                        height={24}
+                        className="size-6 object-contain"
+                      />
+                    </div>
                   )}
-                  {c.ctaText && l && (
-                    <Button href={l.href} variant="primary" className="mt-4 self-start" target={l.target}>
-                      {c.ctaText}
-                    </Button>
-                  )}
+                  <div className="flex min-w-0 w-full flex-1 flex-col items-start gap-2.5">
+                    <h3 className="w-full min-w-0 text-2xl font-bold leading-[1.1] text-navy">{c.title}</h3>
+                    {c.text && (
+                      <RichText
+                        html={c.text}
+                        className="w-full text-base font-normal leading-[1.4] !prose-p:mt-0 !prose-p:leading-[1.4] !prose-p:text-muted first:prose-p:mt-0 !prose-strong:font-bold !prose-strong:text-navy [&_a]:text-brand"
+                      />
+                    )}
+                    {c.ctaText && l && (
+                      <PrimaryCtaLink href={l.href} target={l.target} className="mt-1 self-start">
+                        {c.ctaText}
+                      </PrimaryCtaLink>
+                    )}
+                  </div>
                 </div>
               </Card>
             );
