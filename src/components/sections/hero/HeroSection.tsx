@@ -31,7 +31,6 @@ export function HeroSection({ section, lang }: { section: HeroSectionT; lang: Lo
             {section.trustImage && (
               <div className="mt-8 flex items-center gap-3">
                 <Media image={section.trustImage} width={160} height={32} className="h-8 w-auto" />
-                <p className="text-xs text-slate-500">Vertrouwen & reviews</p>
               </div>
             )}
           </div>

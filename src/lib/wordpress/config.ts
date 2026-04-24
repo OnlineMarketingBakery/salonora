@@ -10,6 +10,18 @@ export function getWordpressApiUrl(): string {
   return (process.env.WORDPRESS_API_URL || "").replace(/\/$/, "");
 }
 
+/**
+ * HTTP Basic auth for WordPress Application Passwords (server-only env).
+ * Required when routes such as `/wp/v2/menu-items` return 401 for anonymous requests.
+ */
+export function getWordpressAuthorizationHeader(): string | undefined {
+  const user = process.env.WORDPRESS_APPLICATION_USER?.trim();
+  const appPassword = process.env.WORDPRESS_APPLICATION_PASSWORD?.trim();
+  if (!user || !appPassword) return undefined;
+  const token = Buffer.from(`${user}:${appPassword.replace(/\s+/g, "")}`, "utf8").toString("base64");
+  return `Basic ${token}`;
+}
+
 export function getWordpressBaseUrl(): string {
   return (process.env.WORDPRESS_BASE_URL || getWordpressApiUrl().replace(/\/wp(-json)?$/, "")).replace(
     /\/$/,

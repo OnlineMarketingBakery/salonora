@@ -1,5 +1,5 @@
 import { logger } from "@/lib/utils/logger";
-import { getWordpressApiUrl } from "./config";
+import { getWordpressApiUrl, getWordpressAuthorizationHeader } from "./config";
 
 const apiBase = () => getWordpressApiUrl();
 import type { Locale } from "@/lib/i18n/locales";
@@ -17,12 +17,18 @@ export async function wpFetch<T>(path: string, init: WpFetchInit = {}): Promise<
   if (!base) {
     throw new Error("WORDPRESS_API_URL is not set");
   }
+  const { revalidate, lang, ...fetchInit } = init;
   const url = new URL(path.startsWith("http") ? path : `${base}${path.startsWith("/") ? path : `/${path}`}`);
-  if (init.lang) {
-    url.searchParams.set("lang", init.lang);
+  if (lang) {
+    url.searchParams.set("lang", lang);
   }
-  const { revalidate, ...rest } = init;
-  const next: RequestInit = { ...rest };
+  const next: RequestInit = { ...fetchInit };
+  const headers = new Headers(fetchInit.headers);
+  const wpAuth = getWordpressAuthorizationHeader();
+  if (wpAuth && !headers.has("Authorization")) {
+    headers.set("Authorization", wpAuth);
+  }
+  next.headers = headers;
   if (revalidate !== undefined) {
     (next as { next?: { revalidate: number | false } }).next = { revalidate };
   }
