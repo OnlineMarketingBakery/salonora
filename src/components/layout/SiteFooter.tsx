@@ -311,18 +311,22 @@ export function SiteFooter({
         </div>
 
         <div className="w-full">
-          <img
-            src="/footer-shape-top.svg"
-            width={1283}
-            height={54}
-            alt=""
-            className="block h-auto w-full"
-            role="presentation"
-            decoding="async"
-          />
-          <div className="bg-navy-deep">
+          <div
+            className="w-[75%] mx-auto pointer-events-none relative [filter:drop-shadow(0_-6px_24px_rgba(57,144,240,0.55))_drop-shadow(0_-16px_48px_rgba(57,144,240,0.4))_drop-shadow(0_-28px_72px_rgba(57,144,240,0.28))_drop-shadow(0_-40px_104px_rgba(57,144,240,0.16))_drop-shadow(0_-52px_140px_rgba(57,144,240,0.08))_drop-shadow(0_-64px_180px_rgba(57,144,240,0.04))]"
+          >
+            <img
+              src="/footer-shape-top.svg"
+              width={1283}
+              height={54}
+              alt=""
+              className="block h-auto w-full"
+              role="presentation"
+              decoding="async"
+            />
+          </div>
+          <div className="bg-navy-deep relative z-10">
             <div className="mx-auto flex w-full max-w-[1300px] flex-col items-center justify-center gap-3 px-4 sm:px-6 pb-5 md:px-8">
-              <p className="order-1 text-center text-base font-light text-white/90 md:order-none md:text-left -mt-10">
+              <p className="order-1 text-center text-base font-light text-white/90 md:order-none md:text-left -mt-6">
                 {g.footer.footerCopyright ||
                   `Copyright ©${new Date().getFullYear()} Salonora all right reserved.`}
               </p>
