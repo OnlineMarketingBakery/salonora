@@ -16,8 +16,14 @@ export type FooterSettings = {
   footerLogo: WpImage | null;
   footerCopyright: string;
   showFooterLanguageSwitcher: boolean;
-  /** Optional second CTA in footer left column (e.g. "Or start complete…") */
-  footerCta2Link: WpAcfLink | null;
+  /**
+   * Small line under the CTA buttons (Figma: “Live instantly. No technical knowledge…”).
+   * Set in ACF as “Text under the buttons” (`footer_cta_text`); `global_cta_text` is merged from legacy.
+   */
+  footerCtaFootnote: string;
+  footerCtaPrimaryLink: WpAcfLink | null;
+  /** Secondary button in footer left column */
+  footerCtaSecondaryLink: WpAcfLink | null;
 };
 
 export type ContactSocialSettings = {
@@ -35,9 +41,6 @@ export type SiteSettings = {
   siteNameOverride: string;
   defaultTagline: string;
   defaultOgImage: WpImage | null;
-  globalCtaTitle: string;
-  globalCtaText: string;
-  globalCtaLink: WpAcfLink | null;
   enableAnnouncement: boolean;
   announcementText: string;
   announcementLink: WpAcfLink | null;

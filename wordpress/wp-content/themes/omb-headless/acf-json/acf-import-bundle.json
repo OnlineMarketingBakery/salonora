@@ -454,6 +454,79 @@
                 "preview_size": "medium"
             },
             {
+                "key": "field_omb_footer_cta_tab",
+                "label": "Footer CTA",
+                "name": "",
+                "aria-label": "",
+                "type": "tab",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "placement": "top",
+                "endpoint": 0,
+                "selected": 0
+            },
+            {
+                "key": "field_omb_footer_cta_text",
+                "label": "Text under the buttons",
+                "name": "footer_cta_text",
+                "aria-label": "",
+                "type": "textarea",
+                "instructions": "Small line of copy under the two CTA buttons. Main headline and paragraph use “Footer Content” above.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "rows": 3,
+                "placeholder": "",
+                "new_lines": "wpautop"
+            },
+            {
+                "key": "field_omb_footer_cta_primary_link",
+                "label": "Footer CTA primary",
+                "name": "footer_cta_primary_link",
+                "aria-label": "",
+                "type": "link",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "return_format": "array",
+                "allow_in_bindings": 0
+            },
+            {
+                "key": "field_omb_footer_cta_secondary_link",
+                "label": "Footer CTA secondary",
+                "name": "footer_cta_secondary_link",
+                "aria-label": "",
+                "type": "link",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "return_format": "array",
+                "allow_in_bindings": 0
+            },
+            {
                 "key": "field_omb_footer_bottom_tab",
                 "label": "Footer Bottom",
                 "name": "",
@@ -5423,83 +5496,6 @@
                 "mime_types": "",
                 "allow_in_bindings": 0,
                 "preview_size": "medium"
-            },
-            {
-                "key": "field_omb_site_cta_tab",
-                "label": "Global CTA",
-                "name": "",
-                "aria-label": "",
-                "type": "tab",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "placement": "top",
-                "endpoint": 0,
-                "selected": 0
-            },
-            {
-                "key": "field_omb_global_cta_title",
-                "label": "CTA Title",
-                "name": "global_cta_title",
-                "aria-label": "",
-                "type": "text",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "default_value": "",
-                "maxlength": "",
-                "allow_in_bindings": 0,
-                "placeholder": "",
-                "prepend": "",
-                "append": ""
-            },
-            {
-                "key": "field_omb_global_cta_text",
-                "label": "CTA Text",
-                "name": "global_cta_text",
-                "aria-label": "",
-                "type": "textarea",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "default_value": "",
-                "maxlength": "",
-                "allow_in_bindings": 0,
-                "rows": 3,
-                "placeholder": "",
-                "new_lines": "wpautop"
-            },
-            {
-                "key": "field_omb_global_cta_link",
-                "label": "CTA Link",
-                "name": "global_cta_link",
-                "aria-label": "",
-                "type": "link",
-                "instructions": "",
-                "required": 0,
-                "conditional_logic": 0,
-                "wrapper": {
-                    "width": "",
-                    "class": "",
-                    "id": ""
-                },
-                "return_format": "array",
-                "allow_in_bindings": 0
             },
             {
                 "key": "field_omb_notices_tab",

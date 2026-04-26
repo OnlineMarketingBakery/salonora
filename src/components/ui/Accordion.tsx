@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useState } from "react";
+import { RichText } from "@/components/ui/RichText";
 
 type Item = { id: string; title: string; content: string };
 
@@ -67,9 +68,12 @@ function AccordionRowSplit({
       {isOpen && (
         <div
           id={id}
-          className="border-t border-slate-900/10 px-[14px] py-3 pl-5 text-base font-normal leading-relaxed text-muted sm:pl-[83px] sm:pr-4"
+          className="border-t border-slate-900/10 px-[14px] py-3 pl-5 text-base font-normal leading-relaxed sm:pl-[83px] sm:pr-4"
         >
-          <p className="whitespace-pre-line [text-wrap:balance]">{item.content}</p>
+          <RichText
+            html={item.content}
+            className="!prose-p:mb-0 !prose-p:mt-0 whitespace-pre-line [text-wrap:balance] !prose-p:text-muted [&>p+_p]:!mt-2"
+          />
         </div>
       )}
     </div>
@@ -102,7 +106,10 @@ function AccordionRow({
       </button>
       {isOpen && (
         <div id={id} className="border-t border-surface px-4 py-3 text-sm text-muted md:px-5">
-          {item.content}
+          <RichText
+            html={item.content}
+            className="!prose-p:mb-0 !prose-p:mt-0 prose-sm !prose-p:text-muted [&>p+_p]:!mt-2"
+          />
         </div>
       )}
     </div>

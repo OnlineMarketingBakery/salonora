@@ -131,7 +131,9 @@ function fromFooter(o: Record<string, unknown> | null) {
       footerLogo: null,
       footerCopyright: "",
       showFooterLanguageSwitcher: true,
-      footerCta2Link: null,
+      footerCtaFootnote: "",
+      footerCtaPrimaryLink: null,
+      footerCtaSecondaryLink: null,
     };
   }
   return {
@@ -140,7 +142,26 @@ function fromFooter(o: Record<string, unknown> | null) {
     footerLogo: asImage(o.footer_logo),
     footerCopyright: asString(o.footer_copyright),
     showFooterLanguageSwitcher: asBool(o.show_footer_language_switcher),
-    footerCta2Link: asLink(o.footer_cta_2_link) ?? asLink(o.footer_cta2_link),
+    footerCtaFootnote: asString(acfPick(o, "footer_cta_text", "footerCtaText")),
+    footerCtaPrimaryLink: asLink(acfPick(o, "footer_cta_primary_link", "footerCtaPrimaryLink")),
+    footerCtaSecondaryLink:
+      asLink(acfPick(o, "footer_cta_secondary_link", "footerCtaSecondaryLink")) ??
+      asLink(o.footer_cta_2_link) ??
+      asLink(o.footer_cta2_link),
+  };
+}
+
+/** Until WP content is re-saved under the new ACF field names, use legacy `global_cta_*` (still returned in site options). */
+function mergeFooterCtaMigrations(
+  footer: ReturnType<typeof fromFooter>,
+  siteRaw: Record<string, unknown> | null
+): ReturnType<typeof fromFooter> {
+  if (!siteRaw) return footer;
+  return {
+    ...footer,
+    footerTitle: footer.footerTitle.trim() || asString(siteRaw.global_cta_title),
+    footerCtaFootnote: footer.footerCtaFootnote || asString(siteRaw.global_cta_text),
+    footerCtaPrimaryLink: footer.footerCtaPrimaryLink ?? asLink(siteRaw.global_cta_link),
   };
 }
 
@@ -175,9 +196,6 @@ function fromSite(o: Record<string, unknown> | null) {
       siteNameOverride: "",
       defaultTagline: "",
       defaultOgImage: null,
-      globalCtaTitle: "",
-      globalCtaText: "",
-      globalCtaLink: null,
       enableAnnouncement: false,
       announcementText: "",
       announcementLink: null,
@@ -187,9 +205,6 @@ function fromSite(o: Record<string, unknown> | null) {
     siteNameOverride: asString(o.site_name_override),
     defaultTagline: asString(o.default_tagline),
     defaultOgImage: asImage(o.default_og_image),
-    globalCtaTitle: asString(o.global_cta_title),
-    globalCtaText: asString(o.global_cta_text),
-    globalCtaLink: asLink(o.global_cta_link),
     enableAnnouncement: asBool(o.enable_announcement),
     announcementText: asString(o.announcement_text),
     announcementLink: asLink(o.announcement_link),
@@ -239,11 +254,12 @@ function fromDefaultSeo(o: Record<string, unknown> | null) {
 export async function fetchGlobals(lang: Locale): Promise<GlobalSettings> {
   const omb = await fetchGlobalsViaOmbRest(lang);
   if (omb != null) {
+    const siteUnwrapped = unwrapAcfOptionsPayload(omb.site ?? null);
     return {
       header: fromHeader(unwrapAcfOptionsPayload(omb.header ?? null)),
-      footer: fromFooter(unwrapAcfOptionsPayload(omb.footer ?? null)),
+      footer: mergeFooterCtaMigrations(fromFooter(unwrapAcfOptionsPayload(omb.footer ?? null)), siteUnwrapped),
       contact: fromContact(unwrapAcfOptionsPayload(omb.contact ?? null)),
-      site: fromSite(unwrapAcfOptionsPayload(omb.site ?? null)),
+      site: fromSite(siteUnwrapped),
       integrations: fromIntegrations(unwrapAcfOptionsPayload(omb.integrations ?? null)),
       defaultSeo: fromDefaultSeo(unwrapAcfOptionsPayload(omb.defaultSeo ?? null)),
     };
@@ -258,11 +274,12 @@ export async function fetchGlobals(lang: Locale): Promise<GlobalSettings> {
     fetchAcfOptions("omb-default-seo", lang),
   ]);
 
+  const siteUnwrapped = unwrapAcfOptionsPayload(siteRaw);
   return {
     header: fromHeader(unwrapAcfOptionsPayload(headerRaw)),
-    footer: fromFooter(unwrapAcfOptionsPayload(footerRaw)),
+    footer: mergeFooterCtaMigrations(fromFooter(unwrapAcfOptionsPayload(footerRaw)), siteUnwrapped),
     contact: fromContact(unwrapAcfOptionsPayload(contactRaw)),
-    site: fromSite(unwrapAcfOptionsPayload(siteRaw)),
+    site: fromSite(siteUnwrapped),
     integrations: fromIntegrations(unwrapAcfOptionsPayload(integrationsRaw)),
     defaultSeo: fromDefaultSeo(unwrapAcfOptionsPayload(defaultSeoRaw)),
   };

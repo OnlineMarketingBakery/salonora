@@ -35,10 +35,29 @@ export function asImage(v: unknown): WpImage | null {
   return o.url ? o : null;
 }
 
+/**
+ * ACF/REST link fields are usually `{ title, url, target }` but we also see
+ * root URL strings, `href`/`URL` keys, or a bare permalink string after import.
+ */
 export function asLink(v: unknown): WpAcfLink | null {
-  if (!v || typeof v !== "object") return null;
-  const o = v as WpAcfLink;
-  return o.url ? o : null;
+  if (v == null) return null;
+  if (typeof v === "string") {
+    const url = v.trim();
+    if (!url) return null;
+    return { title: "", url, target: undefined };
+  }
+  if (typeof v === "object") {
+    const o = v as Record<string, unknown>;
+    const urlRaw = o.url ?? o.URL ?? o.href;
+    if (typeof urlRaw === "string" && urlRaw.trim()) {
+      return {
+        title: typeof o.title === "string" ? o.title : undefined,
+        url: urlRaw.trim(),
+        target: typeof o.target === "string" ? o.target : undefined,
+      };
+    }
+  }
+  return null;
 }
 
 export function asHtml(v: unknown): string {
