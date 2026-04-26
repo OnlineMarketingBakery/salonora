@@ -71,7 +71,7 @@ export function PricingPackagesSection({ section, lang }: { section: PricingPack
               </div>
             )}
             {section.title && (
-              <h2 className="text-3xl font-bold leading-tight tracking-[-0.04em] text-navy sm:text-4xl sm:leading-tight lg:text-[48px] lg:leading-[56px] lg:tracking-[-0.04em]">
+              <h2 className="text-3xl font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-4xl sm:leading-tight lg:text-[48px] lg:leading-[56px] lg:tracking-[-0.04em]">
                 {section.title}
               </h2>
             )}
@@ -110,7 +110,7 @@ export function PricingPackagesSection({ section, lang }: { section: PricingPack
                     <div className="flex flex-col gap-6">
                       <div className="flex flex-col gap-4 sm:gap-4">
                         <h3
-                          className="text-2xl font-bold leading-[1.1] text-navy-deep"
+                          className="text-2xl font-semibold leading-[1.1] text-navy-deep"
                           // #002752
                         >
                           {p.title}
@@ -127,7 +127,7 @@ export function PricingPackagesSection({ section, lang }: { section: PricingPack
 
                       {p.includes.length > 0 && (
                         <div className="flex w-full min-w-0 max-w-full flex-col gap-4 sm:max-w-full">
-                          <p className="text-xl font-bold leading-[1.6] tracking-[-0.4px] text-navy-deep">
+                          <p className="text-xl font-semibold leading-[1.6] tracking-[-0.4px] text-navy-deep">
                             Wat je krijgt:
                           </p>
                           <div className="flex w-full min-w-0 max-w-full flex-col gap-3">
@@ -143,7 +143,7 @@ export function PricingPackagesSection({ section, lang }: { section: PricingPack
                           {p.solvesTitle && (
                             <RichText
                               html={p.solvesTitle}
-                              className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-full !prose-p:text-left !prose-p:text-xl !prose-p:font-bold !prose-p:leading-[1.6] !prose-p:tracking-[-0.4px] !prose-p:text-navy-deep"
+                              className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-full !prose-p:text-left !prose-p:text-xl !prose-p:font-semibold !prose-p:leading-[1.6] !prose-p:tracking-[-0.4px] !prose-p:text-navy-deep"
                             />
                           )}
                           {p.solvesItems.length > 0 && (
@@ -173,7 +173,7 @@ export function PricingPackagesSection({ section, lang }: { section: PricingPack
                         <div className="w-full min-w-0 text-base text-navy-deep">
                           <RichText
                             html={p.note}
-                            className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-full !prose-p:font-bold !prose-p:leading-[1.6] !prose-p:tracking-[-0.4px] !prose-p:text-navy-deep"
+                            className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-full !prose-p:font-semibold !prose-p:leading-[1.6] !prose-p:tracking-[-0.4px] !prose-p:text-navy-deep"
                           />
                         </div>
                       )}
@@ -224,7 +224,7 @@ export function PricingPackagesSection({ section, lang }: { section: PricingPack
             <div className="w-full max-w-[1000px] text-balance font-sans text-center text-[#002752]">
               <RichText
                 html={section.bottomNote}
-                className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:text-center !prose-p:text-[24px] !prose-p:font-bold !prose-p:leading-[110%] !prose-p:not-italic !prose-p:text-[#002752] [&_p]:!m-0 [&_p]:!text-center [&_p]:!text-[24px] [&_p]:!font-bold [&_p]:!leading-[110%] [&_p]:!text-[#002752] [&_p]:!not-italic"
+                className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:text-center !prose-p:text-[24px] !prose-p:font-semibold !prose-p:leading-[110%] !prose-p:not-italic !prose-p:text-[#002752] [&_p]:!m-0 [&_p]:!text-center [&_p]:!text-[24px] [&_p]:!font-semibold [&_p]:!leading-[110%] [&_p]:!text-[#002752] [&_p]:!not-italic"
               />
             </div>
           )}

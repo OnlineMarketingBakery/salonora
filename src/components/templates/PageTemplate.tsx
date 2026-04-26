@@ -9,7 +9,7 @@ export function PageTemplate({ document: doc, lang }: { document: PageDocument; 
     <article>
       {!doc.hidePageTitle && (
         <Container className="pt-28 md:pt-32">
-          <h1 className="text-3xl font-bold text-foreground md:text-4xl">{doc.title}</h1>
+          <h1 className="text-3xl font-semibold text-foreground md:text-4xl">{doc.title}</h1>
         </Container>
       )}
       {doc.content && !doc.sections.length && (

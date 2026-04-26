@@ -78,7 +78,7 @@ export function FaqContactSplitSection({ section, lang }: { section: FaqContactS
       <Container className="!max-w-[85rem]">
         <div className="mx-auto flex w-full max-w-[1156px] flex-col items-center gap-10 md:gap-[47px]">
           {section.title && (
-            <h2 className="w-full text-center text-[40px] font-bold leading-tight tracking-[-0.04em] text-navy-deep sm:text-[48px] sm:leading-[56px]">
+            <h2 className="w-full text-center text-[40px] font-semibold leading-tight tracking-[-0.04em] text-navy-deep sm:text-[48px] sm:leading-[56px]">
               {section.title.split(/\r?\n+/).map((line, i) => {
                 const t = line.trim();
                 if (!t) return null;
@@ -161,7 +161,7 @@ export function FaqContactSplitSection({ section, lang }: { section: FaqContactS
                 <div className="flex min-h-0 w-full min-w-0 flex-col items-center justify-center gap-6 rounded-[14px] bg-gradient-to-b from-brand to-[#0569d7] p-8 sm:min-h-[520px] md:min-h-[580px] lg:min-h-[609px] lg:gap-6 lg:p-[44px]">
                   <div className="flex w-full min-w-0 max-w-[401px] flex-col items-center gap-6 text-center text-white">
                     {cardTitleLines.length > 0 && (
-                      <h3 className="w-full text-[40px] font-bold leading-[47px] tracking-[-0.04em] sm:text-[48px] sm:leading-[47px] sm:tracking-[-0.04em]">
+                      <h3 className="w-full text-[40px] font-semibold leading-[47px] tracking-[-0.04em] sm:text-[48px] sm:leading-[47px] sm:tracking-[-0.04em]">
                         {cardTitleLines.map((line, i) => (
                           <span key={i} className="block [text-wrap:balance]">
                             {line}

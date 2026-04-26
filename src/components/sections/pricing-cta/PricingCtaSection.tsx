@@ -29,7 +29,7 @@ export function PricingCtaSection({ section, lang }: { section: PricingCtaSectio
         <div className="mx-auto flex w-full max-w-[1100px] flex-col items-center gap-6">
           <div className="w-full max-w-[826px] text-center">
             {section.title && (
-              <h2 className="text-[40px] font-bold leading-tight tracking-[-0.04em] text-navy-deep sm:text-[48px] sm:leading-[56px] [text-wrap:balance]">
+              <h2 className="text-[40px] font-semibold leading-tight tracking-[-0.04em] text-navy-deep sm:text-[48px] sm:leading-[56px] [text-wrap:balance]">
                 {section.title}
               </h2>
             )}
@@ -43,7 +43,7 @@ export function PricingCtaSection({ section, lang }: { section: PricingCtaSectio
           {section.cardsTitle && (
             <RichText
               html={section.cardsTitle}
-              className="w-full !prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-none !prose-p:text-center !prose-p:font-sans !prose-p:text-[24px] !prose-p:font-bold !prose-p:leading-[140%] !prose-p:not-italic !prose-p:!text-[#3990F0] [&_p]:!m-0 [&_p]:!text-center [&_p]:!text-[24px] [&_p]:!font-bold [&_p]:!leading-[140%] [&_p]:!not-italic [&_p]:!text-[#3990F0]"
+              className="w-full !prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-none !prose-p:text-center !prose-p:font-sans !prose-p:text-[24px] !prose-p:font-semibold !prose-p:leading-[140%] !prose-p:not-italic !prose-p:!text-[#3990F0] [&_p]:!m-0 [&_p]:!text-center [&_p]:!text-[24px] [&_p]:!font-semibold [&_p]:!leading-[140%] [&_p]:!not-italic [&_p]:!text-[#3990F0]"
             />
           )}
 
@@ -55,7 +55,7 @@ export function PricingCtaSection({ section, lang }: { section: PricingCtaSectio
                   className="flex w-full min-w-0 max-w-[528px] flex-col items-center justify-center rounded-[14px] bg-white p-10 lg:min-h-[205px]"
                 >
                   <div className="flex w-full min-w-0 max-w-[383px] flex-col items-center justify-center gap-[17px]">
-                    {c.title && <h3 className="w-full text-center text-lg font-bold text-navy">{c.title}</h3>}
+                    {c.title && <h3 className="w-full text-center text-lg font-semibold text-navy">{c.title}</h3>}
                     {c.description && (
                       <RichText
                         html={c.description}

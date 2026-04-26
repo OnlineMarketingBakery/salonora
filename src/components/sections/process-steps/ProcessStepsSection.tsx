@@ -42,7 +42,7 @@ const stepProseOnCard = [
 function NumberBadge({ n }: { n: string }) {
   return (
     <div className="flex size-[86px] shrink-0 items-center justify-center rounded-[24px] bg-brand">
-      <span className="text-[48px] font-bold leading-[56px] tracking-[-0.04em] text-white">{n}</span>
+      <span className="text-[48px] font-semibold leading-[56px] tracking-[-0.04em] text-white">{n}</span>
     </div>
   );
 }
@@ -59,7 +59,7 @@ function ProcessStepBlock({ s, maxWidthClass }: { s: ProcessStepItemT; maxWidthC
         <div className="flex w-full min-w-0 max-w-[267px] flex-col items-center gap-3 self-center">
           <div className="flex h-[136px] w-full max-w-[197px] flex-col items-center justify-center gap-6 self-center">
             <NumberBadge n={s.number} />
-            {s.title && <h3 className="w-full min-w-0 text-center text-2xl font-bold leading-[1.1] tracking-[-0.04em] text-navy">{s.title}</h3>}
+            {s.title && <h3 className="w-full min-w-0 text-center text-2xl font-semibold leading-[1.1] tracking-[-0.04em] text-navy">{s.title}</h3>}
           </div>
         </div>
         {s.text && <RichText html={s.text} className={`${stepProseOnCard} w-full shrink-0`} />}
@@ -70,7 +70,7 @@ function ProcessStepBlock({ s, maxWidthClass }: { s: ProcessStepItemT; maxWidthC
     <div className={["flex w-full flex-col items-center gap-3 text-center", maxWidthClass].filter(Boolean).join(" ")}>
       <div className="flex w-full min-w-0 max-w-[197px] flex-col items-center justify-center gap-6">
         <NumberBadge n={s.number} />
-        {s.title && <h3 className="w-full min-w-0 text-center text-2xl font-bold leading-[1.1] tracking-[-0.04em] text-white">{s.title}</h3>}
+        {s.title && <h3 className="w-full min-w-0 text-center text-2xl font-semibold leading-[1.1] tracking-[-0.04em] text-white">{s.title}</h3>}
       </div>
       {s.text && <RichText html={s.text} className={stepProseOnDark} />}
     </div>
@@ -104,7 +104,7 @@ export function ProcessStepsSection({ section, lang }: { section: ProcessStepsSe
       <Container className="relative z-[1] !max-w-[85rem]">
         <div className="mx-auto flex w-full max-w-[1087px] flex-col items-center gap-8 md:gap-[34px]">
           {titleLines.length > 0 && (
-            <h2 className="w-full text-center text-[40px] font-bold leading-tight tracking-[-0.04em] sm:text-[48px] sm:leading-[56px]">
+            <h2 className="w-full text-center text-[40px] font-semibold leading-tight tracking-[-0.04em] sm:text-[48px] sm:leading-[56px]">
               {titleLines.map((line, i) => (
                 <span key={i} className="block">
                   {line}
@@ -130,7 +130,7 @@ export function ProcessStepsSection({ section, lang }: { section: ProcessStepsSe
 
           <div className="flex w-full max-w-[505px] flex-col items-center gap-8 md:gap-[34px]">
             {section.smallText && (
-              <p className="w-full text-center text-2xl font-bold leading-[1.22] text-white [text-wrap:balance]">
+              <p className="w-full text-center text-2xl font-semibold leading-[1.22] text-white [text-wrap:balance]">
                 {section.smallText}
               </p>
             )}

@@ -40,7 +40,7 @@ export function CtaSection({ section, lang }: { section: CtaSectionT; lang: Loca
                 {section.title && (
                   <h2
                     className={[
-                      "w-full min-w-0 text-[40px] font-bold leading-tight tracking-[-0.04em] text-navy sm:text-[48px] sm:leading-[56px] [text-wrap:balance]",
+                      "w-full min-w-0 text-[40px] font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-[48px] sm:leading-[56px] [text-wrap:balance]",
                       !isCenter && "!text-left",
                     ]
                       .filter(Boolean)

@@ -124,7 +124,7 @@ export function SiteFooter({
           <div className="flex flex-col gap-10 lg:flex-row lg:items-stretch lg:gap-10 lg:pl-0 xl:gap-14 2xl:gap-20 2xl:pl-2 2xl:pr-0">
             <div className="w-full min-w-0 max-w-[625px] text-left">
               {heading && (
-                <h2 className="text-[2rem] font-bold leading-none tracking-[-0.04em] text-white sm:text-[2.5rem] lg:text-[3rem] xl:text-[48px]">
+                <h2 className="text-[2rem] font-semibold leading-none tracking-[-0.04em] text-white sm:text-[2.5rem] lg:text-[3rem] xl:text-[48px]">
                   {heading}
                 </h2>
               )}
@@ -186,7 +186,7 @@ export function SiteFooter({
             >
               {hasNav && (
                 <div className="w-full min-w-0 min-[500px]:max-w-[8.2rem] sm:min-w-[6.5rem] sm:pl-0 md:pl-0 lg:min-w-[7.2rem]">
-                  <h3 className="text-2xl font-bold leading-none text-white">Quick Links</h3>
+                  <h3 className="text-2xl font-semibold leading-none text-white">Quick Links</h3>
                   <div className="mt-[17px] h-0.5 w-32 max-w-full bg-white/50" aria-hidden />
                   <ul className="mt-4 space-y-2.5" role="list">
                     {footerMenu.map((m) => (
@@ -210,7 +210,7 @@ export function SiteFooter({
 
               {hasFollow && (
                 <div className="w-full min-w-0 min-[500px]:w-auto">
-                  <h3 className="text-2xl font-bold leading-none text-white">Follow us</h3>
+                  <h3 className="text-2xl font-semibold leading-none text-white">Follow us</h3>
                   <div className="mt-[17px] h-0.5 w-32 max-w-full bg-white/50" aria-hidden />
                   <ul className="mt-4 space-y-2.5" aria-label="Social" role="list">
                     {sList.map((s) => {

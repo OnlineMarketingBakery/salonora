@@ -61,7 +61,7 @@ export function GuaranteeSplitSection({ section, lang }: { section: GuaranteeSpl
     <div className="flex w-full min-w-0 max-w-[552px] flex-col gap-6">
       <div className="flex min-w-0 flex-col gap-3.5">
         {titleLines.length > 0 && (
-          <h2 className="font-sans text-[48px] font-bold leading-[56px] tracking-[-0.04em] text-navy">
+          <h2 className="font-sans text-[48px] font-semibold leading-[56px] tracking-[-0.04em] text-navy">
             {titleLines.map((line, i) => (
               <span key={i} className="block">
                 {line}

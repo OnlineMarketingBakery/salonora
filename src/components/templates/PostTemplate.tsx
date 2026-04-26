@@ -12,7 +12,7 @@ export async function PostTemplate({ document: doc, lang }: { document: PostDocu
   return (
     <article>
       <Container className="pt-10">
-        <h1 className="text-3xl font-bold text-foreground md:text-4xl">{doc.title}</h1>
+        <h1 className="text-3xl font-semibold text-foreground md:text-4xl">{doc.title}</h1>
         {doc.featuredImage && (
           <div className="relative mt-6 aspect-[21/9] w-full max-w-4xl overflow-hidden rounded-2xl">
             <Image

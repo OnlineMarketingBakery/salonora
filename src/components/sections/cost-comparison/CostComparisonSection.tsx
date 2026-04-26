@@ -26,7 +26,7 @@ export function CostComparisonSection({ section, lang }: { section: CostComparis
         >
           <div className="flex w-full max-w-[555px] flex-col items-start gap-6">
             {section.title && (
-              <h2 className="text-3xl font-bold leading-tight tracking-[-0.04em] text-navy sm:text-4xl lg:text-[48px] lg:leading-[3.5rem]">
+              <h2 className="text-3xl font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-4xl lg:text-[48px] lg:leading-[3.5rem]">
                 {section.title}
               </h2>
             )}

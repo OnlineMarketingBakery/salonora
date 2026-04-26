@@ -20,7 +20,7 @@ export function CardsSection({ section, lang }: { section: CardsSectionT; lang: 
     <section className="bg-white py-20 md:py-24">
       <Container>
         {section.title && (
-          <h2 className="mb-10 text-center text-3xl font-bold leading-tight tracking-[-0.04em] text-navy sm:text-4xl lg:mb-12 lg:text-[48px] lg:leading-[56px]">
+          <h2 className="mb-10 text-center text-3xl font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-4xl lg:mb-12 lg:text-[48px] lg:leading-[56px]">
             {section.title}
           </h2>
         )}
@@ -31,7 +31,7 @@ export function CardsSection({ section, lang }: { section: CardsSectionT; lang: 
               return (
                 <Card key={i} highlight>
                   <div className="mx-auto flex w-full max-w-[248px] flex-col items-center gap-5 text-center">
-                    <h3 className="w-full text-2xl font-bold leading-[1.24] text-white">{c.title}</h3>
+                    <h3 className="w-full text-2xl font-semibold leading-[1.24] text-white">{c.title}</h3>
                     {c.text && (
                       <RichText
                         html={c.text}
@@ -45,7 +45,7 @@ export function CardsSection({ section, lang }: { section: CardsSectionT; lang: 
                     )}
                     {c.ctaSubtext && (
                       <div
-                        className="w-full max-w-[12.5rem] text-balance text-center text-base font-bold leading-[1.24] text-white"
+                        className="w-full max-w-[12.5rem] text-balance text-center text-base font-semibold leading-[1.24] text-white"
                       >
                         {c.ctaSubtext
                           .split("\n")
@@ -75,7 +75,7 @@ export function CardsSection({ section, lang }: { section: CardsSectionT; lang: 
                     </div>
                   )}
                   <div className="flex min-w-0 w-full flex-1 flex-col items-start gap-2.5">
-                    <h3 className="w-full min-w-0 text-2xl font-bold leading-[1.1] text-navy">{c.title}</h3>
+                    <h3 className="w-full min-w-0 text-2xl font-semibold leading-[1.1] text-navy">{c.title}</h3>
                     {c.text && (
                       <RichText
                         html={c.text}

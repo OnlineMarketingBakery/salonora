@@ -7,7 +7,7 @@ export function ServiceTemplate({ document: doc, lang }: { document: ServiceDocu
   return (
     <article>
       <Container className="pt-10">
-        <h1 className="text-3xl font-bold text-foreground md:text-4xl">{doc.title}</h1>
+        <h1 className="text-3xl font-semibold text-foreground md:text-4xl">{doc.title}</h1>
         {doc.excerpt && <div className="mt-2 text-muted" dangerouslySetInnerHTML={{ __html: doc.excerpt }} />}
         {doc.serviceIntro && <p className="mt-6 text-lg text-muted">{doc.serviceIntro}</p>}
         {doc.serviceHighlights.length > 0 && (

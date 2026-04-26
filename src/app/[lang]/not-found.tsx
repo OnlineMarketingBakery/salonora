@@ -12,7 +12,7 @@ export default async function NotFound({ params }: P) {
   const lang: Locale = isLocale(raw) ? raw : (defaultLocale as Locale);
   return (
     <Container className="py-20 text-center">
-      <h1 className="text-2xl font-bold text-foreground">Page not found</h1>
+      <h1 className="text-2xl font-semibold text-foreground">Page not found</h1>
       <p className="mt-2 text-muted">We could not find this page or it is not available in WordPress.</p>
       <Link href={buildLocalePath(lang, "")} className="mt-6 inline-block text-brand hover:underline">
         Back to home
