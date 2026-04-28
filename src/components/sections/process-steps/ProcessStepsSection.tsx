@@ -3,6 +3,7 @@ import { RichText } from "@/components/ui/RichText";
 import { Button } from "@/components/ui/Button";
 import { resolveLink } from "@/lib/utils/links";
 import { ctaVariantAt } from "@/lib/ui/ctaAlternation";
+import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { ProcessStepsSectionT, ProcessStepItemT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 
@@ -50,6 +51,7 @@ function ProcessStepBlock({ s, maxWidthClass }: { s: ProcessStepItemT; maxWidthC
     return (
       <div
         className={[
+          REVEAL_ITEM,
           "box-border flex w-full max-w-[383px] min-h-[240px] flex-col items-stretch justify-between gap-0 rounded-[12px] bg-white p-[30px] sm:min-h-[275px] lg:min-h-[275px]",
           maxWidthClass,
         ].join(" ")}
@@ -65,7 +67,9 @@ function ProcessStepBlock({ s, maxWidthClass }: { s: ProcessStepItemT; maxWidthC
     );
   }
   return (
-    <div className={["flex w-full flex-col items-center gap-3 text-center", maxWidthClass].filter(Boolean).join(" ")}>
+    <div
+      className={[REVEAL_ITEM, "flex w-full flex-col items-center gap-3 text-center", maxWidthClass].filter(Boolean).join(" ")}
+    >
       <div className="flex w-full min-w-0 max-w-[197px] flex-col items-center justify-center gap-6">
         <NumberBadge n={s.number} />
         {s.title && <h3 className="w-full min-w-0 text-center text-2xl font-semibold leading-[1.1] tracking-[-0.04em] text-white">{s.title}</h3>}
@@ -102,7 +106,9 @@ export function ProcessStepsSection({ section, lang }: { section: ProcessStepsSe
       <Container className="relative z-[1] !max-w-[85rem]">
         <div className="mx-auto flex w-full max-w-[1087px] flex-col items-center gap-8 md:gap-[34px]">
           {titleLines.length > 0 && (
-            <h2 className="w-full text-center text-[40px] font-semibold leading-tight tracking-[-0.04em] sm:text-[48px] sm:leading-[56px]">
+            <h2
+              className={`${REVEAL_ITEM} w-full text-center text-[40px] font-semibold leading-tight tracking-[-0.04em] sm:text-[48px] sm:leading-[56px]`}
+            >
               {titleLines.map((line, i) => (
                 <span key={i} className="block">
                   {line}
@@ -112,7 +118,7 @@ export function ProcessStepsSection({ section, lang }: { section: ProcessStepsSe
           )}
 
           {section.intro && (
-            <div className="w-full text-center text-base leading-normal text-white/90 [&_.prose-p]:text-inherit">
+            <div className={`${REVEAL_ITEM} w-full text-center text-base leading-normal text-white/90 [&_.prose-p]:text-inherit`}>
               <RichText html={section.intro} className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:text-center !prose-p:leading-[1.5] !prose-p:text-white/90" />
             </div>
           )}
@@ -126,7 +132,7 @@ export function ProcessStepsSection({ section, lang }: { section: ProcessStepsSe
             })}
           </div>
 
-          <div className="flex w-full max-w-[505px] flex-col items-center gap-8 md:gap-[34px]">
+          <div className={`${REVEAL_ITEM} flex w-full max-w-[505px] flex-col items-center gap-8 md:gap-[34px]`}>
             {section.smallText && (
               <p className="w-full text-center text-2xl font-semibold leading-[1.22] text-white [text-wrap:balance]">
                 {section.smallText}

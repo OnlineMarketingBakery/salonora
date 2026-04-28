@@ -13,6 +13,8 @@ type Props = {
   globals: GlobalSettings;
   lang: Locale;
   menu: MenuItem[];
+  /** Hides center nav links and mobile drawer links; logo, language switcher, and CTA remain. */
+  hidePrimaryMenu?: boolean;
   languageSwitcherPathname: string;
   languageSwitcherHrefs: Record<Locale, string> | null;
 };
@@ -29,6 +31,7 @@ export function SiteHeader({
   globals,
   lang,
   menu,
+  hidePrimaryMenu = false,
   languageSwitcherPathname,
   languageSwitcherHrefs,
 }: Props) {
@@ -39,6 +42,7 @@ export function SiteHeader({
   const sticky = globals.header.headerSticky;
   const hasAnnouncement = Boolean(globals.site.enableAnnouncement && globals.site.announcementText);
   const overlapPull = hasAnnouncement ? "-mb-[7.5rem]" : "-mb-24";
+  const drawerMenu = hidePrimaryMenu ? [] : menu;
 
   return (
     <header
@@ -65,21 +69,23 @@ export function SiteHeader({
               )}
             </Link>
 
-            <nav
-              className="mx-auto hidden min-w-0 max-w-[min(100%,560px)] flex-1 items-center justify-center gap-8 px-1 md:flex lg:gap-[38px]"
-              aria-label="Primary"
-            >
-              {menu.map((m) => (
-                <Link
-                  key={m.id}
-                  href={m.href}
-                  className="relative whitespace-nowrap py-1 text-[16px] font-medium tracking-[-0.04em] text-navy transition-colors duration-200 hover:opacity-85"
-                  target={m.target}
-                >
-                  {m.label}
-                </Link>
-              ))}
-            </nav>
+            {!hidePrimaryMenu && (
+              <nav
+                className="mx-auto hidden min-w-0 max-w-[min(100%,560px)] flex-1 items-center justify-center gap-8 px-1 md:flex lg:gap-[38px]"
+                aria-label="Primary"
+              >
+                {menu.map((m) => (
+                  <Link
+                    key={m.id}
+                    href={m.href}
+                    className="relative whitespace-nowrap py-1 text-[16px] font-medium tracking-[-0.04em] text-navy transition-colors duration-200 hover:opacity-85"
+                    target={m.target}
+                  >
+                    {m.label}
+                  </Link>
+                ))}
+              </nav>
+            )}
 
             <div className="ml-auto flex min-w-min shrink-0 items-center gap-2.5 sm:gap-3 md:ml-0">
               {globals.header.showLanguageSwitcher && (
@@ -106,7 +112,7 @@ export function SiteHeader({
               )}
               <MobileNavDrawer
                 className="md:hidden"
-                menu={menu}
+                menu={drawerMenu}
                 lang={lang}
                 showLanguageSwitcher={globals.header.showLanguageSwitcher}
                 cta={mobileCta}

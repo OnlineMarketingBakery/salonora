@@ -3,6 +3,7 @@ import { RichText } from "@/components/ui/RichText";
 import { Button } from "@/components/ui/Button";
 import { resolveLink } from "@/lib/utils/links";
 import { ctaVariantAt } from "@/lib/ui/ctaAlternation";
+import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { CtaSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 
@@ -31,6 +32,7 @@ export function CtaSection({ section, lang }: { section: CtaSectionT; lang: Loca
             >
               <div
                 className={[
+                  REVEAL_ITEM,
                   "mx-auto flex w-full min-w-0 max-w-[773px] flex-col gap-6",
                   isCenter ? "items-center text-center" : "items-stretch text-left",
                 ].join(" ")}

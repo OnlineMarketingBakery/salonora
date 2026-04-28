@@ -3,6 +3,7 @@ import { RichText } from "@/components/ui/RichText";
 import { Media } from "@/components/ui/Media";
 import { Button } from "@/components/ui/Button";
 import { resolveLink } from "@/lib/utils/links";
+import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { TestimonialsSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 
@@ -62,12 +63,17 @@ export function TestimonialsSection({ section, lang }: { section: TestimonialsSe
       />
       <Container className="relative max-w-[1314px]">
         {section.title && (
-          <h2 className="mx-auto max-w-[min(100%,477px)] text-center text-3xl font-semibold leading-tight tracking-[-0.04em] text-navy-deep sm:text-4xl lg:text-[48px] lg:leading-[56px]">
+          <h2
+            className={`${REVEAL_ITEM} mx-auto max-w-[min(100%,477px)] text-center text-3xl font-semibold leading-tight tracking-[-0.04em] text-navy-deep sm:text-4xl lg:text-[48px] lg:leading-[56px]`}
+          >
             {section.title}
           </h2>
         )}
         {section.intro && (
-          <RichText html={section.intro} className="mx-auto mt-4 max-w-2xl text-center text-base text-muted" />
+          <RichText
+            html={section.intro}
+            className={`${REVEAL_ITEM} mx-auto mt-4 max-w-2xl text-center text-base text-muted`}
+          />
         )}
 
         <div className={["mt-10 md:mt-12", count === 1 ? "mx-auto w-full max-w-[637px]" : ""].filter(Boolean).join(" ")}>
@@ -75,7 +81,7 @@ export function TestimonialsSection({ section, lang }: { section: TestimonialsSe
             {section.items.map((t) => (
               <blockquote
                 key={t.id}
-                className="relative flex h-full flex-col gap-7 rounded-[14px] bg-gradient-to-b from-white to-[rgba(255,255,255,0.48)] p-6 shadow-[0px_18px_24px_rgba(67,87,128,0.08)] md:p-6"
+                className={`${REVEAL_ITEM} relative flex h-full flex-col gap-7 rounded-[14px] bg-gradient-to-b from-white to-[rgba(255,255,255,0.48)] p-6 shadow-[0px_18px_24px_rgba(67,87,128,0.08)] md:p-6`}
               >
                 {/* Figma 359:213 — column gap 28px */}
                 <TestimonialQuoteMark />

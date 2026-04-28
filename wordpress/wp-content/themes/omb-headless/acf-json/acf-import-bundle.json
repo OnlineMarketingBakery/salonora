@@ -1065,6 +1065,26 @@
                 "ui_off_text": "No"
             },
             {
+                "key": "field_omb_hide_site_navigation",
+                "label": "Hide primary menu",
+                "name": "hide_site_navigation",
+                "aria-label": "",
+                "type": "true_false",
+                "instructions": "When enabled, the header menu links (Home, About, etc.) are hidden on this page. Logo, language switcher, and CTA stay visible.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "",
+                "default_value": 0,
+                "ui": 1,
+                "ui_on_text": "Yes",
+                "ui_off_text": "No"
+            },
+            {
                 "key": "field_omb_sections_tab",
                 "label": "Flexible Sections",
                 "name": "",

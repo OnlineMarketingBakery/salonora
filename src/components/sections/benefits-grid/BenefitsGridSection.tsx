@@ -4,6 +4,7 @@ import { Media } from "@/components/ui/Media";
 import { Button } from "@/components/ui/Button";
 import { resolveLink } from "@/lib/utils/links";
 import { ctaVariantAt } from "@/lib/ui/ctaAlternation";
+import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { BenefitsGridSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 
@@ -32,7 +33,7 @@ export function BenefitsGridSection({ section, lang }: { section: BenefitsGridSe
       <div className="pointer-events-none absolute inset-0 opacity-35" style={gridStyle} aria-hidden />
       <Container>
         <div className="relative z-[1] flex w-full flex-col items-center gap-8">
-          <div className="flex w-full max-w-[40.875rem] flex-col items-center gap-4 text-center">
+          <div className={`flex w-full max-w-[40.875rem] flex-col items-center gap-4 text-center ${REVEAL_ITEM}`}>
             {section.eyebrow && (
               <p className="text-sm font-semibold tracking-wide text-brand sm:text-base">{section.eyebrow}</p>
             )}
@@ -53,7 +54,7 @@ export function BenefitsGridSection({ section, lang }: { section: BenefitsGridSe
               {section.items.map((b, i) => (
                 <div
                   key={i}
-                  className="box-border flex min-h-[153px] w-full max-w-[26.06rem] flex-col items-center justify-center rounded-[14px] bg-white p-8 text-center sm:p-[34px]"
+                  className={`${REVEAL_ITEM} box-border flex min-h-[153px] w-full max-w-[26.06rem] flex-col items-center justify-center rounded-[14px] bg-white p-8 text-center sm:p-[34px]`}
                 >
                   <div className="flex w-full min-w-0 max-w-sm flex-col items-center gap-4">
                     {b.icon && (
@@ -80,12 +81,12 @@ export function BenefitsGridSection({ section, lang }: { section: BenefitsGridSe
           )}
 
           {(section.urgencyText || hasBanner) && (
-            <div className="mt-0 flex w-full max-w-[81.25rem] flex-col items-center gap-8 sm:gap-10">
+            <div className={`mt-0 flex w-full max-w-[81.25rem] flex-col items-center gap-8 sm:gap-10 ${REVEAL_ITEM}`}>
               {section.urgencyText && (
                 <div className="w-full text-balance sm:px-0">
                   <RichText
                     html={section.urgencyText}
-                    className="!mx-auto !w-full !max-w-[50rem] !text-center !text-white !prose-p:!m-0 !prose-p:!text-center !prose-p:!text-2xl !prose-p:!font-semibold !prose-p:!leading-[56px] !prose-p:!tracking-[-0.96px] !prose-p:!text-white [&>p]:!m-0 [&>p]:!text-center [&>p]:!text-2xl [&>p]:!font-semibold [&>p]:!leading-[56px] [&>p]:!tracking-[-0.96px] [&>p]:!text-white [&_p]:!text-2xl [&_p]:!font-semibold [&_p]:!leading-[56px] [&_p]:!tracking-[-0.96px] [&_p]:!text-center [&_b]:!text-white [&_b]:!font-bold [&_strong]:!text-white"
+                    className="!mx-auto !w-full !max-w-[40rem] !text-center !text-white !prose-p:!m-0 !prose-p:!text-center !prose-p:!text-xl !prose-p:!font-medium !prose-p:!leading-[38px] !prose-p:!tracking-[-0.04em] !prose-p:!text-white [&>p]:!m-0 [&>p]:!text-center [&>p]:!text-xl [&>p]:!font-medium [&>p]:!leading-[38px] [&>p]:!tracking-[-0.04em] [&>p]:!text-white [&_p]:!text-xl [&_p]:!font-medium [&_p]:!leading-[38px] [&_p]:!tracking-[-0.04em] [&_p]:!text-center [&_b]:!text-white [&_b]:!font-medium [&_strong]:!text-white"
                   />
                 </div>
               )}
@@ -119,8 +120,8 @@ export function BenefitsGridSection({ section, lang }: { section: BenefitsGridSe
                     {section.bannerText && (
                       <RichText
                         html={section.bannerText}
-                        className="!mx-auto max-w-[64rem] !text-center !text-white !prose-p:!m-0 !prose-p:!text-center !prose-p:!text-2xl !prose-p:!font-medium !prose-p:!leading-[37px] !prose-p:!tracking-[-0.96px] !prose-p:!text-white [&>p]:!text-center [&>p]:!text-2xl [&>p]:!font-medium [&>p]:!leading-[37px] [&>p]:!tracking-[-0.96px] [&>p]:!text-white [&_p]:!text-2xl [&_p]:!font-medium [&_p]:!leading-[37px] [&_p]:!tracking-[-0.96px] [&_p]:!text-center [&_b]:!font-bold [&_strong]:!text-white/95"
-                      />
+                        className="!mx-auto max-w-[64rem] !text-center !text-white !prose-p:!m-0 !prose-p:!text-center !prose-p:!text-2xl !prose-p:!font-normal !prose-p:!leading-[37px] !prose-p:!tracking-[-0.96px] !prose-p:!text-white [&>p]:!text-center [&>p]:!text-2xl [&>p]:!font-normal [&>p]:!leading-[37px] [&>p]:!tracking-[-0.96px] [&>p]:!text-white [&_p]:!text-2xl [&_p]:!font-normal [&_p]:!leading-[37px] [&_p]:!tracking-[-0.96px] [&_p]:!text-center [&_b]:!font-bold [&_strong]:!text-white/95"
+                   />
                     )}
                     {section.ctas.length > 0 && (
                       <div className="flex w-full flex-col items-center justify-center gap-3">

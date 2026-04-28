@@ -5,6 +5,7 @@ import { resolveLink } from "@/lib/utils/links";
 import { Button } from "@/components/ui/Button";
 import { StarRating } from "@/components/ui/StarRating";
 import { ctaVariantAt } from "@/lib/ui/ctaAlternation";
+import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { HeroSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 
@@ -25,21 +26,27 @@ export function HeroSection({ section, lang }: { section: HeroSectionT; lang: Lo
         <div className="grid min-w-0 items-stretch lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.8fr)]">
           <div className="min-w-0 w-full self-start pb-10 sm:pb-12 lg:pb-[60px]">
             {section.eyebrow && (
-              <p className="mb-2 text-base font-medium leading-normal text-brand sm:text-lg md:text-[20px] md:leading-relaxed">
+              <p
+                className={`${REVEAL_ITEM} mb-2 text-base font-medium leading-normal text-brand sm:text-lg md:text-[20px] md:leading-relaxed`}
+              >
                 {section.eyebrow}
               </p>
             )}
-            <h1 className="text-[2rem] font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-4xl md:text-5xl lg:text-[4rem] lg:leading-[4.625rem]">
+            <h1
+              className={`${REVEAL_ITEM} text-[2rem] font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-4xl md:text-5xl lg:text-[4rem] lg:leading-[4.625rem]`}
+            >
               {section.title}
             </h1>
-            {section.text && <RichText html={section.text} className="mt-4 text-base leading-relaxed text-muted" />}
+            {section.text && (
+              <RichText html={section.text} className={`${REVEAL_ITEM} mt-4 text-base leading-relaxed text-muted`} />
+            )}
             {section.offerText && (
               <RichText
                 html={section.offerText}
-                className="mt-3 !prose-p:text-inherit text-2xl font-semibold !text-accent !prose-p:text-inherit !prose-strong:text-navy sm:text-3xl lg:mt-4 lg:text-[36px] [&_p]:!m-0 [&_p]:leading-tight"
+                className={`${REVEAL_ITEM} mt-3 !prose-p:text-inherit text-2xl font-semibold !text-accent !prose-p:text-inherit !prose-strong:text-navy sm:text-3xl lg:mt-4 lg:text-[36px] [&_p]:!m-0 [&_p]:leading-tight`}
               />
             )}
-            <div className="mt-8 flex max-w-[475px] flex-col items-start gap-[18px] sm:mt-9">
+            <div className={`${REVEAL_ITEM} mt-8 flex max-w-[475px] flex-col items-start gap-[18px] sm:mt-9`}>
               {section.ctas.map((cta, i) => {
                 const r = resolveLink(cta.url, lang);
                 if (!r) return null;
@@ -58,7 +65,7 @@ export function HeroSection({ section, lang }: { section: HeroSectionT; lang: Lo
               })}
             </div>
             {showSocial && (
-              <div className="mt-9 flex flex-col justify-start gap-2 sm:mt-10 sm:flex-row sm:items-center sm:gap-4">
+              <div className={`${REVEAL_ITEM} mt-9 flex flex-col justify-start gap-2 sm:mt-10 sm:flex-row sm:items-center sm:gap-4`}>
                 {section.trustImage && (
                   <Media
                     image={section.trustImage}
@@ -82,7 +89,7 @@ export function HeroSection({ section, lang }: { section: HeroSectionT; lang: Lo
               </div>
             )}
           </div>
-          <div className="relative flex w-full min-w-0 items-end self-stretch lg:h-full lg:pt-2">
+          <div className={`${REVEAL_ITEM} relative flex w-full min-w-0 items-end self-stretch lg:h-full lg:pt-2`}>
             {section.image && (
               <Media
                 image={section.image}

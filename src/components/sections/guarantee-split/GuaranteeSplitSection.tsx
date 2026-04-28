@@ -4,6 +4,7 @@ import { Media } from "@/components/ui/Media";
 import { Button } from "@/components/ui/Button";
 import { resolveLink } from "@/lib/utils/links";
 import { ctaVariantAt } from "@/lib/ui/ctaAlternation";
+import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { GuaranteeSplitSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 import type { WpImage } from "@/types/wordpress";
@@ -53,7 +54,7 @@ export function GuaranteeSplitSection({ section, lang }: { section: GuaranteeSpl
     .filter(Boolean);
 
   const body = (
-    <div className="flex w-full min-w-0 max-w-[552px] flex-col gap-6">
+    <div className={`${REVEAL_ITEM} flex w-full min-w-0 max-w-[552px] flex-col gap-6`}>
       <div className="flex min-w-0 flex-col gap-3.5">
         {titleLines.length > 0 && (
           <h2 className="font-sans text-[48px] font-semibold leading-[56px] tracking-[-0.04em] text-navy">
@@ -109,7 +110,7 @@ export function GuaranteeSplitSection({ section, lang }: { section: GuaranteeSpl
   );
 
   const img = section.image ? (
-    <div className="relative min-w-0 w-full">
+    <div className={`${REVEAL_ITEM} relative min-w-0 w-full`}>
       <div className="relative overflow-hidden rounded-[20px] sm:rounded-2xl">
         <Media
           image={section.image}

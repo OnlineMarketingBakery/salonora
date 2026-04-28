@@ -3,6 +3,7 @@ import { RichText } from "@/components/ui/RichText";
 import { Button } from "@/components/ui/Button";
 import { resolveLink } from "@/lib/utils/links";
 import { ctaVariantAt } from "@/lib/ui/ctaAlternation";
+import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { CostComparisonSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 
@@ -24,7 +25,7 @@ export function CostComparisonSection({ section, lang }: { section: CostComparis
               : "grid w-full grid-cols-1 items-center gap-10"
           }
         >
-          <div className="flex w-full max-w-[555px] flex-col items-start gap-6">
+          <div className={`${REVEAL_ITEM} flex w-full max-w-[555px] flex-col items-start gap-6`}>
             {section.title && (
               <h2 className="text-3xl font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-4xl lg:text-[48px] lg:leading-[3.5rem]">
                 {section.title}
@@ -58,7 +59,7 @@ export function CostComparisonSection({ section, lang }: { section: CostComparis
             )}
           </div>
           {showRightCard && (
-            <div className="relative w-full min-w-0 self-center sm:pt-0 lg:ml-auto lg:max-w-[min(100%,496px)]">
+            <div className={`${REVEAL_ITEM} relative w-full min-w-0 self-center sm:pt-0 lg:ml-auto lg:max-w-[min(100%,496px)]`}>
               <div
                 className="pointer-events-none absolute -left-1 top-3 z-0 hidden h-[524px] w-full max-w-[460px] rotate-[-4.13deg] rounded-[14px] bg-brand sm:left-0 sm:top-4 sm:block"
                 aria-hidden

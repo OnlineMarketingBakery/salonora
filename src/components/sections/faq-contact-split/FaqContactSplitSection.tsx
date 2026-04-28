@@ -1,73 +1,14 @@
-import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { RichText } from "@/components/ui/RichText";
 import { Accordion } from "@/components/ui/Accordion";
 import { Button } from "@/components/ui/Button";
 import { ctaVariantAt } from "@/lib/ui/ctaAlternation";
-import { Media } from "@/components/ui/Media";
 import { resolveLink } from "@/lib/utils/links";
 import { CF7Form } from "@/components/forms/CF7Form";
+import { ContactCtaPill } from "@/components/sections/faq-contact-split/ContactCtaPill";
+import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { FaqContactSplitSectionT } from "@/types/sections";
-import type { WpImage } from "@/types/wordpress";
 import type { Locale } from "@/lib/i18n/locales";
-
-function MailGlyph({ className = "h-7 w-7" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M4 7h16v10H4V7zm0 0 8 5 8-5"
-        stroke="white"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function PhoneGlyph({ className = "h-7 w-7" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M8.5 4.5C8 4 6.5 3 4.5 5.5L6 7c.5.5.5 1.5 0 2.5-1.5 3-1 3.5 0L11 16c.5.5 1.5.5 2.5-1.5L15 19c-2.5 2-4-1-4-1-1-2-1-2.5h0c0-.5-1-2-1.5-2.5-1.5-1-2.5-2.5-3.5-3-2.5-2-4.5-3.5-6.5-5-2-2-2.5-3-2-4v0z"
-        stroke="white"
-        strokeWidth="1.25"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function ContactCtaPill({ href, text, icon, iconFallback, target }: { href: string; text: string; icon: WpImage | null; iconFallback: "mail" | "phone"; target?: string }) {
-  return (
-    <Link
-      href={href}
-      target={target}
-      rel={target === "_blank" ? "noopener noreferrer" : undefined}
-      className="flex h-[74px] w-full min-w-0 max-w-full items-center gap-[9px] rounded-[49px] bg-gradient-to-b from-white to-white/70 p-3 drop-shadow-[0px_11px_11.2px_#2463a9] transition hover:brightness-[0.99]"
-    >
-      <span className="flex h-[50px] w-[50px] shrink-0 items-center justify-center rounded-[25px] bg-brand text-white">
-        {icon ? (
-          <Media
-            image={icon}
-            width={28}
-            height={28}
-            className="h-7 w-7 object-contain"
-            sizes="28px"
-            preferLargestSource
-            quality={90}
-          />
-        ) : (
-          (iconFallback === "mail" ? <MailGlyph className="h-7 w-7" /> : <PhoneGlyph className="h-7 w-7" />)
-        )}
-      </span>
-      <span className="min-w-0 flex-1 text-pretty text-xl font-semibold leading-[1.1] tracking-[-0.8px] text-slate-900 [text-align:left]">
-        {text}
-      </span>
-    </Link>
-  );
-}
 
 export function FaqContactSplitSection({ section, lang }: { section: FaqContactSplitSectionT; lang: Locale }) {
   const accItems = section.items.map((q, i) => ({
@@ -85,7 +26,9 @@ export function FaqContactSplitSection({ section, lang }: { section: FaqContactS
       <Container className="!max-w-[85rem]">
         <div className="mx-auto flex w-full max-w-[1156px] flex-col items-center gap-10 md:gap-[47px]">
           {section.title && (
-            <h2 className="w-full text-center text-[40px] font-semibold leading-tight tracking-[-0.04em] text-navy-deep sm:text-[48px] sm:leading-[56px]">
+            <h2
+              className={`${REVEAL_ITEM} w-full text-center text-[40px] font-semibold leading-tight tracking-[-0.04em] text-navy-deep sm:text-[48px] sm:leading-[56px]`}
+            >
               {section.title.split(/\r?\n+/).map((line, i) => {
                 const t = line.trim();
                 if (!t) return null;
@@ -99,7 +42,7 @@ export function FaqContactSplitSection({ section, lang }: { section: FaqContactS
           )}
 
           {section.intro && (
-            <div className="w-full text-center text-muted">
+            <div className={`${REVEAL_ITEM} w-full text-center text-muted`}>
               <RichText html={section.intro} className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:text-center !prose-p:leading-normal" />
             </div>
           )}
@@ -137,7 +80,7 @@ export function FaqContactSplitSection({ section, lang }: { section: FaqContactS
               )}
             </div>
 
-            <div className="w-full min-w-0 shrink-0 lg:w-[min(100%,489px)] lg:max-w-[489px]">
+            <div className={`${REVEAL_ITEM} w-full min-w-0 shrink-0 lg:w-[min(100%,489px)] lg:max-w-[489px]`}>
               {section.useForm && (section.defaultFormId || section.customForm?.id) ? (
                 <div
                   className="flex min-h-[400px] flex-col justify-center rounded-[14px] bg-gradient-to-b from-brand to-[#0569d7] p-8 sm:p-11"

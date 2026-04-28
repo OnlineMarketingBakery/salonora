@@ -8,7 +8,9 @@ import { fetchMenu } from "@/lib/wordpress/fetch-menu";
 import { getLocaleHrefsForPathname } from "@/lib/wordpress/polylang-locale-hrefs";
 import { GlobalAnnouncementBar } from "@/components/layout/GlobalAnnouncementBar";
 import { SiteHeader } from "@/components/layout/SiteHeader";
+import { getHidePrimaryMenu } from "@/lib/wordpress/hide-primary-menu-from-pathname";
 import { SiteFooter } from "@/components/layout/SiteFooter";
+import { PageScrollAnimations } from "@/components/animations/PageScrollAnimations";
 import { getSiteName } from "@/lib/seo/map-yoast-to-metadata";
 
 export const dynamic = "force-dynamic";
@@ -27,7 +29,10 @@ export default async function LangLayout({ children, params }: Props) {
   ]);
   const h = await headers();
   const pathname = h.get("x-pathname") ?? `/${lang}/`;
-  const languageSwitcherHrefs = await getLocaleHrefsForPathname(pathname);
+  const [languageSwitcherHrefs, hidePrimaryMenu] = await Promise.all([
+    getLocaleHrefsForPathname(pathname),
+    getHidePrimaryMenu(globals, lang, pathname),
+  ]);
   return (
     <>
       {globals.integrations.gtmId && (
@@ -50,10 +55,12 @@ export default async function LangLayout({ children, params }: Props) {
             globals={globals}
             lang={lang}
             menu={primary}
+            hidePrimaryMenu={hidePrimaryMenu}
             languageSwitcherPathname={pathname}
             languageSwitcherHrefs={languageSwitcherHrefs}
           />
           <main className="relative z-0 flex-1">{children}</main>
+          <PageScrollAnimations />
         </div>
         <SiteFooter
           globals={globals}

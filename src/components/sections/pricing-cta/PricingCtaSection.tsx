@@ -2,6 +2,7 @@ import { Container } from "@/components/ui/Container";
 import { RichText } from "@/components/ui/RichText";
 import { Button } from "@/components/ui/Button";
 import { resolveLink } from "@/lib/utils/links";
+import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { PricingCtaSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 
@@ -27,7 +28,7 @@ export function PricingCtaSection({ section, lang }: { section: PricingCtaSectio
     <section className="bg-[#F0F7FF] py-16 sm:py-20 md:py-24">
       <Container className="!max-w-[85rem]">
         <div className="mx-auto flex w-full max-w-[1100px] flex-col items-center gap-6">
-          <div className="w-full max-w-[826px] text-center">
+          <div className={`${REVEAL_ITEM} w-full max-w-[826px] text-center`}>
             {section.title && (
               <h2 className="text-[40px] font-semibold leading-tight tracking-[-0.04em] text-navy-deep sm:text-[48px] sm:leading-[56px] [text-wrap:balance]">
                 {section.title}
@@ -43,7 +44,7 @@ export function PricingCtaSection({ section, lang }: { section: PricingCtaSectio
           {section.cardsTitle && (
             <RichText
               html={section.cardsTitle}
-              className="w-full !prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-none !prose-p:text-center !prose-p:font-sans !prose-p:text-[24px] !prose-p:font-semibold !prose-p:leading-[140%] !prose-p:not-italic !prose-p:!text-[#3990F0] [&_p]:!m-0 [&_p]:!text-center [&_p]:!text-[24px] [&_p]:!font-semibold [&_p]:!leading-[140%] [&_p]:!not-italic [&_p]:!text-[#3990F0]"
+              className={`${REVEAL_ITEM} w-full !prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-none !prose-p:text-center !prose-p:font-sans !prose-p:text-[24px] !prose-p:font-semibold !prose-p:leading-[140%] !prose-p:not-italic !prose-p:!text-[#3990F0] [&_p]:!m-0 [&_p]:!text-center [&_p]:!text-[24px] [&_p]:!font-semibold [&_p]:!leading-[140%] [&_p]:!not-italic [&_p]:!text-[#3990F0]`}
             />
           )}
 
@@ -52,7 +53,7 @@ export function PricingCtaSection({ section, lang }: { section: PricingCtaSectio
               {section.pricingCards.map((c, i) => (
                 <div
                   key={i}
-                  className="flex w-full min-w-0 max-w-[528px] flex-col items-center justify-center rounded-[14px] bg-white p-10 lg:min-h-[205px]"
+                  className={`${REVEAL_ITEM} flex w-full min-w-0 max-w-[528px] flex-col items-center justify-center rounded-[14px] bg-white p-10 lg:min-h-[205px]`}
                 >
                   <div className="flex w-full min-w-0 max-w-[383px] flex-col items-center justify-center gap-[17px]">
                     {c.title && <h3 className="w-full text-center text-lg font-semibold text-navy">{c.title}</h3>}
@@ -86,7 +87,9 @@ export function PricingCtaSection({ section, lang }: { section: PricingCtaSectio
             </div>
 
             {section.bottomContactText && (
-              <div className="flex w-full min-h-16 max-w-full items-center justify-center rounded-[14px] bg-white p-5 text-center sm:min-h-[64px]">
+              <div
+                className={`${REVEAL_ITEM} flex w-full min-h-16 max-w-full items-center justify-center rounded-[14px] bg-white p-5 text-center sm:min-h-[64px]`}
+              >
                 <RichText
                   html={section.bottomContactText}
                   className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-none !prose-p:text-center !prose-p:font-sans !prose-p:text-base !prose-p:font-semibold !prose-p:leading-[1.4] !prose-p:text-navy !prose-p:whitespace-normal [&_a]:!font-semibold [&_a]:!text-brand [&_a]:!no-underline hover:[&_a]:!underline"

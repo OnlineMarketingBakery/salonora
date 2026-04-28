@@ -8,6 +8,8 @@ export type PageDocument = {
   title: string;
   content: string;
   hidePageTitle: boolean;
+  /** When true, primary header nav links are hidden; logo, language switcher, and CTA stay (ACF: hide_site_navigation). */
+  hidePrimaryMenu: boolean;
   sections: AnySectionT[];
   seo: SeoPayload;
 };

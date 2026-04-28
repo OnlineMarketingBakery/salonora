@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 import type { GlobalSettings } from "@/types/globals";
 import type { MenuItem } from "@/types/menu";
 import type { Locale } from "@/lib/i18n/locales";
+import { REVEAL_ITEM } from "@/lib/animation-classes";
 
 const gridStyle = {
   backgroundImage: `
@@ -153,7 +154,7 @@ export function SiteFooter({
             .join(" ")}
         >
           <div className="flex flex-col gap-10 lg:flex-row lg:items-stretch lg:gap-10 lg:pl-0 xl:gap-14 2xl:gap-20 2xl:pl-2 2xl:pr-0 mb-4 sm:mb-10">
-            <div className="w-full min-w-0 max-w-[625px] text-left">
+            <div className={`${REVEAL_ITEM} w-full min-w-0 max-w-[625px] text-left`}>
               {heading && (
                 <h2 className="text-[2rem] font-semibold leading-none tracking-[-0.04em] text-white sm:text-[2.5rem] lg:text-[3rem] xl:text-[48px]">
                   {heading}
@@ -182,7 +183,7 @@ export function SiteFooter({
                     ctaJustify="between"
                     ctaElevation="none"
                     arrowClassName="h-5 w-5 shrink-0"
-                    className="w-full gap-[15px] pl-[18px] pr-3.5 leading-[normal] hover:brightness-110 sm:w-[247px] sm:max-w-[247px]"
+                    className="w-full min-w-0 gap-[15px] pl-[18px] pr-3.5 leading-[normal] sm:w-auto sm:max-w-none"
                   >
                     {g.footer.footerCtaPrimaryLink?.title || primaryCta.label}
                   </Button>
@@ -195,7 +196,7 @@ export function SiteFooter({
                     ctaJustify="between"
                     ctaElevation="footerSecondary"
                     arrowClassName="h-5 w-5 shrink-0"
-                    className="text-navy-deep gap-[17px] px-4 leading-[normal] hover:brightness-95 sm:max-w-[368px]"
+                    className="w-full min-w-0 text-navy-deep gap-[17px] px-4 leading-[normal] sm:w-auto sm:max-w-[368px]"
                   >
                     {g.footer.footerCtaSecondaryLink?.title || secondaryCta.label}
                   </Button>
@@ -220,7 +221,7 @@ export function SiteFooter({
                 />
               )}
               {hasNav && (
-                <div className="w-full min-w-0 min-[500px]:max-w-[8.2rem] sm:min-w-[6.5rem] sm:pl-0 md:pl-0 lg:min-w-[7.2rem]">
+                <div className={`${REVEAL_ITEM} w-full min-w-0 min-[500px]:max-w-[8.2rem] sm:min-w-[6.5rem] sm:pl-0 md:pl-0 lg:min-w-[7.2rem]`}>
                   <h3 className="text-2xl font-semibold leading-none text-white">
                     Quick Links
                   </h3>
@@ -252,7 +253,7 @@ export function SiteFooter({
               )}
 
               {hasFollow && (
-                <div className="w-full min-w-0 min-[500px]:w-auto">
+                <div className={`${REVEAL_ITEM} w-full min-w-0 min-[500px]:w-auto`}>
                   <h3 className="text-2xl font-semibold leading-none text-white">
                     Follow us
                   </h3>
@@ -304,7 +305,7 @@ export function SiteFooter({
               decoding="async"
             />
           </div>
-          <div className="bg-navy-deep relative z-10">
+          <div className={` bg-navy-deep relative z-10`}>
             <div className="mx-auto flex w-full max-w-[1300px] flex-col items-center justify-center gap-3 px-4 sm:px-6 pb-5 md:px-8">
               <p className="order-1 text-center text-base font-light text-white/90 md:order-none md:text-left mt-2 sm:-mt-6">
                 {g.footer.footerCopyright ||

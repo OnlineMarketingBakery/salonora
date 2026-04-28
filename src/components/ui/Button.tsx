@@ -1,6 +1,12 @@
+"use client";
+
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { useRef } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 import { ArrowInCircle } from "@/components/ui/ArrowInCircle";
+import { registerGsapClient } from "@/lib/gsap/register";
 
 const textBody = "text-base font-normal font-sans leading-normal";
 const textWhite = "text-white";
@@ -15,10 +21,10 @@ const standardVariants = {
 } as const;
 
 const ctaSurface = {
-  ctaBrand: "bg-brand text-white hover:brightness-105",
-  ctaWhite: "bg-white text-navy hover:brightness-[0.99]",
-  ctaNavy: "bg-navy text-white hover:brightness-110",
-  ctaNavyDeep: "bg-navy-deep text-white hover:bg-navy-deep/95",
+  ctaBrand: "bg-brand text-white hover:bg-accent",
+  ctaWhite: "bg-white text-navy hover:bg-surface",
+  ctaNavy: "bg-navy text-white hover:bg-navy-deep",
+  ctaNavyDeep: "bg-navy-deep text-white hover:bg-navy",
 } as const;
 
 const ctaArrowVariant = {
@@ -82,11 +88,144 @@ type Props = {
 const standardBase =
   "inline-flex items-center justify-center rounded-full px-6 py-3 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand";
 
+const ctaLabelClass =
+  "min-w-0 break-words text-balance sm:whitespace-nowrap [text-align:left]";
+
 const ctaBaseShared =
   "group inline-flex shrink-0 items-center font-sans font-normal transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand";
 
+function plainTextLabel(children: ReactNode): string | null {
+  if (typeof children === "string" || typeof children === "number") {
+    const s = String(children);
+    return s.length > 0 ? s : null;
+  }
+  return null;
+}
+
+function CtaLabel({ children }: { children: ReactNode }) {
+  const plain = plainTextLabel(children);
+  if (plain) {
+    return (
+      <span className={ctaLabelClass} aria-hidden="true" data-cta-label>
+        {Array.from(plain).map((ch, i) => (
+          <span key={i} data-cta-char className="inline-block will-change-[transform,opacity]">
+            {ch === " " ? "\u00a0" : ch}
+          </span>
+        ))}
+      </span>
+    );
+  }
+  return (
+    <span className={ctaLabelClass} data-cta-label>
+      {children}
+    </span>
+  );
+}
+
 const ctaWidthFull = "w-full min-w-0 max-w-full";
 const ctaWidthInline = "w-auto max-w-none min-w-0";
+
+function useButtonHover(
+  rootRef: React.RefObject<HTMLElement | null>,
+  opts: { disabled?: boolean; hasArrow: boolean; enabled: boolean },
+) {
+  useGSAP(
+    (ctx, contextSafe) => {
+      registerGsapClient();
+      const root = rootRef.current;
+      if (!root || opts.disabled || !opts.enabled) return;
+      if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      const safe = contextSafe ?? ((fn: () => void) => fn);
+      const arrow = opts.hasArrow ? root.querySelector<HTMLElement>("[data-cta-arrow]") : null;
+      if (arrow) gsap.set(arrow, { transformOrigin: "50% 50%" });
+
+      const targetsForKill = () => {
+        const label = root.querySelector<HTMLElement>("[data-cta-label]");
+        const chars = label ? Array.from(label.querySelectorAll<HTMLElement>("[data-cta-char]")) : [];
+        return [label, arrow, ...chars].filter((el): el is HTMLElement => Boolean(el));
+      };
+
+      const onEnter = safe(() => {
+        gsap.killTweensOf(targetsForKill());
+        const label = root.querySelector<HTMLElement>("[data-cta-label]");
+        const chars = label ? Array.from(label.querySelectorAll<HTMLElement>("[data-cta-char]")) : [];
+
+        if (chars.length > 0) {
+          gsap.fromTo(
+            chars,
+            { y: "0.2em", opacity: 0.45 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.42,
+              ease: "power3.out",
+              stagger: { each: 0.024, from: "start" },
+            },
+          );
+        } else if (label) {
+          gsap.fromTo(
+            label,
+            { y: 6, opacity: 0.88 },
+            { y: 0, opacity: 1, duration: 0.36, ease: "power2.out" },
+          );
+        }
+
+        if (arrow) {
+          gsap.fromTo(
+            arrow,
+            { x: 0, y: 0, rotation: 0, scale: 1 },
+            {
+              x: 7,
+              y: -2,
+              rotation: 9,
+              scale: 1.06,
+              duration: 0.45,
+              ease: "power2.out",
+            },
+          );
+        }
+      });
+
+      const onLeave = safe(() => {
+        gsap.killTweensOf(targetsForKill());
+        const label = root.querySelector<HTMLElement>("[data-cta-label]");
+        const chars = label ? Array.from(label.querySelectorAll<HTMLElement>("[data-cta-char]")) : [];
+
+        if (chars.length > 0) {
+          gsap.to(chars, {
+            y: 0,
+            opacity: 1,
+            duration: 0.26,
+            ease: "power2.inOut",
+            stagger: { each: 0.016, from: "end" },
+          });
+        } else if (label) {
+          gsap.to(label, { y: 0, opacity: 1, duration: 0.28, ease: "power2.out" });
+        }
+
+        if (arrow) {
+          gsap.to(arrow, {
+            x: 0,
+            y: 0,
+            rotation: 0,
+            scale: 1,
+            duration: 0.44,
+            ease: "power3.out",
+          });
+        }
+      });
+
+      root.addEventListener("pointerenter", onEnter);
+      root.addEventListener("pointerleave", onLeave);
+      return () => {
+        root.removeEventListener("pointerenter", onEnter);
+        root.removeEventListener("pointerleave", onLeave);
+      };
+    },
+    { scope: rootRef, dependencies: [opts.disabled, opts.hasArrow, opts.enabled] },
+  );
+}
 
 export function Button({
   href,
@@ -104,48 +243,68 @@ export function Button({
   showArrow,
   arrowClassName,
 }: Props) {
+  const rootRef = useRef<HTMLElement | null>(null);
   const dis = disabled ? "pointer-events-none opacity-60" : "";
-  const useArrow = isCtaVariant(variant) && (showArrow ?? true);
+  const isCta = isCtaVariant(variant);
+  const useArrow = isCta && (showArrow ?? true);
 
-  if (isCtaVariant(variant)) {
+  useButtonHover(rootRef, { disabled, hasArrow: Boolean(useArrow), enabled: isCta });
+
+  if (isCta) {
     const justify = ctaJustify === "between" ? "justify-between" : "justify-center";
     const shadow = ctaShadowClass(variant, ctaElevation);
     const sizeCls = ctaSizeClass[ctaSize];
     const ctaWidth = ctaFullWidth ? ctaWidthFull : ctaWidthInline;
     const cls =
       `${ctaBaseShared} ${ctaWidth} ${justify} ${sizeCls} ${ctaSurface[variant]} ${shadow} ${dis} ${className}`.trim();
-    const inner = useArrow ? (
+
+    const ctaName = plainTextLabel(children);
+    const inner = (
       <>
-        <span className="min-w-0 break-words text-balance sm:whitespace-nowrap [text-align:left]">{children}</span>
-        <ArrowInCircle variant={ctaArrowVariant[variant]} className={arrowClassName ?? "h-5 w-5 shrink-0"} />
+        <CtaLabel>{children}</CtaLabel>
+        {useArrow ? (
+          <span data-cta-arrow className="inline-flex shrink-0 will-change-[transform]">
+            <ArrowInCircle variant={ctaArrowVariant[variant]} className={arrowClassName ?? "h-5 w-5 shrink-0"} />
+          </span>
+        ) : null}
       </>
-    ) : (
-      children
     );
+    const a11yName = ctaName ? { "aria-label": ctaName } : {};
     if (href) {
       return (
         <Link
+          ref={rootRef as React.Ref<HTMLAnchorElement>}
           href={href}
           className={cls}
           target={target}
           rel={target === "_blank" ? "noopener noreferrer" : undefined}
           onClick={onClick}
+          {...a11yName}
         >
           {inner}
         </Link>
       );
     }
     return (
-      <button type={type} className={cls} onClick={onClick} disabled={disabled}>
+      <button
+        ref={rootRef as React.Ref<HTMLButtonElement>}
+        type={type}
+        className={cls}
+        onClick={onClick}
+        disabled={disabled}
+        {...a11yName}
+      >
         {inner}
       </button>
     );
   }
 
   const cls = `${standardBase} ${standardVariants[variant]} ${dis} ${className}`;
+
   if (href) {
     return (
       <Link
+        ref={rootRef as React.Ref<HTMLAnchorElement>}
         href={href}
         className={cls}
         target={target}
@@ -157,7 +316,7 @@ export function Button({
     );
   }
   return (
-    <button type={type} className={cls} onClick={onClick} disabled={disabled}>
+    <button ref={rootRef as React.Ref<HTMLButtonElement>} type={type} className={cls} onClick={onClick} disabled={disabled}>
       {children}
     </button>
   );

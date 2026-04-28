@@ -228,12 +228,16 @@ export function MobileNavDrawer({
               </button>
             </div>
 
-            <nav
-              className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-y-contain px-5 py-4"
-              aria-label="Primary"
-            >
-              <NavLinks menu={menu} isActive={isActive} onNavigate={onNavigate} />
-            </nav>
+            {menu.length > 0 ? (
+              <nav
+                className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-y-contain px-5 py-4"
+                aria-label="Primary"
+              >
+                <NavLinks menu={menu} isActive={isActive} onNavigate={onNavigate} />
+              </nav>
+            ) : (
+              <div className="min-h-0 flex-1" aria-hidden />
+            )}
 
             {cta && (
               <div className="shrink-0 border-t border-zinc-200/80 px-5 py-5">

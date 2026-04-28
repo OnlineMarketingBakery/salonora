@@ -4,6 +4,7 @@ import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
 import { Button } from "@/components/ui/Button";
 import { resolveLink } from "@/lib/utils/links";
+import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { CardsSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 
@@ -20,7 +21,9 @@ export function CardsSection({ section, lang }: { section: CardsSectionT; lang: 
     <section className="bg-white py-20 md:py-24">
       <Container>
         {section.title && (
-          <h2 className="mb-10 text-center text-3xl font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-4xl lg:mb-12 lg:text-[48px] lg:leading-[56px]">
+          <h2
+            className={`${REVEAL_ITEM} mb-10 text-center text-3xl font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-4xl lg:mb-12 lg:text-[48px] lg:leading-[56px]`}
+          >
             {section.title}
           </h2>
         )}
@@ -29,7 +32,7 @@ export function CardsSection({ section, lang }: { section: CardsSectionT; lang: 
             const l = resolveLink(c.link, lang);
             if (c.highlight) {
               return (
-                <Card key={i} highlight>
+                <Card key={i} highlight className={REVEAL_ITEM}>
                   <div className="mx-auto flex w-full max-w-[248px] flex-col items-center gap-5 text-center">
                     <h3 className="w-full text-2xl font-semibold leading-[1.24] text-white">{c.title}</h3>
                     {c.text && (
@@ -62,7 +65,7 @@ export function CardsSection({ section, lang }: { section: CardsSectionT; lang: 
               );
             }
             return (
-              <Card key={i} highlight={false}>
+              <Card key={i} highlight={false} className={REVEAL_ITEM}>
                 <div className="flex w-full min-w-0 flex-1 flex-col items-stretch gap-10">
                   {c.icon && (
                     <div className="box-border flex size-[54px] shrink-0 items-center justify-center self-start rounded-[10px] border border-[#dde9f9] bg-white p-[15px]">

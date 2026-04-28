@@ -4,6 +4,7 @@ import { Media } from "@/components/ui/Media";
 import { Button } from "@/components/ui/Button";
 import { resolveLink } from "@/lib/utils/links";
 import { ctaVariantAt } from "@/lib/ui/ctaAlternation";
+import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { PricingPackagesSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 import type { WpImage } from "@/types/wordpress";
@@ -31,19 +32,21 @@ function CheckIconFallback() {
 
 function CrownIcon() {
   return (
-    <svg className="h-5 w-5 shrink-0 text-white" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M4 10.5L6.5 8.5L10 3.5L12.5 6.5L15 3.5L18.5 8.5L21 10.5L19.5 20H4.5L4 10.5Z"
-        fill="currentColor"
-        fillOpacity="0.95"
-      />
-    </svg>
+    <img
+      src="/crown.svg"
+      width={20}
+      height={19}
+      alt=""
+      className="h-5 w-5 shrink-0 object-contain"
+      aria-hidden
+      decoding="async"
+    />
   );
 }
 
 function PackageInclude({ icon, text }: { icon: WpImage | null; text: string }) {
   return (
-    <div className="flex w-full min-h-[42px] items-center justify-start gap-1.5 rounded-[21px] bg-pill py-0 pl-3 pr-2.5">
+    <div className="flex min-h-[42px] items-center justify-start gap-1.5 rounded-[21px] bg-pill py-0 pl-3 pr-2.5">
       {icon ? (
         <div className="flex h-6 w-[27px] shrink-0 items-center justify-center">
           <Media image={icon} width={27} height={24} className="h-6 w-[27px] object-contain" />
@@ -61,7 +64,7 @@ export function PricingPackagesSection({ section, lang }: { section: PricingPack
     <section className="bg-surface py-[72px] pb-[116px] sm:pt-[72px] sm:pb-[116px]">
       <Container className="!max-w-[85rem]">
         <div className="mx-auto flex max-w-[1300px] flex-col items-center gap-10 sm:gap-12 lg:gap-[64px]">
-          <div className="flex max-w-[634px] flex-col items-center gap-5 text-center sm:gap-5">
+          <div className={`flex max-w-[634px] flex-col items-center gap-5 text-center sm:gap-5 ${REVEAL_ITEM}`}>
             {section.eyebrow && (
               <div className="inline-flex h-[42px] min-w-[6.2rem] items-center justify-center rounded-full bg-white px-6 text-base font-normal leading-[1.6] text-brand shadow-sm">
                 {section.eyebrow}
@@ -87,12 +90,13 @@ export function PricingPackagesSection({ section, lang }: { section: PricingPack
                 <div
                   key={i}
                   className={[
+                    REVEAL_ITEM,
                     "relative box-border flex h-full w-full min-w-0 max-w-[638px] flex-col justify-between rounded-[20px] bg-white p-10 sm:p-10 lg:justify-self-center",
                     p.featured ? "border-2 border-brand" : "border-0",
                   ].join(" ")}
                 >
                   {hasBadge && (
-                    <div className="absolute -top-3 left-1/2 z-20 flex h-[47px] min-w-[169px] -translate-x-1/2 items-center justify-center gap-1.5 rounded-[15px] bg-brand px-4 text-base font-normal text-white">
+                    <div className="absolute -top-6 left-1/2 z-20 flex h-[47px] min-w-[169px] -translate-x-1/2 items-center justify-center gap-1.5 rounded-[15px] bg-brand px-4 text-base font-normal text-white">
                       <CrownIcon />
                       {p.badge}
                     </div>
@@ -217,7 +221,7 @@ export function PricingPackagesSection({ section, lang }: { section: PricingPack
           </div>
 
           {section.bottomNote && (
-            <div className="w-full max-w-[1000px] text-balance font-sans text-center text-[#002752]">
+            <div className={`${REVEAL_ITEM} w-full max-w-[1000px] text-balance font-sans text-center text-[#002752]`}>
               <RichText
                 html={section.bottomNote}
                 className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:text-center !prose-p:text-[24px] !prose-p:font-semibold !prose-p:leading-[110%] !prose-p:not-italic !prose-p:text-[#002752] [&_p]:!m-0 [&_p]:!text-center [&_p]:!text-[24px] [&_p]:!font-semibold [&_p]:!leading-[110%] [&_p]:!text-[#002752] [&_p]:!not-italic"
@@ -226,7 +230,9 @@ export function PricingPackagesSection({ section, lang }: { section: PricingPack
           )}
 
           {section.ctas.length > 0 && (
-            <div className="flex w-full max-w-full flex-col items-center justify-center gap-2.5 sm:max-w-[min(100%,800px)] sm:flex-row sm:flex-wrap sm:justify-center sm:gap-2.5 sm:pt-0">
+            <div
+              className={`${REVEAL_ITEM} flex w-full max-w-full flex-col items-center justify-center gap-2.5 sm:max-w-[min(100%,800px)] sm:flex-row sm:flex-wrap sm:justify-center sm:gap-2.5 sm:pt-0`}
+            >
               {section.ctas.map((c, i) => {
                 const l = resolveLink(c.url, lang);
                 if (!l?.href) return null;

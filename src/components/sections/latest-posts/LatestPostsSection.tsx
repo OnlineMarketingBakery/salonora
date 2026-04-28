@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
+import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { LatestPostsSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 
@@ -8,7 +9,9 @@ export function LatestPostsSection({ section }: { section: LatestPostsSectionT; 
     <section className="py-16 md:py-24">
       <Container>
         {section.title && (
-          <h2 className="text-3xl font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-4xl lg:text-[48px] lg:leading-[56px]">
+          <h2
+            className={`${REVEAL_ITEM} text-3xl font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-4xl lg:text-[48px] lg:leading-[56px]`}
+          >
             {section.title}
           </h2>
         )}
@@ -17,7 +20,7 @@ export function LatestPostsSection({ section }: { section: LatestPostsSectionT; 
             <Link
               key={p.id}
               href={p.href}
-              className="block rounded-2xl border border-surface bg-white p-5 shadow-sm transition hover:border-brand/30"
+              className={`${REVEAL_ITEM} block rounded-2xl border border-surface bg-white p-5 shadow-sm transition hover:border-brand/30`}
             >
               <h3 className="font-semibold text-foreground">{p.title}</h3>
               {p.excerpt && <p className="mt-2 line-clamp-3 text-sm text-muted">{p.excerpt}</p>}
