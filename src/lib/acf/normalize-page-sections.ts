@@ -4,6 +4,7 @@ import {
   asHtml,
   asImage,
   asLink,
+  asRelationshipPostIds,
   asString,
   mapCtaRepeater,
   newSectionId,
@@ -159,16 +160,18 @@ function mapLayout(i: number, row: RawRow): AnySectionT | null {
         mediaPosition: (asString(row.media_position) as "left" | "right") || "left",
       };
     case "testimonials": {
-      const rel = row.items;
-      const testimonialIds = Array.isArray(rel)
-        ? (rel as { id?: number }[]).map((o) => o.id).filter((x): x is number => typeof x === "number")
-        : [];
+      const testimonialIds = asRelationshipPostIds(row.items);
+      let ctas = mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]);
+      if (!ctas.length) {
+        const single = asLink(row.cta);
+        if (single) ctas = [{ text: single.title || "Meer informatie", url: single }];
+      }
       return {
         ...base,
         type: "testimonials",
         title: asString(row.title),
         intro: asHtml(row.intro),
-        cta: asLink(row.cta),
+        ctas,
         items: [],
         testimonialIds,
       };

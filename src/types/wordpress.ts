@@ -42,8 +42,9 @@ export type WpTestimonialRaw = {
     client_name?: string;
     client_role?: string;
     client_testimonial?: string;
-    rating?: number;
-    avatar?: WpImage;
+    rating?: number | string;
+    /** Image array, attachment-shaped object, media ID, or URL string depending on REST/ACF format */
+    avatar?: unknown;
   };
 };
 

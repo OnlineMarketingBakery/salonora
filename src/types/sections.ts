@@ -108,7 +108,7 @@ export type TestimonialsSectionT = CoreSection & {
   type: "testimonials";
   title: string;
   intro: string;
-  cta: WpAcfLink | null;
+  ctas: CtaItem[];
   items: TestimonialDocument[];
   /** Filled in during server enrichment from the relationship field */
   testimonialIds: number[];
