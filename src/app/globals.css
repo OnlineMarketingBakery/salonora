@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Fustat:wght@200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap');
 
 
 @import "tailwindcss";
@@ -11,12 +11,9 @@
   --palette-navy-deep: #002752;
   --palette-muted: #435780;
   --palette-surface: #ebf3fe;
-  /** Figma: cards “Herken je dit” standard tiles */
   --palette-card: #ebf3fe; 
   --palette-pill: #ecf4fe;
-  /* Hero offer line + some labels in Figma */
   --palette-accent: #1d5898;
-  /* FAQ / sublabels */
   --palette-brand-soft: #3a8ae4;
 
   --background: var(--palette-surface);
@@ -37,7 +34,7 @@
   --color-pill: var(--palette-pill);
   --color-accent: var(--palette-accent);
   --color-brand-soft: var(--palette-brand-soft);
-  --font-sans: "Fustat", sans-serif;
+  --font-sans: "Outfit", sans-serif;
 }
 
 body {

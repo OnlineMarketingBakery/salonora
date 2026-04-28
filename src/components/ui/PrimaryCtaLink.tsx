@@ -5,9 +5,7 @@ import { ArrowInCircle } from "@/components/ui/ArrowInCircle";
 const primaryCtaBase =
   "group inline-flex h-12 max-w-full min-w-0 items-center justify-center gap-[17px] rounded-[24px] bg-brand px-3.5 font-normal text-white font-sans shadow-[0px_6px_20px_0px_rgba(57,144,240,0.54)] transition hover:brightness-105";
 
-/** Default: 16px / regular (400) / line-height normal / white (Fustat from page). */
 const primaryCtaSizeDefault = "text-base leading-normal";
-/** Hero only: 18px, line 24px. */
 const primaryCtaSizeHero = "text-lg leading-6";
 
 /** @deprecated Prefer PrimaryCtaLink; kept for any external imports. */
