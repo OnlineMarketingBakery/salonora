@@ -123,7 +123,7 @@ function CtaLabel({ children }: { children: ReactNode }) {
 }
 
 const ctaWidthFull = "w-full min-w-0 max-w-full";
-const ctaWidthInline = "w-auto max-w-none min-w-0";
+const ctaWidthInline = "w-auto max-w-full min-w-0";
 
 function useButtonHover(
   rootRef: React.RefObject<HTMLElement | null>,

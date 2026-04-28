@@ -46,7 +46,7 @@ export function HeroSection({ section, lang }: { section: HeroSectionT; lang: Lo
                 className={`${REVEAL_ITEM} mt-3 !prose-p:text-inherit text-2xl font-semibold !text-accent !prose-p:text-inherit !prose-strong:text-navy sm:text-3xl lg:mt-4 lg:text-[36px] [&_p]:!m-0 [&_p]:leading-tight`}
               />
             )}
-            <div className={`${REVEAL_ITEM} mt-8 flex max-w-[475px] flex-col items-start gap-[18px] sm:mt-9`}>
+            <div className={`${REVEAL_ITEM} mt-8 flex w-full min-w-0 flex-col items-start gap-[18px] sm:mt-9`}>
               {section.ctas.map((cta, i) => {
                 const r = resolveLink(cta.url, lang);
                 if (!r) return null;
@@ -57,7 +57,7 @@ export function HeroSection({ section, lang }: { section: HeroSectionT; lang: Lo
                     target={r.target}
                     variant={ctaVariantAt(i)}
                     ctaSize="hero"
-                    className="max-w-full"
+                    ctaFullWidth={false}
                   >
                     {cta.text || r.label}
                   </Button>
