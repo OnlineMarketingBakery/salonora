@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Media } from "@/components/ui/Media";
-import { ArrowInCircle } from "@/components/ui/ArrowInCircle";
+import { Button } from "@/components/ui/Button";
 import { resolveLink } from "@/lib/utils/links";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { MobileNavDrawer } from "./MobileNavDrawer";
@@ -51,7 +51,7 @@ export function SiteHeader({
       <div className="mx-auto w-full max-w-[82rem]">
         <div className="rounded-[40px] border border-[rgba(57,144,240,0.14)] p-1.5 sm:p-1.5">
           <div
-            className="flex min-h-[68px] w-full items-center justify-between gap-2 rounded-[34px] bg-white pl-4 pr-2.5 py-2.5 shadow-[0_4px_28px_0px_rgba(48,89,133,0.17)] sm:pl-5"
+            className="flex min-h-[68px] w-full items-center justify-between gap-2 rounded-[34px] bg-white pl-4 pr-3 py-2.5 shadow-[0_4px_28px_0px_rgba(48,89,133,0.17)] sm:pl-5"
           >
             <Link
               href={buildLocalePath(lang, "")}
@@ -81,7 +81,7 @@ export function SiteHeader({
               ))}
             </nav>
 
-            <div className="ml-auto flex min-w-0 shrink-0 items-center gap-2.5 sm:gap-3 md:ml-0">
+            <div className="ml-auto flex min-w-min shrink-0 items-center gap-2.5 sm:gap-3 md:ml-0">
               {globals.header.showLanguageSwitcher && (
                 <div className="hidden md:block">
                   <LanguageSwitcher
@@ -93,15 +93,16 @@ export function SiteHeader({
                 </div>
               )}
               {globals.header.showHeaderCta && c && (
-                <Link
+                <Button
                   href={c.href}
                   target={c.target}
-                  rel={c.target === "_blank" ? "noopener noreferrer" : undefined}
-                  className="group hidden h-12 min-w-0 max-w-[11.5rem] items-center justify-center gap-2 rounded-[24px] bg-navy px-3.5 text-[16px] font-normal tracking-[-0.04em] text-white shadow-sm transition hover:brightness-110 sm:max-w-none sm:px-4 sm:pl-5 md:inline-flex"
+                  variant="ctaNavy"
+                  ctaSize="compact"
+                  ctaFullWidth={false}
+                  className="hidden md:inline-flex"
                 >
                   <span className="truncate sm:whitespace-nowrap">{c.label}</span>
-                  <ArrowInCircle variant="on-dark" className="h-5 w-5" />
-                </Link>
+                </Button>
               )}
               <MobileNavDrawer
                 className="md:hidden"

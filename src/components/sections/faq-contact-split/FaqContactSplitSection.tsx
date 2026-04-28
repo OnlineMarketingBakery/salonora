@@ -2,9 +2,8 @@ import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { RichText } from "@/components/ui/RichText";
 import { Accordion } from "@/components/ui/Accordion";
-import { PrimaryCtaLink } from "@/components/ui/PrimaryCtaLink";
-import { ArrowInCircle } from "@/components/ui/ArrowInCircle";
 import { Button } from "@/components/ui/Button";
+import { ctaVariantAt } from "@/lib/ui/ctaAlternation";
 import { Media } from "@/components/ui/Media";
 import { resolveLink } from "@/lib/utils/links";
 import { CF7Form } from "@/components/forms/CF7Form";
@@ -50,7 +49,15 @@ function ContactCtaPill({ href, text, icon, iconFallback, target }: { href: stri
     >
       <span className="flex h-[50px] w-[50px] shrink-0 items-center justify-center rounded-[25px] bg-brand text-white">
         {icon ? (
-          <Media image={icon} width={28} height={28} className="h-7 w-7 object-contain" preferLargestSource quality={90} />
+          <Media
+            image={icon}
+            width={28}
+            height={28}
+            className="h-7 w-7 object-contain"
+            sizes="28px"
+            preferLargestSource
+            quality={90}
+          />
         ) : (
           (iconFallback === "mail" ? <MailGlyph className="h-7 w-7" /> : <PhoneGlyph className="h-7 w-7" />)
         )}
@@ -107,34 +114,21 @@ export function FaqContactSplitSection({ section, lang }: { section: FaqContactS
                     const l = resolveLink(c.link, lang);
                     if (!l?.href) return null;
                     const t = c.text || l?.label;
-                    if (i === 0) {
-                      return (
-                        <PrimaryCtaLink
-                          key={i}
-                          href={l.href}
-                          target={l.target}
-                          className="!h-12 w-full !min-h-0 !max-w-full !justify-between !rounded-[24px] !px-3 !shadow-none"
-                        >
-                          {t}
-                        </PrimaryCtaLink>
-                      );
-                    }
-                    if (i === 1) {
-                      return (
-                        <Link
-                          key={i}
-                          href={l.href}
-                          target={l.target}
-                          rel={l.target === "_blank" ? "noopener noreferrer" : undefined}
-                          className="inline-flex h-12 w-full min-w-0 max-w-full items-center justify-between gap-2 rounded-[24px] bg-navy px-3 text-base font-normal text-white transition hover:bg-navy/95"
-                        >
-                          <span className="min-w-0 break-words text-balance [text-align:left] sm:whitespace-nowrap">{t}</span>
-                          <ArrowInCircle variant="on-dark" className="!h-6 !w-6 shrink-0" />
-                        </Link>
-                      );
-                    }
                     return (
-                      <Button key={i} href={l.href} variant="secondary" target={l.target} className="h-12 w-full max-w-full rounded-3xl">
+                      <Button
+                        key={i}
+                        href={l.href}
+                        target={l.target}
+                        variant={ctaVariantAt(i, "brand", "ctaNavyDeep")}
+                        ctaElevation={i === 0 ? "none" : "default"}
+                        ctaJustify="between"
+                        arrowClassName="!h-6 !w-6 shrink-0"
+                        className={
+                          i === 2
+                            ? "h-12 w-full max-w-full rounded-3xl"
+                            : "h-12 w-full min-w-0 max-w-full rounded-[24px] px-3"
+                        }
+                      >
                         {t}
                       </Button>
                     );

@@ -3,7 +3,7 @@ import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
 import { resolveLink } from "@/lib/utils/links";
 import { LanguageSwitcher } from "./LanguageSwitcher";
-import { ArrowInCircle } from "@/components/ui/ArrowInCircle";
+import { Button } from "@/components/ui/Button";
 import type { GlobalSettings } from "@/types/globals";
 import type { MenuItem } from "@/types/menu";
 import type { Locale } from "@/lib/i18n/locales";
@@ -175,45 +175,30 @@ export function SiteFooter({
 
               <div className="mt-6 flex w-full min-w-0 max-w-3xl flex-col flex-wrap gap-2.5 sm:flex-row sm:items-center">
                 {primaryCta && (
-                  <Link
+                  <Button
                     href={primaryCta.href}
                     target={primaryCta.target}
-                    rel={
-                      primaryCta.target === "_blank"
-                        ? "noopener noreferrer"
-                        : undefined
-                    }
-                    className="group inline-flex h-12 w-full min-w-0 max-w-full shrink-0 items-center justify-between gap-[15px] rounded-[24px] bg-brand pl-[18px] pr-3.5 text-base font-normal leading-[normal] text-white transition hover:brightness-110 sm:w-[247px] sm:max-w-[247px] sm:min-w-0"
+                    variant="ctaBrand"
+                    ctaJustify="between"
+                    ctaElevation="none"
+                    arrowClassName="h-5 w-5 shrink-0"
+                    className="w-full gap-[15px] pl-[18px] pr-3.5 leading-[normal] hover:brightness-110 sm:w-[247px] sm:max-w-[247px]"
                   >
-                    <span className="min-w-0 break-words text-balance [text-align:left] sm:whitespace-nowrap">
-                      {g.footer.footerCtaPrimaryLink?.title || primaryCta.label}
-                    </span>
-                    <ArrowInCircle
-                      variant="on-brand"
-                      className="h-5 w-5 shrink-0"
-                    />
-                  </Link>
+                    {g.footer.footerCtaPrimaryLink?.title || primaryCta.label}
+                  </Button>
                 )}
                 {secondaryCta && (
-                  <Link
+                  <Button
                     href={secondaryCta.href}
                     target={secondaryCta.target}
-                    rel={
-                      secondaryCta.target === "_blank"
-                        ? "noopener noreferrer"
-                        : undefined
-                    }
-                    className="group text-navy-deep inline-flex h-12 w-full min-w-0 max-w-full shrink-0 items-center justify-between gap-[17px] rounded-[24px] bg-white px-4 text-base font-normal leading-[normal] shadow-[0px_6px_10px_rgba(57,144,240,0.54)] transition hover:brightness-95 sm:max-w-[368px] sm:min-w-0"
+                    variant="ctaWhite"
+                    ctaJustify="between"
+                    ctaElevation="footerSecondary"
+                    arrowClassName="h-5 w-5 shrink-0"
+                    className="text-navy-deep gap-[17px] px-4 leading-[normal] hover:brightness-95 sm:max-w-[368px]"
                   >
-                    <span className="min-w-0 break-words text-balance [text-align:left] sm:whitespace-nowrap">
-                      {g.footer.footerCtaSecondaryLink?.title ||
-                        secondaryCta.label}
-                    </span>
-                    <ArrowInCircle
-                      variant="on-light"
-                      className="h-5 w-5 shrink-0"
-                    />
-                  </Link>
+                    {g.footer.footerCtaSecondaryLink?.title || secondaryCta.label}
+                  </Button>
                 )}
               </div>
 

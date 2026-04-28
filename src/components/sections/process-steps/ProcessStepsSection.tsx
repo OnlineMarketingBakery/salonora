@@ -1,10 +1,8 @@
-import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { RichText } from "@/components/ui/RichText";
 import { Button } from "@/components/ui/Button";
-import { PrimaryCtaLink } from "@/components/ui/PrimaryCtaLink";
-import { ArrowInCircle } from "@/components/ui/ArrowInCircle";
 import { resolveLink } from "@/lib/utils/links";
+import { ctaVariantAt } from "@/lib/ui/ctaAlternation";
 import type { ProcessStepsSectionT, ProcessStepItemT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 
@@ -141,35 +139,23 @@ export function ProcessStepsSection({ section, lang }: { section: ProcessStepsSe
                   const l = resolveLink(c.url, lang);
                   if (!l?.href) return null;
                   const t = c.text || l?.label;
-                  if (i === 0) {
-                    return (
-                      <PrimaryCtaLink
-                        key={i}
-                        href={l.href}
-                        target={l.target}
-                        size="hero"
-                        className="!h-[54px] w-full !max-w-none !justify-between !gap-2 !rounded-[27px] !px-3 !text-lg !leading-6 !shadow-none sm:!gap-8"
-                      >
-                        {t}
-                      </PrimaryCtaLink>
-                    );
-                  }
-                  if (i === 1) {
-                    return (
-                      <Link
-                        key={i}
-                        href={l.href}
-                        target={l.target}
-                        rel={l.target === "_blank" ? "noopener noreferrer" : undefined}
-                        className="inline-flex h-[54px] w-full min-w-0 max-w-full items-center justify-between gap-4 rounded-[27px] bg-white pl-3 pr-[21px] text-lg font-normal leading-6 text-navy shadow-none transition hover:bg-white/95"
-                      >
-                        <span className="min-w-0 break-words text-balance [text-align:left] sm:whitespace-nowrap">{t}</span>
-                        <ArrowInCircle variant="on-light" className="!h-6 !w-6 shrink-0" />
-                      </Link>
-                    );
-                  }
+                  const v = ctaVariantAt(i);
                   return (
-                    <Button key={i} href={l.href} variant="secondary" target={l.target} className="h-12 w-full max-w-md rounded-3xl">
+                    <Button
+                      key={i}
+                      href={l.href}
+                      target={l.target}
+                      variant={v}
+                      ctaSize="promo"
+                      ctaElevation="none"
+                      ctaJustify="between"
+                      arrowClassName="!h-6 !w-6 shrink-0"
+                      className={
+                        v === "ctaBrand"
+                          ? "w-full !max-w-none !gap-2 !text-lg !leading-6 sm:!gap-8"
+                          : "w-full min-w-0 max-w-full gap-4 !text-lg !leading-6 hover:brightness-[0.99]"
+                      }
+                    >
                       {t}
                     </Button>
                   );

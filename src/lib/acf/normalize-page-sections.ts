@@ -222,11 +222,13 @@ function mapLayout(i: number, row: RawRow): AnySectionT | null {
         cardTitle: asString(row.card_title),
         cardText: asHtml(row.card_text),
         contactCtas: Array.isArray(row.contact_ctas)
-          ? (row.contact_ctas as { cta_icon?: unknown; cta_text?: unknown; cta_link?: unknown }[]).map((c) => ({
-              icon: asImage(c.cta_icon),
-              ctaText: asString(c.cta_text),
-              ctaLink: asLink(c.cta_link),
-            }))
+          ? (row.contact_ctas as { icon?: unknown; cta_icon?: unknown; cta_text?: unknown; cta_link?: unknown }[]).map(
+              (c) => ({
+                icon: asImage(c.icon ?? c.cta_icon),
+                ctaText: asString(c.cta_text),
+                ctaLink: asLink(c.cta_link),
+              })
+            )
           : [],
         ctaform,
         useForm,

@@ -1,10 +1,8 @@
-import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { RichText } from "@/components/ui/RichText";
 import { Button } from "@/components/ui/Button";
-import { PrimaryCtaLink } from "@/components/ui/PrimaryCtaLink";
-import { ArrowInCircle } from "@/components/ui/ArrowInCircle";
 import { resolveLink } from "@/lib/utils/links";
+import { ctaVariantAt } from "@/lib/ui/ctaAlternation";
 import type { CtaSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 
@@ -90,40 +88,20 @@ export function CtaSection({ section, lang }: { section: CtaSectionT; lang: Loca
                           </span>
                         );
                       }
-                      if (i === 0) {
-                        return (
-                          <PrimaryCtaLink
-                            key={i}
-                            href={l.href}
-                            target={l.target}
-                            size="hero"
-                            className="w-full !h-[54px] !min-w-0 !max-w-full !justify-between !gap-[21px] !rounded-[27px] !px-3 !text-lg !leading-6 !tracking-[0.5px] !shadow-none sm:w-[388px] sm:!max-w-[388px]"
-                          >
-                            {t}
-                          </PrimaryCtaLink>
-                        );
-                      }
-                      if (i === 1) {
-                        return (
-                          <Link
-                            key={i}
-                            href={l.href}
-                            target={l.target}
-                            rel={l.target === "_blank" ? "noopener noreferrer" : undefined}
-                            className="inline-flex h-[54px] w-full min-w-0 max-w-full items-center justify-between gap-2 rounded-[27px] bg-navy-deep px-3 text-lg font-normal leading-6 tracking-[0.5px] text-white transition hover:bg-navy-deep/95 sm:max-w-[350px] sm:gap-8"
-                          >
-                            <span className="min-w-0 break-words [text-align:left] sm:whitespace-nowrap">{t}</span>
-                            <ArrowInCircle variant="on-dark" className="!h-6 !w-6 shrink-0" />
-                          </Link>
-                        );
-                      }
+                      const isPromoRow = i < 2;
                       return (
                         <Button
                           key={i}
                           href={l.href}
-                          variant="secondary"
-                          className="h-12 w-full min-w-0 max-w-sm rounded-3xl sm:max-w-none"
                           target={l.target}
+                          variant={ctaVariantAt(i, "brand", "ctaNavyDeep")}
+                          ctaSize={isPromoRow ? "promo" : "default"}
+                          ctaElevation={isPromoRow ? "none" : "default"}
+                          className={
+                            isPromoRow
+                              ? "w-full !min-w-0 !max-w-full tracking-[0.5px] sm:w-[388px] sm:!max-w-[388px]"
+                              : "h-12 w-full min-w-0 max-w-sm rounded-3xl sm:max-w-none"
+                          }
                         >
                           {t}
                         </Button>

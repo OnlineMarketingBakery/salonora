@@ -1,11 +1,9 @@
-import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { RichText } from "@/components/ui/RichText";
 import { Media } from "@/components/ui/Media";
 import { Button } from "@/components/ui/Button";
-import { PrimaryCtaLink } from "@/components/ui/PrimaryCtaLink";
-import { ArrowInCircle } from "@/components/ui/ArrowInCircle";
 import { resolveLink } from "@/lib/utils/links";
+import { ctaVariantAt } from "@/lib/ui/ctaAlternation";
 import type { GuaranteeSplitSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 import type { WpImage } from "@/types/wordpress";
@@ -46,9 +44,6 @@ function GuaranteePoint({ icon, text }: { icon: WpImage | null; text: string }) 
     </li>
   );
 }
-
-const secondaryCtaClass =
-  "group inline-flex h-12 w-full min-w-0 max-w-[392px] items-center justify-between gap-4 rounded-[24px] border border-white bg-[rgba(57,144,240,0.24)] px-3 text-base font-normal font-sans leading-normal text-navy transition hover:bg-[rgba(57,144,240,0.32)]";
 
 export function GuaranteeSplitSection({ section, lang }: { section: GuaranteeSplitSectionT; lang: Locale }) {
   const imageFirst = section.mediaPosition === "left";
@@ -91,34 +86,19 @@ export function GuaranteeSplitSection({ section, lang }: { section: GuaranteeSpl
             const l = resolveLink(c.url, lang);
             if (!l?.href) return null;
             const t = c.text || l.label;
-            if (i === 0) {
-              return (
-                <PrimaryCtaLink
-                  key={i}
-                  href={l.href}
-                  target={l.target}
-                  className="!h-12 w-full !max-w-[392px] !min-w-0 !justify-between !gap-[35px] !rounded-[24px] !px-3 !shadow-none"
-                >
-                  {t}
-                </PrimaryCtaLink>
-              );
-            }
-            if (i === 1) {
-              return (
-                <Link
-                  key={i}
-                  href={l.href}
-                  target={l.target}
-                  rel={l.target === "_blank" ? "noopener noreferrer" : undefined}
-                  className={secondaryCtaClass}
-                >
-                  <span className="min-w-0 flex-1 break-words text-balance sm:whitespace-nowrap">{t}</span>
-                  <ArrowInCircle variant="on-light" className="!h-6 !w-6" />
-                </Link>
-              );
-            }
             return (
-              <Button key={i} href={l.href} variant="secondary" target={l.target} className="h-12 w-full max-w-md rounded-3xl">
+              <Button
+                key={i}
+                href={l.href}
+                target={l.target}
+                variant={ctaVariantAt(i)}
+                ctaElevation={i === 0 ? "none" : "default"}
+                className={
+                  i === 0
+                    ? "!h-12 w-full !max-w-[392px] !min-w-0 !gap-[35px] !rounded-[24px]"
+                    : "h-12 w-full max-w-md rounded-[24px]"
+                }
+              >
                 {t}
               </Button>
             );

@@ -1,16 +1,12 @@
-import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { RichText } from "@/components/ui/RichText";
 import { Media } from "@/components/ui/Media";
 import { resolveLink } from "@/lib/utils/links";
-import { ArrowInCircle } from "@/components/ui/ArrowInCircle";
-import { PrimaryCtaLink } from "@/components/ui/PrimaryCtaLink";
+import { Button } from "@/components/ui/Button";
 import { StarRating } from "@/components/ui/StarRating";
+import { ctaVariantAt } from "@/lib/ui/ctaAlternation";
 import type { HeroSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
-
-const heroSecondary =
-  "group inline-flex h-12 w-full min-w-0 max-w-full items-center justify-center gap-[17px] rounded-[24px] bg-white px-3.5 text-base font-normal leading-normal text-navy shadow-[0px_6px_20px_0px_rgba(57,144,240,0.54)] transition font-sans hover:brightness-[0.99]";
 
 export function HeroSection({ section, lang }: { section: HeroSectionT; lang: Locale }) {
   const showSocial = Boolean(section.trustImage || section.trustLine);
@@ -47,29 +43,17 @@ export function HeroSection({ section, lang }: { section: HeroSectionT; lang: Lo
               {section.ctas.map((cta, i) => {
                 const r = resolveLink(cta.url, lang);
                 if (!r) return null;
-                if (i === 0) {
-                  return (
-                    <PrimaryCtaLink
-                      key={`${section.id}-cta-${i}`}
-                      href={r.href}
-                      target={r.target}
-                      size="hero"
-                    >
-                      {cta.text || r.label}
-                    </PrimaryCtaLink>
-                  );
-                }
                 return (
-                  <Link
+                  <Button
                     key={`${section.id}-cta-${i}`}
                     href={r.href}
                     target={r.target}
-                    rel={r.target === "_blank" ? "noopener noreferrer" : undefined}
-                    className={heroSecondary}
+                    variant={ctaVariantAt(i)}
+                    ctaSize="hero"
+                    className="max-w-full"
                   >
-                    <span className="min-w-0 break-words text-balance sm:whitespace-nowrap">{cta.text || r.label}</span>
-                    <ArrowInCircle variant="on-light" />
-                  </Link>
+                    {cta.text || r.label}
+                  </Button>
                 );
               })}
             </div>

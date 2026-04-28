@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useId, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowInCircle } from "@/components/ui/ArrowInCircle";
+import { Button } from "@/components/ui/Button";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import type { MenuItem } from "@/types/menu";
 import type { Locale } from "@/lib/i18n/locales";
@@ -237,16 +237,16 @@ export function MobileNavDrawer({
 
             {cta && (
               <div className="shrink-0 border-t border-zinc-200/80 px-5 py-5">
-                <Link
+                <Button
                   href={cta.href}
                   target={cta.target}
-                  rel={cta.target === "_blank" ? "noopener noreferrer" : undefined}
+                  variant="ctaNavy"
+                  ctaSize="drawer"
                   onClick={() => setOpen(false)}
-                  className="group inline-flex h-12 w-full min-w-0 items-center justify-center gap-2.5 rounded-full bg-navy px-4 text-[16px] font-normal tracking-[-0.04em] text-white transition hover:brightness-110"
+                  className="w-full"
                 >
                   <span className="truncate">{cta.label}</span>
-                  <ArrowInCircle variant="on-dark" className="h-5 w-5 shrink-0" />
-                </Link>
+                </Button>
               </div>
             )}
           </div>

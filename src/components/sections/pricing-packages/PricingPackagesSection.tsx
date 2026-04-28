@@ -1,12 +1,9 @@
-import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { RichText } from "@/components/ui/RichText";
 import { Media } from "@/components/ui/Media";
 import { Button } from "@/components/ui/Button";
-import { ArrowInCircle } from "@/components/ui/ArrowInCircle";
-import { PrimaryCtaLink } from "@/components/ui/PrimaryCtaLink";
-import { WhiteCtaLink } from "@/components/ui/WhiteCtaLink";
 import { resolveLink } from "@/lib/utils/links";
+import { ctaVariantAt } from "@/lib/ui/ctaAlternation";
 import type { PricingPackagesSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 import type { WpImage } from "@/types/wordpress";
@@ -187,30 +184,29 @@ export function PricingPackagesSection({ section, lang }: { section: PricingPack
                         if (!l?.href) return null;
                         if (p.featured) {
                           return (
-                            <Link
+                            <Button
                               key={j}
                               href={l.href}
                               target={l.target}
-                              rel={l.target === "_blank" ? "noopener noreferrer" : undefined}
-                              className="inline-flex h-[55px] w-full min-w-0 max-w-[332px] items-center justify-between self-start gap-2 rounded-[31.5px] bg-navy py-0 pl-[18px] pr-3 text-base font-normal leading-[normal] text-white shadow-sm transition hover:bg-navy/95"
+                              variant="ctaNavy"
+                              ctaSize="package"
+                              className="max-w-[332px] self-start py-0 pl-[18px] pr-3 leading-[normal]"
                             >
-                              <span className="min-w-0 break-words">{c.text || l.label}</span>
-                              <ArrowInCircle
-                                variant="on-dark"
-                                className="!h-[27px] !w-[27px] !border-white/80 [&>img]:!h-3.5 [&>img]:!w-3.5"
-                              />
-                            </Link>
+                              {c.text || l.label}
+                            </Button>
                           );
                         }
                         return (
-                          <PrimaryCtaLink
+                          <Button
                             key={j}
                             href={l.href}
                             target={l.target}
-                            className="!h-[55px] !min-h-0 w-full !max-w-[16rem] justify-center !gap-2 !rounded-[31.5px] !px-4"
+                            variant="ctaBrand"
+                            ctaSize="package"
+                            className="!max-w-[16rem] !gap-2 !px-4"
                           >
                             {c.text || l.label}
-                          </PrimaryCtaLink>
+                          </Button>
                         );
                       })}
                     </div>
@@ -235,37 +231,20 @@ export function PricingPackagesSection({ section, lang }: { section: PricingPack
                 const l = resolveLink(c.url, lang);
                 if (!l?.href) return null;
                 const t = c.text || l.label;
-                if (i === 0) {
-                  return (
-                    <PrimaryCtaLink
-                      key={i}
-                      href={l.href}
-                      target={l.target}
-                      className="!h-12 w-full !max-w-[321px] !justify-center !px-4 !text-lg !font-normal !leading-6"
-                    >
-                      {t}
-                    </PrimaryCtaLink>
-                  );
-                }
-                if (i === 1) {
-                  return (
-                    <WhiteCtaLink
-                      key={i}
-                      href={l.href}
-                      target={l.target}
-                      className="!h-12 !max-h-12 w-full !max-w-[321px] !border-0 !px-4 !text-lg !font-normal !leading-6 !shadow-[0px_6px_10px_rgba(57,144,240,0.54)]"
-                    >
-                      {t}
-                    </WhiteCtaLink>
-                  );
-                }
+                const v = ctaVariantAt(i);
                 return (
                   <Button
                     key={i}
                     href={l.href}
-                    variant="secondary"
-                    className="h-12 w-full min-w-0 max-w-md rounded-3xl border-2"
                     target={l.target}
+                    variant={v}
+                    ctaSize={i < 2 ? "hero" : "default"}
+                    ctaElevation={i === 1 ? "footerSecondary" : "default"}
+                    className={
+                      i < 2
+                        ? "!h-12 !max-h-12 w-full !max-w-[321px] !px-4 !text-lg !font-normal !leading-6"
+                        : "h-12 w-full min-w-0 max-w-md rounded-3xl"
+                    }
                   >
                     {t}
                   </Button>

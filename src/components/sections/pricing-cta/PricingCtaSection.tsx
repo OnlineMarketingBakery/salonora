@@ -1,6 +1,6 @@
 import { Container } from "@/components/ui/Container";
 import { RichText } from "@/components/ui/RichText";
-import { PrimaryCtaLink } from "@/components/ui/PrimaryCtaLink";
+import { Button } from "@/components/ui/Button";
 import { resolveLink } from "@/lib/utils/links";
 import type { PricingCtaSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
@@ -20,7 +20,7 @@ const introProse = [
 ].join(" ");
 
 const cardCtaClassName =
-  "!h-[42px] w-full !min-h-0 !max-w-full !justify-between !gap-0 !rounded-[24px] !pl-[18px] !pr-3.5 !text-sm !font-normal !leading-6 !text-white !shadow-none";
+  "!h-[42px] w-full !min-h-0 !max-w-full !gap-0 !rounded-[24px] !pl-[18px] !pr-3.5 !text-sm !font-normal !leading-6 !text-white";
 
 export function PricingCtaSection({ section, lang }: { section: PricingCtaSectionT; lang: Locale }) {
   return (
@@ -66,14 +66,18 @@ export function PricingCtaSection({ section, lang }: { section: PricingCtaSectio
                       const link = resolveLink(x.url, lang);
                       if (!link?.href) return null;
                       return (
-                        <PrimaryCtaLink
+                        <Button
                           key={j}
                           href={link.href}
                           target={link.target}
+                          variant="ctaBrand"
+                          ctaSize="card"
+                          ctaElevation="none"
+                          ctaJustify="between"
                           className={cardCtaClassName}
                         >
                           {x.text || link.label}
-                        </PrimaryCtaLink>
+                        </Button>
                       );
                     })}
                   </div>

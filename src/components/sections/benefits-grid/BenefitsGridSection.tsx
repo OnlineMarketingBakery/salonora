@@ -1,8 +1,9 @@
 import { Container } from "@/components/ui/Container";
 import { RichText } from "@/components/ui/RichText";
 import { Media } from "@/components/ui/Media";
-import { WhiteCtaLink } from "@/components/ui/WhiteCtaLink";
+import { Button } from "@/components/ui/Button";
 import { resolveLink } from "@/lib/utils/links";
+import { ctaVariantAt } from "@/lib/ui/ctaAlternation";
 import type { BenefitsGridSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 
@@ -128,9 +129,15 @@ export function BenefitsGridSection({ section, lang }: { section: BenefitsGridSe
                           if (!c.text && !l) return null;
                           if (!l?.href) return null;
                           return (
-                            <WhiteCtaLink key={i} href={l.href} target={l.target} className="!w-auto min-w-0 sm:px-2">
+                            <Button
+                              key={i}
+                              href={l.href}
+                              target={l.target}
+                              variant={ctaVariantAt(i, "white")}
+                              className="!w-auto min-w-0"
+                            >
                               {c.text || l?.label}
-                            </WhiteCtaLink>
+                            </Button>
                           );
                         })}
                       </div>

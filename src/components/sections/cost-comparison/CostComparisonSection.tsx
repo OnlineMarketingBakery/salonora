@@ -1,8 +1,8 @@
 import { Container } from "@/components/ui/Container";
 import { RichText } from "@/components/ui/RichText";
 import { Button } from "@/components/ui/Button";
-import { PrimaryCtaLink } from "@/components/ui/PrimaryCtaLink";
 import { resolveLink } from "@/lib/utils/links";
+import { ctaVariantAt } from "@/lib/ui/ctaAlternation";
 import type { CostComparisonSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 
@@ -41,28 +41,13 @@ export function CostComparisonSection({ section, lang }: { section: CostComparis
                 {section.ctas.map((c, i) => {
                   const l = resolveLink(c.url, lang);
                   const text = c.text || l?.label;
-                  if (i === 0) {
-                    if (l && text) {
-                      return (
-                        <PrimaryCtaLink
-                          key={`${section.id}-cta-0`}
-                          href={l.href}
-                          target={l.target}
-                          className="w-full max-w-[321px] justify-center"
-                        >
-                          {text}
-                        </PrimaryCtaLink>
-                      );
-                    }
-                    return null;
-                  }
                   if (!l || !text) return null;
                   return (
                     <Button
                       key={`${section.id}-cta-${i}`}
                       href={l.href}
-                      variant="secondary"
-                      className="h-12 min-w-0 rounded-[24px] px-4 text-base font-normal"
+                      variant={ctaVariantAt(i)}
+                      className={i === 0 ? "w-full max-w-[321px] justify-center" : "h-12 min-w-0 rounded-[24px] px-4 text-base font-normal"}
                       target={l.target}
                     >
                       {text}
@@ -90,9 +75,9 @@ export function CostComparisonSection({ section, lang }: { section: CostComparis
                   <div className="flex flex-col gap-3.5">
                     {section.lossItems.length > 0 && (
                       <ul className="flex flex-col gap-3.5" aria-label="Comparison">
-                        {section.lossItems.map((x, i) => (
+                        {section.lossItems.map((x, j) => (
                           <li
-                            key={i}
+                            key={j}
                             className="flex min-h-[46px] w-full items-center justify-between gap-2 rounded-[10px] bg-surface py-0 pl-3.5 pr-2.5"
                           >
                             <span className="min-w-0 flex-1 text-sm font-normal leading-[1.4] text-muted">

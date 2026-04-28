@@ -2,7 +2,7 @@ import { Container } from "@/components/ui/Container";
 import { Card } from "@/components/ui/Card";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
-import { PrimaryCtaLink } from "@/components/ui/PrimaryCtaLink";
+import { Button } from "@/components/ui/Button";
 import { resolveLink } from "@/lib/utils/links";
 import type { CardsSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
@@ -39,9 +39,9 @@ export function CardsSection({ section, lang }: { section: CardsSectionT; lang: 
                       />
                     )}
                     {c.ctaText && l && (
-                      <PrimaryCtaLink href={l.href} target={l.target} className="w-full">
+                      <Button href={l.href} target={l.target} variant="ctaBrand" className="w-full" ctaElevation="none">
                         {c.ctaText}
-                      </PrimaryCtaLink>
+                      </Button>
                     )}
                     {c.ctaSubtext && (
                       <div
@@ -83,9 +83,9 @@ export function CardsSection({ section, lang }: { section: CardsSectionT; lang: 
                       />
                     )}
                     {c.ctaText && l && (
-                      <PrimaryCtaLink href={l.href} target={l.target} className="mt-1 self-start">
+                      <Button href={l.href} target={l.target} variant="ctaBrand" className="mt-1 self-start">
                         {c.ctaText}
-                      </PrimaryCtaLink>
+                      </Button>
                     )}
                   </div>
                 </div>
