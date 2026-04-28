@@ -4,6 +4,7 @@ import { CostComparisonSection } from "@/components/sections/cost-comparison/Cos
 import { BenefitsGridSection } from "@/components/sections/benefits-grid/BenefitsGridSection";
 import { PricingPackagesSection } from "@/components/sections/pricing-packages/PricingPackagesSection";
 import { GuaranteeSplitSection } from "@/components/sections/guarantee-split/GuaranteeSplitSection";
+import { StorySplitSection } from "@/components/sections/story-split/StorySplitSection";
 import { TestimonialsSection } from "@/components/sections/testimonials/TestimonialsSection";
 import { AnnouncementBarSection } from "@/components/sections/announcement-bar/AnnouncementBarSection";
 import { ProcessStepsSection } from "@/components/sections/process-steps/ProcessStepsSection";
@@ -31,6 +32,7 @@ export const sectionRegistry: Record<AnySectionT["type"], SectionComponent> = {
   benefits_grid: asSection(BenefitsGridSection as (p: { section: never; lang: Locale }) => ReactNode),
   pricing_packages: asSection(PricingPackagesSection as (p: { section: never; lang: Locale }) => ReactNode),
   guarantee_split: asSection(GuaranteeSplitSection as (p: { section: never; lang: Locale }) => ReactNode),
+  story_split: asSection(StorySplitSection as (p: { section: never; lang: Locale }) => ReactNode),
   testimonials: asSection(TestimonialsSection as (p: { section: never; lang: Locale }) => ReactNode),
   announcement_bar: asSection(AnnouncementBarSection as (p: { section: never; lang: Locale }) => ReactNode),
   process_steps: asSection(ProcessStepsSection as (p: { section: never; lang: Locale }) => ReactNode),

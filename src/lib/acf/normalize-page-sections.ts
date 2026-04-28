@@ -159,6 +159,16 @@ function mapLayout(i: number, row: RawRow): AnySectionT | null {
         ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
         mediaPosition: (asString(row.media_position) as "left" | "right") || "left",
       };
+    case "story_split":
+      return {
+        ...base,
+        type: "story_split",
+        image: asImage(row.image),
+        title: asString(row.title),
+        body: asHtml(row.body),
+        ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
+        showAccentShape: row.show_accent_shape === undefined ? true : asBool(row.show_accent_shape),
+      };
     case "testimonials": {
       const testimonialIds = asRelationshipPostIds(row.items);
       let ctas = mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]);

@@ -104,6 +104,15 @@ export type GuaranteeSplitSectionT = CoreSection & {
   mediaPosition: "left" | "right";
 };
 
+export type StorySplitSectionT = CoreSection & {
+  type: "story_split";
+  image: WpImage | null;
+  title: string;
+  body: string;
+  ctas: CtaItem[];
+  showAccentShape: boolean;
+};
+
 export type TestimonialsSectionT = CoreSection & {
   type: "testimonials";
   title: string;
@@ -221,6 +230,7 @@ export type AnySectionT =
   | BenefitsGridSectionT
   | PricingPackagesSectionT
   | GuaranteeSplitSectionT
+  | StorySplitSectionT
   | TestimonialsSectionT
   | AnnouncementBarSectionT
   | ProcessStepsSectionT
