@@ -212,7 +212,7 @@ export function SiteFooter({
               )}
             </div>
 
-            <div className="flex w-full min-w-0 flex-1 flex-col justify-end gap-10 min-[500px]:flex-row min-[500px]:items-stretch min-[500px]:gap-8 min-[500px]:pl-0 sm:pl-0 lg:max-w-2xl lg:gap-6 xl:max-w-none 2xl:pl-0">
+            <div className="flex w-full min-w-0 flex-1 flex-col justify-center sm:justify-end gap-10 min-[500px]:flex-row min-[500px]:items-stretch min-[500px]:gap-8 min-[500px]:pl-0 sm:pl-0 lg:max-w-2xl lg:gap-6 xl:max-w-none 2xl:pl-0">
               {(hasNav || hasFollow) && (
                 <div
                   className="hidden w-px min-h-[268px] shrink-0 self-stretch bg-white/15 lg:block"
@@ -306,7 +306,7 @@ export function SiteFooter({
           </div>
           <div className="bg-navy-deep relative z-10">
             <div className="mx-auto flex w-full max-w-[1300px] flex-col items-center justify-center gap-3 px-4 sm:px-6 pb-5 md:px-8">
-              <p className="order-1 text-center text-base font-light text-white/90 md:order-none md:text-left -mt-6">
+              <p className="order-1 text-center text-base font-light text-white/90 md:order-none md:text-left mt-2 sm:-mt-6">
                 {g.footer.footerCopyright ||
                   `Copyright ©${new Date().getFullYear()} Salonora all right reserved.`}
               </p>

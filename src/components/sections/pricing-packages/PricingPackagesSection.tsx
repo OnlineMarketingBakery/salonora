@@ -226,7 +226,7 @@ export function PricingPackagesSection({ section, lang }: { section: PricingPack
           )}
 
           {section.ctas.length > 0 && (
-            <div className="flex w-full max-w-full flex-col items-stretch justify-center gap-2.5 sm:max-w-[min(100%,800px)] sm:flex-row sm:flex-wrap sm:items-center sm:justify-center sm:gap-2.5 sm:pt-0">
+            <div className="flex w-full max-w-full flex-col items-center justify-center gap-2.5 sm:max-w-[min(100%,800px)] sm:flex-row sm:flex-wrap sm:justify-center sm:gap-2.5 sm:pt-0">
               {section.ctas.map((c, i) => {
                 const l = resolveLink(c.url, lang);
                 if (!l?.href) return null;
