@@ -63,7 +63,7 @@ function AccordionRowSplit({
         <span className="flex size-[51px] shrink-0 items-center justify-center rounded-lg bg-white p-[15px] text-brand">
           {isOpen ? <MinusIcon className="h-[21px] w-[21px]" /> : <PlusIcon className="h-[21px] w-[21px]" />}
         </span>
-        <span className="min-w-0 text-xl font-semibold leading-[1.1] tracking-[-0.8px] text-slate-900">{item.title}</span>
+        <span className="min-w-0 text-xl font-normal leading-[1.1] tracking-[-0.8px] text-slate-900">{item.title}</span>
       </button>
       {isOpen && (
         <div
@@ -94,7 +94,7 @@ function AccordionRow({
     <div className="overflow-hidden rounded-xl border border-surface bg-white">
       <button
         type="button"
-        className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left text-sm font-semibold text-foreground md:px-5"
+        className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left text-sm font-normal text-foreground md:px-5"
         onClick={onToggle}
         aria-expanded={isOpen}
         aria-controls={id}

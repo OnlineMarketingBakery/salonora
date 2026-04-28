@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-const textBody = "text-base font-medium font-sans leading-normal";
+const textBody = "text-base font-normal font-sans leading-normal";
 const textWhite = "text-white";
 
 const variants = {

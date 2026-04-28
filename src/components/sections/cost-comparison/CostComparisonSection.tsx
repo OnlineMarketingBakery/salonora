@@ -37,7 +37,7 @@ export function CostComparisonSection({ section, lang }: { section: CostComparis
               />
             )}
             {section.ctas.length > 0 && (
-              <div className="flex w-full max-w-full flex-col flex-wrap gap-3.5 sm:flex-row sm:items-center sm:gap-3.5">
+              <div className="flex max-w-full flex-col flex-wrap gap-3.5 sm:flex-row sm:items-center sm:gap-3.5">
                 {section.ctas.map((c, i) => {
                   const l = resolveLink(c.url, lang);
                   const text = c.text || l?.label;
@@ -62,7 +62,7 @@ export function CostComparisonSection({ section, lang }: { section: CostComparis
                       key={`${section.id}-cta-${i}`}
                       href={l.href}
                       variant="secondary"
-                      className="h-12 min-w-0 rounded-[24px] px-4 text-base font-medium"
+                      className="h-12 min-w-0 rounded-[24px] px-4 text-base font-normal"
                       target={l.target}
                     >
                       {text}
@@ -113,7 +113,7 @@ export function CostComparisonSection({ section, lang }: { section: CostComparis
                           </p>
                         )}
                         {section.price && (
-                          <p className="text-center text-2xl font-extrabold leading-tight tracking-[-0.04em] text-navy sm:text-[34px] sm:leading-tight sm:tracking-[-1.36px]">
+                          <p className="text-center text-2xl font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-[34px] sm:leading-tight sm:tracking-[-1.36px]">
                             {section.price}
                           </p>
                         )}

@@ -62,7 +62,7 @@ function ProcessStepBlock({ s, maxWidthClass }: { s: ProcessStepItemT; maxWidthC
             {s.title && <h3 className="w-full min-w-0 text-center text-2xl font-semibold leading-[1.1] tracking-[-0.04em] text-navy">{s.title}</h3>}
           </div>
         </div>
-        {s.text && <RichText html={s.text} className={`${stepProseOnCard} w-full shrink-0`} />}
+        {s.text && <RichText html={s.text} className={`${stepProseOnCard} w-full shrink-0 text-black/90 text-center`} />}
       </div>
     );
   }
@@ -161,7 +161,7 @@ export function ProcessStepsSection({ section, lang }: { section: ProcessStepsSe
                         href={l.href}
                         target={l.target}
                         rel={l.target === "_blank" ? "noopener noreferrer" : undefined}
-                        className="inline-flex h-[54px] w-full min-w-0 max-w-full items-center justify-between gap-4 rounded-[27px] bg-white pl-3 pr-[21px] text-lg font-medium leading-6 text-navy shadow-none transition hover:bg-white/95"
+                        className="inline-flex h-[54px] w-full min-w-0 max-w-full items-center justify-between gap-4 rounded-[27px] bg-white pl-3 pr-[21px] text-lg font-normal leading-6 text-navy shadow-none transition hover:bg-white/95"
                       >
                         <span className="min-w-0 break-words text-balance [text-align:left] sm:whitespace-nowrap">{t}</span>
                         <ArrowInCircle variant="on-light" className="!h-6 !w-6 shrink-0" />

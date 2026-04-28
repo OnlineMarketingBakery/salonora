@@ -146,9 +146,7 @@ export function SiteFooter({
         <div
           className={[
             "relative z-10 mx-auto w-full max-w-[1300px] px-4 sm:px-6 md:px-8",
-            g.footer.footerLogo
-              ? "pt-2 sm:pt-0"
-              : "pt-14 sm:pt-16",
+            g.footer.footerLogo ? "pt-2 sm:pt-0" : "pt-14 sm:pt-16",
             g.footer.footerLogo && "sm:pt-2 md:pt-3",
           ]
             .filter(Boolean)
@@ -185,7 +183,7 @@ export function SiteFooter({
                         ? "noopener noreferrer"
                         : undefined
                     }
-                    className="group inline-flex h-12 w-full min-w-0 max-w-full shrink-0 items-center justify-between gap-[15px] rounded-[24px] bg-brand pl-[18px] pr-3.5 text-base font-medium leading-[normal] text-white transition hover:brightness-110 sm:w-[247px] sm:max-w-[247px] sm:min-w-0"
+                    className="group inline-flex h-12 w-full min-w-0 max-w-full shrink-0 items-center justify-between gap-[15px] rounded-[24px] bg-brand pl-[18px] pr-3.5 text-base font-normal leading-[normal] text-white transition hover:brightness-110 sm:w-[247px] sm:max-w-[247px] sm:min-w-0"
                   >
                     <span className="min-w-0 break-words text-balance [text-align:left] sm:whitespace-nowrap">
                       {g.footer.footerCtaPrimaryLink?.title || primaryCta.label}
@@ -205,7 +203,7 @@ export function SiteFooter({
                         ? "noopener noreferrer"
                         : undefined
                     }
-                    className="group text-navy-deep inline-flex h-12 w-full min-w-0 max-w-full shrink-0 items-center justify-between gap-[17px] rounded-[24px] bg-white px-4 text-base font-medium leading-[normal] shadow-[0px_6px_10px_rgba(57,144,240,0.54)] transition hover:brightness-95 sm:max-w-[368px] sm:min-w-0"
+                    className="group text-navy-deep inline-flex h-12 w-full min-w-0 max-w-full shrink-0 items-center justify-between gap-[17px] rounded-[24px] bg-white px-4 text-base font-normal leading-[normal] shadow-[0px_6px_10px_rgba(57,144,240,0.54)] transition hover:brightness-95 sm:max-w-[368px] sm:min-w-0"
                   >
                     <span className="min-w-0 break-words text-balance [text-align:left] sm:whitespace-nowrap">
                       {g.footer.footerCtaSecondaryLink?.title ||
@@ -229,14 +227,13 @@ export function SiteFooter({
               )}
             </div>
 
-            {(hasNav || hasFollow) && (
-              <div
-                className="hidden w-px min-h-[268px] shrink-0 self-stretch bg-white/15 lg:block"
-                aria-hidden
-              />
-            )}
-
-            <div className="flex w-full min-w-0 flex-1 flex-col gap-10 min-[500px]:flex-row min-[500px]:items-stretch min-[500px]:gap-8 min-[500px]:pl-0 sm:pl-0 lg:max-w-2xl lg:gap-6 xl:max-w-none 2xl:pl-0">
+            <div className="flex w-full min-w-0 flex-1 flex-col justify-end gap-10 min-[500px]:flex-row min-[500px]:items-stretch min-[500px]:gap-8 min-[500px]:pl-0 sm:pl-0 lg:max-w-2xl lg:gap-6 xl:max-w-none 2xl:pl-0">
+              {(hasNav || hasFollow) && (
+                <div
+                  className="hidden w-px min-h-[268px] shrink-0 self-stretch bg-white/15 lg:block"
+                  aria-hidden
+                />
+              )}
               {hasNav && (
                 <div className="w-full min-w-0 min-[500px]:max-w-[8.2rem] sm:min-w-[6.5rem] sm:pl-0 md:pl-0 lg:min-w-[7.2rem]">
                   <h3 className="text-2xl font-semibold leading-none text-white">
@@ -289,7 +286,7 @@ export function SiteFooter({
                         <li key={s.label}>
                           <a
                             href={s.href}
-                            className="group inline-flex min-h-0 items-center gap-1.5 text-base font-medium leading-[normal] text-white transition hover:text-white/80"
+                            className="group inline-flex min-h-0 items-center gap-1.5 text-base font-normal leading-[normal] text-white transition hover:text-white/80"
                             rel="noreferrer"
                             target="_blank"
                           >
@@ -311,9 +308,7 @@ export function SiteFooter({
         </div>
 
         <div className="w-full">
-          <div
-            className="w-[75%] mx-auto pointer-events-none relative [filter:drop-shadow(0_-6px_24px_rgba(57,144,240,0.55))_drop-shadow(0_-16px_48px_rgba(57,144,240,0.4))_drop-shadow(0_-28px_72px_rgba(57,144,240,0.28))_drop-shadow(0_-40px_104px_rgba(57,144,240,0.16))_drop-shadow(0_-52px_140px_rgba(57,144,240,0.08))_drop-shadow(0_-64px_180px_rgba(57,144,240,0.04))]"
-          >
+          <div className="w-[75%] mx-auto pointer-events-none relative [filter:drop-shadow(0_-6px_24px_rgba(57,144,240,0.55))_drop-shadow(0_-16px_48px_rgba(57,144,240,0.4))_drop-shadow(0_-28px_72px_rgba(57,144,240,0.28))_drop-shadow(0_-40px_104px_rgba(57,144,240,0.16))_drop-shadow(0_-52px_140px_rgba(57,144,240,0.08))_drop-shadow(0_-64px_180px_rgba(57,144,240,0.04))]">
             <img
               src="/footer-shape-top.svg"
               width={1283}

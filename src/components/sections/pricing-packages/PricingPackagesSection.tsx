@@ -66,7 +66,7 @@ export function PricingPackagesSection({ section, lang }: { section: PricingPack
         <div className="mx-auto flex max-w-[1300px] flex-col items-center gap-10 sm:gap-12 lg:gap-[64px]">
           <div className="flex max-w-[634px] flex-col items-center gap-5 text-center sm:gap-5">
             {section.eyebrow && (
-              <div className="inline-flex h-[42px] min-w-[6.2rem] items-center justify-center rounded-full bg-white px-6 text-base font-bold leading-[1.6] text-brand shadow-sm">
+              <div className="inline-flex h-[42px] min-w-[6.2rem] items-center justify-center rounded-full bg-white px-6 text-base font-normal leading-[1.6] text-brand shadow-sm">
                 {section.eyebrow}
               </div>
             )}
@@ -95,7 +95,7 @@ export function PricingPackagesSection({ section, lang }: { section: PricingPack
                   ].join(" ")}
                 >
                   {hasBadge && (
-                    <div className="absolute -top-3 left-1/2 z-20 flex h-[47px] min-w-[169px] -translate-x-1/2 items-center justify-center gap-1.5 rounded-[15px] bg-brand px-4 text-base font-bold text-white">
+                    <div className="absolute -top-3 left-1/2 z-20 flex h-[47px] min-w-[169px] -translate-x-1/2 items-center justify-center gap-1.5 rounded-[15px] bg-brand px-4 text-base font-normal text-white">
                       <CrownIcon />
                       {p.badge}
                     </div>
@@ -192,12 +192,12 @@ export function PricingPackagesSection({ section, lang }: { section: PricingPack
                               href={l.href}
                               target={l.target}
                               rel={l.target === "_blank" ? "noopener noreferrer" : undefined}
-                              className="inline-flex h-[55px] w-full min-w-0 max-w-[332px] items-center justify-between self-start gap-2 rounded-[31.5px] bg-navy py-0 pl-[18px] pr-3 text-base font-medium leading-[normal] text-white shadow-sm transition hover:bg-navy/95"
+                              className="inline-flex h-[55px] w-full min-w-0 max-w-[332px] items-center justify-between self-start gap-2 rounded-[31.5px] bg-navy py-0 pl-[18px] pr-3 text-base font-normal leading-[normal] text-white shadow-sm transition hover:bg-navy/95"
                             >
                               <span className="min-w-0 break-words">{c.text || l.label}</span>
                               <ArrowInCircle
                                 variant="on-dark"
-                                className="!h-[27px] !w-[27px] !border-white/80 [&>svg]:h-3.5 [&>svg]:w-3.5 [&_path]:!text-white"
+                                className="!h-[27px] !w-[27px] !border-white/80 [&>img]:!h-3.5 [&>img]:!w-3.5"
                               />
                             </Link>
                           );
@@ -241,7 +241,7 @@ export function PricingPackagesSection({ section, lang }: { section: PricingPack
                       key={i}
                       href={l.href}
                       target={l.target}
-                      className="!h-12 w-full !max-w-[321px] !justify-center !px-4 !text-lg !font-medium !leading-6"
+                      className="!h-12 w-full !max-w-[321px] !justify-center !px-4 !text-lg !font-normal !leading-6"
                     >
                       {t}
                     </PrimaryCtaLink>
@@ -253,7 +253,7 @@ export function PricingPackagesSection({ section, lang }: { section: PricingPack
                       key={i}
                       href={l.href}
                       target={l.target}
-                      className="!h-12 !max-h-12 w-full !max-w-[321px] !border-0 !px-4 !text-lg !font-medium !leading-6 !shadow-[0px_6px_10px_rgba(57,144,240,0.54)]"
+                      className="!h-12 !max-h-12 w-full !max-w-[321px] !border-0 !px-4 !text-lg !font-normal !leading-6 !shadow-[0px_6px_10px_rgba(57,144,240,0.54)]"
                     >
                       {t}
                     </WhiteCtaLink>

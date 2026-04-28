@@ -126,7 +126,7 @@ export function FaqContactSplitSection({ section, lang }: { section: FaqContactS
                           href={l.href}
                           target={l.target}
                           rel={l.target === "_blank" ? "noopener noreferrer" : undefined}
-                          className="inline-flex h-12 w-full min-w-0 max-w-full items-center justify-between gap-2 rounded-[24px] bg-navy px-3 text-base font-medium text-white transition hover:bg-navy/95"
+                          className="inline-flex h-12 w-full min-w-0 max-w-full items-center justify-between gap-2 rounded-[24px] bg-navy px-3 text-base font-normal text-white transition hover:bg-navy/95"
                         >
                           <span className="min-w-0 break-words text-balance [text-align:left] sm:whitespace-nowrap">{t}</span>
                           <ArrowInCircle variant="on-dark" className="!h-6 !w-6 shrink-0" />

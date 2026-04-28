@@ -20,7 +20,7 @@ const introProse = [
 ].join(" ");
 
 const cardCtaClassName =
-  "!h-[42px] w-full !min-h-0 !max-w-full !justify-between !gap-0 !rounded-[24px] !pl-[18px] !pr-3.5 !text-sm !font-medium !leading-6 !text-white !shadow-none";
+  "!h-[42px] w-full !min-h-0 !max-w-full !justify-between !gap-0 !rounded-[24px] !pl-[18px] !pr-3.5 !text-sm !font-normal !leading-6 !text-white !shadow-none";
 
 export function PricingCtaSection({ section, lang }: { section: PricingCtaSectionT; lang: Locale }) {
   return (

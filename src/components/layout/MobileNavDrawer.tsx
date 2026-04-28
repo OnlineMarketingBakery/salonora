@@ -242,7 +242,7 @@ export function MobileNavDrawer({
                   target={cta.target}
                   rel={cta.target === "_blank" ? "noopener noreferrer" : undefined}
                   onClick={() => setOpen(false)}
-                  className="group inline-flex h-12 w-full min-w-0 items-center justify-center gap-2.5 rounded-full bg-navy px-4 text-[16px] font-medium tracking-[-0.04em] text-white transition hover:brightness-110"
+                  className="group inline-flex h-12 w-full min-w-0 items-center justify-center gap-2.5 rounded-full bg-navy px-4 text-[16px] font-normal tracking-[-0.04em] text-white transition hover:brightness-110"
                 >
                   <span className="truncate">{cta.label}</span>
                   <ArrowInCircle variant="on-dark" className="h-5 w-5 shrink-0" />

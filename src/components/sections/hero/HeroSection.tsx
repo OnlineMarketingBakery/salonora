@@ -10,7 +10,7 @@ import type { HeroSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 
 const heroSecondary =
-  "group inline-flex h-12 w-full min-w-0 max-w-full items-center justify-center gap-[17px] rounded-[24px] bg-white px-3.5 text-base font-medium leading-normal text-navy shadow-[0px_6px_20px_0px_rgba(57,144,240,0.54)] transition font-sans hover:brightness-[0.99]";
+  "group inline-flex h-12 w-full min-w-0 max-w-full items-center justify-center gap-[17px] rounded-[24px] bg-white px-3.5 text-base font-normal leading-normal text-navy shadow-[0px_6px_20px_0px_rgba(57,144,240,0.54)] transition font-sans hover:brightness-[0.99]";
 
 export function HeroSection({ section, lang }: { section: HeroSectionT; lang: Locale }) {
   const showSocial = Boolean(section.trustImage || section.trustLine);

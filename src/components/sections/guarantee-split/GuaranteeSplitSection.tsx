@@ -48,7 +48,7 @@ function GuaranteePoint({ icon, text }: { icon: WpImage | null; text: string }) 
 }
 
 const secondaryCtaClass =
-  "group inline-flex h-12 w-full min-w-0 max-w-[392px] items-center justify-between gap-4 rounded-[24px] border border-white bg-[rgba(57,144,240,0.24)] px-3 text-base font-medium font-sans leading-normal text-navy transition hover:bg-[rgba(57,144,240,0.32)]";
+  "group inline-flex h-12 w-full min-w-0 max-w-[392px] items-center justify-between gap-4 rounded-[24px] border border-white bg-[rgba(57,144,240,0.24)] px-3 text-base font-normal font-sans leading-normal text-navy transition hover:bg-[rgba(57,144,240,0.32)]";
 
 export function GuaranteeSplitSection({ section, lang }: { section: GuaranteeSplitSectionT; lang: Locale }) {
   const imageFirst = section.mediaPosition === "left";

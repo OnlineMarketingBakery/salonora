@@ -110,7 +110,7 @@ export function CtaSection({ section, lang }: { section: CtaSectionT; lang: Loca
                             href={l.href}
                             target={l.target}
                             rel={l.target === "_blank" ? "noopener noreferrer" : undefined}
-                            className="inline-flex h-[54px] w-full min-w-0 max-w-full items-center justify-between gap-2 rounded-[27px] bg-navy-deep px-3 text-lg font-medium leading-6 tracking-[0.5px] text-white transition hover:bg-navy-deep/95 sm:max-w-[350px] sm:gap-8"
+                            className="inline-flex h-[54px] w-full min-w-0 max-w-full items-center justify-between gap-2 rounded-[27px] bg-navy-deep px-3 text-lg font-normal leading-6 tracking-[0.5px] text-white transition hover:bg-navy-deep/95 sm:max-w-[350px] sm:gap-8"
                           >
                             <span className="min-w-0 break-words [text-align:left] sm:whitespace-nowrap">{t}</span>
                             <ArrowInCircle variant="on-dark" className="!h-6 !w-6 shrink-0" />
