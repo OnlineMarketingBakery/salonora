@@ -156,7 +156,7 @@ export function AnnouncementBarSection({ section, lang }: { section: Announcemen
 
   return (
     <section
-      className="relative w-full overflow-hidden bg-transparent py-10 sm:py-12 -mt-10"
+      className="relative w-full overflow-hidden bg-transparent py-10 sm:py-8 -mb-[4rem]"
       aria-label={tickerLabel}
     >
       <div className="relative z-10 flex justify-center">

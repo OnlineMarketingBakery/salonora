@@ -39,7 +39,7 @@ function FacebookIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
-      className="h-[15px] w-[15px] text-navy-deep"
+      className="h-[15px] w-[15px] text-brand"
       fill="currentColor"
       aria-hidden
     >
@@ -52,7 +52,7 @@ function InstagramIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
-      className="h-[15px] w-[15px] text-navy-deep"
+      className="h-[15px] w-[15px] text-brand"
       fill="currentColor"
       aria-hidden
     >
@@ -65,7 +65,7 @@ function YouTubeIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
-      className="h-[15px] w-[15px] text-navy-deep"
+      className="h-[15px] w-[15px] text-brand"
       fill="currentColor"
       aria-hidden
     >
@@ -78,7 +78,7 @@ function LinkedinIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
-      className="h-[15px] w-[15px] text-navy-deep"
+      className="h-[15px] w-[15px] text-brand"
       fill="currentColor"
       aria-hidden
     >
@@ -276,7 +276,7 @@ export function SiteFooter({
                             target="_blank"
                           >
                             {icon && (
-                              <span className="inline-flex h-[23px] w-[23px] flex-shrink-0 items-center justify-center rounded-[11.5px] bg-white p-1 text-navy-deep">
+                              <span className="inline-flex h-[23px] w-[23px] flex-shrink-0 items-center justify-center rounded-[11.5px] bg-white p-1 text-brand">
                                 {icon}
                               </span>
                             )}
