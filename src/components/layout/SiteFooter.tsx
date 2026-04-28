@@ -154,7 +154,7 @@ export function SiteFooter({
             .join(" ")}
         >
           <div className="flex flex-col gap-10 lg:flex-row lg:items-stretch lg:gap-10 lg:pl-0 xl:gap-14 2xl:gap-20 2xl:pl-2 2xl:pr-0 mb-4 sm:mb-10">
-            <div className={`${REVEAL_ITEM} w-full min-w-0 max-w-[625px] text-left`}>
+            <div className={`${REVEAL_ITEM} w-full min-w-0 max-w-[712px] text-left`}>
               {heading && (
                 <h2 className="text-[2rem] font-semibold leading-none tracking-[-0.04em] text-white sm:text-[2.5rem] lg:text-[3rem] xl:text-[48px]">
                   {heading}
