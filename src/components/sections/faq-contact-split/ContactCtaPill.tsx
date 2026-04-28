@@ -108,7 +108,7 @@ export function ContactCtaPill({ href, text, icon, iconFallback, target }: Props
           <PhoneGlyph className="h-7 w-7" />
         )}
       </span>
-      <span className="min-w-0 flex-1 text-pretty text-xl font-semibold leading-[1.1] tracking-[-0.8px] text-slate-900 [text-align:left]">
+      <span className="min-w-0 flex-1 text-pretty text-xl font-regular leading-[1.1] tracking-[-0.8px] text-slate-900 [text-align:left]">
         {text}
       </span>
     </Link>
