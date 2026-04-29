@@ -65,7 +65,9 @@ export function HeroSection({ section, lang }: { section: HeroSectionT; lang: Lo
               })}
             </div>
             {showSocial && (
-              <div className={`${REVEAL_ITEM} mt-9 flex flex-col justify-start gap-2 sm:mt-10 sm:flex-row sm:items-center sm:gap-4`}>
+              <div
+                className={`${REVEAL_ITEM} mt-9 flex flex-col items-start justify-start gap-2 sm:mt-10 sm:flex-row sm:items-center sm:gap-4`}
+              >
                 {section.trustImage && (
                   <Media
                     image={section.trustImage}
@@ -74,11 +76,11 @@ export function HeroSection({ section, lang }: { section: HeroSectionT; lang: Lo
                     height={180}
                     sizes="(max-width: 640px) 92vw, 480px"
                     quality={92}
-                    className="h-10 w-auto max-w-full shrink-0 sm:h-12"
+                    className="h-10 w-auto max-w-full shrink-0 object-contain object-left sm:h-12"
                   />
                 )}
                 {section.trustLine && (
-                  <div className="flex min-w-0 flex-col gap-1.5 sm:flex-row sm:items-center sm:gap-2.5">
+                  <div className="flex min-w-0 flex-col items-start gap-1.5 sm:flex-row sm:items-center sm:gap-2.5">
                     <StarRating className="shrink-0" />
                     <RichText
                       html={section.trustLine}
