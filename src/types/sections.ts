@@ -148,6 +148,25 @@ export type SalonValuePropositionSectionT = CoreSection & {
   cards: SalonValueCardT[];
 };
 
+/** Figma: centered header, light panel + stacked feature cards, navy CTA panel with optional composite art */
+export type WhyOwnersChooseCardT = {
+  accent: SalonValueCardAccentT;
+  icon: WpImage | null;
+  title: string;
+  text: string;
+};
+
+export type WhyOwnersChooseSectionT = CoreSection & {
+  type: "why_owners_choose";
+  eyebrow: string;
+  title: string;
+  cards: WhyOwnersChooseCardT[];
+  panelTitle: string;
+  panelText: string;
+  panelImage: WpImage | null;
+  ctas: CtaItem[];
+};
+
 export type TestimonialsSectionT = CoreSection & {
   type: "testimonials";
   title: string;
@@ -268,6 +287,7 @@ export type AnySectionT =
   | StorySplitSectionT
   | ImageIntroSplitSectionT
   | SalonValuePropositionSectionT
+  | WhyOwnersChooseSectionT
   | TestimonialsSectionT
   | AnnouncementBarSectionT
   | ProcessStepsSectionT

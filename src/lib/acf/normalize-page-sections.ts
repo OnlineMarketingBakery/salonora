@@ -206,6 +206,29 @@ function mapLayout(i: number, row: RawRow): AnySectionT | null {
             })
           : [],
       };
+    case "why_owners_choose":
+      return {
+        ...base,
+        type: "why_owners_choose",
+        eyebrow: asString(row.eyebrow),
+        title: asString(row.title),
+        cards: Array.isArray(row.why_cards)
+          ? (row.why_cards as { accent?: unknown; icon?: unknown; title?: unknown; text?: unknown }[]).map((c) => {
+              const a = asString(c.accent);
+              const accent = a === "rose" ? "rose" : "brand";
+              return {
+                accent,
+                icon: asImage(c.icon),
+                title: asString(c.title),
+                text: asHtml(c.text),
+              };
+            })
+          : [],
+        panelTitle: asString(row.panel_title),
+        panelText: asHtml(row.panel_text),
+        panelImage: asImage(row.panel_image),
+        ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
+      };
     case "testimonials": {
       const testimonialIds = asRelationshipPostIds(row.items);
       let ctas = mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]);
