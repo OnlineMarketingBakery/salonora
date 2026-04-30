@@ -128,6 +128,26 @@ export type ImageIntroSplitSectionT = CoreSection & {
   imageTextRows: ImageIntroSplitRowT[];
 };
 
+export type SalonValueCardAccentT = "brand" | "rose";
+
+export type SalonValueCardT = {
+  accent: SalonValueCardAccentT;
+  icon: WpImage | null;
+  title: string;
+  text: string;
+};
+
+/** Figma: eyebrow + headline + intro, blue gradient visual, three accent cards */
+export type SalonValuePropositionSectionT = CoreSection & {
+  type: "salon_value_proposition";
+  eyebrow: string;
+  title: string;
+  intro: string;
+  /** Composite illustration for the gradient panel */
+  visualImage: WpImage | null;
+  cards: SalonValueCardT[];
+};
+
 export type TestimonialsSectionT = CoreSection & {
   type: "testimonials";
   title: string;
@@ -247,6 +267,7 @@ export type AnySectionT =
   | GuaranteeSplitSectionT
   | StorySplitSectionT
   | ImageIntroSplitSectionT
+  | SalonValuePropositionSectionT
   | TestimonialsSectionT
   | AnnouncementBarSectionT
   | ProcessStepsSectionT

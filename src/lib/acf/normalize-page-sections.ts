@@ -185,6 +185,27 @@ function mapLayout(i: number, row: RawRow): AnySectionT | null {
             }))
           : [],
       };
+    case "salon_value_proposition":
+      return {
+        ...base,
+        type: "salon_value_proposition",
+        eyebrow: asString(row.eyebrow),
+        title: asString(row.title),
+        intro: asHtml(row.intro),
+        visualImage: asImage(row.visual_image),
+        cards: Array.isArray(row.feature_cards)
+          ? (row.feature_cards as { accent?: unknown; icon?: unknown; title?: unknown; text?: unknown }[]).map((c) => {
+              const a = asString(c.accent);
+              const accent = a === "rose" ? "rose" : "brand";
+              return {
+                accent,
+                icon: asImage(c.icon),
+                title: asString(c.title),
+                text: asHtml(c.text),
+              };
+            })
+          : [],
+      };
     case "testimonials": {
       const testimonialIds = asRelationshipPostIds(row.items);
       let ctas = mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]);
