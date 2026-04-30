@@ -15,11 +15,7 @@ export function HeroSection({ section, lang }: { section: HeroSectionT; lang: Lo
     <section className="relative overflow-hidden pt-28 sm:pt-32 md:pt-36 pb-0">
       <div
         className="pointer-events-none absolute inset-0 -z-20 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: "url('/hero-bg.png')" }}
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-white/25 via-surface/50 to-surface"
+        style={{ backgroundImage: "url('/hero-gradiant.png')" }}
         aria-hidden
       />
       <Container>
@@ -46,7 +42,7 @@ export function HeroSection({ section, lang }: { section: HeroSectionT; lang: Lo
                 className={`${REVEAL_ITEM} mt-3 !prose-p:text-inherit text-2xl font-semibold !text-accent !prose-p:text-inherit !prose-strong:text-navy sm:text-3xl lg:mt-4 lg:text-[36px] [&_p]:!m-0 [&_p]:leading-tight`}
               />
             )}
-            <div className={`${REVEAL_ITEM} mt-8 flex w-full min-w-0 flex-col items-start gap-[18px] sm:mt-9`}>
+            <div className={`${REVEAL_ITEM} mt-8 flex w-full min-w-0 flex-row flex-wrap items-start gap-[18px] sm:mt-9`}>
               {section.ctas.map((cta, i) => {
                 const r = resolveLink(cta.url, lang);
                 if (!r) return null;
@@ -91,11 +87,24 @@ export function HeroSection({ section, lang }: { section: HeroSectionT; lang: Lo
               </div>
             )}
           </div>
+          {section.behindImage && (
+            <div className="pointer-events-none absolute inset-y-0 pt-32 right-0 z-0 flex w-1/2 min-w-0 items-end justify-end">
+              <Media
+                image={section.behindImage}
+                preferLargestSource
+                className="h-auto max-h-full w-full object-contain object-bottom object-right"
+                width={560}
+                height={640}
+                sizes="100vw"
+                quality={90}
+              />
+            </div>
+          )}
           <div className={`${REVEAL_ITEM} relative flex w-full min-w-0 items-end self-stretch lg:h-full lg:pt-2`}>
             {section.image && (
               <Media
                 image={section.image}
-                className="h-auto w-full max-w-none object-contain object-bottom"
+                className="relative z-10 h-auto w-full max-w-none object-contain object-bottom"
                 width={600}
                 height={750}
                 sizes="(min-width: 1024px) 38vw, 100vw"

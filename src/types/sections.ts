@@ -16,6 +16,8 @@ export type HeroSectionT = CoreSection & {
   trustLine: string;
   ctas: CtaItem[];
   trustImage: WpImage | null;
+  /** Large visual behind the foreground person (e.g. product UI), optional */
+  behindImage: WpImage | null;
   image: WpImage | null;
 };
 

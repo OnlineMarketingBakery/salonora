@@ -1275,6 +1275,32 @@
                                 "preview_size": "medium"
                             },
                             {
+                                "key": "field_hero_behind_image",
+                                "label": "Behind image",
+                                "name": "behind_image",
+                                "aria-label": "",
+                                "type": "image",
+                                "instructions": "Optional layer behind the main hero figure (e.g. app screenshot). Shown on the right half of the hero visual area.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "return_format": "array",
+                                "library": "all",
+                                "min_width": "",
+                                "min_height": "",
+                                "min_size": "",
+                                "max_width": "",
+                                "max_height": "",
+                                "max_size": "",
+                                "mime_types": "",
+                                "allow_in_bindings": 0,
+                                "preview_size": "medium"
+                            },
+                            {
                                 "key": "field_hero_image",
                                 "label": "Image",
                                 "name": "image",

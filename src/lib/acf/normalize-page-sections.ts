@@ -46,6 +46,7 @@ function mapLayout(i: number, row: RawRow): AnySectionT | null {
         trustLine: asHtml(row.trust_caption),
         ctas,
         trustImage: asImage(row.trust_image),
+        behindImage: asImage(row.behind_image),
         image: asImage(row.image),
       };
     }
