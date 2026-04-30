@@ -2984,6 +2984,178 @@
                         "min": "",
                         "max": ""
                     },
+                    "layout_omb_image_intro_split": {
+                        "key": "layout_omb_image_intro_split",
+                        "name": "image_intro_split",
+                        "label": "Image + intro split",
+                        "display": "block",
+                        "sub_fields": [
+                            {
+                                "key": "field_iis_left_image",
+                                "label": "Left image",
+                                "name": "image",
+                                "aria-label": "",
+                                "type": "image",
+                                "instructions": "Illustration or graphic for the left column.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "return_format": "array",
+                                "library": "all",
+                                "min_width": "",
+                                "min_height": "",
+                                "min_size": "",
+                                "max_width": "",
+                                "max_height": "",
+                                "max_size": "",
+                                "mime_types": "",
+                                "allow_in_bindings": 0,
+                                "preview_size": "medium"
+                            },
+                            {
+                                "key": "field_iis_eyebrow",
+                                "label": "Eyebrow",
+                                "name": "eyebrow",
+                                "aria-label": "",
+                                "type": "text",
+                                "instructions": "Short label above the title (e.g. pill text).",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "maxlength": "",
+                                "allow_in_bindings": 0,
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": ""
+                            },
+                            {
+                                "key": "field_iis_title",
+                                "label": "Title",
+                                "name": "title",
+                                "aria-label": "",
+                                "type": "text",
+                                "instructions": "Use line breaks for multi-line headings.",
+                                "required": 1,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "maxlength": "",
+                                "allow_in_bindings": 0,
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": ""
+                            },
+                            {
+                                "key": "field_iis_intro",
+                                "label": "Intro",
+                                "name": "intro",
+                                "aria-label": "",
+                                "type": "wysiwyg",
+                                "instructions": "Supporting paragraph under the title.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "allow_in_bindings": 0,
+                                "tabs": "all",
+                                "toolbar": "full",
+                                "media_upload": 1,
+                                "delay": 0
+                            },
+                            {
+                                "key": "field_iis_image_text_rows",
+                                "label": "Image + text rows",
+                                "name": "image_text_rows",
+                                "aria-label": "",
+                                "type": "repeater",
+                                "instructions": "Optional rows below the divider: small icon and emphasis text.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "layout": "row",
+                                "pagination": 0,
+                                "min": 0,
+                                "max": 0,
+                                "collapsed": "",
+                                "button_label": "Add row",
+                                "rows_per_page": 20,
+                                "sub_fields": [
+                                    {
+                                        "key": "field_iis_row_icon",
+                                        "label": "Icon",
+                                        "name": "icon",
+                                        "aria-label": "",
+                                        "type": "image",
+                                        "instructions": "",
+                                        "required": 0,
+                                        "conditional_logic": 0,
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
+                                        "return_format": "array",
+                                        "library": "all",
+                                        "min_width": "",
+                                        "min_height": "",
+                                        "min_size": "",
+                                        "max_width": "",
+                                        "max_height": "",
+                                        "max_size": "",
+                                        "mime_types": "",
+                                        "allow_in_bindings": 0,
+                                        "preview_size": "thumbnail",
+                                        "parent_repeater": "field_iis_image_text_rows"
+                                    },
+                                    {
+                                        "key": "field_iis_row_text",
+                                        "label": "Text",
+                                        "name": "text",
+                                        "aria-label": "",
+                                        "type": "text",
+                                        "instructions": "",
+                                        "required": 0,
+                                        "conditional_logic": 0,
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
+                                        "default_value": "",
+                                        "maxlength": "",
+                                        "allow_in_bindings": 0,
+                                        "placeholder": "",
+                                        "prepend": "",
+                                        "append": "",
+                                        "parent_repeater": "field_iis_image_text_rows"
+                                    }
+                                ]
+                            }
+                        ],
+                        "min": "",
+                        "max": ""
+                    },
                     "layout_omb_testimonials": {
                         "key": "layout_omb_testimonials",
                         "name": "testimonials",

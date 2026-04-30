@@ -170,6 +170,21 @@ function mapLayout(i: number, row: RawRow): AnySectionT | null {
         ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
         showAccentShape: row.show_accent_shape === undefined ? true : asBool(row.show_accent_shape),
       };
+    case "image_intro_split":
+      return {
+        ...base,
+        type: "image_intro_split",
+        image: asImage(row.image),
+        eyebrow: asString(row.eyebrow),
+        title: asString(row.title),
+        intro: asHtml(row.intro),
+        imageTextRows: Array.isArray(row.image_text_rows)
+          ? (row.image_text_rows as { icon?: unknown; text?: unknown }[]).map((r) => ({
+              icon: asImage(r.icon),
+              text: asString(r.text),
+            }))
+          : [],
+      };
     case "testimonials": {
       const testimonialIds = asRelationshipPostIds(row.items);
       let ctas = mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]);

@@ -115,6 +115,19 @@ export type StorySplitSectionT = CoreSection & {
   showAccentShape: boolean;
 };
 
+export type ImageIntroSplitRowT = { icon: WpImage | null; text: string };
+
+export type ImageIntroSplitSectionT = CoreSection & {
+  type: "image_intro_split";
+  /** Visual on the left */
+  image: WpImage | null;
+  eyebrow: string;
+  title: string;
+  intro: string;
+  /** Icon + emphasis line(s) below the divider */
+  imageTextRows: ImageIntroSplitRowT[];
+};
+
 export type TestimonialsSectionT = CoreSection & {
   type: "testimonials";
   title: string;
@@ -233,6 +246,7 @@ export type AnySectionT =
   | PricingPackagesSectionT
   | GuaranteeSplitSectionT
   | StorySplitSectionT
+  | ImageIntroSplitSectionT
   | TestimonialsSectionT
   | AnnouncementBarSectionT
   | ProcessStepsSectionT
