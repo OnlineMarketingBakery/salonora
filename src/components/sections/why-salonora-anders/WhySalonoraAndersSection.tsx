@@ -117,7 +117,7 @@ export function WhySalonoraAndersSection({
                             {looksLikeHtml ? (
                               <RichText
                                 html={card.text}
-                                className="w-full !text-center !prose-p:mb-0 !prose-p:mt-0 !prose-p:text-sm !prose-p:font-normal !prose-p:leading-[1.4] !prose-p:text-[#002752] [&_p+_p]:!mt-0 sm:!prose-p:text-[14px]"
+                                className="w-full text-center! !prose-p:mb-0 !prose-p:mt-0 !prose-p:text-sm !prose-p:font-normal !prose-p:leading-[1.4] !prose-p:text-[#002752] [&_p+_p]:mt-0! sm:!prose-p:text-[14px]"
                               />
                             ) : (
                               <p className="w-full text-center font-sans text-sm font-normal leading-[1.4] text-[#002752] sm:text-[14px] whitespace-pre-line">
