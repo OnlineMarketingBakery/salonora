@@ -132,12 +132,12 @@ export function WhySalonoraAndersSection({
                 </div>
 
                 {section.phoneImage ? (
-                  <div className="relative z-20 flex w-full max-w-[90vw] -mb-10 shrink-0 justify-center sm:max-w-[300px] lg:flex lg:w-[324px] lg:max-w-[324px] lg:shrink-0 lg:flex-col lg:items-center lg:justify-end lg:self-stretch lg:overflow-visible lg:leading-0 lg:-mb-12">
+                  <div className="relative z-20 flex w-full max-w-full shrink-0 justify-center sm:max-w-[300px] lg:flex lg:w-[324px] lg:max-w-[324px] lg:shrink-0 lg:flex-col lg:items-center lg:justify-end lg:self-stretch lg:overflow-visible lg:leading-0 lg:-mb-12">
                     <Media
                       image={section.phoneImage}
                       width={648}
                       height={886}
-                      className="block h-auto w-full max-w-[280px] object-contain object-bottom leading-none drop-shadow-[0_20px_40px_rgba(0,39,82,0.35)] sm:max-w-[300px] lg:max-h-[min(443px,100%)] lg:w-full lg:max-w-[324px]"
+                      className="block h-auto w-full max-w-full object-contain object-bottom leading-none drop-shadow-[0_20px_40px_rgba(0,39,82,0.35)] sm:max-w-[300px] lg:max-h-[min(443px,100%)] lg:w-full lg:max-w-[324px]"
                       sizes="(min-width: 1024px) 324px, 70vw"
                       preferLargestSource
                     />
