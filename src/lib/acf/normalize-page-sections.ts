@@ -245,6 +245,22 @@ function mapLayout(i: number, row: RawRow): AnySectionT | null {
           : [],
         phoneImage: asImage(row.phone_image),
       };
+    case "why_salonora_anders":
+      return {
+        ...base,
+        type: "why_salonora_anders",
+        title: asString(row.title),
+        paragraph1: asHtml(row.paragraph_1),
+        paragraph2: asHtml(row.paragraph_2),
+        ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
+        insightHeading: asString(row.insight_heading),
+        insightCards: Array.isArray(row.insight_cards)
+          ? (row.insight_cards as { text?: unknown }[]).map((c) => ({
+              text: asHtml(c.text),
+            }))
+          : [],
+        phoneImage: asImage(row.phone_image),
+      };
     case "testimonials": {
       const testimonialIds = asRelationshipPostIds(row.items);
       let ctas = mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]);

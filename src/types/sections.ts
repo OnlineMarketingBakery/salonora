@@ -181,6 +181,20 @@ export type WhySalonoraDifferentSectionT = CoreSection & {
   phoneImage: WpImage | null;
 };
 
+/** Same UI as `why_salonora_different`; separate ACF layout (Figma 754:35). */
+export type WhySalonoraAndersInsightCardT = { text: string };
+
+export type WhySalonoraAndersSectionT = CoreSection & {
+  type: "why_salonora_anders";
+  title: string;
+  paragraph1: string;
+  paragraph2: string;
+  ctas: CtaItem[];
+  insightHeading: string;
+  insightCards: WhySalonoraAndersInsightCardT[];
+  phoneImage: WpImage | null;
+};
+
 export type TestimonialsSectionT = CoreSection & {
   type: "testimonials";
   title: string;
@@ -303,6 +317,7 @@ export type AnySectionT =
   | SalonValuePropositionSectionT
   | WhyOwnersChooseSectionT
   | WhySalonoraDifferentSectionT
+  | WhySalonoraAndersSectionT
   | TestimonialsSectionT
   | AnnouncementBarSectionT
   | ProcessStepsSectionT

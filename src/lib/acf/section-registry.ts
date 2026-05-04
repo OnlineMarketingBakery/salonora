@@ -9,6 +9,7 @@ import { ImageIntroSplitSection } from "@/components/sections/image-intro-split/
 import { SalonValuePropositionSection } from "@/components/sections/salon-value-proposition/SalonValuePropositionSection";
 import { WhyOwnersChooseSection } from "@/components/sections/why-owners-choose/WhyOwnersChooseSection";
 import { WhySalonoraDifferentSection } from "@/components/sections/why-salonora-different/WhySalonoraDifferentSection";
+import { WhySalonoraAndersSection } from "@/components/sections/why-salonora-anders/WhySalonoraAndersSection";
 import { TestimonialsSection } from "@/components/sections/testimonials/TestimonialsSection";
 import { AnnouncementBarSection } from "@/components/sections/announcement-bar/AnnouncementBarSection";
 import { ProcessStepsSection } from "@/components/sections/process-steps/ProcessStepsSection";
@@ -41,6 +42,7 @@ export const sectionRegistry: Record<AnySectionT["type"], SectionComponent> = {
   salon_value_proposition: asSection(SalonValuePropositionSection as (p: { section: never; lang: Locale }) => ReactNode),
   why_owners_choose: asSection(WhyOwnersChooseSection as (p: { section: never; lang: Locale }) => ReactNode),
   why_salonora_different: asSection(WhySalonoraDifferentSection as (p: { section: never; lang: Locale }) => ReactNode),
+  why_salonora_anders: asSection(WhySalonoraAndersSection as (p: { section: never; lang: Locale }) => ReactNode),
   testimonials: asSection(TestimonialsSection as (p: { section: never; lang: Locale }) => ReactNode),
   announcement_bar: asSection(AnnouncementBarSection as (p: { section: never; lang: Locale }) => ReactNode),
   process_steps: asSection(ProcessStepsSection as (p: { section: never; lang: Locale }) => ReactNode),
