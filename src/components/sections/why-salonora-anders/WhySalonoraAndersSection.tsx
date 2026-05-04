@@ -50,7 +50,7 @@ export function WhySalonoraAndersSection({
 
   return (
     <section className="bg-[#ebf3fe] py-16 sm:py-20 md:pt-[88px] md:pb-[85px]">
-      <Container className="!max-w-[85rem]">
+      <Container className="max-w-340!">
         <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between lg:gap-5">
           <div
             className={`${REVEAL_ITEM} flex w-full max-w-[min(100%,420px)] shrink-0 flex-col gap-6 lg:max-w-[382px]`}
