@@ -97,7 +97,7 @@ export function WhySalonoraAndersSection({
           <div className={`${REVEAL_ITEM} relative w-full min-w-0 lg:flex-1`}>
             <div className="relative isolate overflow-visible rounded-[14px] bg-linear-to-b from-[#3990f0] to-[#0569d7] px-5 pb-10 pt-8 sm:px-8 sm:pb-12 sm:pt-10 lg:flex lg:min-h-[509px] lg:flex-col lg:px-14 lg:pt-10">
               <InsightPattern />
-              <div className="relative z-10 flex w-full flex-1 flex-col items-center gap-8 lg:min-h-0 lg:flex-row lg:items-stretch lg:justify-center lg:gap-[45px]">
+              <div className="relative z-10 flex w-full flex-1 flex-col items-center gap-8 lg:min-h-0 lg:flex-row lg:items-stretch lg:justify-center lg:gap-[45px] overflow-hidden">
                 <div className="mx-auto flex w-full max-w-[417px] flex-col items-center gap-[15px] lg:mx-0 lg:w-[417px] lg:max-w-[417px] lg:shrink-0 lg:self-center lg:items-stretch">
                   {section.insightHeading ? (
                     <p className="text-center font-sans text-[28px] font-semibold leading-tight text-white sm:text-[32px] lg:text-[34px] lg:leading-[56px]">
@@ -132,7 +132,7 @@ export function WhySalonoraAndersSection({
                 </div>
 
                 {section.phoneImage ? (
-                  <div className="relative z-20 flex w-full max-w-[280px] shrink-0 justify-center sm:max-w-[300px] lg:flex lg:w-[324px] lg:max-w-[324px] lg:shrink-0 lg:flex-col lg:items-center lg:justify-end lg:self-stretch lg:overflow-visible lg:leading-0 lg:-mb-10">
+                  <div className="relative z-20 flex w-full max-w-[280px] shrink-0 justify-center sm:max-w-[300px] lg:flex lg:w-[324px] lg:max-w-[324px] lg:shrink-0 lg:flex-col lg:items-center lg:justify-end lg:self-stretch lg:overflow-visible lg:leading-0 lg:-mb-12">
                     <Media
                       image={section.phoneImage}
                       width={648}
