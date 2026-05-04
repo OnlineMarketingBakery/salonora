@@ -1,0 +1,10 @@
+---
+description: Salonora — load full project context before substantive edits
+alwaysApply: true
+---
+
+Before non-trivial work, read **`ai-context.md`** (stack, structure, conventions, integrations, anti-patterns, env names).
+
+For setup and deployment, use **`README.md`** and **`.env.example`**. For WordPress REST checks and troubleshooting, use **`docs/wordpress-connection-guide.md`**.
+
+Keep changes minimal and aligned with patterns in `ai-context.md`. When you change conventions or add env vars, update **`ai-context.md`**, **`.env.example`**, and **`README.md`** as needed.
