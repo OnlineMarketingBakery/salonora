@@ -167,6 +167,20 @@ export type WhyOwnersChooseSectionT = CoreSection & {
   ctas: CtaItem[];
 };
 
+/** Figma: light blue section, left copy + CTA, right gradient panel with “Wist je dat”, white insight cards, phone mockup */
+export type WhySalonoraDifferentInsightCardT = { text: string };
+
+export type WhySalonoraDifferentSectionT = CoreSection & {
+  type: "why_salonora_different";
+  title: string;
+  paragraph1: string;
+  paragraph2: string;
+  ctas: CtaItem[];
+  insightHeading: string;
+  insightCards: WhySalonoraDifferentInsightCardT[];
+  phoneImage: WpImage | null;
+};
+
 export type TestimonialsSectionT = CoreSection & {
   type: "testimonials";
   title: string;
@@ -288,6 +302,7 @@ export type AnySectionT =
   | ImageIntroSplitSectionT
   | SalonValuePropositionSectionT
   | WhyOwnersChooseSectionT
+  | WhySalonoraDifferentSectionT
   | TestimonialsSectionT
   | AnnouncementBarSectionT
   | ProcessStepsSectionT

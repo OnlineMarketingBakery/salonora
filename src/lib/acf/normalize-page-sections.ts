@@ -229,6 +229,22 @@ function mapLayout(i: number, row: RawRow): AnySectionT | null {
         panelImage: asImage(row.panel_image),
         ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
       };
+    case "why_salonora_different":
+      return {
+        ...base,
+        type: "why_salonora_different",
+        title: asString(row.title),
+        paragraph1: asHtml(row.paragraph_1),
+        paragraph2: asHtml(row.paragraph_2),
+        ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
+        insightHeading: asString(row.insight_heading),
+        insightCards: Array.isArray(row.insight_cards)
+          ? (row.insight_cards as { text?: unknown }[]).map((c) => ({
+              text: asHtml(c.text),
+            }))
+          : [],
+        phoneImage: asImage(row.phone_image),
+      };
     case "testimonials": {
       const testimonialIds = asRelationshipPostIds(row.items);
       let ctas = mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]);
