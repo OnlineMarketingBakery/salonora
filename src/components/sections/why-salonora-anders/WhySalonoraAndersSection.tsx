@@ -14,10 +14,10 @@ function InsightPattern() {
       aria-hidden
     >
       <div
-        className="absolute right-0 top-1/2 h-[180%] w-[80%] -translate-y-1/2 translate-x-1/4"
+        className="absolute left-0 top-0 h-[160%] w-[75%] -translate-x-[8%] -translate-y-[10%]"
         style={{
           backgroundImage: `repeating-radial-gradient(
-            circle at 72% 48%,
+            circle at 18% 22%,
             transparent 0,
             transparent 20px,
             rgba(255, 255, 255, 0.16) 20px,
@@ -49,10 +49,10 @@ export function WhySalonoraAndersSection({
 
   return (
     <section className="bg-[#ebf3fe] py-16 sm:py-20 md:pt-[88px] md:pb-[85px]">
-      <Container className="!max-w-[85rem] md:!px-10 lg:!px-[70px]">
+      <Container>
         <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between lg:gap-5">
           <div
-            className={`${REVEAL_ITEM} flex w-full max-w-[min(100%,420px)] shrink-0 flex-col gap-6 lg:w-[382px] lg:max-w-[382px]`}
+            className={`${REVEAL_ITEM} flex w-full max-w-[min(100%,420px)] shrink-0 flex-col gap-6 lg:max-w-[382px]`}
           >
             <div className="flex flex-col gap-[14px]">
               {titleLines.length > 0 ? (
@@ -93,13 +93,11 @@ export function WhySalonoraAndersSection({
             ) : null}
           </div>
 
-          <div
-            className={`${REVEAL_ITEM} relative w-full min-w-0 lg:max-w-[min(100%,898px)] lg:flex-1`}
-          >
-            <div className="relative isolate overflow-visible rounded-[14px] bg-gradient-to-b from-[#3990f0] to-[#0569d7] px-5 pb-10 pt-8 sm:px-8 sm:pb-12 sm:pt-10 lg:flex lg:min-h-[509px] lg:items-center lg:justify-center lg:px-14 lg:pb-12 lg:pt-10">
+          <div className={`${REVEAL_ITEM} relative w-full min-w-0 lg:flex-1`}>
+            <div className="relative isolate overflow-visible rounded-[14px] bg-gradient-to-b from-[#3990f0] to-[#0569d7] px-5 pb-10 pt-8 sm:px-8 sm:pb-12 sm:pt-10 lg:min-h-[509px] lg:px-14 lg:pb-0 lg:pt-10">
               <InsightPattern />
-              <div className="relative z-10 flex w-full flex-col items-center gap-8 lg:flex-row lg:items-center lg:justify-center lg:gap-[45px]">
-                <div className="flex w-full max-w-[417px] flex-col items-center gap-[15px] lg:items-stretch">
+              <div className="relative z-10 flex w-full flex-col items-center gap-8 lg:flex-row lg:items-stretch lg:justify-center lg:gap-[45px]">
+                <div className="flex w-full max-w-[417px] flex-col items-center gap-[15px] lg:shrink-0 lg:items-stretch">
                   {section.insightHeading ? (
                     <p className="text-center font-sans text-[28px] font-semibold leading-tight text-white sm:text-[32px] lg:text-[34px] lg:leading-[56px]">
                       {section.insightHeading}
@@ -133,12 +131,12 @@ export function WhySalonoraAndersSection({
                 </div>
 
                 {section.phoneImage ? (
-                  <div className="relative flex w-full max-w-[280px] shrink-0 justify-center sm:max-w-[300px] lg:mb-0 lg:w-[324px] lg:max-w-[324px] lg:translate-x-1 lg:self-center">
+                  <div className="relative flex w-full max-w-[280px] shrink-0 justify-center sm:max-w-[300px] lg:mb-0 lg:min-h-0 lg:flex-1 lg:flex-col lg:items-center lg:justify-end">
                     <Media
                       image={section.phoneImage}
                       width={648}
                       height={886}
-                      className="h-auto w-full max-w-[280px] object-contain drop-shadow-[0_20px_40px_rgba(0,39,82,0.35)] sm:max-w-[300px] lg:max-h-[443px] lg:w-[324px] lg:max-w-[324px] lg:object-contain"
+                      className="h-auto w-full max-w-[280px] object-contain object-bottom drop-shadow-[0_20px_40px_rgba(0,39,82,0.35)] sm:max-w-[300px] lg:w-[324px] lg:max-w-[324px]"
                       sizes="(min-width: 1024px) 324px, 70vw"
                       preferLargestSource
                     />
