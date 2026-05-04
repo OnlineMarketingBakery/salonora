@@ -1,11 +1,11 @@
-import { Container } from "@/components/ui/Container";
-import { RichText } from "@/components/ui/RichText";
-import { Media } from "@/components/ui/Media";
 import { Button } from "@/components/ui/Button";
-import { resolveLink } from "@/lib/utils/links";
+import { Container } from "@/components/ui/Container";
+import { Media } from "@/components/ui/Media";
+import { RichText } from "@/components/ui/RichText";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
-import type { WhySalonoraAndersSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
+import { resolveLink } from "@/lib/utils/links";
+import type { WhySalonoraAndersSectionT } from "@/types/sections";
 
 function InsightPattern() {
   return (
@@ -45,7 +45,8 @@ export function WhySalonoraAndersSection({
   const primaryCta = section.ctas[0];
   const ctaLink = primaryCta ? resolveLink(primaryCta.url, lang) : null;
   const ctaHref = ctaLink?.href;
-  const ctaLabel = primaryCta?.text || ctaLink?.label || (ctaHref ? "Meer informatie" : "");
+  const ctaLabel =
+    primaryCta?.text || ctaLink?.label || (ctaHref ? "Meer informatie" : "");
 
   return (
     <section className="bg-[#ebf3fe] py-16 sm:py-20 md:pt-[88px] md:pb-[85px]">
@@ -94,7 +95,7 @@ export function WhySalonoraAndersSection({
           </div>
 
           <div className={`${REVEAL_ITEM} relative w-full min-w-0 lg:flex-1`}>
-            <div className="relative isolate overflow-visible rounded-[14px] bg-gradient-to-b from-[#3990f0] to-[#0569d7] px-5 pb-10 pt-8 sm:px-8 sm:pb-12 sm:pt-10 lg:flex lg:min-h-[509px] lg:flex-col lg:px-14 lg:pb-0 lg:pt-10">
+            <div className="relative isolate overflow-visible rounded-[14px] bg-gradient-to-b from-[#3990f0] to-[#0569d7] px-5 pb-10 pt-8 sm:px-8 sm:pb-12 sm:pt-10 lg:flex lg:min-h-[509px] lg:flex-col lg:px-14 lg:pt-10">
               <InsightPattern />
               <div className="relative z-10 flex w-full flex-1 flex-col items-center gap-8 lg:min-h-0 lg:flex-row lg:items-stretch lg:justify-center lg:gap-[45px]">
                 <div className="mx-auto flex w-full max-w-[417px] flex-col items-center gap-[15px] lg:mx-0 lg:w-[417px] lg:max-w-[417px] lg:shrink-0 lg:self-center lg:items-stretch">
@@ -131,7 +132,7 @@ export function WhySalonoraAndersSection({
                 </div>
 
                 {section.phoneImage ? (
-                  <div className="relative z-20 flex w-full max-w-[280px] shrink-0 justify-center sm:max-w-[300px] lg:flex lg:w-[324px] lg:max-w-[324px] lg:shrink-0 lg:flex-col lg:items-center lg:justify-end lg:self-stretch lg:overflow-visible lg:leading-[0]">
+                  <div className="relative z-20 flex w-full max-w-[280px] shrink-0 justify-center sm:max-w-[300px] lg:flex lg:w-[324px] lg:max-w-[324px] lg:shrink-0 lg:flex-col lg:items-center lg:justify-end lg:self-stretch lg:overflow-visible lg:leading-[0] lg:-pb-10">
                     <Media
                       image={section.phoneImage}
                       width={648}
