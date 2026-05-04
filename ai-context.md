@@ -1,0 +1,113 @@
+# Salonora — AI project context
+
+Read this file before large edits so you do not need to re-scan the whole repo. **Cursor** loads **`.cursor/rules/salonora.mdc`** (`alwaysApply: true`). **`AGENTS.md`** is the portable pointer for other agent tools. Authoritative env list: `.env.example`. Human overview: `README.md`. WordPress setup: `docs/wordpress-connection-guide.md`.
+
+## Summary
+
+Salonora is a **multilingual (nl/en) Next.js 15 App Router** marketing site that renders **WordPress** content: ACF flexible sections, pages, posts, CPTs (`service`, `testimonial`), globals (header/footer/options), **Yoast** metadata, **Polylang** locales, and **Contact Form 7**. The repo includes **OMB headless** PHP (`wordpress/`: theme, plugin, mu-plugin) aligned with the Next fetchers.
+
+## Brand voice & UI (from codebase)
+
+- **Visual system:** Outfit (Google Font), palette in `src/app/globals.css` — brand blue, navy, muted blue-gray, light surfaces (`--palette-*`, Tailwind `@theme inline`).
+- **Motion:** GSAP + `@gsap/react`; reveal classes in `src/lib/animation-classes.ts`, page-level patterns in `src/components/animations/`.
+- **Copy & positioning:** Lives in WordPress, not hardcoded brand manifestos. UI sections are conversion-oriented (hero, pricing, FAQ, testimonials, guarantees). Do not invent product claims; match existing component tone (clear, professional, benefit-led).
+
+## Tech stack (versions from package.json)
+
+| Package | Version (caret) |
+|---------|-----------------|
+| next | ^15.5.15 |
+| react / react-dom | ^19.0.0 |
+| typescript | ^5 |
+| tailwindcss | ^4 |
+| @tailwindcss/postcss | ^4 |
+| gsap | ^3.15.0 |
+| @gsap/react | ^2.1.2 |
+| eslint | ^9 |
+| eslint-config-next | 15.2.3 |
+
+Node: **20.x LTS** (match Ploi/CI). Dev server: **`npm run dev`** uses **Turbopack**.
+
+## Folder map (compact)
+
+```
+src/app/[lang]/          # layout, page, [...slug], not-found
+src/app/api/revalidate/  # POST ISR (REVALIDATION_SECRET + path|tag)
+src/app/api/locale-hrefs/ # GET ?pathname= — Polylang alternates for language switcher
+src/components/sections/<acf-layout>/  # one folder per flexible layout
+src/components/layout/   # header, footer, nav, drawers, announcement
+src/components/templates/ # PageTemplate, PostTemplate
+src/components/forms/    # CF7Form, CF7FieldRenderer
+src/components/ui/       # Button, Container, Media, RichText, etc.
+src/lib/wordpress/       # wpFetch, config, fetch-*, resolve-route, menus, CF7 submit
+src/lib/acf/             # section-registry, normalize-*-sections, enrich-sections, field-mappers
+src/lib/i18n/            # locales, get-alternates, config (DEFAULT_LOCALE, SUPPORTED_LOCALES)
+src/lib/seo/             # map-yoast-to-metadata
+src/types/               # sections, acf, globals, seo, wordpress
+src/middleware.ts        # / → default locale; sets x-pathname header
+wordpress/wp-content/    # omb-headless theme, omb-headless-core plugin, mu-plugins
+public/                  # static assets (SVGs, hero-gradiant.png, etc.)
+```
+
+## Conventions
+
+- **Imports:** `@/` → `src/` (see `tsconfig.json`).
+- **Sections:** ACF layout → normalized `type` (snake_case, e.g. `faq_contact_split`) in `src/types/sections.ts` → **`sectionRegistry`** in `src/lib/acf/section-registry.ts` maps to a component. New layout = new type + normalizer + registry entry + `src/components/sections/<kebab-name>/`.
+- **Section props:** `{ section, lang }` where `lang` is `Locale` (`nl` | `en`).
+- **WordPress HTTP:** Use **`wpFetch` / `wpFetchOptional`** from `src/lib/wordpress/client.ts` — appends `?lang=` when `lang` passed; adds Application Password **Basic** auth from env when set.
+- **Config:** `src/lib/wordpress/config.ts` — API URL, base URL, site URL, homepage slugs, menu IDs, revalidation secret, default CF7 id, CPT REST bases.
+- **i18n:** `src/lib/i18n/config.ts` — `defaultLocale`, `supportedLocales` from env. `src/lib/i18n/locales.ts` — `Locale` type. Middleware redirect uses `defaultLocale`.
+- **Links:** `src/lib/utils/links.ts` (`resolveLink`, etc.) for internal vs external URLs from ACF.
+- **Logging:** `src/lib/utils/logger.ts` (dev-aware).
+- **Images:** `next.config.ts` builds `remotePatterns` from `WORDPRESS_BASE_URL` or `WORDPRESS_API_URL`; missing env → `unoptimized: true`.
+
+## Important files
+
+| File | Role |
+|------|------|
+| `src/lib/acf/section-registry.ts` | Maps section `type` → React component |
+| `src/components/sections/SectionRenderer.tsx` | Renders section list |
+| `src/lib/wordpress/client.ts` | All REST calls |
+| `src/lib/wordpress/config.ts` | Env accessors |
+| `src/lib/acf/normalize-*-sections.ts` | Page vs service ACF → typed sections |
+| `src/lib/acf/enrich-sections.ts` | Extra loads (e.g. testimonials by ID) |
+| `src/app/[lang]/page.tsx` | Home: homepage slug per lang |
+| `src/app/[lang]/[...slug]/page.tsx` | Catch-all pages |
+| `src/app/[lang]/layout.tsx` | Globals, metadata shell |
+| `src/middleware.ts` | Root redirect, pathname header |
+| `src/lib/seo/map-yoast-to-metadata.ts` | Yoast → Next Metadata |
+
+## Commands
+
+```bash
+npm run dev      # next dev --turbopack
+npm run build    # production build
+npm run start    # next start (NODE_ENV=production)
+npm run lint     # next lint
+```
+
+## Integrations
+
+- **WordPress REST** — pages, posts, CPTs, ACF in JSON, ACF options (`acf/v3` or `acf/v1` per WP), menus if exposed (`menu-items`).
+- **Polylang** — `lang` query on `wpFetch`; `src/lib/wordpress/polylang-locale-hrefs.ts` + `/api/locale-hrefs`.
+- **Yoast** — fetched with content; mapped in `src/lib/seo/`.
+- **CF7** — REST list/submit; `src/lib/wordpress/submit-cf7-form.ts`, `FormEmbedSection`, `CF7Form`.
+- **ISR:** `POST /api/revalidate` body `{ "secret", "path"? , "tag"? }` — requires `REVALIDATION_SECRET`.
+
+## What to avoid
+
+- **Bypassing `wpFetch`** for WordPress (loses lang + auth + consistent errors).
+- **New section types** without updating `section-registry`, normalizers, and `AnySectionT` / discriminated unions in `src/types/sections.ts`.
+- **Hardcoding WordPress URLs** — use `getWordpressBaseUrl()` / `getSiteUrl()` / link resolvers.
+- **Client-only data fetch** for SEO-critical page body — prefer RSC / server components pattern already used in `page.tsx` / templates.
+- **Assuming ACF REST shape** without checking normalizers — WP can return null/variant shapes; use `field-mappers` helpers.
+- **Ignoring `.env.example`** when adding env-dependent behavior.
+- **Large drive-by refactors** — user preference is minimal, focused diffs.
+
+## Env vars (names only; values in `.env.example`)
+
+`WORDPRESS_API_URL`, `WORDPRESS_BASE_URL`, `NEXT_PUBLIC_SITE_URL`, `HOMEPAGE_SLUG` / `HOMEPAGE_SLUG_NL` / `HOMEPAGE_SLUG_EN`, `WP_MENU_{PRIMARY|FOOTER|LEGAL}_{NL|EN}` (or `WORDPRESS_MENU_*`), `WORDPRESS_APPLICATION_USER`, `WORDPRESS_APPLICATION_PASSWORD`, `REVALIDATION_SECRET`, `NEXT_PUBLIC_DEFAULT_CF7_FORM_ID`, `WORDPRESS_SERVICE_REST_BASE`, `WORDPRESS_TESTIMONIAL_REST_BASE`, `DEFAULT_LOCALE`, `SUPPORTED_LOCALES`.
+
+## Section registry keys (reference)
+
+`hero`, `cards`, `cost_comparison`, `benefits_grid`, `pricing_packages`, `guarantee_split`, `story_split`, `image_intro_split`, `salon_value_proposition`, `why_owners_choose`, `why_salonora_different`, `why_salonora_anders`, `testimonials`, `announcement_bar`, `process_steps`, `faq_contact_split`, `form_embed`, `latest_posts`, `cta`, `pricing_cta`, `rich_text`, `faq` — must stay in sync with `section-registry.ts`.
