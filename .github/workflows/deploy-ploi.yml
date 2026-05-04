@@ -1,0 +1,27 @@
+# Triggers a Ploi deployment when code lands on main (including PR merges).
+# Setup: GitHub repo → Settings → Secrets and variables → Actions → New repository secret
+#   Name:  PLOI_DEPLOY_WEBHOOK_URL
+#   Value: full URL from Ploi → your site → Repository → "Deploy webhook URL" (copy as-is)
+#
+# Docs: https://ploi.io/documentation/deployment/how-to-trigger-deployments-via-github-actions
+
+name: Deploy to Ploi
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Ploi deployment
+        env:
+          DEPLOY_URL: ${{ secrets.PLOI_DEPLOY_WEBHOOK_URL }}
+        run: |
+          if [ -z "$DEPLOY_URL" ]; then
+            echo "Missing GitHub secret PLOI_DEPLOY_WEBHOOK_URL. Add it under Repo Settings → Secrets → Actions."
+            exit 1
+          fi
+          curl -fsS -X POST "$DEPLOY_URL"
