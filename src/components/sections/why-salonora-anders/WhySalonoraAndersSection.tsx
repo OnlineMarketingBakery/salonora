@@ -132,7 +132,7 @@ export function WhySalonoraAndersSection({
                 </div>
 
                 {section.phoneImage ? (
-                  <div className="relative z-20 flex w-full max-w-full shrink-0 justify-center sm:max-w-[300px] lg:flex lg:w-[324px] lg:max-w-[324px] lg:shrink-0 lg:flex-col lg:items-center lg:justify-end lg:self-stretch lg:overflow-visible lg:leading-0 -mb-12">
+                  <div className="relative z-20 flex w-full max-w-[90vw] -mb-10 shrink-0 justify-center sm:max-w-[300px] lg:flex lg:w-[324px] lg:max-w-[324px] lg:shrink-0 lg:flex-col lg:items-center lg:justify-end lg:self-stretch lg:overflow-visible lg:leading-0 lg:-mb-12">
                     <Media
                       image={section.phoneImage}
                       width={648}
