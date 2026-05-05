@@ -3,9 +3,9 @@ import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
+import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
 import type { FeatureHighlightSplitSectionT } from "@/types/sections";
-import type { Locale } from "@/lib/i18n/locales";
 import type { CSSProperties } from "react";
 
 /** Figma 946:34 — heading supports manual line breaks; strip tags only when splitting. */
@@ -101,17 +101,22 @@ export function FeatureHighlightSplitSection({
 
   return (
     <section className="relative isolate overflow-hidden py-14 sm:py-16 lg:flex lg:min-h-[804px] lg:items-center lg:py-0">
-      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden>
+      <div
+        className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
+        aria-hidden
+      >
         <div className="absolute inset-0" style={skyWashLayer} />
         <div className="absolute inset-0" style={brandColorBlendLayer} />
       </div>
 
       <Container className="relative z-10 w-full max-w-[90rem]">
         <div
-          className={`flex flex-col items-stretch gap-10 lg:flex-row lg:items-start lg:justify-between lg:gap-[34px]`}
+          className={`flex flex-col items-stretch gap-10 lg:flex-row lg:items-center lg:justify-between lg:gap-[34px]`}
         >
           {hasLeft ? (
-            <div className={`${REVEAL_ITEM} flex w-full shrink-0 flex-col gap-7 lg:w-[341px] lg:gap-[28px]`}>
+            <div
+              className={`${REVEAL_ITEM} flex w-full shrink-0 flex-col gap-7 lg:w-[341px] lg:gap-[28px]`}
+            >
               <div className="flex flex-col gap-[19px]">
                 {section.badge?.trim() ? (
                   <Button
@@ -174,14 +179,18 @@ export function FeatureHighlightSplitSection({
               className={`${REVEAL_ITEM} flex w-full shrink-0 flex-col gap-5 lg:w-[368px] lg:max-w-[368px]`}
             >
               {promises.map((item, i) => {
-                const isLongCard = i === promises.length - 1 && promises.length > 1;
+                const isLongCard =
+                  i === promises.length - 1 && promises.length > 1;
                 return (
                   <div
                     key={i}
                     className={`flex items-center rounded-[14px] px-8 ${isLongCard ? "min-h-[121px]" : "min-h-[80px]"}`}
                     style={cardFace}
                   >
-                    <RichText html={item.text ?? ""} className={`w-full max-w-none ${cardProse}`} />
+                    <RichText
+                      html={item.text ?? ""}
+                      className={`w-full max-w-none ${cardProse}`}
+                    />
                   </div>
                 );
               })}
