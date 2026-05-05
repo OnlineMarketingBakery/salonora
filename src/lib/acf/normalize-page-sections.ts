@@ -559,6 +559,7 @@ function mapKnownPageSectionLayout(
         badge: asString(row.badge),
         title: asString(row.title),
         intro: asHtml(row.intro),
+        hero_person_image: asImage(row.hero_person_image),
         cards: Array.isArray(row.cards)
           ? (row.cards as Record<string, unknown>[]).map((c) => {
               const ps = asString(c.panel_style);

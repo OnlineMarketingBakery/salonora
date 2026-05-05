@@ -373,6 +373,8 @@ export type PricingDualCardsSectionT = CoreSection & {
   badge?: string;
   title?: string;
   intro?: string;
+  /** Cut-out on the right of the blue hero (PNG/WebP transparent). */
+  hero_person_image?: WpImage | null;
   cards?: PricingDualCardsCardItemT[];
 };
 
