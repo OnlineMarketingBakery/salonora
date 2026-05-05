@@ -33,6 +33,7 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   process_steps: true,
   rich_text: true,
   salon_value_proposition: true,
+  scrolling_ticker: true,
   story_split: true,
   testimonials: true,
   why_owners_choose: true,
@@ -372,6 +373,16 @@ function mapKnownPageSectionLayout(
           : [],
         ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
         footerTagline: asString(row.footer_tagline),
+      };
+    case "scrolling_ticker":
+      return {
+        ...base,
+        type: "scrolling_ticker",
+        items: Array.isArray(row.items)
+          ? (row.items as { text?: unknown }[]).map((x) => ({
+              text: asHtml(x.text),
+            }))
+          : [],
       };
     case "faq_contact_split": {
       const ctaform = asString(row.ctaform);

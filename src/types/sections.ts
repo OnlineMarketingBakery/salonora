@@ -247,6 +247,14 @@ export type HowItWorksStepsSectionT = CoreSection & {
   footerTagline?: string;
 };
 
+/** Figma 907:27 — tilted brand ribbon, star separators, infinite ticker phrases */
+export type ScrollingTickerItemT = { text?: string };
+
+export type ScrollingTickerSectionT = CoreSection & {
+  type: "scrolling_ticker";
+  items?: ScrollingTickerItemT[];
+};
+
 export type FaqItemT = { question: string; answer: string };
 
 export type FaqContactSplitSectionT = CoreSection & {
@@ -343,6 +351,7 @@ export type AnySectionT =
   | AnnouncementBarSectionT
   | ProcessStepsSectionT
   | HowItWorksStepsSectionT
+  | ScrollingTickerSectionT
   | FaqContactSplitSectionT
   | FormEmbedSectionT
   | LatestPostsSectionT
