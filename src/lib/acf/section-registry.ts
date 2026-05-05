@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import { HeroSection } from "@/components/sections/hero/HeroSection";
 import { CardsSection } from "@/components/sections/cards/CardsSection";
 import { CostComparisonSection } from "@/components/sections/cost-comparison/CostComparisonSection";
@@ -22,6 +23,14 @@ import { RichTextSection } from "@/components/sections/rich-text/RichTextSection
 import { FaqSection } from "@/components/sections/faq/FaqSection";
 import { HowItWorksStepsSectionShell } from "@/components/sections/how-it-works-steps/shell";
 import { ScrollingTickerSectionShell } from "@/components/sections/scrolling-ticker/shell";
+
+const DesignShowcaseGridSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/design-showcase-grid").then((mod) => ({
+      default: mod.DesignShowcaseGridSection,
+    })),
+  { ssr: true }
+);
 
 import type { AnySectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
@@ -60,6 +69,9 @@ export const sectionRegistry = {
   faq: asSection(FaqSection as (p: { section: never; lang: Locale }) => ReactNode),
   scrolling_ticker: asSection(
     ScrollingTickerSectionShell as (p: { section: never; lang: Locale }) => ReactNode
+  ),
+  design_showcase_grid: asSection(
+    DesignShowcaseGridSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
 } satisfies SectionRegistryShape;
 

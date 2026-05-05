@@ -20,6 +20,7 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   cards: true,
   cost_comparison: true,
   cta: true,
+  design_showcase_grid: true,
   faq: true,
   faq_contact_split: true,
   form_embed: true,
@@ -425,6 +426,33 @@ function mapKnownPageSectionLayout(
         defaultFormId: null,
       };
     }
+    case "design_showcase_grid":
+      return {
+        ...base,
+        type: "design_showcase_grid",
+        title: asString(row.title),
+        intro: asHtml(row.intro),
+        cards: Array.isArray(row.cards)
+          ? (
+              row.cards as {
+                visual?: unknown;
+                card_title?: unknown;
+                card_link?: unknown;
+                panel_tint?: unknown;
+              }[]
+            ).map((c) => ({
+              visual: asImage(c.visual),
+              titleHtml: asHtml(c.card_title),
+              link: asLink(c.card_link),
+              panelTint: (() => {
+                const s = asString(c.panel_tint);
+                if (s === "blush" || s === "mint" || s === "gold" || s === "surface") return s;
+                return "surface";
+              })(),
+            }))
+          : [],
+        footerCtas: mapCtaRepeater(row.footer_ctas as Parameters<typeof mapCtaRepeater>[0]),
+      };
     case "form_embed":
       return {
         ...base,
