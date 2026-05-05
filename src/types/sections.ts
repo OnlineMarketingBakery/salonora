@@ -363,6 +363,21 @@ export type FaqSectionT = CoreSection & {
   items: FaqItemT[];
 };
 
+/** Figma 939:58 — navy band, pill badge, headline, bordered highlight cards with divider */
+export type FeatureHighlightGridCardT = {
+  title?: string;
+  /** Optional illustration behind card content (bottom glow area). */
+  visual?: WpImage | null;
+  description?: string;
+};
+
+export type FeatureHighlightGridSectionT = CoreSection & {
+  type: "feature_highlight_grid";
+  badge?: string;
+  title?: string;
+  cards?: FeatureHighlightGridCardT[];
+};
+
 export type AnySectionT =
   | HeroSectionT
   | CardsSectionT
@@ -388,6 +403,7 @@ export type AnySectionT =
   | CtaSectionT
   | PricingCtaSectionT
   | RichTextSectionT
-  | FaqSectionT;
+  | FaqSectionT
+  | FeatureHighlightGridSectionT;
 
 export type LatestPostResolved = { id: number; title: string; excerpt: string; href: string };
