@@ -7,6 +7,8 @@
 :root {
   --palette-white: #ffffff;
   --palette-brand: #3990f0;
+  /* Figma gradient stop (e.g. pricing dual cards hero band) */
+  --palette-brand-strong: #0569d7;
   --palette-navy: #152951;
   --palette-navy-deep: #002752;
   --palette-muted: #435780;
@@ -33,6 +35,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-brand: var(--palette-brand);
+  --color-brand-strong: var(--palette-brand-strong);
   --color-navy: var(--palette-navy);
   --color-navy-deep: var(--palette-navy-deep);
   --color-muted: var(--palette-muted);

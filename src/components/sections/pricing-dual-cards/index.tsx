@@ -5,7 +5,10 @@ import { RichText } from "@/components/ui/RichText";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
-import type { PricingDualCardsCardItemT, PricingDualCardsSectionT } from "@/types/sections";
+import type {
+  PricingDualCardsCardItemT,
+  PricingDualCardsSectionT,
+} from "@/types/sections";
 import type { CSSProperties } from "react";
 
 const heroIntroProse = [
@@ -36,24 +39,16 @@ const priceFooterProse = [
   "[&_p+p]:mt-3",
 ].join(" ");
 
-/**
- * Figma blue band: flat brand fill + soft light wash bottom-right (no PNG).
- * Portrait stays inside `overflow-hidden` + rounded-[32px].
- */
+/** Figma: radius 20; fill linear 90deg — `--palette-brand` / `--palette-brand-strong` (= #3990F0 / #0569D7). */
 const heroShell: CSSProperties = {
-  borderRadius: "32px",
-  background: `
-    radial-gradient(
-      ellipse 92% 88% at 96% 100%,
-      color-mix(in srgb, var(--palette-white) 40%, transparent) 0%,
-      transparent 56%
-    ),
-    var(--palette-brand)
-  `,
+  borderRadius: "20px",
+  background:
+    "linear-gradient(90deg, var(--palette-brand) 0%, var(--palette-brand-strong) 100%)",
 };
 
 const elevatedCardShadow: CSSProperties = {
-  boxShadow: "0 4px 40px color-mix(in srgb, var(--palette-muted) 13%, transparent)",
+  boxShadow:
+    "0 4px 40px color-mix(in srgb, var(--palette-muted) 13%, transparent)",
 };
 
 const cardRule: CSSProperties = {
@@ -66,12 +61,12 @@ function cardHasBody(card: PricingDualCardsCardItemT): boolean {
   const feats = (card.features ?? []).filter((f) => f.text?.trim());
   return Boolean(
     card.title?.trim() ||
-      card.description?.trim() ||
-      feats.length ||
-      card.price_highlight?.trim() ||
-      card.price_secondary?.trim() ||
-      card.price_footer?.trim() ||
-      (card.ctas ?? []).length,
+    card.description?.trim() ||
+    feats.length ||
+    card.price_highlight?.trim() ||
+    card.price_secondary?.trim() ||
+    card.price_footer?.trim() ||
+    (card.ctas ?? []).length,
   );
 }
 
@@ -110,7 +105,10 @@ function PricingPackageCard({
               </h3>
             ) : null}
             {card.description?.trim() ? (
-              <RichText html={card.description} className={`max-w-xl ${cardDescProse}`} />
+              <RichText
+                html={card.description}
+                className={`max-w-xl ${cardDescProse}`}
+              />
             ) : null}
           </div>
           {card.title?.trim() || card.description?.trim() ? (
@@ -136,7 +134,9 @@ function PricingPackageCard({
                       preferLargestSource
                     />
                   ) : null}
-                  <span className="font-sans text-sm font-normal leading-relaxed text-navy-deep">{f.text?.trim()}</span>
+                  <span className="font-sans text-sm font-normal leading-relaxed text-navy-deep">
+                    {f.text?.trim()}
+                  </span>
                 </div>
               </li>
             ))}
@@ -145,13 +145,22 @@ function PricingPackageCard({
 
         <div className="mt-auto flex flex-col gap-3">
           {card.price_highlight?.trim() ? (
-            <RichText html={card.price_highlight} className={`max-w-xl ${priceHighlightProse}`} />
+            <RichText
+              html={card.price_highlight}
+              className={`max-w-xl ${priceHighlightProse}`}
+            />
           ) : null}
           {card.price_secondary?.trim() ? (
-            <RichText html={card.price_secondary} className={`max-w-xl ${priceSecondaryProse}`} />
+            <RichText
+              html={card.price_secondary}
+              className={`max-w-xl ${priceSecondaryProse}`}
+            />
           ) : null}
           {card.price_footer?.trim() ? (
-            <RichText html={card.price_footer} className={`max-w-xl ${priceFooterProse}`} />
+            <RichText
+              html={card.price_footer}
+              className={`max-w-xl ${priceFooterProse}`}
+            />
           ) : null}
         </div>
 
@@ -198,12 +207,12 @@ export function PricingDualCardsSection({
       <Container className="relative z-0 flex max-w-[90rem] flex-col gap-6 sm:gap-8">
         {hasIntro ? (
           <div
-            className={`${REVEAL_ITEM} relative isolate overflow-hidden rounded-[32px]`}
+            className={`${REVEAL_ITEM} relative isolate overflow-hidden rounded-[20px]`}
             style={heroShell}
           >
             {/* Figma ~62% copy / ~38% visual; 48–64px band padding */}
-            <div className="grid min-h-0 grid-cols-1 gap-8 p-12 sm:gap-10 lg:min-h-[369px] lg:grid-cols-[1.65fr_1fr] lg:items-stretch lg:gap-12 lg:p-16">
-              <div className="relative z-[2] flex min-w-0 flex-col gap-5 self-center lg:max-w-[36rem] lg:gap-6 lg:pr-4 xl:max-w-[38rem]">
+            <div className="grid min-h-0 grid-cols-1 gap-8 px-12 sm:gap-10 lg:min-h-[369px] lg:grid-cols-[1.65fr_1fr] lg:items-stretch lg:gap-12 lg:px-16">
+              <div className="relative z-2 flex min-w-0 flex-col gap-5 self-center lg:max-w-xl lg:gap-6 lg:pr-4 xl:max-w-152">
                 {section.badge?.trim() ? (
                   <Button
                     type="button"
@@ -220,7 +229,10 @@ export function PricingDualCardsSection({
                     </h2>
                   ) : null}
                   {section.intro?.trim() ? (
-                    <RichText html={section.intro} className={`max-w-prose ${heroIntroProse}`} />
+                    <RichText
+                      html={section.intro}
+                      className={`max-w-prose ${heroIntroProse}`}
+                    />
                   ) : null}
                 </div>
               </div>
