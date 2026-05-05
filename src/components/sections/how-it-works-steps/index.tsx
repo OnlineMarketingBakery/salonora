@@ -14,6 +14,12 @@ import type {
 } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 
+/** Figma frame stroke: linear brand → surface, stroke opacity 50%, inside, 1px (via padded gradient wrapper). */
+const stepsFrameChrome: CSSProperties = {
+  backgroundImage:
+    "linear-gradient(to bottom, color-mix(in srgb, var(--palette-brand) 50%, transparent), color-mix(in srgb, var(--palette-surface) 50%, transparent))",
+};
+
 /** Figma icon wells: brand `#398ce9`, rose `#d27e91` — align with CSS palette tokens */
 function iconTileBackground(accent: HowItWorksStepsIconAccentT | undefined): CSSProperties {
   const a = accent ?? "brand";
@@ -41,7 +47,7 @@ function StepCard({ step }: { step: HowItWorksStepsStepItemT }) {
 
   return (
     <article
-      className={`${REVEAL_ITEM} flex min-h-0 w-full max-w-full flex-col items-center gap-5 rounded-2xl bg-linear-to-b from-white to-surface p-8 text-center md:h-[282px] md:min-h-[282px] md:w-[375px] md:max-w-[375px]`}
+      className={`${REVEAL_ITEM} flex min-h-0 w-full max-w-full shrink-0 flex-col items-center gap-5 rounded-2xl bg-linear-to-b from-white to-surface p-8 text-center md:h-[282px] md:min-h-[282px] md:w-[375px] md:max-w-[375px]`}
     >
       <div className="flex w-full flex-col items-center gap-5">
         {step.icon ? (
@@ -109,13 +115,16 @@ export function HowItWorksStepsSection({ section, lang }: { section: HowItWorksS
           </header>
 
           {steps.length > 0 ? (
-            <div className="w-full rounded-3xl border border-solid border-brand px-5 py-5 md:h-[297px] md:box-border md:py-0 md:pl-5 md:pr-[21px]">
-              <div className="flex min-h-0 flex-col items-stretch gap-8 md:flex-row md:items-end md:justify-center md:gap-5">
+            <div
+              className="w-full rounded-[24px] p-px md:box-border md:flex md:h-[297px] md:flex-col md:overflow-hidden"
+              style={stepsFrameChrome}
+            >
+              <div className="flex min-h-0 w-full flex-1 flex-col items-stretch gap-8 rounded-[23px] bg-surface px-5 py-5 md:flex-row md:items-end md:justify-center md:gap-5 md:py-0 md:pl-5 md:pr-[21px]">
                 {steps.map((step, i) => (
                   <Fragment key={i}>
                     {i > 0 ? (
                       <div
-                        className="hidden h-[297px] w-px shrink-0 bg-brand/35 md:block"
+                        className="hidden w-px shrink-0 bg-brand/35 md:block md:h-[295px]"
                         aria-hidden
                       />
                     ) : null}
