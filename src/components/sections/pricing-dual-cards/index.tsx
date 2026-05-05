@@ -154,7 +154,7 @@ function PricingPackageCard({
           {card.price_highlight?.trim() ? (
             <RichText
               html={card.price_highlight}
-              className={`max-w-xl ${priceHighlightProse} font-bold text-navy-deep`}
+              className={`max-w-xl ${priceHighlightProse} font-bold text-navy`}
             />
           ) : null}
           {card.price_secondary?.trim() ? (
@@ -245,19 +245,19 @@ export function PricingDualCardsSection({
                   {section.intro?.trim() ? (
                     <RichText
                       html={section.intro}
-                      className={`max-w-prose ${heroIntroProse}`}
+                      className={`max-w-prose ${heroIntroProse} text-white`}
                     />
                   ) : null}
                 </div>
               </div>
 
               {person ? (
-                <div className="relative z-[1] flex min-h-[260px] w-full items-end justify-center sm:min-h-[300px] lg:min-h-0 lg:justify-end">
+                <div className="relative z-1 flex min-h-[260px] w-full items-end justify-center sm:min-h-[300px] lg:min-h-0 lg:justify-end">
                   <Media
                     image={person}
                     width={560}
                     height={720}
-                    className="h-auto max-h-[min(100%,420px)] w-full max-w-[min(100%,380px)] object-contain object-bottom sm:max-h-[min(100%,460px)] sm:max-w-[400px] lg:max-h-full lg:max-w-[min(100%,420px)] lg:translate-y-[1px]"
+                    className="h-auto max-h-[min(100%,420px)] w-full max-w-[min(100%,380px)] object-contain object-bottom sm:max-h-[min(100%,460px)] sm:max-w-[400px] lg:max-h-full lg:max-w-[min(100%,420px)] lg:translate-y-1px"
                     sizes="(min-width: 1024px) 420px, min(380px, 100vw)"
                     preferLargestSource
                   />
@@ -268,7 +268,7 @@ export function PricingDualCardsSection({
         ) : null}
 
         {cards.length > 0 ? (
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-6">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-start lg:gap-6">
             {cards.map((card, i) => (
               <PricingPackageCard key={i} card={card} lang={lang} />
             ))}
