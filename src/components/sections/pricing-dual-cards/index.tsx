@@ -78,20 +78,37 @@ function cardHasBody(card: PricingDualCardsCardItemT): boolean {
   );
 }
 
-/** Title, gradient rule, features — participates in lg row subgrid when wrapped by parent grid */
-function PricingCardSync({ card }: { card: PricingDualCardsCardItemT }) {
+function PricingPackageCard({
+  card,
+  lang,
+}: {
+  card: PricingDualCardsCardItemT;
+  lang: Locale;
+}) {
   const isTinted = card.panel_style === "tinted";
   const pillBg: CSSProperties = {
     backgroundColor: isTinted ? "var(--palette-white)" : "var(--palette-pill)",
   };
-  const hasHeader = Boolean(card.title?.trim() || card.description?.trim());
+  const panelBg = isTinted ? "bg-card" : "bg-white";
+  const ctas = card.ctas ?? [];
+  const primary = ctas[0];
+  const link = primary ? resolveLink(primary.url, lang) : null;
+  const href = link?.href;
+  const label = primary?.text || link?.label || "";
   const features = (card.features ?? []).filter((f) => f.text?.trim());
 
+  const ctaVariant = isTinted ? "ctaNavy" : "ctaBrand";
+  const hasHeader = Boolean(card.title?.trim() || card.description?.trim());
+
   return (
-    <>
+    <article
+      className={`${REVEAL_ITEM} flex min-h-0 flex-col gap-6 rounded-[20px] p-10 sm:p-12 lg:p-12 lg:grid lg:grid-rows-subgrid lg:row-span-4 lg:gap-y-6 ${panelBg}`}
+      style={isTinted ? undefined : elevatedCardShadow}
+    >
+      {/* Row 1 — synced height across columns on lg so divider lines align */}
       <div className="flex min-w-0 flex-col gap-3 lg:min-h-0">
         {card.title?.trim() ? (
-          <h3 className="max-w-xl font-sans text-2xl font-semibold leading-tight tracking-normal text-navy-deep">
+          <h3 className="max-w-xl font-sans text-2xl font-semibold leading-tight tracking-normal text-navy">
             {card.title.trim()}
           </h3>
         ) : null}
@@ -103,6 +120,7 @@ function PricingCardSync({ card }: { card: PricingDualCardsCardItemT }) {
         ) : null}
       </div>
 
+      {/* Row 2 */}
       <div className="min-h-px min-w-0 shrink-0 lg:min-h-0">
         {hasHeader ? (
           <div
@@ -113,6 +131,7 @@ function PricingCardSync({ card }: { card: PricingDualCardsCardItemT }) {
         ) : null}
       </div>
 
+      {/* Row 3 */}
       <div className="min-w-0">
         {features.length > 0 ? (
           <ul className="flex list-none flex-col gap-3 p-0">
@@ -141,147 +160,43 @@ function PricingCardSync({ card }: { card: PricingDualCardsCardItemT }) {
           </ul>
         ) : null}
       </div>
-    </>
-  );
-}
 
-function PricingCardFooterBlock({
-  card,
-  lang,
-}: {
-  card: PricingDualCardsCardItemT;
-  lang: Locale;
-}) {
-  const isTinted = card.panel_style === "tinted";
-  const ctas = card.ctas ?? [];
-  const primary = ctas[0];
-  const link = primary ? resolveLink(primary.url, lang) : null;
-  const href = link?.href;
-  const label = primary?.text || link?.label || "";
-  const ctaVariant = isTinted ? "ctaNavy" : "ctaBrand";
-
-  return (
-    <>
-      <div className="flex flex-col gap-3">
-        {card.price_highlight?.trim() ? (
-          <RichText
-            html={card.price_highlight}
-            className={`max-w-xl ${priceHighlightProse} font-bold text-navy`}
-          />
-        ) : null}
-        {card.price_secondary?.trim() ? (
-          <RichText
-            html={card.price_secondary}
-            className={`max-w-xl ${priceSecondaryProse} font-semibold`}
-          />
-        ) : null}
-        {card.price_footer?.trim() ? (
-          <RichText
-            html={card.price_footer}
-            className={`max-w-xl ${priceFooterProse}`}
-          />
-        ) : null}
-      </div>
-      {href && label.trim() ? (
-        <Button
-          href={href}
-          target={link?.target}
-          variant={ctaVariant}
-          ctaSize="package"
-          ctaElevation={isTinted ? "default" : "none"}
-          ctaFullWidth={false}
-          className="mt-2 self-start gap-8"
-          arrowClassName="size-[27px] shrink-0"
-        >
-          {label.trim()}
-        </Button>
-      ) : null}
-    </>
-  );
-}
-
-function desktopShellTop(card: PricingDualCardsCardItemT): string {
-  const tinted = card.panel_style === "tinted";
-  return [
-    REVEAL_ITEM,
-    "flex min-w-0 flex-col gap-6 px-10 pt-10 pb-6 sm:px-12 sm:pt-12 lg:grid lg:grid-rows-subgrid lg:row-span-3 lg:gap-y-6 lg:px-12 lg:pb-6 rounded-t-[20px]",
-    tinted ? "bg-card" : "bg-white",
-  ].join(" ");
-}
-
-function desktopShellBottom(card: PricingDualCardsCardItemT): string {
-  const tinted = card.panel_style === "tinted";
-  return [
-    "flex min-h-0 min-w-0 flex-1 flex-col rounded-b-[20px] px-10 pb-10 pt-6 sm:px-12 sm:pb-12 lg:px-12",
-    tinted
-      ? "border-t border-transparent bg-card"
-      : "border-t border-[color-mix(in_srgb,var(--palette-muted)_28%,transparent)] bg-white",
-  ].join(" ");
-}
-
-/** lg only: row-subgrid aligns heading + divider across columns; footers sit outside grid so card heights differ */
-function PricingDualCardsDesktopPair({
-  cards,
-  lang,
-}: {
-  cards: [PricingDualCardsCardItemT, PricingDualCardsCardItemT];
-  lang: Locale;
-}) {
-  const [a, b] = cards;
-
-  return (
-    <div className="hidden lg:flex lg:flex-col lg:gap-0">
-      <div className="grid grid-cols-2 gap-x-6 gap-y-6 [grid-template-rows:repeat(3,minmax(0,auto))]">
-        <div
-          className={desktopShellTop(a)}
-          style={a.panel_style === "tinted" ? undefined : elevatedCardShadow}
-        >
-          <PricingCardSync card={a} />
+      {/* Row 4 — price + CTA (single subgrid row so card heights stay content-driven) */}
+      <div className="mt-auto flex min-h-0 flex-col lg:mt-0">
+        <div className="flex flex-col gap-3">
+          {card.price_highlight?.trim() ? (
+            <RichText
+              html={card.price_highlight}
+              className={`max-w-xl ${priceHighlightProse} font-bold text-navy`}
+            />
+          ) : null}
+          {card.price_secondary?.trim() ? (
+            <RichText
+              html={card.price_secondary}
+              className={`max-w-xl ${priceSecondaryProse} font-semibold`}
+            />
+          ) : null}
+          {card.price_footer?.trim() ? (
+            <RichText
+              html={card.price_footer}
+              className={`max-w-xl ${priceFooterProse}`}
+            />
+          ) : null}
         </div>
-        <div
-          className={desktopShellTop(b)}
-          style={b.panel_style === "tinted" ? undefined : elevatedCardShadow}
-        >
-          <PricingCardSync card={b} />
-        </div>
-      </div>
-      <div className="mt-6 flex flex-row gap-x-6">
-        <article
-          className={desktopShellBottom(a)}
-          style={a.panel_style === "tinted" ? undefined : elevatedCardShadow}
-        >
-          <PricingCardFooterBlock card={a} lang={lang} />
-        </article>
-        <article
-          className={desktopShellBottom(b)}
-          style={b.panel_style === "tinted" ? undefined : elevatedCardShadow}
-        >
-          <PricingCardFooterBlock card={b} lang={lang} />
-        </article>
-      </div>
-    </div>
-  );
-}
-
-function PricingPackageCard({
-  card,
-  lang,
-}: {
-  card: PricingDualCardsCardItemT;
-  lang: Locale;
-}) {
-  const isTinted = card.panel_style === "tinted";
-  const panelBg = isTinted ? "bg-card" : "bg-white";
-
-  return (
-    <article
-      className={`${REVEAL_ITEM} flex min-h-0 flex-col gap-6 rounded-[20px] p-10 sm:p-12 lg:p-12 ${panelBg}`}
-      style={isTinted ? undefined : elevatedCardShadow}
-    >
-      <PricingCardSync card={card} />
-
-      <div className="mt-auto flex min-h-0 flex-col">
-        <PricingCardFooterBlock card={card} lang={lang} />
+        {href && label.trim() ? (
+          <Button
+            href={href}
+            target={link?.target}
+            variant={ctaVariant}
+            ctaSize="package"
+            ctaElevation={isTinted ? "default" : "none"}
+            ctaFullWidth={false}
+            className="mt-2 self-start gap-8"
+            arrowClassName="size-[27px] shrink-0"
+          >
+            {label.trim()}
+          </Button>
+        ) : null}
       </div>
     </article>
   );
@@ -365,24 +280,11 @@ export function PricingDualCardsSection({
         ) : null}
 
         {cards.length > 0 ? (
-          cards.length === 2 ? (
-            <>
-              <div className="grid grid-cols-1 gap-6 lg:hidden">
-                <PricingPackageCard card={cards[0]} lang={lang} />
-                <PricingPackageCard card={cards[1]} lang={lang} />
-              </div>
-              <PricingDualCardsDesktopPair
-                cards={[cards[0], cards[1]]}
-                lang={lang}
-              />
-            </>
-          ) : (
-            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-start lg:gap-6">
-              {cards.map((card, i) => (
-                <PricingPackageCard key={i} card={card} lang={lang} />
-              ))}
-            </div>
-          )
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:grid-rows-[repeat(4,auto)] lg:items-start lg:gap-6">
+            {cards.map((card, i) => (
+              <PricingPackageCard key={i} card={card} lang={lang} />
+            ))}
+          </div>
         ) : null}
       </Container>
     </section>
