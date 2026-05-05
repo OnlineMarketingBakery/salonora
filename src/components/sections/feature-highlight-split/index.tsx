@@ -8,6 +8,9 @@ import { resolveLink } from "@/lib/utils/links";
 import type { FeatureHighlightSplitSectionT } from "@/types/sections";
 import type { CSSProperties } from "react";
 
+/** Exported from Figma (`68aa8766d05fb7bf86a05084_hero-bg`): mesh wash before blue color-blend. */
+const HERO_BG_SRC = "/feature-highlight-split-hero-bg.png";
+
 /** Figma 946:34 — heading supports manual line breaks; strip tags only when splitting. */
 function linesFromHeading(raw: string | undefined): string[] {
   return (raw ?? "")
@@ -17,31 +20,21 @@ function linesFromHeading(raw: string | undefined): string[] {
     .filter(Boolean);
 }
 
-/** Base photographic wash before `mix-blend-mode: color` (matches hero-bg + blue tint stack). */
-const skyWashLayer: CSSProperties = {
-  background: `
-    radial-gradient(
-      ellipse 95% 75% at 50% 18%,
-      var(--palette-white) 0%,
-      transparent 62%
-    ),
-    radial-gradient(
-      ellipse 85% 65% at 12% 88%,
-      color-mix(in srgb, var(--palette-white) 92%, var(--palette-surface)) 0%,
-      transparent 58%
-    ),
-    radial-gradient(
-      ellipse 70% 55% at 92% 72%,
-      color-mix(in srgb, var(--palette-white) 85%, var(--palette-brand-soft)) 0%,
-      transparent 52%
-    ),
-    linear-gradient(
-      180deg,
-      var(--palette-white) 0%,
-      var(--palette-surface) 52%,
-      color-mix(in srgb, var(--palette-brand) 12%, var(--palette-surface)) 100%
-    )
-  `,
+/**
+ * Hero wash layer — matches node `346:5625`: img scaled past bounds inside clipped frame,
+ * then tinted by brand `mix-blend-mode: color` (`346:5626`).
+ */
+const heroBgImageLayer: CSSProperties = {
+  position: "absolute",
+  top: 0,
+  left: "-19.42%",
+  width: "138.84%",
+  height: "134.3%",
+  minHeight: "100%",
+  backgroundImage: `url("${HERO_BG_SRC}")`,
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "center top",
+  backgroundSize: "cover",
 };
 
 const brandColorBlendLayer: CSSProperties = {
@@ -71,6 +64,17 @@ const cardProse = [
   "[&_p:last-child]:!mb-0",
 ].join(" ");
 
+function lgGridColsClass(hasLeft: boolean, hasVisual: boolean, hasPromises: boolean): string {
+  if (hasLeft && hasVisual && hasPromises) return "lg:grid-cols-[341px_568px_368px]";
+  if (hasLeft && hasVisual) return "lg:grid-cols-[341px_568px]";
+  if (hasVisual && hasPromises) return "lg:grid-cols-[568px_368px]";
+  if (hasLeft && hasPromises) return "lg:grid-cols-[341px_368px]";
+  if (hasLeft) return "lg:grid-cols-[341px]";
+  if (hasVisual) return "lg:grid-cols-[568px]";
+  if (hasPromises) return "lg:grid-cols-[368px]";
+  return "";
+}
+
 export function FeatureHighlightSplitSection({
   section,
   lang,
@@ -99,23 +103,31 @@ export function FeatureHighlightSplitSection({
     return null;
   }
 
+  const gridCols = lgGridColsClass(hasLeft, hasVisual, hasPromises);
+
   return (
     <section className="relative isolate overflow-hidden py-14 sm:py-16 lg:flex lg:min-h-[804px] lg:items-center lg:py-0">
-      <div
-        className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
-        aria-hidden
-      >
-        <div className="absolute inset-0" style={skyWashLayer} />
-        <div className="absolute inset-0" style={brandColorBlendLayer} />
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden>
+        {/* Fallback base so blend never sits on empty transparency before paint */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "color-mix(in srgb, var(--palette-white) 88%, var(--palette-surface))",
+          }}
+          aria-hidden
+        />
+        <div style={heroBgImageLayer} aria-hidden />
+        <div className="absolute inset-0" style={brandColorBlendLayer} aria-hidden />
       </div>
 
       <Container className="relative z-10 w-full max-w-[90rem]">
         <div
-          className={`flex flex-col items-stretch gap-10 lg:flex-row lg:items-center lg:justify-between lg:gap-[34px]`}
+          className={`mx-auto grid w-full max-w-[1345px] grid-cols-1 gap-10 lg:gap-x-[34px] lg:gap-y-0 lg:items-center ${gridCols}`}
         >
           {hasLeft ? (
             <div
-              className={`${REVEAL_ITEM} flex w-full shrink-0 flex-col gap-7 lg:w-[341px] lg:gap-[28px]`}
+              className={`${REVEAL_ITEM} relative z-10 flex w-full min-w-0 flex-col gap-7 lg:w-[341px] lg:gap-[28px]`}
             >
               <div className="flex flex-col gap-[19px]">
                 {section.badge?.trim() ? (
@@ -158,9 +170,7 @@ export function FeatureHighlightSplitSection({
           ) : null}
 
           {hasVisual && mockup ? (
-            <div
-              className={`${REVEAL_ITEM} flex w-full shrink-0 justify-center lg:w-[568px] lg:max-w-[568px]`}
-            >
+            <div className={`${REVEAL_ITEM} relative z-0 flex w-full justify-center lg:w-[568px]`}>
               <div className="relative h-auto w-full max-w-[568px]">
                 <Media
                   image={mockup}
@@ -175,9 +185,7 @@ export function FeatureHighlightSplitSection({
           ) : null}
 
           {hasPromises ? (
-            <div
-              className={`${REVEAL_ITEM} flex w-full shrink-0 flex-col gap-5 lg:w-[368px] lg:max-w-[368px]`}
-            >
+            <div className={`${REVEAL_ITEM} relative z-10 flex w-full flex-col gap-5 lg:w-[368px]`}>
               {promises.map((item, i) => {
                 const isLongCard =
                   i === promises.length - 1 && promises.length > 1;
