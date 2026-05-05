@@ -35,10 +35,6 @@ export function SectionRenderer({ sections, lang }: { sections: AnySectionT[]; l
             return <sectionRegistry.why_salonora_anders key={section.id} section={section} lang={lang} />;
           case "testimonials":
             return <sectionRegistry.testimonials key={section.id} section={section} lang={lang} />;
-          case "testimonials_slider":
-            return (
-              <sectionRegistry.testimonials_slider key={section.id} section={section} lang={lang} />
-            );
           case "announcement_bar":
             return <sectionRegistry.announcement_bar key={section.id} section={section} lang={lang} />;
           case "process_steps":

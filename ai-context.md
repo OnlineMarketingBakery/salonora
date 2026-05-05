@@ -10,7 +10,7 @@ Salonora is a **multilingual (nl/en) Next.js 15 App Router** marketing site that
 
 - **Visual system:** Outfit (Google Font), palette in `src/app/globals.css` — brand blue, navy, muted blue-gray; Figma horizontal brand gradient uses `--palette-brand` → `--palette-brand-strong`; page `--background` is white (`--palette-white`); light blue-gray surfaces (`--palette-surface`, etc.) for cards/UI (`--palette-*`, Tailwind `@theme inline`).
 - **Motion:** GSAP + `@gsap/react`; reveal classes in `src/lib/animation-classes.ts`, page-level patterns in `src/components/animations/`.
-- **Copy & positioning:** Lives in WordPress, not hardcoded brand manifestos. UI sections are conversion-oriented (hero, pricing, FAQ, testimonials, guarantees). Do not invent product claims; match existing component tone (clear, professional, benefit-led).
+- **Copy & positioning:** Lives in WordPress, not hardcoded brand manifestos. UI sections are conversion-oriented (hero, pricing, FAQ, testimonials carousel with configurable items-per-slide, guarantees). Do not invent product claims; match existing component tone (clear, professional, benefit-led).
 
 ## Tech stack (versions from package.json)
 
@@ -110,4 +110,4 @@ npm run lint     # next lint
 
 ## Section registry keys (reference)
 
-`hero`, `cards`, `cost_comparison`, `benefits_grid`, `pricing_packages`, `guarantee_split`, `story_split`, `image_intro_split`, `salon_value_proposition`, `why_owners_choose`, `why_salonora_different`, `why_salonora_anders`, `testimonials`, `testimonials_slider`, `announcement_bar`, `process_steps`, `how_it_works_steps`, `scrolling_ticker`, `design_showcase_grid`, `feature_highlight_grid`, `feature_highlight_split`, `faq_contact_split`, `form_embed`, `latest_posts`, `cta`, `pricing_cta`, `pricing_dual_cards`, `rich_text`, `faq` — must stay in sync with `section-registry.ts`.
+`hero`, `cards`, `cost_comparison`, `benefits_grid`, `pricing_packages`, `guarantee_split`, `story_split`, `image_intro_split`, `salon_value_proposition`, `why_owners_choose`, `why_salonora_different`, `why_salonora_anders`, `testimonials`, `announcement_bar`, `process_steps`, `how_it_works_steps`, `scrolling_ticker`, `design_showcase_grid`, `feature_highlight_grid`, `feature_highlight_split`, `faq_contact_split`, `form_embed`, `latest_posts`, `cta`, `pricing_cta`, `pricing_dual_cards`, `rich_text`, `faq` — must stay in sync with `section-registry.ts`.

@@ -40,7 +40,6 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   scrolling_ticker: true,
   story_split: true,
   testimonials: true,
-  testimonials_slider: true,
   why_owners_choose: true,
   why_salonora_anders: true,
   why_salonora_different: true,
@@ -316,28 +315,11 @@ function mapKnownPageSectionLayout(
         const single = asLink(row.cta);
         if (single) ctas = [{ text: single.title || "Meer informatie", url: single }];
       }
-      return {
-        ...base,
-        type: "testimonials",
-        title: asString(row.title),
-        intro: asHtml(row.intro),
-        ctas,
-        items: [],
-        testimonialIds,
-      };
-    }
-    case "testimonials_slider": {
-      const testimonialIds = asRelationshipPostIds(row.items);
-      let ctas = mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]);
-      if (!ctas.length) {
-        const single = asLink(row.cta);
-        if (single) ctas = [{ text: single.title || "Meer informatie", url: single }];
-      }
       const pv = asString(row.items_per_view);
       const items_per_view: 1 | 2 | 3 = pv === "1" ? 1 : pv === "3" ? 3 : 2;
       return {
         ...base,
-        type: "testimonials_slider",
+        type: "testimonials",
         title: asString(row.title),
         intro: asHtml(row.intro),
         ctas,
