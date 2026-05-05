@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { Media } from "@/components/ui/Media";
@@ -13,12 +12,6 @@ import type {
   HowItWorksStepsStepItemT,
 } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
-
-/** Figma frame stroke: linear brand → surface, stroke opacity 50%, inside, 1px (via padded gradient wrapper). */
-const stepsFrameChrome: CSSProperties = {
-  backgroundImage:
-    "linear-gradient(to bottom, color-mix(in srgb, var(--palette-brand) 50%, transparent), color-mix(in srgb, var(--palette-surface) 50%, transparent))",
-};
 
 /** Figma icon wells: brand `#398ce9`, rose `#d27e91` — align with CSS palette tokens */
 function iconTileBackground(accent: HowItWorksStepsIconAccentT | undefined): CSSProperties {
@@ -115,23 +108,10 @@ export function HowItWorksStepsSection({ section, lang }: { section: HowItWorksS
           </header>
 
           {steps.length > 0 ? (
-            <div
-              className="w-full rounded-[24px] p-px md:box-border md:flex md:h-[297px] md:flex-col md:overflow-hidden"
-              style={stepsFrameChrome}
-            >
-              <div className="flex min-h-0 w-full flex-1 flex-col items-stretch gap-8 rounded-[23px] bg-surface px-5 py-5 md:flex-row md:items-end md:justify-center md:gap-5 md:py-0 md:pl-5 md:pr-[21px]">
-                {steps.map((step, i) => (
-                  <Fragment key={i}>
-                    {i > 0 ? (
-                      <div
-                        className="hidden w-px shrink-0 bg-brand/35 md:block md:h-[295px]"
-                        aria-hidden
-                      />
-                    ) : null}
-                    <StepCard step={step} />
-                  </Fragment>
-                ))}
-              </div>
+            <div className="flex w-full flex-col items-stretch gap-8 px-5 py-5 md:flex-row md:items-end md:justify-center md:gap-5 md:py-0 md:pl-5 md:pr-[21px]">
+              {steps.map((step, i) => (
+                <StepCard key={i} step={step} />
+              ))}
             </div>
           ) : null}
 
