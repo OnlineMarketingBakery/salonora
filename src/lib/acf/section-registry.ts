@@ -56,6 +56,14 @@ const PricingDualCardsSectionLazy = dynamic(
   { ssr: true }
 );
 
+const TestimonialsSliderSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/testimonials-slider").then((mod) => ({
+      default: mod.TestimonialsSliderSection,
+    })),
+  { ssr: true }
+);
+
 import type { AnySectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 import type { ReactNode } from "react";
@@ -81,6 +89,9 @@ export const sectionRegistry = {
   why_salonora_different: asSection(WhySalonoraDifferentSection as (p: { section: never; lang: Locale }) => ReactNode),
   why_salonora_anders: asSection(WhySalonoraAndersSection as (p: { section: never; lang: Locale }) => ReactNode),
   testimonials: asSection(TestimonialsSection as (p: { section: never; lang: Locale }) => ReactNode),
+  testimonials_slider: asSection(
+    TestimonialsSliderSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
   announcement_bar: asSection(AnnouncementBarSection as (p: { section: never; lang: Locale }) => ReactNode),
   process_steps: asSection(ProcessStepsSection as (p: { section: never; lang: Locale }) => ReactNode),
   how_it_works_steps: asSection(HowItWorksStepsSectionShell as (p: { section: never; lang: Locale }) => ReactNode),
