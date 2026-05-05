@@ -22,6 +22,16 @@ require_once OMB_HEADLESS_CORE_PATH . 'includes/polylang.php';
 require_once OMB_HEADLESS_CORE_PATH . 'includes/rest.php';
 require_once OMB_HEADLESS_CORE_PATH . 'includes/contact-form-7.php';
 
+add_action('init', function () {
+    if (!function_exists('get_field')) {
+        return;
+    }
+    $acf_secret = get_field('revalidation_secret', 'option');
+    if (!empty($acf_secret)) {
+        update_option('omb_revalidation_secret', $acf_secret, false);
+    }
+});
+
 register_activation_hook(__FILE__, function () {
     omb_register_post_types();
     omb_register_taxonomies();
