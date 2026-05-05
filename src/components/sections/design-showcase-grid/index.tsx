@@ -1,15 +1,15 @@
-import Link from "next/link";
-import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
+import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
+import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
 import type {
   DesignShowcaseGridCardTint,
   DesignShowcaseGridSectionT,
 } from "@/types/sections";
-import type { Locale } from "@/lib/i18n/locales";
+import Link from "next/link";
 
 const PANEL_BG: Record<DesignShowcaseGridCardTint, string> = {
   surface: "var(--palette-surface)",
@@ -110,9 +110,7 @@ export function DesignShowcaseGridSection({
         )}
 
         {cards.length > 0 ? (
-          <div
-            className={`mt-12 grid ${gridClass} gap-6 sm:gap-7 lg:gap-8`}
-          >
+          <div className={`mt-12 grid ${gridClass} gap-6 sm:gap-7 lg:gap-8`}>
             {cards.map((card, index) => {
               const tint = card.panelTint ?? "surface";
               const bg = PANEL_BG[tint];
@@ -135,7 +133,9 @@ export function DesignShowcaseGridSection({
                       />
                     ) : null}
                   </div>
-                  <div className={`${REVEAL_ITEM} mt-10 flex items-end justify-between gap-6`}>
+                  <div
+                    className={`${REVEAL_ITEM} mt-10 flex items-end justify-between gap-6`}
+                  >
                     <div className="min-w-0 flex-1 text-2xl font-medium leading-snug text-navy-deep">
                       <RichText
                         html={card.titleHtml}
@@ -147,8 +147,7 @@ export function DesignShowcaseGridSection({
                 </>
               );
 
-              const cardClass =
-                `${REVEAL_ITEM} flex flex-col rounded-2xl bg-white p-6 shadow-lg`;
+              const cardClass = `${REVEAL_ITEM} flex flex-col rounded-2xl bg-white p-6 shadow-lg`;
 
               return (
                 <Link
@@ -164,7 +163,9 @@ export function DesignShowcaseGridSection({
         ) : null}
 
         {footerCtas.length > 0 ? (
-          <div className={`${REVEAL_ITEM} mt-12 flex flex-wrap items-center justify-center gap-4`}>
+          <div
+            className={`${REVEAL_ITEM} mt-12 flex flex-wrap items-center justify-center gap-4`}
+          >
             {footerCtas.map((cta, i) => {
               const r = resolveLink(cta.url, lang);
               if (!r?.href) return null;
@@ -179,7 +180,7 @@ export function DesignShowcaseGridSection({
                   ctaFullWidth={false}
                   ctaJustify="center"
                   showArrow={false}
-                  className="bg-pill text-navy-deep shadow-none ring-0 border-0 hover:bg-card"
+                  className="text-navy-deep shadow-none ring-0 border-0 bg-card"
                 >
                   <span className="inline-flex items-center gap-3 sm:gap-4">
                     <span className="sm:whitespace-nowrap">{label}</span>
