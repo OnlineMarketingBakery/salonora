@@ -8,7 +8,7 @@ Salonora is a **multilingual (nl/en) Next.js 15 App Router** marketing site that
 
 ## Brand voice & UI (from codebase)
 
-- **Visual system:** Outfit (Google Font), palette in `src/app/globals.css` — brand blue, navy, muted blue-gray, light surfaces (`--palette-*`, Tailwind `@theme inline`).
+- **Visual system:** Outfit (Google Font), palette in `src/app/globals.css` — brand blue, navy, muted blue-gray; page `--background` is white (`--palette-white`); light blue-gray surfaces (`--palette-surface`, etc.) for cards/UI (`--palette-*`, Tailwind `@theme inline`).
 - **Motion:** GSAP + `@gsap/react`; reveal classes in `src/lib/animation-classes.ts`, page-level patterns in `src/components/animations/`.
 - **Copy & positioning:** Lives in WordPress, not hardcoded brand manifestos. UI sections are conversion-oriented (hero, pricing, FAQ, testimonials, guarantees). Do not invent product claims; match existing component tone (clear, professional, benefit-led).
 
