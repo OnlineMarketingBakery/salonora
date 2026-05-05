@@ -378,6 +378,20 @@ export type FeatureHighlightGridSectionT = CoreSection & {
   cards?: FeatureHighlightGridCardT[];
 };
 
+/** Figma 946:34 — light gradient band: badge + headline + CTA, center mockup, stacked promise cards */
+export type FeatureHighlightSplitPromiseItemT = {
+  text?: string;
+};
+
+export type FeatureHighlightSplitSectionT = CoreSection & {
+  type: "feature_highlight_split";
+  badge?: string;
+  title?: string;
+  ctas?: CtaItem[];
+  mockup_image?: WpImage | null;
+  promise_items?: FeatureHighlightSplitPromiseItemT[];
+};
+
 export type AnySectionT =
   | HeroSectionT
   | CardsSectionT
@@ -404,6 +418,7 @@ export type AnySectionT =
   | PricingCtaSectionT
   | RichTextSectionT
   | FaqSectionT
-  | FeatureHighlightGridSectionT;
+  | FeatureHighlightGridSectionT
+  | FeatureHighlightSplitSectionT;
 
 export type LatestPostResolved = { id: number; title: string; excerpt: string; href: string };
