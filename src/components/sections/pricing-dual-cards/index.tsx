@@ -8,7 +8,7 @@ import { resolveLink } from "@/lib/utils/links";
 import type { PricingDualCardsCardItemT, PricingDualCardsSectionT } from "@/types/sections";
 import type { CSSProperties } from "react";
 
-/** Figma Ellipse behind portrait (exported semi-circle). */
+/** Figma semi-circle asset — kept inside hero column only; lighten removes black matte on blue. */
 const HERO_ELLIPSE_SRC = "/pricing-dual-cards-hero-ellipse.png";
 
 const heroIntroProse = [
@@ -60,14 +60,14 @@ const cardRule: CSSProperties = {
   borderColor: "color-mix(in srgb, var(--palette-muted) 28%, transparent)",
 };
 
-/** Semi-circle backdrop: sits behind figure, anchored bottom-right. */
+/** Ellipse PNG matte: lighten composite drops black onto band blue without extra “shape”. */
 const heroEllipseLayer: CSSProperties = {
   backgroundImage: `url("${HERO_ELLIPSE_SRC}")`,
   backgroundRepeat: "no-repeat",
   backgroundPosition: "center bottom",
   backgroundSize: "contain",
-  opacity: 0.75,
-  mixBlendMode: "screen",
+  opacity: 0.55,
+  mixBlendMode: "lighten",
 };
 
 function cardHasBody(card: PricingDualCardsCardItemT): boolean {
@@ -202,20 +202,15 @@ export function PricingDualCardsSection({
   }
 
   return (
-    <section
-      className={`overflow-visible pb-10 pt-10 sm:pb-12 sm:pt-12 lg:pb-14 lg:pt-14 ${person ? "lg:pb-16" : ""}`}
-    >
-      <Container className="relative flex max-w-[90rem] flex-col gap-6 overflow-visible sm:gap-8">
+    <section className="relative z-0 overflow-x-clip py-10 sm:py-12 lg:py-14">
+      <Container className="relative z-0 flex max-w-[90rem] flex-col gap-6 sm:gap-8">
         {hasIntro ? (
           <div
-            className={`${REVEAL_ITEM} relative isolate overflow-visible ${person ? "mt-[clamp(-5rem,-10vw,-3rem)] pt-[clamp(5rem,11vw,8.5rem)] lg:mt-[clamp(-6.5rem,-11vw,-4rem)] lg:pt-[clamp(6.5rem,12vw,9rem)]" : ""}`}
+            className={`${REVEAL_ITEM} relative isolate overflow-hidden rounded-[32px]`}
+            style={heroShell}
           >
-            {/* Blue band: copy only; portrait layers above/right and bleeds upward outside this box */}
-            <div
-              className={`relative z-[1] overflow-visible rounded-[32px] px-8 pb-10 pt-11 sm:px-11 sm:pb-11 sm:pt-12 lg:min-h-[min(320px,42vw)] lg:px-14 lg:pb-14 lg:pt-14 xl:px-16 ${person ? "lg:pr-[min(46%,26rem)]" : ""}`}
-              style={heroShell}
-            >
-              <div className="flex max-w-xl flex-col gap-5 lg:max-w-[26rem] xl:max-w-xl">
+            <div className="grid grid-cols-1 gap-8 px-8 pb-10 pt-11 sm:px-11 sm:pb-11 sm:pt-12 lg:grid-cols-[minmax(0,1fr)_minmax(200px,380px)] lg:items-end lg:gap-10 lg:px-14 lg:pb-12 lg:pt-14 xl:gap-12 xl:px-16">
+              <div className="relative z-[2] flex max-w-xl flex-col gap-5 lg:max-w-[28rem] xl:max-w-xl">
                 {section.badge?.trim() ? (
                   <Button
                     type="button"
@@ -236,34 +231,31 @@ export function PricingDualCardsSection({
                   ) : null}
                 </div>
               </div>
-            </div>
 
-            {person ? (
-              <div
-                className="pointer-events-none absolute bottom-0 right-[max(0.75rem,3vw)] z-[3] flex w-[min(92vw,440px)] justify-end overflow-visible sm:right-[max(1rem,4vw)] lg:right-[max(1.25rem,4vw)] lg:w-[min(46vw,480px)] xl:right-[max(2rem,5vw)]"
-                style={{
-                  height: "clamp(400px, 52vw, 600px)",
-                }}
-              >
-                {/* Semi-circle artwork behind subject — flat edge down */}
-                <div
-                  className="absolute bottom-[2%] right-[-4%] z-0 h-[78%] w-[118%] max-w-none"
-                  style={heroEllipseLayer}
-                  aria-hidden
-                />
+              {person ? (
+                <div className="relative z-[1] mx-auto flex w-full max-w-[280px] justify-center lg:mx-0 lg:max-w-none lg:justify-end">
+                  {/* Portrait slot: bounded width/height — no vw-based giants */}
+                  <div className="relative isolate aspect-[4/5] w-full max-w-[300px] lg:aspect-auto lg:h-[min(380px,42vw)] lg:w-[min(360px,90%)] xl:h-[min(420px,38vw)] xl:w-[min(380px,90%)]">
+                    <div
+                      className="pointer-events-none absolute inset-x-[6%] bottom-[6%] top-[18%] z-0 lg:inset-x-[4%] lg:bottom-[4%] lg:top-[14%]"
+                      style={heroEllipseLayer}
+                      aria-hidden
+                    />
 
-                <div className="relative z-[1] flex h-full w-full items-end justify-end overflow-visible">
-                  <Media
-                    image={person}
-                    width={560}
-                    height={720}
-                    className="h-[128%] max-h-none w-auto max-w-none -translate-y-[4%] object-contain object-bottom lg:h-[138%] lg:-translate-y-[6%]"
-                    sizes="(min-width: 1024px) min(480px, 46vw), min(380px, 92vw)"
-                    preferLargestSource
-                  />
+                    <div className="relative z-[1] flex h-full min-h-[220px] w-full items-end justify-center lg:min-h-[260px] lg:justify-end">
+                      <Media
+                        image={person}
+                        width={560}
+                        height={720}
+                        className="max-h-[min(320px,70vh)] w-auto max-w-full object-contain object-bottom lg:max-h-[min(400px,48vh)] xl:max-h-[min(440px,46vh)]"
+                        sizes="(min-width: 1024px) 380px, min(300px, 85vw)"
+                        preferLargestSource
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ) : null}
+              ) : null}
+            </div>
           </div>
         ) : null}
 
