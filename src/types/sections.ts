@@ -226,6 +226,27 @@ export type ProcessStepsSectionT = CoreSection & {
   ctas: CtaItem[];
 };
 
+/** Icon tile accent for “How it works” step cards (Figma: brand blue vs rose). */
+export type HowItWorksStepsIconAccentT = "brand" | "rose";
+
+export type HowItWorksStepsStepItemT = {
+  icon?: WpImage | null;
+  iconAccent?: HowItWorksStepsIconAccentT;
+  title?: string;
+  /** HTML / line breaks from CMS */
+  description?: string;
+};
+
+/** Figma 346:6578 — badge, headline, three icon cards, CTA pill, footer highlights line */
+export type HowItWorksStepsSectionT = CoreSection & {
+  type: "how_it_works_steps";
+  badge?: string;
+  title?: string;
+  steps?: HowItWorksStepsStepItemT[];
+  ctas?: CtaItem[];
+  footerTagline?: string;
+};
+
 export type FaqItemT = { question: string; answer: string };
 
 export type FaqContactSplitSectionT = CoreSection & {
@@ -321,6 +342,7 @@ export type AnySectionT =
   | TestimonialsSectionT
   | AnnouncementBarSectionT
   | ProcessStepsSectionT
+  | HowItWorksStepsSectionT
   | FaqContactSplitSectionT
   | FormEmbedSectionT
   | LatestPostsSectionT

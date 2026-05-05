@@ -32,3 +32,6 @@ add_filter('acf/settings/load_json', function ($paths) {
     $paths[] = get_stylesheet_directory() . '/acf-json';
     return $paths;
 });
+
+/** ACF JSON push from Node (acf:push) when the core plugin omits /acf-sync */
+require_once get_stylesheet_directory() . '/inc/acf-sync-rest-route.php';

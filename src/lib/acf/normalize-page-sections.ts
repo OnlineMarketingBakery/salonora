@@ -1,4 +1,5 @@
 import type { AnySectionT } from "@/types/sections";
+import { assertNever } from "@/lib/utils/assert-never";
 import {
   asBool,
   asHtml,
@@ -11,6 +12,37 @@ import {
 } from "./field-mappers";
 
 type RawRow = Record<string, unknown> & { acf_fc_layout: string };
+
+/** Known page flexible-layout names → normalized section types (must stay aligned with `mapKnownPageSectionLayout`). */
+const PAGE_SECTION_ACF_LAYOUTS = {
+  announcement_bar: true,
+  benefits_grid: true,
+  cards: true,
+  cost_comparison: true,
+  cta: true,
+  faq: true,
+  faq_contact_split: true,
+  form_embed: true,
+  guarantee_split: true,
+  hero: true,
+  how_it_works_steps: true,
+  image_intro_split: true,
+  latest_posts: true,
+  pricing_cta: true,
+  pricing_packages: true,
+  process_steps: true,
+  rich_text: true,
+  salon_value_proposition: true,
+  story_split: true,
+  testimonials: true,
+  why_owners_choose: true,
+  why_salonora_anders: true,
+  why_salonora_different: true,
+} as const satisfies Record<AnySectionT["type"], true>;
+
+function isKnownPageSectionLayout(value: string): value is AnySectionT["type"] {
+  return Object.prototype.hasOwnProperty.call(PAGE_SECTION_ACF_LAYOUTS, value);
+}
 
 function keyOf(i: number, row: RawRow): string {
   return asString(row._key) || `row-${i}`;
@@ -25,7 +57,17 @@ function mapLayout(i: number, row: RawRow): AnySectionT | null {
   const id = newSectionId();
   const _key = keyOf(i, row);
   const base = { _key, id };
-  switch (row.acf_fc_layout) {
+  const layout = row.acf_fc_layout;
+  if (!isKnownPageSectionLayout(layout)) return null;
+  return mapKnownPageSectionLayout(layout, row, base);
+}
+
+function mapKnownPageSectionLayout(
+  layout: AnySectionT["type"],
+  row: RawRow,
+  base: { _key: string; id: string }
+): AnySectionT {
+  switch (layout) {
     case "hero": {
       let ctas = mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]);
       if (!ctas.length) {
@@ -303,6 +345,34 @@ function mapLayout(i: number, row: RawRow): AnySectionT | null {
           : [],
         ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
       };
+    case "how_it_works_steps":
+      return {
+        ...base,
+        type: "how_it_works_steps",
+        badge: asString(row.badge),
+        title: asString(row.title),
+        steps: Array.isArray(row.steps)
+          ? (
+              row.steps as {
+                icon?: unknown;
+                icon_background_color?: unknown;
+                title?: unknown;
+                description?: unknown;
+              }[]
+            ).map((s) => {
+              const a = asString(s.icon_background_color);
+              const iconAccent = a === "rose" ? "rose" : "brand";
+              return {
+                icon: asImage(s.icon),
+                iconAccent,
+                title: asString(s.title),
+                description: asHtml(s.description),
+              };
+            })
+          : [],
+        ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
+        footerTagline: asString(row.footer_tagline),
+      };
     case "faq_contact_split": {
       const ctaform = asString(row.ctaform);
       const useForm = ctaform === "form" || ctaform.toLowerCase().includes("form");
@@ -425,6 +495,6 @@ function mapLayout(i: number, row: RawRow): AnySectionT | null {
           : [],
       };
     default:
-      return null;
+      assertNever(layout);
   }
 }
