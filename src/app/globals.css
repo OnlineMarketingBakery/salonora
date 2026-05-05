@@ -23,7 +23,7 @@
   --palette-showcase-mint: #cceded;
   --palette-showcase-gold-wash: rgba(200, 148, 2, 0.28);
 
-  --background: var(--palette-surface);
+  --background: var(--palette-white);
   --foreground: var(--palette-navy-deep);
   --brand: var(--palette-brand);
   --brand-dark: var(--palette-navy-deep);
