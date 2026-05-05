@@ -102,10 +102,10 @@ function PricingPackageCard({
 
   return (
     <article
-      className={`${REVEAL_ITEM} flex min-h-0 flex-col gap-6 rounded-[20px] p-10 sm:p-12 lg:p-12 lg:grid lg:grid-rows-subgrid lg:row-span-4 lg:gap-y-6 ${panelBg}`}
+      className={`${REVEAL_ITEM} flex min-h-0 flex-col gap-6 rounded-[20px] p-10 sm:p-12 lg:p-12 ${panelBg}`}
       style={isTinted ? undefined : elevatedCardShadow}
     >
-      {/* Row 1 — synced height across columns on lg so divider lines align */}
+      {/* Header */}
       <div className="flex min-w-0 flex-col gap-3 lg:min-h-0">
         {card.title?.trim() ? (
           <h3 className="max-w-xl font-sans text-2xl font-semibold leading-tight tracking-normal text-navy">
@@ -120,7 +120,7 @@ function PricingPackageCard({
         ) : null}
       </div>
 
-      {/* Row 2 */}
+      {/* Divider */}
       <div className="min-h-px min-w-0 shrink-0 lg:min-h-0">
         {hasHeader ? (
           <div
@@ -131,7 +131,7 @@ function PricingPackageCard({
         ) : null}
       </div>
 
-      {/* Row 3 */}
+      {/* Features */}
       <div className="min-w-0">
         {features.length > 0 ? (
           <ul className="flex list-none flex-col gap-3 p-0">
@@ -161,7 +161,7 @@ function PricingPackageCard({
         ) : null}
       </div>
 
-      {/* Row 4 — price + CTA (single subgrid row so card heights stay content-driven) */}
+      {/* Price + CTA */}
       <div className="mt-auto flex min-h-0 flex-col lg:mt-0">
         <div className="flex flex-col gap-3">
           {card.price_highlight?.trim() ? (
@@ -280,7 +280,7 @@ export function PricingDualCardsSection({
         ) : null}
 
         {cards.length > 0 ? (
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:grid-rows-[repeat(4,auto)] lg:items-start lg:gap-6">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-start lg:gap-6">
             {cards.map((card, i) => (
               <PricingPackageCard key={i} card={card} lang={lang} />
             ))}
