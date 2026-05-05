@@ -20,6 +20,7 @@ import { CtaSection } from "@/components/sections/cta/CtaSection";
 import { PricingCtaSection } from "@/components/sections/pricing-cta/PricingCtaSection";
 import { RichTextSection } from "@/components/sections/rich-text/RichTextSection";
 import { FaqSection } from "@/components/sections/faq/FaqSection";
+import { HowItWorksStepsSectionShell } from "@/components/sections/how-it-works-steps/shell";
 
 import type { AnySectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
@@ -30,7 +31,9 @@ type SectionComponent = (props: { section: AnySectionT; lang: Locale }) => React
 const asSection = (C: (p: { section: never; lang: Locale }) => ReactNode): SectionComponent =>
   C as SectionComponent;
 
-export const sectionRegistry: Record<AnySectionT["type"], SectionComponent> = {
+type SectionRegistryShape = Record<AnySectionT["type"], SectionComponent>;
+
+export const sectionRegistry = {
   hero: asSection(HeroSection as (p: { section: never; lang: Locale }) => ReactNode),
   cards: asSection(CardsSection as (p: { section: never; lang: Locale }) => ReactNode),
   cost_comparison: asSection(CostComparisonSection as (p: { section: never; lang: Locale }) => ReactNode),
@@ -46,6 +49,7 @@ export const sectionRegistry: Record<AnySectionT["type"], SectionComponent> = {
   testimonials: asSection(TestimonialsSection as (p: { section: never; lang: Locale }) => ReactNode),
   announcement_bar: asSection(AnnouncementBarSection as (p: { section: never; lang: Locale }) => ReactNode),
   process_steps: asSection(ProcessStepsSection as (p: { section: never; lang: Locale }) => ReactNode),
+  how_it_works_steps: asSection(HowItWorksStepsSectionShell as (p: { section: never; lang: Locale }) => ReactNode),
   faq_contact_split: asSection(FaqContactSplitSection as (p: { section: never; lang: Locale }) => ReactNode),
   form_embed: asSection(FormEmbedSection as (p: { section: never; lang: Locale }) => ReactNode),
   latest_posts: asSection(LatestPostsSection as (p: { section: never; lang: Locale }) => ReactNode),
@@ -53,7 +57,7 @@ export const sectionRegistry: Record<AnySectionT["type"], SectionComponent> = {
   pricing_cta: asSection(PricingCtaSection as (p: { section: never; lang: Locale }) => ReactNode),
   rich_text: asSection(RichTextSection as (p: { section: never; lang: Locale }) => ReactNode),
   faq: asSection(FaqSection as (p: { section: never; lang: Locale }) => ReactNode),
-};
+} satisfies SectionRegistryShape;
 
 export function getSectionKey(type: string): type is AnySectionT["type"] {
   return type in sectionRegistry;
