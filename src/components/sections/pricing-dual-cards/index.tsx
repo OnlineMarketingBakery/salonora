@@ -19,9 +19,10 @@ const cardDescProse = [
   "!prose-p:text-muted prose-strong:text-navy-deep",
 ].join(" ");
 
+/** Primary price line — bold navy per Figma reference */
 const priceHighlightProse = [
-  "!prose-p:my-0 !prose-p:text-xl !prose-p:font-medium !prose-p:leading-snug",
-  "!prose-p:text-accent prose-strong:text-accent",
+  "!prose-p:my-0 !prose-p:text-xl !prose-p:font-semibold !prose-p:leading-snug",
+  "!prose-p:text-navy-deep prose-strong:text-navy-deep",
 ].join(" ");
 
 const priceSecondaryProse = [
@@ -36,7 +37,7 @@ const priceFooterProse = [
 ].join(" ");
 
 const heroShell: CSSProperties = {
-  borderRadius: "20px",
+  borderRadius: "32px",
   background:
     "linear-gradient(180deg, var(--palette-brand) 0%, color-mix(in srgb, var(--palette-brand) 42%, var(--palette-accent)) 100%)",
 };
@@ -45,10 +46,15 @@ const elevatedCardShadow: CSSProperties = {
   boxShadow: "0 4px 40px color-mix(in srgb, var(--palette-muted) 13%, transparent)",
 };
 
-const heroRule: CSSProperties = {
+const cardRule: CSSProperties = {
   borderTopWidth: "1px",
   borderTopStyle: "solid",
-  borderColor: "color-mix(in srgb, var(--palette-white) 42%, transparent)",
+  borderColor: "color-mix(in srgb, var(--palette-muted) 28%, transparent)",
+};
+
+const heroBackdropCircle: CSSProperties = {
+  borderRadius: "50%",
+  background: "color-mix(in srgb, var(--palette-navy-deep) 24%, transparent)",
 };
 
 function cardHasBody(card: PricingDualCardsCardItemT): boolean {
@@ -87,14 +93,14 @@ function PricingPackageCard({
 
   return (
     <article
-      className={`${REVEAL_ITEM} flex min-h-0 flex-col rounded-[20px] p-8 sm:p-10 lg:p-12 ${panelBg}`}
+      className={`${REVEAL_ITEM} flex min-h-0 flex-col rounded-[20px] p-10 sm:p-12 lg:p-12 ${panelBg}`}
       style={isTinted ? undefined : elevatedCardShadow}
     >
       <div className="flex w-full min-w-0 flex-col gap-6">
-        <div className="flex flex-col gap-5">
+        <div className="flex flex-col gap-7">
           <div className="flex flex-col gap-3">
             {card.title?.trim() ? (
-              <h3 className="max-w-lg font-sans text-2xl font-semibold leading-tight tracking-normal text-navy-deep">
+              <h3 className="max-w-xl font-sans text-2xl font-semibold leading-tight tracking-normal text-navy-deep">
                 {card.title.trim()}
               </h3>
             ) : null}
@@ -103,7 +109,7 @@ function PricingPackageCard({
             ) : null}
           </div>
           {card.title?.trim() || card.description?.trim() ? (
-            <div className="w-full max-w-[33.875rem]" style={heroRule} aria-hidden />
+            <div className="w-full max-w-xl" style={cardRule} aria-hidden />
           ) : null}
         </div>
 
@@ -112,7 +118,7 @@ function PricingPackageCard({
             {features.map((f, i) => (
               <li key={i}>
                 <div
-                  className="inline-flex max-w-full flex-row items-center gap-1.5 rounded-[21px] px-2.5 py-2"
+                  className="inline-flex max-w-full flex-row items-center gap-1.5 rounded-[21px] px-2.5 py-2.5"
                   style={pillBg}
                 >
                   {f.icon ? (
@@ -152,7 +158,7 @@ function PricingPackageCard({
             ctaSize="package"
             ctaElevation={isTinted ? "default" : "none"}
             ctaFullWidth={false}
-            className="mt-2 w-fit min-w-[13.875rem] gap-8 sm:w-auto"
+            className="mt-2 w-fit gap-8 sm:w-auto"
             arrowClassName="size-[27px] shrink-0"
           >
             {label.trim()}
@@ -170,8 +176,12 @@ export function PricingDualCardsSection({
   section: PricingDualCardsSectionT;
   lang: Locale;
 }) {
+  const person = section.hero_person_image ?? null;
   const hasIntro =
-    Boolean(section.badge?.trim()) || Boolean(section.title?.trim()) || Boolean(section.intro?.trim());
+    Boolean(section.badge?.trim()) ||
+    Boolean(section.title?.trim()) ||
+    Boolean(section.intro?.trim()) ||
+    Boolean(person);
   const cards = (section.cards ?? []).filter(cardHasBody);
 
   if (!hasIntro && !cards.length) {
@@ -179,31 +189,62 @@ export function PricingDualCardsSection({
   }
 
   return (
-    <section className="py-10 sm:py-12 lg:py-14">
-      <Container className="flex max-w-[90rem] flex-col gap-6 sm:gap-8">
+    <section className={`overflow-visible py-10 sm:py-12 lg:py-14 ${person ? "lg:pb-16" : ""}`}>
+      <Container className="flex max-w-[90rem] flex-col gap-6 overflow-visible sm:gap-8">
         {hasIntro ? (
-          <div className={`${REVEAL_ITEM} px-8 py-12 sm:px-12 sm:py-14 lg:px-16 lg:py-16`} style={heroShell}>
-            <div className="flex max-w-xl flex-col gap-5">
-              {section.badge?.trim() ? (
-                <Button
-                  type="button"
-                  variant="white"
-                  className="h-[42px] min-h-[42px] w-fit rounded-[21px] border-0 px-4 font-sans text-base font-medium leading-relaxed text-brand shadow-none hover:bg-white"
-                >
-                  {section.badge.trim()}
-                </Button>
-              ) : null}
-              <div className="flex flex-col gap-4">
-                {section.title?.trim() ? (
-                  <h2 className="font-sans text-4xl font-semibold leading-tight text-white sm:text-5xl sm:leading-tight">
-                    {section.title.trim()}
-                  </h2>
+          <div
+            className={`${REVEAL_ITEM} relative isolate overflow-visible rounded-[32px]`}
+            style={heroShell}
+          >
+            {person ? (
+              <div
+                className="pointer-events-none absolute left-1/2 top-[52%] z-0 hidden max-w-none -translate-x-[8%] -translate-y-1/2 lg:left-auto lg:right-[6%] lg:block lg:translate-x-0 xl:right-[10%]"
+                style={{
+                  ...heroBackdropCircle,
+                  width: "min(420px, 38vw)",
+                  height: "min(420px, 38vw)",
+                }}
+                aria-hidden
+              />
+            ) : null}
+
+            <div className="relative z-[1] grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(260px,460px)] lg:items-end lg:gap-4 xl:gap-8">
+              <div className="flex flex-col gap-5 px-8 pb-10 pt-11 sm:px-11 sm:pt-12 lg:max-w-xl lg:px-14 lg:pb-14 lg:pt-14 xl:px-16">
+                {section.badge?.trim() ? (
+                  <Button
+                    type="button"
+                    variant="white"
+                    className="h-[42px] min-h-[42px] w-fit rounded-[21px] border-0 bg-white px-4 font-sans text-base font-medium leading-relaxed text-brand shadow-none hover:bg-white"
+                  >
+                    {section.badge.trim()}
+                  </Button>
                 ) : null}
-                {section.title?.trim() ? <div className="w-full max-w-[35.5rem]" style={heroRule} aria-hidden /> : null}
-                {section.intro?.trim() ? (
-                  <RichText html={section.intro} className={`max-w-none ${heroIntroProse}`} />
-                ) : null}
+                <div className="flex flex-col gap-4">
+                  {section.title?.trim() ? (
+                    <h2 className="font-sans text-4xl font-semibold leading-tight tracking-normal text-white sm:text-5xl sm:leading-[1.05]">
+                      {section.title.trim()}
+                    </h2>
+                  ) : null}
+                  {section.intro?.trim() ? (
+                    <RichText html={section.intro} className={`max-w-none ${heroIntroProse}`} />
+                  ) : null}
+                </div>
               </div>
+
+              {person ? (
+                <div className="relative flex min-h-[240px] justify-center px-6 pb-8 lg:min-h-[380px] lg:justify-end lg:overflow-visible lg:px-0 lg:pb-0">
+                  <div className="relative h-[260px] w-full max-w-[320px] lg:h-[440px] lg:max-w-none lg:w-full">
+                    <Media
+                      image={person}
+                      width={560}
+                      height={720}
+                      className="absolute bottom-0 left-1/2 h-[122%] w-auto max-w-none -translate-x-1/2 object-contain object-bottom lg:left-auto lg:right-0 lg:h-[132%] lg:translate-x-0 xl:h-[138%]"
+                      sizes="(min-width: 1024px) min(460px, 38vw), min(340px, 88vw)"
+                      preferLargestSource
+                    />
+                  </div>
+                </div>
+              ) : null}
             </div>
           </div>
         ) : null}
