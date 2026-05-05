@@ -5186,6 +5186,153 @@
                         "min": "",
                         "max": ""
                     },
+                    "layout_omb_feature_highlight_grid": {
+                        "key": "layout_omb_feature_highlight_grid",
+                        "name": "feature_highlight_grid",
+                        "label": "Feature Highlight Grid",
+                        "display": "block",
+                        "sub_fields": [
+                            {
+                                "key": "field_omb_feature_highlight_grid_badge",
+                                "label": "Badge",
+                                "name": "badge",
+                                "aria-label": "",
+                                "type": "text",
+                                "instructions": "Optional pill label above the headline (e.g. Alles inbegrepen).",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "maxlength": "",
+                                "allow_in_bindings": 0,
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": ""
+                            },
+                            {
+                                "key": "field_omb_feature_highlight_grid_title",
+                                "label": "Title",
+                                "name": "title",
+                                "aria-label": "",
+                                "type": "text",
+                                "instructions": "Main headline. Use line breaks for multi-line titles.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "maxlength": "",
+                                "allow_in_bindings": 0,
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": ""
+                            },
+                            {
+                                "key": "field_omb_feature_highlight_grid_cards",
+                                "label": "Highlight cards",
+                                "name": "cards",
+                                "aria-label": "",
+                                "type": "repeater",
+                                "instructions": "Three-up grid on large screens; stacks on mobile.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "layout": "block",
+                                "pagination": 0,
+                                "min": 0,
+                                "max": 12,
+                                "collapsed": "field_omb_feature_highlight_grid_card_title",
+                                "button_label": "Add card",
+                                "rows_per_page": 20,
+                                "sub_fields": [
+                                    {
+                                        "key": "field_omb_feature_highlight_grid_card_title",
+                                        "label": "Card title",
+                                        "name": "title",
+                                        "aria-label": "",
+                                        "type": "textarea",
+                                        "instructions": "Use line breaks for two-line titles.",
+                                        "required": 0,
+                                        "conditional_logic": 0,
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
+                                        "default_value": "",
+                                        "maxlength": "",
+                                        "allow_in_bindings": 0,
+                                        "rows": 3,
+                                        "placeholder": "",
+                                        "new_lines": "br",
+                                        "parent_repeater": "field_omb_feature_highlight_grid_cards"
+                                    },
+                                    {
+                                        "key": "field_omb_feature_highlight_grid_card_visual",
+                                        "label": "Card visual",
+                                        "name": "visual",
+                                        "aria-label": "",
+                                        "type": "image",
+                                        "instructions": "Optional glow panel artwork behind the lower portion of the card.",
+                                        "required": 0,
+                                        "conditional_logic": 0,
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
+                                        "return_format": "array",
+                                        "library": "all",
+                                        "min_width": "",
+                                        "min_height": "",
+                                        "min_size": "",
+                                        "max_width": "",
+                                        "max_height": "",
+                                        "max_size": "",
+                                        "mime_types": "",
+                                        "allow_in_bindings": 0,
+                                        "preview_size": "medium",
+                                        "parent_repeater": "field_omb_feature_highlight_grid_cards"
+                                    },
+                                    {
+                                        "key": "field_omb_feature_highlight_grid_card_description",
+                                        "label": "Description",
+                                        "name": "description",
+                                        "aria-label": "",
+                                        "type": "wysiwyg",
+                                        "instructions": "",
+                                        "required": 0,
+                                        "conditional_logic": 0,
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
+                                        "default_value": "",
+                                        "allow_in_bindings": 0,
+                                        "tabs": "all",
+                                        "toolbar": "basic",
+                                        "media_upload": 0,
+                                        "delay": 0,
+                                        "parent_repeater": "field_omb_feature_highlight_grid_cards"
+                                    }
+                                ]
+                            }
+                        ],
+                        "min": "",
+                        "max": ""
+                    },
                     "layout_omb_form_embed": {
                         "key": "layout_omb_form_embed",
                         "name": "form_embed",

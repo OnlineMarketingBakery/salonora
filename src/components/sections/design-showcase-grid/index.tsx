@@ -180,7 +180,7 @@ export function DesignShowcaseGridSection({
                   ctaFullWidth={false}
                   ctaJustify="center"
                   showArrow={false}
-                  className="text-navy-deep shadow-none ring-0 border-0 bg-card"
+                  className="bg-surface text-navy-deep shadow-none ring-0 border-0 hover:bg-card"
                 >
                   <span className="inline-flex items-center gap-3 sm:gap-4">
                     <span className="sm:whitespace-nowrap">{label}</span>

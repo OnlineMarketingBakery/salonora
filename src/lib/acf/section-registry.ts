@@ -32,6 +32,14 @@ const DesignShowcaseGridSectionLazy = dynamic(
   { ssr: true }
 );
 
+const FeatureHighlightGridSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/feature-highlight-grid").then((mod) => ({
+      default: mod.FeatureHighlightGridSection,
+    })),
+  { ssr: true }
+);
+
 import type { AnySectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 import type { ReactNode } from "react";
@@ -72,6 +80,9 @@ export const sectionRegistry = {
   ),
   design_showcase_grid: asSection(
     DesignShowcaseGridSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
+  feature_highlight_grid: asSection(
+    FeatureHighlightGridSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
 } satisfies SectionRegistryShape;
 
