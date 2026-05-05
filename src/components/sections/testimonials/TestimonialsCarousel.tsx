@@ -70,14 +70,17 @@ function gridColsClass(perView: 1 | 2 | 3): string {
   }
 }
 
-export function TestimonialsSliderCarousel({
+export function TestimonialsCarousel({
   items,
   perView,
   sectionId,
+  narrowSingleTotal,
 }: {
   items: TestimonialDocument[];
   perView: 1 | 2 | 3;
   sectionId: string;
+  /** When only one testimonial exists, constrain card width like legacy grid. */
+  narrowSingleTotal?: boolean;
 }) {
   const slides = useMemo(() => chunk(items, perView), [items, perView]);
   const [active, setActive] = useState(0);
@@ -99,7 +102,7 @@ export function TestimonialsSliderCarousel({
   const slideFractionPct = slides.length ? 100 / slides.length : 100;
 
   return (
-    <div className="w-full">
+    <div className={narrowSingleTotal ? "mx-auto w-full max-w-[637px]" : "w-full"}>
       <div className="relative w-full overflow-hidden">
         <div
           className="flex transition-transform duration-300 ease-out"
