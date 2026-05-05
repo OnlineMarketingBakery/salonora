@@ -432,25 +432,13 @@ function mapKnownPageSectionLayout(
         type: "design_showcase_grid",
         title: asString(row.title),
         intro: asHtml(row.intro),
-        cards: Array.isArray(row.cards)
-          ? (
-              row.cards as {
-                visual?: unknown;
-                card_title?: unknown;
-                card_link?: unknown;
-                panel_tint?: unknown;
-              }[]
-            ).map((c) => ({
-              visual: asImage(c.visual),
-              titleHtml: asHtml(c.card_title),
-              link: asLink(c.card_link),
-              panelTint: (() => {
-                const s = asString(c.panel_tint);
-                if (s === "blush" || s === "mint" || s === "gold" || s === "surface") return s;
-                return "surface";
-              })(),
-            }))
-          : [],
+        count: Number(row.items_count) || 4,
+        cardPanelTint: (() => {
+          const s = asString(row.card_panel_tint);
+          if (s === "blush" || s === "mint" || s === "gold" || s === "surface") return s;
+          return "surface";
+        })(),
+        cards: [],
         footerCtas: mapCtaRepeater(row.footer_ctas as Parameters<typeof mapCtaRepeater>[0]),
       };
     case "form_embed":
