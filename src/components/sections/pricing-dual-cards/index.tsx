@@ -8,6 +8,9 @@ import { resolveLink } from "@/lib/utils/links";
 import type { PricingDualCardsCardItemT, PricingDualCardsSectionT } from "@/types/sections";
 import type { CSSProperties } from "react";
 
+/** Figma Ellipse behind portrait (exported semi-circle). */
+const HERO_ELLIPSE_SRC = "/pricing-dual-cards-hero-ellipse.png";
+
 const heroIntroProse = [
   "!prose-p:mb-0 !prose-p:mt-0 !prose-p:text-base !prose-p:font-normal !prose-p:leading-relaxed",
   "!prose-p:text-white prose-strong:text-white prose-a:text-white prose-a:underline",
@@ -36,10 +39,15 @@ const priceFooterProse = [
   "[&_p+p]:mt-3",
 ].join(" ");
 
+/** Lighter blue left → deeper blue right (Figma). */
 const heroShell: CSSProperties = {
   borderRadius: "32px",
-  background:
-    "linear-gradient(180deg, var(--palette-brand) 0%, color-mix(in srgb, var(--palette-brand) 42%, var(--palette-accent)) 100%)",
+  background: `linear-gradient(
+    90deg,
+    var(--palette-brand) 0%,
+    color-mix(in srgb, var(--palette-brand) 55%, var(--palette-accent)) 52%,
+    color-mix(in srgb, var(--palette-accent) 78%, var(--palette-brand)) 100%
+  )`,
 };
 
 const elevatedCardShadow: CSSProperties = {
@@ -52,9 +60,14 @@ const cardRule: CSSProperties = {
   borderColor: "color-mix(in srgb, var(--palette-muted) 28%, transparent)",
 };
 
-const heroBackdropCircle: CSSProperties = {
-  borderRadius: "50%",
-  background: "color-mix(in srgb, var(--palette-navy-deep) 24%, transparent)",
+/** Semi-circle backdrop: sits behind figure, anchored bottom-right. */
+const heroEllipseLayer: CSSProperties = {
+  backgroundImage: `url("${HERO_ELLIPSE_SRC}")`,
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "center bottom",
+  backgroundSize: "contain",
+  opacity: 0.75,
+  mixBlendMode: "screen",
 };
 
 function cardHasBody(card: PricingDualCardsCardItemT): boolean {
@@ -189,27 +202,20 @@ export function PricingDualCardsSection({
   }
 
   return (
-    <section className={`overflow-visible py-10 sm:py-12 lg:py-14 ${person ? "lg:pb-16" : ""}`}>
-      <Container className="flex max-w-[90rem] flex-col gap-6 overflow-visible sm:gap-8">
+    <section
+      className={`overflow-visible pb-10 pt-10 sm:pb-12 sm:pt-12 lg:pb-14 lg:pt-14 ${person ? "lg:pb-16" : ""}`}
+    >
+      <Container className="relative flex max-w-[90rem] flex-col gap-6 overflow-visible sm:gap-8">
         {hasIntro ? (
           <div
-            className={`${REVEAL_ITEM} relative isolate overflow-visible rounded-[32px]`}
-            style={heroShell}
+            className={`${REVEAL_ITEM} relative isolate overflow-visible ${person ? "mt-[clamp(-5rem,-10vw,-3rem)] pt-[clamp(5rem,11vw,8.5rem)] lg:mt-[clamp(-6.5rem,-11vw,-4rem)] lg:pt-[clamp(6.5rem,12vw,9rem)]" : ""}`}
           >
-            {person ? (
-              <div
-                className="pointer-events-none absolute left-1/2 top-[52%] z-0 hidden max-w-none -translate-x-[8%] -translate-y-1/2 lg:left-auto lg:right-[6%] lg:block lg:translate-x-0 xl:right-[10%]"
-                style={{
-                  ...heroBackdropCircle,
-                  width: "min(420px, 38vw)",
-                  height: "min(420px, 38vw)",
-                }}
-                aria-hidden
-              />
-            ) : null}
-
-            <div className="relative z-[1] grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(260px,460px)] lg:items-end lg:gap-4 xl:gap-8">
-              <div className="flex flex-col gap-5 px-8 pb-10 pt-11 sm:px-11 sm:pt-12 lg:max-w-xl lg:px-14 lg:pb-14 lg:pt-14 xl:px-16">
+            {/* Blue band: copy only; portrait layers above/right and bleeds upward outside this box */}
+            <div
+              className={`relative z-[1] overflow-visible rounded-[32px] px-8 pb-10 pt-11 sm:px-11 sm:pb-11 sm:pt-12 lg:min-h-[min(320px,42vw)] lg:px-14 lg:pb-14 lg:pt-14 xl:px-16 ${person ? "lg:pr-[min(46%,26rem)]" : ""}`}
+              style={heroShell}
+            >
+              <div className="flex max-w-xl flex-col gap-5 lg:max-w-[26rem] xl:max-w-xl">
                 {section.badge?.trim() ? (
                   <Button
                     type="button"
@@ -230,22 +236,34 @@ export function PricingDualCardsSection({
                   ) : null}
                 </div>
               </div>
-
-              {person ? (
-                <div className="relative flex min-h-[240px] justify-center px-6 pb-8 lg:min-h-[380px] lg:justify-end lg:overflow-visible lg:px-0 lg:pb-0">
-                  <div className="relative h-[260px] w-full max-w-[320px] lg:h-[440px] lg:max-w-none lg:w-full">
-                    <Media
-                      image={person}
-                      width={560}
-                      height={720}
-                      className="absolute bottom-0 left-1/2 h-[122%] w-auto max-w-none -translate-x-1/2 object-contain object-bottom lg:left-auto lg:right-0 lg:h-[132%] lg:translate-x-0 xl:h-[138%]"
-                      sizes="(min-width: 1024px) min(460px, 38vw), min(340px, 88vw)"
-                      preferLargestSource
-                    />
-                  </div>
-                </div>
-              ) : null}
             </div>
+
+            {person ? (
+              <div
+                className="pointer-events-none absolute bottom-0 right-[max(0.75rem,3vw)] z-[3] flex w-[min(92vw,440px)] justify-end overflow-visible sm:right-[max(1rem,4vw)] lg:right-[max(1.25rem,4vw)] lg:w-[min(46vw,480px)] xl:right-[max(2rem,5vw)]"
+                style={{
+                  height: "clamp(400px, 52vw, 600px)",
+                }}
+              >
+                {/* Semi-circle artwork behind subject — flat edge down */}
+                <div
+                  className="absolute bottom-[2%] right-[-4%] z-0 h-[78%] w-[118%] max-w-none"
+                  style={heroEllipseLayer}
+                  aria-hidden
+                />
+
+                <div className="relative z-[1] flex h-full w-full items-end justify-end overflow-visible">
+                  <Media
+                    image={person}
+                    width={560}
+                    height={720}
+                    className="h-[128%] max-h-none w-auto max-w-none -translate-y-[4%] object-contain object-bottom lg:h-[138%] lg:-translate-y-[6%]"
+                    sizes="(min-width: 1024px) min(480px, 46vw), min(380px, 92vw)"
+                    preferLargestSource
+                  />
+                </div>
+              </div>
+            ) : null}
           </div>
         ) : null}
 
