@@ -147,13 +147,13 @@ function PricingPackageCard({
           {card.price_highlight?.trim() ? (
             <RichText
               html={card.price_highlight}
-              className={`max-w-xl ${priceHighlightProse}`}
+              className={`max-w-xl ${priceHighlightProse} font-bold text-navy-deep`}
             />
           ) : null}
           {card.price_secondary?.trim() ? (
             <RichText
               html={card.price_secondary}
-              className={`max-w-xl ${priceSecondaryProse}`}
+              className={`max-w-xl ${priceSecondaryProse} font-semibold`}
             />
           ) : null}
           {card.price_footer?.trim() ? (
@@ -172,7 +172,7 @@ function PricingPackageCard({
             ctaSize="package"
             ctaElevation={isTinted ? "default" : "none"}
             ctaFullWidth={false}
-            className="mt-2 w-fit gap-8 sm:w-auto"
+            className="mt-2 self-start gap-8"
             arrowClassName="size-[27px] shrink-0"
           >
             {label.trim()}
