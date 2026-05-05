@@ -46,6 +46,13 @@ const heroShell: CSSProperties = {
     "linear-gradient(90deg, var(--palette-brand) 0%, var(--palette-brand-strong) 100%)",
 };
 
+/** Hero: thin rule between title and intro — opaque white left, fades out ~mid-width */
+const heroTitleDivider: CSSProperties = {
+  height: "1px",
+  backgroundImage:
+    "linear-gradient(90deg, rgb(255 255 255 / 0.92) 0%, rgb(255 255 255 / 0.22) 44%, transparent 56%)",
+};
+
 const elevatedCardShadow: CSSProperties = {
   boxShadow:
     "0 4px 40px color-mix(in srgb, var(--palette-muted) 13%, transparent)",
@@ -227,6 +234,13 @@ export function PricingDualCardsSection({
                     <h2 className="font-sans text-4xl font-semibold leading-[1.08] tracking-normal text-white sm:text-5xl">
                       {section.title.trim()}
                     </h2>
+                  ) : null}
+                  {section.title?.trim() && section.intro?.trim() ? (
+                    <div
+                      className="h-px w-full shrink-0 self-start"
+                      style={heroTitleDivider}
+                      aria-hidden
+                    />
                   ) : null}
                   {section.intro?.trim() ? (
                     <RichText
