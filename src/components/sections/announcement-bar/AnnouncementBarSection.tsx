@@ -1,11 +1,11 @@
 "use client";
 
+import { RichText } from "@/components/ui/RichText";
+import type { Locale } from "@/lib/i18n/locales";
+import type { AnnouncementBarSectionT } from "@/types/sections";
+import gsap from "gsap";
 import type { RefObject } from "react";
 import { useLayoutEffect, useRef, useState } from "react";
-import gsap from "gsap";
-import { RichText } from "@/components/ui/RichText";
-import type { AnnouncementBarSectionT } from "@/types/sections";
-import type { Locale } from "@/lib/i18n/locales";
 
 const TICKER_SPEED_PX_PER_SEC = 68;
 
@@ -33,7 +33,13 @@ type AnnouncementBarBgPreset = {
 
 function rgbTupleFromHex(hex: string): [number, number, number] {
   const n = hex.replace("#", "");
-  const full = n.length === 3 ? n.split("").map((c) => c + c).join("") : n;
+  const full =
+    n.length === 3
+      ? n
+          .split("")
+          .map((c) => c + c)
+          .join("")
+      : n;
   const v = Number.parseInt(full, 16);
   return [(v >> 16) & 255, (v >> 8) & 255, v & 255];
 }
@@ -43,7 +49,10 @@ function washFromHex(hex: string, alpha = 0.29): string {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-const ANNOUNCEMENT_BAR_BG_PRESETS: Record<AnnouncementBarBgPresetKey, AnnouncementBarBgPreset> = {
+const ANNOUNCEMENT_BAR_BG_PRESETS: Record<
+  AnnouncementBarBgPresetKey,
+  AnnouncementBarBgPreset
+> = {
   figma_default: {
     label: "Figma (#3990f0)",
     bar: "#3990f0",
@@ -86,7 +95,8 @@ const ANNOUNCEMENT_BAR_BG_PRESETS: Record<AnnouncementBarBgPresetKey, Announceme
   },
 };
 
-const ANNOUNCEMENT_BAR_BACKGROUND_DEFAULT: AnnouncementBarBgPresetKey = "figma_default";
+const ANNOUNCEMENT_BAR_BACKGROUND_DEFAULT: AnnouncementBarBgPresetKey =
+  "figma_default";
 
 const IS_DEV_BUILD = process.env.NODE_ENV === "development";
 
@@ -138,7 +148,10 @@ function TickerSegments({
       aria-hidden={hideFromA11y ? true : undefined}
     >
       {items.map((it, i) => (
-        <div key={`${keyPrefix}-${i}`} className="flex shrink-0 items-center gap-5">
+        <div
+          key={`${keyPrefix}-${i}`}
+          className="flex shrink-0 items-center gap-5"
+        >
           <TickerSparkle />
           <RichText html={it.text} className={richTickerClass} />
         </div>
@@ -159,11 +172,19 @@ function cycleWidthPx(el: HTMLElement): number {
 /**
  * Figma 907:27 — tilted ribbon + opposing wash (“cross”); GSAP marquee.
  */
-export function AnnouncementBarSection({ section, lang }: { section: AnnouncementBarSectionT; lang: Locale }) {
+export function AnnouncementBarSection({
+  section,
+  lang,
+}: {
+  section: AnnouncementBarSectionT;
+  lang: Locale;
+}) {
   const ribbonRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
   const firstSetRef = useRef<HTMLDivElement>(null);
-  const [bgPreset, setBgPreset] = useState<AnnouncementBarBgPresetKey>(ANNOUNCEMENT_BAR_BACKGROUND_DEFAULT);
+  const [bgPreset, setBgPreset] = useState<AnnouncementBarBgPresetKey>(
+    ANNOUNCEMENT_BAR_BACKGROUND_DEFAULT,
+  );
   const { bar, crossWash } = ANNOUNCEMENT_BAR_BG_PRESETS[bgPreset];
 
   const items = section.items;
@@ -175,7 +196,10 @@ export function AnnouncementBarSection({ section, lang }: { section: Announcemen
     const first = firstSetRef.current;
     if (!ribbon || !track || !first || !items.length) return;
 
-    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
       gsap.set(track, { x: 0 });
       return;
     }
@@ -239,20 +263,28 @@ export function AnnouncementBarSection({ section, lang }: { section: Announcemen
 
   return (
     <section
-      className="relative z-10 -mb-16 w-full overflow-hidden bg-transparent py-10 sm:py-8"
+      className="relative z-10 -mb-16 -mt-10 w-full overflow-hidden bg-transparent"
       aria-label={tickerLabel}
     >
       {IS_DEV_BUILD ? (
         <div className="pointer-events-auto absolute right-3 top-2 z-20 sm:right-6">
           <label className="flex flex-col gap-1 rounded-md bg-white/95 px-2 py-1.5 text-[11px] shadow-md ring-1 ring-navy-deep/15 backdrop-blur-sm">
-            <span className="font-medium text-navy-deep">Announcement bar (dev)</span>
+            <span className="font-medium text-navy-deep">
+              Announcement bar (dev)
+            </span>
             <select
               className="max-w-[220px] rounded border border-muted/40 bg-white px-2 py-1 text-[11px] text-navy-deep"
               value={bgPreset}
-              onChange={(e) => setBgPreset(e.target.value as AnnouncementBarBgPresetKey)}
+              onChange={(e) =>
+                setBgPreset(e.target.value as AnnouncementBarBgPresetKey)
+              }
               aria-label="Announcement bar background preset"
             >
-              {(Object.keys(ANNOUNCEMENT_BAR_BG_PRESETS) as AnnouncementBarBgPresetKey[]).map((key) => (
+              {(
+                Object.keys(
+                  ANNOUNCEMENT_BAR_BG_PRESETS,
+                ) as AnnouncementBarBgPresetKey[]
+              ).map((key) => (
                 <option key={key} value={key}>
                   {ANNOUNCEMENT_BAR_BG_PRESETS[key].label}
                 </option>
@@ -268,7 +300,10 @@ export function AnnouncementBarSection({ section, lang }: { section: Announcemen
           className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-visible"
         >
           <div className="flex min-w-[128vw] max-w-none origin-center translate-y-[10px] rotate-[0.42deg] items-center justify-center sm:min-w-[134vw]">
-            <div className="h-[81px] w-full min-w-full shrink-0" style={{ backgroundColor: crossWash }} />
+            <div
+              className="h-[81px] w-full min-w-full shrink-0"
+              style={{ backgroundColor: crossWash }}
+            />
           </div>
         </div>
 
@@ -278,7 +313,10 @@ export function AnnouncementBarSection({ section, lang }: { section: Announcemen
             className="flex h-[81px] w-max min-w-[125vw] max-w-none origin-center rotate-[-1.92deg] items-center sm:min-w-[130vw]"
             style={{ backgroundColor: bar }}
           >
-            <div ref={trackRef} className="flex w-max flex-row flex-nowrap items-center will-change-transform">
+            <div
+              ref={trackRef}
+              className="flex w-max flex-row flex-nowrap items-center will-change-transform"
+            >
               {copies.map((i) => (
                 <TickerSegments
                   key={i}
