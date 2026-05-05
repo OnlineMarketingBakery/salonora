@@ -15,6 +15,9 @@
   --palette-pill: #ecf4fe;
   --palette-accent: #1d5898;
   --palette-brand-soft: #3a8ae4;
+  /* Accent tiles (e.g. how-it-works step icons) — matches existing rose cards */
+  --palette-rose: #d27e91;
+  --palette-rose-soft: #ca7c90;
 
   --background: var(--palette-surface);
   --foreground: var(--palette-navy-deep);
@@ -34,6 +37,8 @@
   --color-pill: var(--palette-pill);
   --color-accent: var(--palette-accent);
   --color-brand-soft: var(--palette-brand-soft);
+  --color-rose: var(--palette-rose);
+  --color-rose-soft: var(--palette-rose-soft);
   --font-sans: "Outfit", sans-serif;
 }
 
