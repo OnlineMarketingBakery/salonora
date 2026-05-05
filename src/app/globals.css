@@ -18,6 +18,10 @@
   /* Accent tiles (e.g. how-it-works step icons) — matches existing rose cards */
   --palette-rose: #d27e91;
   --palette-rose-soft: #ca7c90;
+  /* Design showcase grid card backs (Figma 909:31) */
+  --palette-showcase-blush: #fadbe9;
+  --palette-showcase-mint: #cceded;
+  --palette-showcase-gold-wash: rgba(200, 148, 2, 0.28);
 
   --background: var(--palette-surface);
   --foreground: var(--palette-navy-deep);

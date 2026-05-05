@@ -255,6 +255,25 @@ export type ScrollingTickerSectionT = CoreSection & {
   items?: ScrollingTickerItemT[];
 };
 
+/** Figma 909:31 — headline, intro row, 2× design cards, footer pill CTA */
+export type DesignShowcaseGridCardTint = "surface" | "blush" | "mint" | "gold";
+
+export type DesignShowcaseGridCardT = {
+  visual?: WpImage | null;
+  /** Two-line titles supported via WYSIWYG */
+  titleHtml?: string;
+  link?: WpAcfLink | null;
+  panelTint?: DesignShowcaseGridCardTint;
+};
+
+export type DesignShowcaseGridSectionT = CoreSection & {
+  type: "design_showcase_grid";
+  title?: string;
+  intro?: string;
+  cards?: DesignShowcaseGridCardT[];
+  footerCtas?: CtaItem[];
+};
+
 export type FaqItemT = { question: string; answer: string };
 
 export type FaqContactSplitSectionT = CoreSection & {
@@ -352,6 +371,7 @@ export type AnySectionT =
   | ProcessStepsSectionT
   | HowItWorksStepsSectionT
   | ScrollingTickerSectionT
+  | DesignShowcaseGridSectionT
   | FaqContactSplitSectionT
   | FormEmbedSectionT
   | LatestPostsSectionT

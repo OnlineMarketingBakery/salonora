@@ -57,6 +57,10 @@ export function SectionRenderer({ sections, lang }: { sections: AnySectionT[]; l
             return <sectionRegistry.faq key={section.id} section={section} lang={lang} />;
           case "scrolling_ticker":
             return <sectionRegistry.scrolling_ticker key={section.id} section={section} lang={lang} />;
+          case "design_showcase_grid":
+            return (
+              <sectionRegistry.design_showcase_grid key={section.id} section={section} lang={lang} />
+            );
           default:
             assertNever(section);
         }
