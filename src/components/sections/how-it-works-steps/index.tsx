@@ -41,7 +41,7 @@ function StepCard({ step }: { step: HowItWorksStepsStepItemT }) {
 
   return (
     <article
-      className={`${REVEAL_ITEM} flex min-h-0 w-full max-w-full flex-col items-center gap-5 rounded-2xl bg-linear-to-b from-white to-surface p-8 text-center md:min-h-[282px] md:w-[375px] md:max-w-[375px]`}
+      className={`${REVEAL_ITEM} flex min-h-0 w-full max-w-full flex-col items-center gap-5 rounded-2xl bg-linear-to-b from-white to-surface p-8 text-center md:h-[282px] md:min-h-[282px] md:w-[375px] md:max-w-[375px]`}
     >
       <div className="flex w-full flex-col items-center gap-5">
         {step.icon ? (
@@ -109,8 +109,8 @@ export function HowItWorksStepsSection({ section, lang }: { section: HowItWorksS
           </header>
 
           {steps.length > 0 ? (
-            <div className="w-full rounded-3xl border border-solid border-brand px-5 py-5 sm:px-5 sm:py-6 md:min-h-0 md:pl-5 md:pr-[21px]">
-              <div className="flex flex-col items-stretch gap-8 md:flex-row md:items-end md:justify-center md:gap-5">
+            <div className="w-full rounded-3xl border border-solid border-brand px-5 py-5 md:h-[297px] md:box-border md:py-0 md:pl-5 md:pr-[21px]">
+              <div className="flex min-h-0 flex-col items-stretch gap-8 md:flex-row md:items-end md:justify-center md:gap-5">
                 {steps.map((step, i) => (
                   <Fragment key={i}>
                     {i > 0 ? (
@@ -142,11 +142,12 @@ export function HowItWorksStepsSection({ section, lang }: { section: HowItWorksS
                     ctaSize="compact"
                     ctaElevation="none"
                     ctaJustify="between"
+                    ctaFullWidth={false}
                     arrowClassName="size-6 shrink-0"
                     className={
                       v === "ctaBrand"
-                        ? "h-12 min-h-12 w-full max-w-[196px] gap-2 rounded-3xl border border-white px-3.5 text-base font-medium leading-normal! text-white shadow-[0px_6px_10px_rgba(57,144,240,0.54)] sm:pl-[17px] sm:pr-3"
-                        : "w-full min-w-0 max-w-full gap-4 text-lg leading-6"
+                        ? "h-12 min-h-12 w-[196px] shrink-0 gap-2 rounded-3xl border border-white px-3.5 text-base font-medium leading-normal! text-white shadow-[0px_6px_10px_rgba(57,144,240,0.54)] sm:pl-[17px] sm:pr-3"
+                        : "w-fit max-w-full gap-4 text-lg leading-6"
                     }
                   >
                     {t}
