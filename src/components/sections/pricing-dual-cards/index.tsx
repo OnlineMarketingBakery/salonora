@@ -213,7 +213,9 @@ function desktopShellBottom(card: PricingDualCardsCardItemT): string {
   const tinted = card.panel_style === "tinted";
   return [
     "flex min-h-0 min-w-0 flex-1 flex-col rounded-b-[20px] px-10 pb-10 pt-6 sm:px-12 sm:pb-12 lg:px-12",
-    tinted ? "bg-card" : "bg-white",
+    tinted
+      ? "border-t border-transparent bg-card"
+      : "border-t border-[color-mix(in_srgb,var(--palette-muted)_28%,transparent)] bg-white",
   ].join(" ");
 }
 
@@ -243,7 +245,7 @@ function PricingDualCardsDesktopPair({
           <PricingCardSync card={b} />
         </div>
       </div>
-      <div className="flex flex-row gap-x-6">
+      <div className="mt-6 flex flex-row gap-x-6">
         <article
           className={desktopShellBottom(a)}
           style={a.panel_style === "tinted" ? undefined : elevatedCardShadow}
@@ -306,7 +308,7 @@ export function PricingDualCardsSection({
 
   return (
     <section className="relative z-0 overflow-x-clip py-10 sm:py-12 lg:py-14">
-      <Container className="relative z-0 flex max-w-360 flex-col gap-6 sm:gap-8">
+      <Container className="relative z-0 flex max-w-[90rem] flex-col gap-6 sm:gap-8">
         {hasIntro ? (
           <div
             className={`${REVEAL_ITEM} relative isolate overflow-hidden rounded-[20px]`}
