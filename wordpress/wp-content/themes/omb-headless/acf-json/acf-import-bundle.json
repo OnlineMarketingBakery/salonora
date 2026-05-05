@@ -6107,6 +6107,382 @@
                         ],
                         "min": "",
                         "max": ""
+                    },
+                    "layout_omb_pricing_dual_cards": {
+                        "key": "layout_omb_pricing_dual_cards",
+                        "name": "pricing_dual_cards",
+                        "label": "Pricing Dual Cards",
+                        "display": "block",
+                        "sub_fields": [
+                            {
+                                "key": "field_omb_pricing_dual_cards_badge",
+                                "label": "Intro badge",
+                                "name": "badge",
+                                "aria-label": "",
+                                "type": "text",
+                                "instructions": "Optional pill above the headline (e.g. Eerlijk en transparant).",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "maxlength": "",
+                                "allow_in_bindings": 0,
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": ""
+                            },
+                            {
+                                "key": "field_omb_pricing_dual_cards_title",
+                                "label": "Intro title",
+                                "name": "title",
+                                "aria-label": "",
+                                "type": "text",
+                                "instructions": "Large headline in the blue gradient strip.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "maxlength": "",
+                                "allow_in_bindings": 0,
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": ""
+                            },
+                            {
+                                "key": "field_omb_pricing_dual_cards_intro",
+                                "label": "Intro text",
+                                "name": "intro",
+                                "aria-label": "",
+                                "type": "wysiwyg",
+                                "instructions": "Supporting copy in the gradient strip (white text).",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "allow_in_bindings": 0,
+                                "tabs": "all",
+                                "toolbar": "basic",
+                                "media_upload": 0,
+                                "delay": 0
+                            },
+                            {
+                                "key": "field_omb_pricing_dual_cards_cards",
+                                "label": "Pricing cards",
+                                "name": "cards",
+                                "aria-label": "",
+                                "type": "repeater",
+                                "instructions": "Typically two columns: white card vs tinted panel.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "layout": "block",
+                                "pagination": 0,
+                                "min": 0,
+                                "max": 4,
+                                "collapsed": "field_omb_pricing_dual_cards_card_title",
+                                "button_label": "Add pricing card",
+                                "rows_per_page": 20,
+                                "sub_fields": [
+                                    {
+                                        "key": "field_omb_pricing_dual_cards_card_panel_style",
+                                        "label": "Panel style",
+                                        "name": "panel_style",
+                                        "aria-label": "",
+                                        "type": "select",
+                                        "instructions": "White elevated card (left) vs light blue panel with white pills (right).",
+                                        "required": 0,
+                                        "conditional_logic": 0,
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
+                                        "choices": {
+                                            "white": "White card",
+                                            "tinted": "Tinted panel"
+                                        },
+                                        "default_value": "white",
+                                        "return_format": "value",
+                                        "multiple": 0,
+                                        "allow_null": 0,
+                                        "ui": 1,
+                                        "ajax": 0,
+                                        "placeholder": "",
+                                        "allow_custom": 0,
+                                        "search_placeholder": "",
+                                        "allow_in_bindings": 0,
+                                        "create_options": 0,
+                                        "save_options": 0,
+                                        "parent_repeater": "field_omb_pricing_dual_cards_cards"
+                                    },
+                                    {
+                                        "key": "field_omb_pricing_dual_cards_card_title",
+                                        "label": "Title",
+                                        "name": "title",
+                                        "aria-label": "",
+                                        "type": "text",
+                                        "instructions": "",
+                                        "required": 0,
+                                        "conditional_logic": 0,
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
+                                        "default_value": "",
+                                        "maxlength": "",
+                                        "allow_in_bindings": 0,
+                                        "placeholder": "",
+                                        "prepend": "",
+                                        "append": "",
+                                        "parent_repeater": "field_omb_pricing_dual_cards_cards"
+                                    },
+                                    {
+                                        "key": "field_omb_pricing_dual_cards_card_description",
+                                        "label": "Description",
+                                        "name": "description",
+                                        "aria-label": "",
+                                        "type": "wysiwyg",
+                                        "instructions": "",
+                                        "required": 0,
+                                        "conditional_logic": 0,
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
+                                        "default_value": "",
+                                        "allow_in_bindings": 0,
+                                        "tabs": "all",
+                                        "toolbar": "basic",
+                                        "media_upload": 0,
+                                        "delay": 0,
+                                        "parent_repeater": "field_omb_pricing_dual_cards_cards"
+                                    },
+                                    {
+                                        "key": "field_omb_pricing_dual_cards_card_features",
+                                        "label": "Feature lines",
+                                        "name": "features",
+                                        "aria-label": "",
+                                        "type": "repeater",
+                                        "instructions": "Icon + label rows (pill backgrounds follow panel style).",
+                                        "required": 0,
+                                        "conditional_logic": 0,
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
+                                        "layout": "table",
+                                        "min": 0,
+                                        "max": 16,
+                                        "collapsed": "",
+                                        "button_label": "Add feature",
+                                        "rows_per_page": 20,
+                                        "parent_repeater": "field_omb_pricing_dual_cards_cards",
+                                        "sub_fields": [
+                                            {
+                                                "key": "field_omb_pricing_dual_cards_card_feature_icon",
+                                                "label": "Icon",
+                                                "name": "icon",
+                                                "aria-label": "",
+                                                "type": "image",
+                                                "instructions": "Optional check or bullet artwork.",
+                                                "required": 0,
+                                                "conditional_logic": 0,
+                                                "wrapper": {
+                                                    "width": "",
+                                                    "class": "",
+                                                    "id": ""
+                                                },
+                                                "return_format": "array",
+                                                "library": "all",
+                                                "min_width": "",
+                                                "min_height": "",
+                                                "min_size": "",
+                                                "max_width": "",
+                                                "max_height": "",
+                                                "max_size": "",
+                                                "mime_types": "",
+                                                "allow_in_bindings": 0,
+                                                "preview_size": "thumbnail",
+                                                "parent_repeater": "field_omb_pricing_dual_cards_card_features"
+                                            },
+                                            {
+                                                "key": "field_omb_pricing_dual_cards_card_feature_text",
+                                                "label": "Text",
+                                                "name": "text",
+                                                "aria-label": "",
+                                                "type": "text",
+                                                "instructions": "",
+                                                "required": 0,
+                                                "conditional_logic": 0,
+                                                "wrapper": {
+                                                    "width": "",
+                                                    "class": "",
+                                                    "id": ""
+                                                },
+                                                "default_value": "",
+                                                "maxlength": "",
+                                                "allow_in_bindings": 0,
+                                                "placeholder": "",
+                                                "prepend": "",
+                                                "append": "",
+                                                "parent_repeater": "field_omb_pricing_dual_cards_card_features"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "key": "field_omb_pricing_dual_cards_card_price_highlight",
+                                        "label": "Price highlight",
+                                        "name": "price_highlight",
+                                        "aria-label": "",
+                                        "type": "wysiwyg",
+                                        "instructions": "Main offer line (accent color in the frontend).",
+                                        "required": 0,
+                                        "conditional_logic": 0,
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
+                                        "default_value": "",
+                                        "allow_in_bindings": 0,
+                                        "tabs": "all",
+                                        "toolbar": "basic",
+                                        "media_upload": 0,
+                                        "delay": 0,
+                                        "parent_repeater": "field_omb_pricing_dual_cards_cards"
+                                    },
+                                    {
+                                        "key": "field_omb_pricing_dual_cards_card_price_secondary",
+                                        "label": "Price note",
+                                        "name": "price_secondary",
+                                        "aria-label": "",
+                                        "type": "wysiwyg",
+                                        "instructions": "Optional guarantee or lock-in copy below the highlight.",
+                                        "required": 0,
+                                        "conditional_logic": 0,
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
+                                        "default_value": "",
+                                        "allow_in_bindings": 0,
+                                        "tabs": "all",
+                                        "toolbar": "basic",
+                                        "media_upload": 0,
+                                        "delay": 0,
+                                        "parent_repeater": "field_omb_pricing_dual_cards_cards"
+                                    },
+                                    {
+                                        "key": "field_omb_pricing_dual_cards_card_price_footer",
+                                        "label": "Comparison / footer copy",
+                                        "name": "price_footer",
+                                        "aria-label": "",
+                                        "type": "wysiwyg",
+                                        "instructions": "Optional muted comparison paragraph.",
+                                        "required": 0,
+                                        "conditional_logic": 0,
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
+                                        "default_value": "",
+                                        "allow_in_bindings": 0,
+                                        "tabs": "all",
+                                        "toolbar": "basic",
+                                        "media_upload": 0,
+                                        "delay": 0,
+                                        "parent_repeater": "field_omb_pricing_dual_cards_cards"
+                                    },
+                                    {
+                                        "key": "field_omb_pricing_dual_cards_card_ctas",
+                                        "label": "CTAs",
+                                        "name": "ctas",
+                                        "aria-label": "",
+                                        "type": "repeater",
+                                        "instructions": "First row renders as the pill button.",
+                                        "required": 0,
+                                        "conditional_logic": 0,
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
+                                        "layout": "table",
+                                        "min": 0,
+                                        "max": 2,
+                                        "collapsed": "",
+                                        "button_label": "Add row",
+                                        "rows_per_page": 20,
+                                        "parent_repeater": "field_omb_pricing_dual_cards_cards",
+                                        "sub_fields": [
+                                            {
+                                                "key": "field_omb_pricing_dual_cards_card_cta_text",
+                                                "label": "CTA text",
+                                                "name": "cta_text",
+                                                "aria-label": "",
+                                                "type": "text",
+                                                "instructions": "",
+                                                "required": 0,
+                                                "conditional_logic": 0,
+                                                "wrapper": {
+                                                    "width": "",
+                                                    "class": "",
+                                                    "id": ""
+                                                },
+                                                "default_value": "",
+                                                "maxlength": "",
+                                                "allow_in_bindings": 0,
+                                                "placeholder": "",
+                                                "prepend": "",
+                                                "append": "",
+                                                "parent_repeater": "field_omb_pricing_dual_cards_card_ctas"
+                                            },
+                                            {
+                                                "key": "field_omb_pricing_dual_cards_card_cta_url",
+                                                "label": "CTA URL",
+                                                "name": "cta_url",
+                                                "aria-label": "",
+                                                "type": "link",
+                                                "instructions": "",
+                                                "required": 0,
+                                                "conditional_logic": 0,
+                                                "wrapper": {
+                                                    "width": "",
+                                                    "class": "",
+                                                    "id": ""
+                                                },
+                                                "return_format": "array",
+                                                "allow_in_bindings": 0,
+                                                "parent_repeater": "field_omb_pricing_dual_cards_card_ctas"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ],
+                        "min": "",
+                        "max": ""
                     }
                 },
                 "min": "",

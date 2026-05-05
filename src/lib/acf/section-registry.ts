@@ -48,6 +48,14 @@ const FeatureHighlightSplitSectionLazy = dynamic(
   { ssr: true }
 );
 
+const PricingDualCardsSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/pricing-dual-cards").then((mod) => ({
+      default: mod.PricingDualCardsSection,
+    })),
+  { ssr: true }
+);
+
 import type { AnySectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 import type { ReactNode } from "react";
@@ -94,6 +102,9 @@ export const sectionRegistry = {
   ),
   feature_highlight_split: asSection(
     FeatureHighlightSplitSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
+  pricing_dual_cards: asSection(
+    PricingDualCardsSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
 } satisfies SectionRegistryShape;
 

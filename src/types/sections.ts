@@ -350,6 +350,32 @@ export type PricingCtaSectionT = CoreSection & {
   bottomContactText: string;
 };
 
+/** Figma 368:339 — gradient intro strip + two pricing package columns */
+export type PricingDualCardsFeatureItemT = {
+  icon?: WpImage | null;
+  text?: string;
+};
+
+export type PricingDualCardsCardItemT = {
+  /** White elevated card vs tinted panel (surface bg + inverted pills). */
+  panel_style?: "white" | "tinted";
+  title?: string;
+  description?: string;
+  features?: PricingDualCardsFeatureItemT[];
+  price_highlight?: string;
+  price_secondary?: string;
+  price_footer?: string;
+  ctas?: CtaItem[];
+};
+
+export type PricingDualCardsSectionT = CoreSection & {
+  type: "pricing_dual_cards";
+  badge?: string;
+  title?: string;
+  intro?: string;
+  cards?: PricingDualCardsCardItemT[];
+};
+
 export type RichTextSectionT = CoreSection & {
   type: "rich_text";
   title: string;
@@ -416,6 +442,7 @@ export type AnySectionT =
   | LatestPostsSectionT
   | CtaSectionT
   | PricingCtaSectionT
+  | PricingDualCardsSectionT
   | RichTextSectionT
   | FaqSectionT
   | FeatureHighlightGridSectionT
