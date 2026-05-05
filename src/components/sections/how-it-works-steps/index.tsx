@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { Media } from "@/components/ui/Media";
@@ -13,10 +14,11 @@ import type {
 } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 
+/** Figma icon wells: brand `#398ce9`, rose `#d27e91` — align with CSS palette tokens */
 function iconTileBackground(accent: HowItWorksStepsIconAccentT | undefined): CSSProperties {
   const a = accent ?? "brand";
   return {
-    backgroundColor: a === "rose" ? "var(--palette-rose-soft)" : "var(--palette-brand)",
+    backgroundColor: a === "rose" ? "var(--palette-rose)" : "var(--palette-brand-soft)",
   };
 }
 
@@ -25,9 +27,9 @@ const stepDescProse = [
   "!prose-p:max-w-none",
   "!prose-p:text-center",
   "!prose-p:font-sans",
-  "!prose-p:text-base",
+  "!prose-p:text-sm",
   "!prose-p:font-normal",
-  "!prose-p:leading-snug",
+  "!prose-p:leading-relaxed",
   "!prose-p:text-muted",
   "[&_a]:text-brand",
 ].join(" ");
@@ -39,35 +41,39 @@ function StepCard({ step }: { step: HowItWorksStepsStepItemT }) {
 
   return (
     <article
-      className={`${REVEAL_ITEM} flex min-h-64 w-full max-w-xs flex-col items-center gap-6 rounded-2xl bg-white px-6 py-9 text-center shadow-none ring-1 ring-brand/10 sm:max-w-sm sm:px-8 sm:py-10 lg:max-w-none`}
+      className={`${REVEAL_ITEM} flex min-h-0 w-full max-w-full flex-col items-center gap-5 rounded-2xl bg-linear-to-b from-white to-surface p-8 text-center md:min-h-[282px] md:w-[375px] md:max-w-[375px]`}
     >
-      {step.icon ? (
-        <div
-          className="flex size-14 shrink-0 items-center justify-center rounded-xl p-3"
-          style={iconTileBackground(step.iconAccent)}
-        >
-          <Media
-            image={step.icon}
-            width={56}
-            height={56}
-            className="size-8 object-contain brightness-0 invert"
-            sizes="48px"
-            preferLargestSource
+      <div className="flex w-full flex-col items-center gap-5">
+        {step.icon ? (
+          <div
+            className="flex size-[62px] shrink-0 items-center justify-center rounded-[10px] p-4"
+            style={iconTileBackground(step.iconAccent)}
+          >
+            <Media
+              image={step.icon}
+              width={60}
+              height={60}
+              className="size-[30px] object-contain brightness-0 invert"
+              sizes="30px"
+              preferLargestSource
+            />
+          </div>
+        ) : (
+          <div
+            className="size-[62px] shrink-0 rounded-[10px] p-4"
+            style={iconTileBackground(step.iconAccent)}
+            aria-hidden
           />
-        </div>
-      ) : (
-        <div
-          className="size-14 shrink-0 rounded-xl"
-          style={iconTileBackground(step.iconAccent)}
-          aria-hidden
-        />
-      )}
-      {step.title ? (
-        <h3 className="text-xl font-semibold leading-tight tracking-tight text-navy sm:text-2xl">{step.title}</h3>
-      ) : null}
-      {step.description ? (
-        <RichText html={step.description} className={`${stepDescProse} w-full shrink-0`} />
-      ) : null}
+        )}
+        {step.title ? (
+          <h3 className="w-full max-w-76 text-2xl font-bold leading-[1.1] tracking-tight text-navy-deep">
+            {step.title}
+          </h3>
+        ) : null}
+        {step.description ? (
+          <RichText html={step.description} className={`${stepDescProse} w-full max-w-none shrink-0`} />
+        ) : null}
+      </div>
     </article>
   );
 }
@@ -83,16 +89,16 @@ export function HowItWorksStepsSection({ section, lang }: { section: HowItWorksS
 
   return (
     <section className="bg-surface py-16 sm:py-20 md:py-24">
-      <Container className="!max-w-7xl">
-        <div className="mx-auto flex max-w-6xl flex-col items-center gap-10">
-          <header className={`${REVEAL_ITEM} flex w-full flex-col items-center gap-4 text-center`}>
+      <Container className="max-w-7xl!">
+        <div className="mx-auto flex max-w-6xl flex-col items-center gap-[30px]">
+          <header className={`${REVEAL_ITEM} flex w-full max-w-[417px] flex-col items-center gap-6 text-center`}>
             {section.badge ? (
-              <span className="inline-flex w-fit max-w-full items-center rounded-full bg-brand/10 px-5 py-2.5 text-base font-medium leading-tight text-brand">
+              <span className="inline-flex h-[42px] w-fit max-w-full items-center rounded-[21px] bg-brand/10 px-[18px] py-3 text-base font-bold leading-relaxed text-brand">
                 {section.badge}
               </span>
             ) : null}
             {titleLines.length > 0 ? (
-              <h2 className="font-sans text-3xl font-semibold leading-tight tracking-tighter text-navy sm:text-4xl md:text-5xl">
+              <h2 className="font-sans text-5xl font-bold leading-[56px] tracking-tighter text-navy-deep">
                 {titleLines.map((line, i) => (
                   <span key={i} className="block">
                     {line}
@@ -103,17 +109,25 @@ export function HowItWorksStepsSection({ section, lang }: { section: HowItWorksS
           </header>
 
           {steps.length > 0 ? (
-            <div className="w-full max-w-5xl rounded-3xl border-2 border-brand/20 bg-white p-6 shadow-sm sm:p-8 md:p-10">
-              <div className="grid w-full gap-8 md:grid-cols-3 md:gap-6 lg:gap-8">
+            <div className="w-full rounded-3xl border border-solid border-brand px-5 py-5 sm:px-5 sm:py-6 md:min-h-0 md:pl-5 md:pr-[21px]">
+              <div className="flex flex-col items-stretch gap-8 md:flex-row md:items-end md:justify-center md:gap-5">
                 {steps.map((step, i) => (
-                  <StepCard key={i} step={step} />
+                  <Fragment key={i}>
+                    {i > 0 ? (
+                      <div
+                        className="hidden h-[297px] w-px shrink-0 bg-brand/35 md:block"
+                        aria-hidden
+                      />
+                    ) : null}
+                    <StepCard step={step} />
+                  </Fragment>
                 ))}
               </div>
             </div>
           ) : null}
 
           {ctas.length > 0 ? (
-            <div className={`${REVEAL_ITEM} flex w-full max-w-md flex-col items-stretch gap-4`}>
+            <div className={`${REVEAL_ITEM} flex w-full flex-col items-center gap-4`}>
               {ctas.map((c, i) => {
                 const l = resolveLink(c.url, lang);
                 if (!l?.href) return null;
@@ -125,14 +139,14 @@ export function HowItWorksStepsSection({ section, lang }: { section: HowItWorksS
                     href={l.href}
                     target={l.target}
                     variant={v}
-                    ctaSize="promo"
-                    ctaElevation={v === "ctaBrand" ? "default" : "none"}
+                    ctaSize="compact"
+                    ctaElevation="none"
                     ctaJustify="between"
                     arrowClassName="size-6 shrink-0"
                     className={
                       v === "ctaBrand"
-                        ? "w-full !max-w-none !gap-2 !text-lg !leading-6 sm:!gap-8"
-                        : "w-full min-w-0 max-w-full gap-4 !text-lg !leading-6"
+                        ? "h-12 min-h-12 w-full max-w-[196px] gap-2 rounded-3xl border border-white px-3.5 text-base font-medium leading-normal! text-white shadow-[0px_6px_10px_rgba(57,144,240,0.54)] sm:pl-[17px] sm:pr-3"
+                        : "w-full min-w-0 max-w-full gap-4 text-lg leading-6"
                     }
                   >
                     {t}
@@ -143,7 +157,9 @@ export function HowItWorksStepsSection({ section, lang }: { section: HowItWorksS
           ) : null}
 
           {section.footerTagline ? (
-            <p className={`${REVEAL_ITEM} text-center text-base font-normal leading-relaxed text-navy`}>
+            <p
+              className={`${REVEAL_ITEM} max-w-[956px] text-center text-2xl font-bold leading-snug text-accent`}
+            >
               {section.footerTagline}
             </p>
           ) : null}
