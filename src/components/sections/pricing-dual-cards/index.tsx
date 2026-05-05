@@ -8,9 +8,6 @@ import { resolveLink } from "@/lib/utils/links";
 import type { PricingDualCardsCardItemT, PricingDualCardsSectionT } from "@/types/sections";
 import type { CSSProperties } from "react";
 
-/** Figma semi-circle asset — kept inside hero column only; lighten removes black matte on blue. */
-const HERO_ELLIPSE_SRC = "/pricing-dual-cards-hero-ellipse.png";
-
 const heroIntroProse = [
   "!prose-p:mb-0 !prose-p:mt-0 !prose-p:text-base !prose-p:font-normal !prose-p:leading-relaxed",
   "!prose-p:text-white prose-strong:text-white prose-a:text-white prose-a:underline",
@@ -39,15 +36,20 @@ const priceFooterProse = [
   "[&_p+p]:mt-3",
 ].join(" ");
 
-/** Lighter blue left → deeper blue right (Figma). */
+/**
+ * Figma blue band: flat brand fill + soft light wash bottom-right (no PNG).
+ * Portrait stays inside `overflow-hidden` + rounded-[32px].
+ */
 const heroShell: CSSProperties = {
   borderRadius: "32px",
-  background: `linear-gradient(
-    90deg,
-    var(--palette-brand) 0%,
-    color-mix(in srgb, var(--palette-brand) 55%, var(--palette-accent)) 52%,
-    color-mix(in srgb, var(--palette-accent) 78%, var(--palette-brand)) 100%
-  )`,
+  background: `
+    radial-gradient(
+      ellipse 92% 88% at 96% 100%,
+      color-mix(in srgb, var(--palette-white) 40%, transparent) 0%,
+      transparent 56%
+    ),
+    var(--palette-brand)
+  `,
 };
 
 const elevatedCardShadow: CSSProperties = {
@@ -58,16 +60,6 @@ const cardRule: CSSProperties = {
   borderTopWidth: "1px",
   borderTopStyle: "solid",
   borderColor: "color-mix(in srgb, var(--palette-muted) 28%, transparent)",
-};
-
-/** Ellipse PNG matte: lighten composite drops black onto band blue without extra “shape”. */
-const heroEllipseLayer: CSSProperties = {
-  backgroundImage: `url("${HERO_ELLIPSE_SRC}")`,
-  backgroundRepeat: "no-repeat",
-  backgroundPosition: "center bottom",
-  backgroundSize: "contain",
-  opacity: 0.55,
-  mixBlendMode: "lighten",
 };
 
 function cardHasBody(card: PricingDualCardsCardItemT): boolean {
@@ -209,50 +201,40 @@ export function PricingDualCardsSection({
             className={`${REVEAL_ITEM} relative isolate overflow-hidden rounded-[32px]`}
             style={heroShell}
           >
-            <div className="grid grid-cols-1 gap-8 px-8 pb-10 pt-11 sm:px-11 sm:pb-11 sm:pt-12 lg:grid-cols-[minmax(0,1fr)_minmax(200px,380px)] lg:items-end lg:gap-10 lg:px-14 lg:pb-12 lg:pt-14 xl:gap-12 xl:px-16">
-              <div className="relative z-[2] flex max-w-xl flex-col gap-5 lg:max-w-[28rem] xl:max-w-xl">
+            {/* Figma ~62% copy / ~38% visual; 48–64px band padding */}
+            <div className="grid min-h-0 grid-cols-1 gap-8 p-12 sm:gap-10 lg:min-h-[369px] lg:grid-cols-[1.65fr_1fr] lg:items-stretch lg:gap-12 lg:p-16">
+              <div className="relative z-[2] flex min-w-0 flex-col gap-5 self-center lg:max-w-[36rem] lg:gap-6 lg:pr-4 xl:max-w-[38rem]">
                 {section.badge?.trim() ? (
                   <Button
                     type="button"
                     variant="white"
-                    className="h-[42px] min-h-[42px] w-fit rounded-[21px] border-0 bg-white px-4 font-sans text-base font-medium leading-relaxed text-brand shadow-none hover:bg-white"
+                    className="h-[42px] min-h-[42px] w-fit rounded-full border-0 bg-white px-4 font-sans text-base font-medium leading-relaxed text-navy-deep shadow-none hover:bg-white"
                   >
                     {section.badge.trim()}
                   </Button>
                 ) : null}
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-4 lg:gap-5">
                   {section.title?.trim() ? (
-                    <h2 className="font-sans text-4xl font-semibold leading-tight tracking-normal text-white sm:text-5xl sm:leading-[1.05]">
+                    <h2 className="font-sans text-4xl font-semibold leading-[1.08] tracking-normal text-white sm:text-5xl">
                       {section.title.trim()}
                     </h2>
                   ) : null}
                   {section.intro?.trim() ? (
-                    <RichText html={section.intro} className={`max-w-none ${heroIntroProse}`} />
+                    <RichText html={section.intro} className={`max-w-prose ${heroIntroProse}`} />
                   ) : null}
                 </div>
               </div>
 
               {person ? (
-                <div className="relative z-[1] mx-auto flex w-full max-w-[280px] justify-center lg:mx-0 lg:max-w-none lg:justify-end">
-                  {/* Portrait slot: bounded width/height — no vw-based giants */}
-                  <div className="relative isolate aspect-[4/5] w-full max-w-[300px] lg:aspect-auto lg:h-[min(380px,42vw)] lg:w-[min(360px,90%)] xl:h-[min(420px,38vw)] xl:w-[min(380px,90%)]">
-                    <div
-                      className="pointer-events-none absolute inset-x-[6%] bottom-[6%] top-[18%] z-0 lg:inset-x-[4%] lg:bottom-[4%] lg:top-[14%]"
-                      style={heroEllipseLayer}
-                      aria-hidden
-                    />
-
-                    <div className="relative z-[1] flex h-full min-h-[220px] w-full items-end justify-center lg:min-h-[260px] lg:justify-end">
-                      <Media
-                        image={person}
-                        width={560}
-                        height={720}
-                        className="max-h-[min(320px,70vh)] w-auto max-w-full object-contain object-bottom lg:max-h-[min(400px,48vh)] xl:max-h-[min(440px,46vh)]"
-                        sizes="(min-width: 1024px) 380px, min(300px, 85vw)"
-                        preferLargestSource
-                      />
-                    </div>
-                  </div>
+                <div className="relative z-[1] flex min-h-[260px] w-full items-end justify-center sm:min-h-[300px] lg:min-h-0 lg:justify-end">
+                  <Media
+                    image={person}
+                    width={560}
+                    height={720}
+                    className="h-auto max-h-[min(100%,420px)] w-full max-w-[min(100%,380px)] object-contain object-bottom sm:max-h-[min(100%,460px)] sm:max-w-[400px] lg:max-h-full lg:max-w-[min(100%,420px)] lg:translate-y-[1px]"
+                    sizes="(min-width: 1024px) 420px, min(380px, 100vw)"
+                    preferLargestSource
+                  />
                 </div>
               ) : null}
             </div>
