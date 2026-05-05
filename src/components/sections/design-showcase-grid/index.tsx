@@ -52,7 +52,6 @@ export function DesignShowcaseGridSection({
             {cards.map((card, index) => {
               const tint = card.panelTint ?? "surface";
               const bg = PANEL_BG[tint];
-              const resolved = resolveLink(card.link ?? null, lang);
               const inner = (
                 <>
                   <div
@@ -74,12 +73,10 @@ export function DesignShowcaseGridSection({
                   </div>
                   <div className={`${REVEAL_ITEM} mt-10 flex items-end justify-between gap-6`}>
                     <div className="min-w-0 flex-1 text-2xl font-medium leading-snug text-navy-deep">
-                      {card.titleHtml ? (
-                        <RichText
-                          html={card.titleHtml}
-                          className="[&_p]:mb-1 [&_p:last-child]:mb-0 prose-p:text-navy-deep prose-headings:text-navy-deep"
-                        />
-                      ) : null}
+                      <RichText
+                        html={card.titleHtml}
+                        className="[&_p]:mb-1 [&_p:last-child]:mb-0 prose-p:text-navy-deep prose-headings:text-navy-deep"
+                      />
                     </div>
                     <span className="inline-flex shrink-0" aria-hidden>
                       <ArrowInCircle variant="on-light" className="h-10 w-10" />
@@ -91,24 +88,14 @@ export function DesignShowcaseGridSection({
               const cardClass =
                 `${REVEAL_ITEM} flex flex-col rounded-2xl bg-white p-6 shadow-lg`;
 
-              if (resolved?.href) {
-                return (
-                  <Link
-                    key={`${section.id}-card-${index}`}
-                    href={resolved.href}
-                    target={resolved.target}
-                    rel={resolved.target === "_blank" ? "noopener noreferrer" : undefined}
-                    className={`${cardClass} transition-opacity hover:opacity-95`}
-                  >
-                    {inner}
-                  </Link>
-                );
-              }
-
               return (
-                <article key={`${section.id}-card-${index}`} className={cardClass}>
+                <Link
+                  key={`${section.id}-card-${index}`}
+                  href={card.href}
+                  className={`${cardClass} transition-opacity hover:opacity-95`}
+                >
                   {inner}
-                </article>
+                </Link>
               );
             })}
           </div>

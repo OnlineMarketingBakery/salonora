@@ -255,14 +255,14 @@ export type ScrollingTickerSectionT = CoreSection & {
   items?: ScrollingTickerItemT[];
 };
 
-/** Figma 909:31 — headline, intro row, 2× design cards, footer pill CTA */
+/** Figma 909:31 — headline, intro row, service-driven cards, footer pill CTA */
 export type DesignShowcaseGridCardTint = "surface" | "blush" | "mint" | "gold";
 
+/** Populated in `enrichSections` from the Service CPT (featured image, title, permalink). */
 export type DesignShowcaseGridCardT = {
-  visual?: WpImage | null;
-  /** Two-line titles supported via WYSIWYG */
-  titleHtml?: string;
-  link?: WpAcfLink | null;
+  visual: WpImage | null;
+  titleHtml: string;
+  href: string;
   panelTint?: DesignShowcaseGridCardTint;
 };
 
@@ -270,7 +270,11 @@ export type DesignShowcaseGridSectionT = CoreSection & {
   type: "design_showcase_grid";
   title?: string;
   intro?: string;
-  cards?: DesignShowcaseGridCardT[];
+  /** Max services to load from WordPress REST (`items_count` in ACF). */
+  count: number;
+  /** Panel tint applied to every auto-generated card. */
+  cardPanelTint?: DesignShowcaseGridCardTint;
+  cards: DesignShowcaseGridCardT[];
   footerCtas?: CtaItem[];
 };
 
