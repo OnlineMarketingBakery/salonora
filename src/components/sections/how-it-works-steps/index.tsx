@@ -1,23 +1,26 @@
-import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
+import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
-import { resolveLink } from "@/lib/utils/links";
-import { ctaVariantAt } from "@/lib/ui/ctaAlternation";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
-import type { CSSProperties } from "react";
+import type { Locale } from "@/lib/i18n/locales";
+import { ctaVariantAt } from "@/lib/ui/ctaAlternation";
+import { resolveLink } from "@/lib/utils/links";
 import type {
   HowItWorksStepsIconAccentT,
   HowItWorksStepsSectionT,
   HowItWorksStepsStepItemT,
 } from "@/types/sections";
-import type { Locale } from "@/lib/i18n/locales";
+import type { CSSProperties } from "react";
 
 /** Figma icon wells: brand `#398ce9`, rose `#d27e91` — align with CSS palette tokens */
-function iconTileBackground(accent: HowItWorksStepsIconAccentT | undefined): CSSProperties {
+function iconTileBackground(
+  accent: HowItWorksStepsIconAccentT | undefined,
+): CSSProperties {
   const a = accent ?? "brand";
   return {
-    backgroundColor: a === "rose" ? "var(--palette-rose)" : "var(--palette-brand-soft)",
+    backgroundColor:
+      a === "rose" ? "var(--palette-rose)" : "var(--palette-brand-soft)",
   };
 }
 
@@ -35,7 +38,9 @@ const stepDescProse = [
 
 function StepCard({ step }: { step: HowItWorksStepsStepItemT }) {
   const hasContent =
-    Boolean(step.icon) || Boolean(step.title?.trim()) || Boolean(step.description?.trim());
+    Boolean(step.icon) ||
+    Boolean(step.title?.trim()) ||
+    Boolean(step.description?.trim());
   if (!hasContent) return null;
 
   return (
@@ -70,14 +75,23 @@ function StepCard({ step }: { step: HowItWorksStepsStepItemT }) {
           </h3>
         ) : null}
         {step.description ? (
-          <RichText html={step.description} className={`${stepDescProse} w-full max-w-none shrink-0`} />
+          <RichText
+            html={step.description}
+            className={`${stepDescProse} w-full max-w-none shrink-0`}
+          />
         ) : null}
       </div>
     </article>
   );
 }
 
-export function HowItWorksStepsSection({ section, lang }: { section: HowItWorksStepsSectionT; lang: Locale }) {
+export function HowItWorksStepsSection({
+  section,
+  lang,
+}: {
+  section: HowItWorksStepsSectionT;
+  lang: Locale;
+}) {
   const titleLines = (section.title ?? "")
     .split(/\r?\n+/)
     .map((l) => l.trim())
@@ -90,14 +104,16 @@ export function HowItWorksStepsSection({ section, lang }: { section: HowItWorksS
     <section className="bg-surface py-16 sm:py-20 md:py-24">
       <Container className="max-w-7xl!">
         <div className="mx-auto flex max-w-6xl flex-col items-center gap-[30px]">
-          <header className={`${REVEAL_ITEM} flex w-full max-w-[417px] flex-col items-center gap-6 text-center`}>
+          <header
+            className={`${REVEAL_ITEM} flex w-full max-w-[417px] flex-col items-center gap-6 text-center`}
+          >
             {section.badge ? (
               <span className="inline-flex h-[42px] w-fit max-w-full items-center rounded-[21px] bg-brand/10 px-[18px] py-3 text-base font-bold leading-relaxed text-brand">
                 {section.badge}
               </span>
             ) : null}
             {titleLines.length > 0 ? (
-              <h2 className="font-sans text-5xl font-bold leading-[56px] tracking-tighter text-navy-deep">
+              <h2 className="font-sans text-5xl font-medium leading-[56px] tracking-tighter text-navy-deep">
                 {titleLines.map((line, i) => (
                   <span key={i} className="block">
                     {line}
@@ -116,7 +132,9 @@ export function HowItWorksStepsSection({ section, lang }: { section: HowItWorksS
           ) : null}
 
           {ctas.length > 0 ? (
-            <div className={`${REVEAL_ITEM} flex w-full flex-col items-center gap-4`}>
+            <div
+              className={`${REVEAL_ITEM} flex w-full flex-col items-center gap-4`}
+            >
               {ctas.map((c, i) => {
                 const l = resolveLink(c.url, lang);
                 if (!l?.href) return null;
