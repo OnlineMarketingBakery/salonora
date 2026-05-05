@@ -205,6 +205,18 @@ export type TestimonialsSectionT = CoreSection & {
   testimonialIds: number[];
 };
 
+/** Figma 974:30 — testimonial cards + dot pagination; CPT-driven like `testimonials`. */
+export type TestimonialsSliderSectionT = CoreSection & {
+  type: "testimonials_slider";
+  title?: string;
+  intro?: string;
+  ctas?: CtaItem[];
+  items?: TestimonialDocument[];
+  testimonialIds?: number[];
+  /** Desktop/tablet columns per slide (mobile stacks within slide). */
+  items_per_view?: 1 | 2 | 3;
+};
+
 export type AnnouncementBarSectionT = CoreSection & {
   type: "announcement_bar";
   items: { text: string }[];
@@ -434,6 +446,7 @@ export type AnySectionT =
   | WhySalonoraDifferentSectionT
   | WhySalonoraAndersSectionT
   | TestimonialsSectionT
+  | TestimonialsSliderSectionT
   | AnnouncementBarSectionT
   | ProcessStepsSectionT
   | HowItWorksStepsSectionT

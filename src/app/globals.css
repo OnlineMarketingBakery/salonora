@@ -24,6 +24,8 @@
   --palette-showcase-blush: #fadbe9;
   --palette-showcase-mint: #cceded;
   --palette-showcase-gold-wash: rgba(200, 148, 2, 0.28);
+  /* Rating star (testimonials / slider cards, Figma) */
+  --palette-star: #f97316;
 
   --background: var(--palette-white);
   --foreground: var(--palette-navy-deep);

@@ -58,10 +58,11 @@ const elevatedCardShadow: CSSProperties = {
     "0 4px 40px color-mix(in srgb, var(--palette-muted) 13%, transparent)",
 };
 
-const cardRule: CSSProperties = {
-  borderTopWidth: "1px",
-  borderTopStyle: "solid",
-  borderColor: "color-mix(in srgb, var(--palette-muted) 28%, transparent)",
+/** Between header and features — solid muted left, fades out mid-row (aligned via lg subgrid) */
+const cardIntroDivider: CSSProperties = {
+  height: "1px",
+  backgroundImage:
+    "linear-gradient(90deg, color-mix(in srgb, var(--palette-muted) 72%, transparent) 0%, color-mix(in srgb, var(--palette-muted) 22%, transparent) 42%, transparent 58%)",
 };
 
 function cardHasBody(card: PricingDualCardsCardItemT): boolean {
@@ -97,32 +98,38 @@ function PricingPackageCard({
   const features = (card.features ?? []).filter((f) => f.text?.trim());
 
   const ctaVariant = isTinted ? "ctaNavy" : "ctaBrand";
+  const hasHeader = Boolean(card.title?.trim() || card.description?.trim());
 
   return (
     <article
-      className={`${REVEAL_ITEM} flex min-h-0 flex-col rounded-[20px] p-10 sm:p-12 lg:p-12 ${panelBg}`}
+      className={`${REVEAL_ITEM} flex min-h-0 flex-col gap-6 rounded-[20px] p-10 sm:p-12 lg:p-12 lg:grid lg:[grid-template-rows:subgrid] lg:row-span-4 lg:gap-y-6 ${panelBg}`}
       style={isTinted ? undefined : elevatedCardShadow}
     >
-      <div className="flex w-full min-w-0 flex-col gap-6">
-        <div className="flex flex-col gap-7">
-          <div className="flex flex-col gap-3">
-            {card.title?.trim() ? (
-              <h3 className="max-w-xl font-sans text-2xl font-semibold leading-tight tracking-normal text-navy-deep">
-                {card.title.trim()}
-              </h3>
-            ) : null}
-            {card.description?.trim() ? (
-              <RichText
-                html={card.description}
-                className={`max-w-xl ${cardDescProse}`}
-              />
-            ) : null}
-          </div>
-          {card.title?.trim() || card.description?.trim() ? (
-            <div className="w-full max-w-xl" style={cardRule} aria-hidden />
-          ) : null}
-        </div>
+      {/* Row 1 — synced height across columns on lg so divider lines align */}
+      <div className="flex min-w-0 flex-col gap-3 lg:min-h-0">
+        {card.title?.trim() ? (
+          <h3 className="max-w-xl font-sans text-2xl font-semibold leading-tight tracking-normal text-navy-deep">
+            {card.title.trim()}
+          </h3>
+        ) : null}
+        {card.description?.trim() ? (
+          <RichText html={card.description} className={`max-w-xl ${cardDescProse}`} />
+        ) : null}
+      </div>
 
+      {/* Row 2 */}
+      <div className="min-h-px min-w-0 shrink-0 lg:min-h-0">
+        {hasHeader ? (
+          <div
+            className="h-px w-full max-w-xl shrink-0 self-start"
+            style={cardIntroDivider}
+            aria-hidden
+          />
+        ) : null}
+      </div>
+
+      {/* Row 3 */}
+      <div className="min-w-0">
         {features.length > 0 ? (
           <ul className="flex list-none flex-col gap-3 p-0">
             {features.map((f, i) => (
@@ -149,8 +156,11 @@ function PricingPackageCard({
             ))}
           </ul>
         ) : null}
+      </div>
 
-        <div className="mt-auto flex flex-col gap-3">
+      {/* Row 4 — price + CTA (single subgrid row so card heights stay content-driven) */}
+      <div className="mt-auto flex min-h-0 flex-col lg:mt-0">
+        <div className="flex flex-col gap-3">
           {card.price_highlight?.trim() ? (
             <RichText
               html={card.price_highlight}
@@ -164,13 +174,9 @@ function PricingPackageCard({
             />
           ) : null}
           {card.price_footer?.trim() ? (
-            <RichText
-              html={card.price_footer}
-              className={`max-w-xl ${priceFooterProse}`}
-            />
+            <RichText html={card.price_footer} className={`max-w-xl ${priceFooterProse}`} />
           ) : null}
         </div>
-
         {href && label.trim() ? (
           <Button
             href={href}
@@ -268,7 +274,7 @@ export function PricingDualCardsSection({
         ) : null}
 
         {cards.length > 0 ? (
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-start lg:gap-6">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:grid-rows-[repeat(4,auto)] lg:items-start lg:gap-6">
             {cards.map((card, i) => (
               <PricingPackageCard key={i} card={card} lang={lang} />
             ))}

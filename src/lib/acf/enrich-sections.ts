@@ -7,6 +7,7 @@ import type {
   DesignShowcaseGridSectionT,
   LatestPostsSectionT,
   TestimonialsSectionT,
+  TestimonialsSliderSectionT,
 } from "@/types/sections";
 import { buildLocalePath } from "@/lib/i18n/get-alternates";
 import type { Locale } from "@/lib/i18n/locales";
@@ -52,6 +53,15 @@ export async function enrichSections(
       if (t.testimonialIds.length) {
         const items = await fetchTestimonialsByIds(t.testimonialIds, lang);
         out.push({ ...t, items, testimonialIds: t.testimonialIds });
+      } else {
+        out.push(t);
+      }
+    } else if (s.type === "testimonials_slider") {
+      const t = s as TestimonialsSliderSectionT;
+      const ids = t.testimonialIds ?? [];
+      if (ids.length) {
+        const items = await fetchTestimonialsByIds(ids, lang);
+        out.push({ ...t, items, testimonialIds: ids });
       } else {
         out.push(t);
       }
