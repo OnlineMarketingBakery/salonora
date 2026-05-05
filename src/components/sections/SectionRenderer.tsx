@@ -51,6 +51,10 @@ export function SectionRenderer({ sections, lang }: { sections: AnySectionT[]; l
             return <sectionRegistry.cta key={section.id} section={section} lang={lang} />;
           case "pricing_cta":
             return <sectionRegistry.pricing_cta key={section.id} section={section} lang={lang} />;
+          case "pricing_dual_cards":
+            return (
+              <sectionRegistry.pricing_dual_cards key={section.id} section={section} lang={lang} />
+            );
           case "rich_text":
             return <sectionRegistry.rich_text key={section.id} section={section} lang={lang} />;
           case "faq":

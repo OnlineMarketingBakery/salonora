@@ -32,6 +32,7 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   image_intro_split: true,
   latest_posts: true,
   pricing_cta: true,
+  pricing_dual_cards: true,
   pricing_packages: true,
   process_steps: true,
   rich_text: true,
@@ -550,6 +551,35 @@ function mapKnownPageSectionLayout(
             )
           : [],
         bottomContactText: asHtml(row.bottom_contact_text),
+      };
+    case "pricing_dual_cards":
+      return {
+        ...base,
+        type: "pricing_dual_cards",
+        badge: asString(row.badge),
+        title: asString(row.title),
+        intro: asHtml(row.intro),
+        cards: Array.isArray(row.cards)
+          ? (row.cards as Record<string, unknown>[]).map((c) => {
+              const ps = asString(c.panel_style);
+              const panel_style = ps === "tinted" ? "tinted" : "white";
+              return {
+                panel_style,
+                title: asString(c.title),
+                description: asHtml(c.description),
+                features: Array.isArray(c.features)
+                  ? (c.features as { icon?: unknown; text?: unknown }[]).map((f) => ({
+                      icon: asImage(f.icon),
+                      text: asString(f.text),
+                    }))
+                  : [],
+                price_highlight: asHtml(c.price_highlight),
+                price_secondary: asHtml(c.price_secondary),
+                price_footer: asHtml(c.price_footer),
+                ctas: mapCtaRepeater(c.ctas as Parameters<typeof mapCtaRepeater>[0]),
+              };
+            })
+          : [],
       };
     case "rich_text":
       return {
