@@ -176,9 +176,15 @@ export function DesignShowcaseGridSection({
                   target={r.target}
                   variant="ctaWhite"
                   ctaSize="promo"
+                  ctaFullWidth={false}
+                  ctaJustify="center"
+                  showArrow={false}
                   className="bg-pill text-navy-deep shadow-none ring-0 border-0 hover:bg-card"
                 >
-                  {label}
+                  <span className="inline-flex items-center gap-3 sm:gap-4">
+                    <span className="sm:whitespace-nowrap">{label}</span>
+                    <ShowcaseCardCornerArrow className="h-10 w-10 shrink-0" />
+                  </span>
                 </Button>
               );
             })}
