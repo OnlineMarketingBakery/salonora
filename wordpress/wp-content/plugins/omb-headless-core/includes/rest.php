@@ -42,15 +42,38 @@ add_action('rest_api_init', function () {
         'methods'             => 'POST',
         'permission_callback' => function (WP_REST_Request $request) {
             $secret = $request->get_header('X-Sync-Secret');
-            $stored = omb_rest_acf_sync_stored_secret();
-            return $stored !== '' && hash_equals($stored, (string) $secret);
+            // Try wp_options first, then ACF options field as fallback
+            $stored = get_option('omb_revalidation_secret', '');
+            if (empty($stored) && function_exists('get_field')) {
+                $stored = get_field('revalidation_secret', 'option') ?: '';
+            }
+            if (empty($stored)) {
+                return new WP_Error(
+                    'missing_secret',
+                    'Sync secret is not configured in WordPress.',
+                    ['status' => 500]
+                );
+            }
+            return hash_equals((string) $stored, (string) $secret);
         },
         'callback' => 'omb_rest_acf_sync',
     ]);
 
-    if (!defined('OMB_HEADLESS_CORE_HAS_ACF_SYNC_ROUTE')) {
-        define('OMB_HEADLESS_CORE_HAS_ACF_SYNC_ROUTE', true);
-    }
+    register_rest_route('omb-headless/v1', '/acf-sync-status', [
+        'methods'             => 'GET',
+        'permission_callback' => '__return_true',
+        'callback'            => function () {
+            $stored = get_option('omb_revalidation_secret', '');
+            if (empty($stored) && function_exists('get_field')) {
+                $stored = get_field('revalidation_secret', 'option') ?: '';
+            }
+            return new WP_REST_Response([
+                'route_loaded'  => true,
+                'secret_found'  => !empty($stored),
+                'secret_length' => strlen($stored),
+            ], 200);
+        },
+    ]);
 });
 
 /**
@@ -302,24 +325,6 @@ function omb_rest_resolve_route(WP_REST_Request $request): WP_REST_Response {
         'lang'         => function_exists('pll_get_post_language') ? pll_get_post_language($post->ID, 'slug') : null,
         'translations' => $translations,
     ]);
-}
-
-/**
- * Secret for POST /acf-sync: wp_options first, then ACF integrations field `revalidation_secret`.
- */
-function omb_rest_acf_sync_stored_secret(): string {
-    $opt = (string) get_option('omb_revalidation_secret', '');
-    if ($opt !== '') {
-        return $opt;
-    }
-    if (!function_exists('get_field')) {
-        return '';
-    }
-    $acf = get_field('revalidation_secret', 'option');
-    if ($acf === null || $acf === false || $acf === '') {
-        return '';
-    }
-    return is_string($acf) ? $acf : (string) $acf;
 }
 
 function omb_rest_acf_sync(WP_REST_Request $request): WP_REST_Response {

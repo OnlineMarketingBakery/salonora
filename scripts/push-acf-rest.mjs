@@ -55,6 +55,8 @@ const JSON_PATH = resolve(__dirname, '../wordpress/wp-content/themes/omb-headles
 const WP_URL = process.env.WORDPRESS_API_URL?.trim()
 const SECRET = process.env.REVALIDATION_SECRET?.trim()
 
+const WP_BASE = WP_URL ? WP_URL.replace(/\/$/, '') : ''
+
 if (!WP_URL || !SECRET) {
   const missing = [!WP_URL && 'WORDPRESS_API_URL', !SECRET && 'REVALIDATION_SECRET'].filter(Boolean)
   const hint = [
@@ -70,8 +72,16 @@ if (!WP_URL || !SECRET) {
   process.exit(1)
 }
 
+if (!WP_BASE.toLowerCase().endsWith('/wp-json')) {
+  console.error(
+    '❌  WORDPRESS_API_URL must be the REST root ending in /wp-json with no trailing slash (e.g. https://example.com/wp-json).',
+  )
+  console.error(`   Got: ${WP_URL}`)
+  process.exit(1)
+}
+
 const body = readFileSync(JSON_PATH, 'utf8')
-const syncUrl = `${WP_URL.replace(/\/$/, '')}/omb-headless/v1/acf-sync`
+const syncUrl = `${WP_BASE}/omb-headless/v1/acf-sync`
 
 let res
 try {
@@ -102,10 +112,8 @@ if (!res.ok) {
   console.error('❌  Push failed:', data)
   if (res.status === 404 && data?.code === 'rest_no_route') {
     console.error(
-      '\nTip: The server does not expose POST …/omb-headless/v1/acf-sync yet.\n' +
-        'Deploy the theme folder so this file loads:\n' +
-        '  wordpress/wp-content/themes/omb-headless/inc/acf-sync-rest-route.php\n' +
-        '(and functions.php that require_onces it), or update omb-headless-core includes/rest.php.',
+      '\nTip: The server does not expose POST …/omb-headless/v1/acf-sync.\n' +
+        'Deploy `wordpress/wp-content/plugins/omb-headless-core/` and ensure the plugin is active.',
     )
   }
   process.exit(1)
