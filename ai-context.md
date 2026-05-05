@@ -70,7 +70,7 @@ public/                  # static assets (SVGs, hero-gradiant.png, etc.)
 | `src/lib/wordpress/client.ts` | All REST calls |
 | `src/lib/wordpress/config.ts` | Env accessors |
 | `src/lib/acf/normalize-*-sections.ts` | Page vs service ACF → typed sections |
-| `src/lib/acf/enrich-sections.ts` | Extra loads (e.g. testimonials by ID, `design_showcase_grid` services + featured media) |
+| `src/lib/acf/enrich-sections.ts` | Extra loads (e.g. testimonials by ID, `design_showcase_grid` services + featured media, paginated if rows×columns exceeds REST batch size) |
 | `src/app/[lang]/page.tsx` | Home: homepage slug per lang |
 | `src/app/[lang]/[...slug]/page.tsx` | Catch-all pages |
 | `src/app/[lang]/layout.tsx` | Globals, metadata shell |

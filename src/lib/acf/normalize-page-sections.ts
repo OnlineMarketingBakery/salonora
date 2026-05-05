@@ -427,20 +427,40 @@ function mapKnownPageSectionLayout(
       };
     }
     case "design_showcase_grid":
-      return {
-        ...base,
-        type: "design_showcase_grid",
-        title: asString(row.title),
-        intro: asHtml(row.intro),
-        count: Number(row.items_count) || 4,
-        cardPanelTint: (() => {
-          const s = asString(row.card_panel_tint);
-          if (s === "blush" || s === "mint" || s === "gold" || s === "surface") return s;
-          return "surface";
-        })(),
-        cards: [],
-        footerCtas: mapCtaRepeater(row.footer_ctas as Parameters<typeof mapCtaRepeater>[0]),
-      };
+      return (() => {
+        const colsRaw = asString(row.grid_columns);
+        const gridColumns =
+          colsRaw === "1" || colsRaw === "2" || colsRaw === "3" ? (Number(colsRaw) as 1 | 2 | 3) : 2;
+        const parsedRows = parseInt(asString(row.grid_rows), 10);
+        let gridRows =
+          Number.isFinite(parsedRows) && parsedRows >= 1 ? parsedRows : 0;
+        if (!gridRows) {
+          const legacyTotal = Number(row.items_count);
+          if (Number.isFinite(legacyTotal) && legacyTotal > 0) {
+            gridRows = Math.max(1, Math.ceil(legacyTotal / gridColumns));
+          } else {
+            gridRows = 2;
+          }
+        }
+        const count = gridRows * gridColumns;
+        return {
+          ...base,
+          type: "design_showcase_grid",
+          title: asString(row.title),
+          intro: asHtml(row.intro),
+          gridRows,
+          gridColumns,
+          count,
+          whiteBackground: asBool(row.white_background),
+          cardPanelTint: (() => {
+            const s = asString(row.card_panel_tint);
+            if (s === "blush" || s === "mint" || s === "gold" || s === "surface") return s;
+            return "surface";
+          })(),
+          cards: [],
+          footerCtas: mapCtaRepeater(row.footer_ctas as Parameters<typeof mapCtaRepeater>[0]),
+        };
+      })();
     case "form_embed":
       return {
         ...base,
