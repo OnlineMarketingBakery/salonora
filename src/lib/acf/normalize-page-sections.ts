@@ -23,6 +23,7 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   design_showcase_grid: true,
   faq: true,
   feature_highlight_grid: true,
+  feature_highlight_split: true,
   faq_contact_split: true,
   form_embed: true,
   guarantee_split: true,
@@ -397,6 +398,20 @@ function mapKnownPageSectionLayout(
               title: asString(c.title),
               visual: asImage(c.visual),
               description: asHtml(c.description),
+            }))
+          : [],
+      };
+    case "feature_highlight_split":
+      return {
+        ...base,
+        type: "feature_highlight_split",
+        badge: asString(row.badge),
+        title: asString(row.title),
+        ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
+        mockup_image: asImage(row.mockup_image),
+        promise_items: Array.isArray(row.promise_items)
+          ? (row.promise_items as { text?: unknown }[]).map((p) => ({
+              text: asHtml(p.text),
             }))
           : [],
       };

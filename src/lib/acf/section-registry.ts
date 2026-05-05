@@ -40,6 +40,14 @@ const FeatureHighlightGridSectionLazy = dynamic(
   { ssr: true }
 );
 
+const FeatureHighlightSplitSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/feature-highlight-split").then((mod) => ({
+      default: mod.FeatureHighlightSplitSection,
+    })),
+  { ssr: true }
+);
+
 import type { AnySectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 import type { ReactNode } from "react";
@@ -83,6 +91,9 @@ export const sectionRegistry = {
   ),
   feature_highlight_grid: asSection(
     FeatureHighlightGridSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
+  feature_highlight_split: asSection(
+    FeatureHighlightSplitSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
 } satisfies SectionRegistryShape;
 
