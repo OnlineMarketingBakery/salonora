@@ -28,7 +28,7 @@ const stepDescProse = [
   "!prose-p:text-base",
   "!prose-p:font-normal",
   "!prose-p:leading-snug",
-  "!prose-p:text-navy",
+  "!prose-p:text-muted",
   "[&_a]:text-brand",
 ].join(" ");
 
@@ -39,7 +39,7 @@ function StepCard({ step }: { step: HowItWorksStepsStepItemT }) {
 
   return (
     <article
-      className={`${REVEAL_ITEM} flex min-h-64 w-full max-w-xs flex-col items-center gap-6 rounded-2xl bg-white px-8 py-10 text-center shadow-md shadow-navy-deep/10 sm:max-w-sm lg:max-w-none`}
+      className={`${REVEAL_ITEM} flex min-h-64 w-full max-w-xs flex-col items-center gap-6 rounded-2xl bg-white px-6 py-9 text-center shadow-none ring-1 ring-brand/10 sm:max-w-sm sm:px-8 sm:py-10 lg:max-w-none`}
     >
       {step.icon ? (
         <div
@@ -103,10 +103,12 @@ export function HowItWorksStepsSection({ section, lang }: { section: HowItWorksS
           </header>
 
           {steps.length > 0 ? (
-            <div className="grid w-full gap-8 md:grid-cols-3 md:gap-6 lg:gap-10">
-              {steps.map((step, i) => (
-                <StepCard key={i} step={step} />
-              ))}
+            <div className="w-full max-w-5xl rounded-3xl border-2 border-brand/20 bg-white p-6 shadow-sm sm:p-8 md:p-10">
+              <div className="grid w-full gap-8 md:grid-cols-3 md:gap-6 lg:gap-8">
+                {steps.map((step, i) => (
+                  <StepCard key={i} step={step} />
+                ))}
+              </div>
             </div>
           ) : null}
 
