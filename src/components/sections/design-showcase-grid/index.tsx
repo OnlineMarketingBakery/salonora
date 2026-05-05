@@ -3,10 +3,12 @@ import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
-import { ArrowInCircle } from "@/components/ui/ArrowInCircle";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import { resolveLink } from "@/lib/utils/links";
-import type { DesignShowcaseGridCardTint, DesignShowcaseGridSectionT } from "@/types/sections";
+import type {
+  DesignShowcaseGridCardTint,
+  DesignShowcaseGridSectionT,
+} from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 
 const PANEL_BG: Record<DesignShowcaseGridCardTint, string> = {
@@ -15,6 +17,61 @@ const PANEL_BG: Record<DesignShowcaseGridCardTint, string> = {
   mint: "var(--palette-showcase-mint)",
   gold: "var(--palette-showcase-gold-wash)",
 };
+
+/** Figma-style circular outline + northeast arrow (uses palette vars, not button CTA asset). */
+function ShowcaseCardCornerArrow({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      width={40}
+      height={40}
+      viewBox="0 0 40 40"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <circle
+        cx="20"
+        cy="20"
+        r="18"
+        stroke="var(--palette-brand)"
+        strokeOpacity={0.35}
+        strokeWidth="1.5"
+      />
+      <path
+        d="M14 26L24 16M24 16H17M24 16V23"
+        stroke="var(--palette-navy-deep)"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function gridColsClass(cols: 1 | 2 | 3): string {
+  switch (cols) {
+    case 1:
+      return "grid-cols-1";
+    case 2:
+      return "grid-cols-1 sm:grid-cols-2";
+    case 3:
+      return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
+    default:
+      return "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
+  }
+}
+
+function mediaSizesForCols(cols: 1 | 2 | 3): string {
+  switch (cols) {
+    case 1:
+      return "(max-width: 640px) 100vw, min(82rem, 100vw)";
+    case 2:
+      return "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 41rem";
+    default:
+      return "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 34vw";
+  }
+}
 
 export function DesignShowcaseGridSection({
   section,
@@ -25,9 +82,14 @@ export function DesignShowcaseGridSection({
 }) {
   const cards = section.cards ?? [];
   const footerCtas = section.footerCtas ?? [];
+  const cols = section.gridColumns ?? 2;
+  const gridClass = gridColsClass(cols);
+  const mediaSizes = mediaSizesForCols(cols);
 
   return (
-    <section className="py-16 md:py-24">
+    <section
+      className={`py-16 md:py-24 ${section.whiteBackground ? "bg-white" : ""}`}
+    >
       <Container>
         {(section.title || section.intro) && (
           <header className="mx-auto max-w-4xl text-center">
@@ -48,7 +110,9 @@ export function DesignShowcaseGridSection({
         )}
 
         {cards.length > 0 ? (
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:gap-8">
+          <div
+            className={`mt-12 grid ${gridClass} gap-6 sm:gap-7 lg:gap-8`}
+          >
             {cards.map((card, index) => {
               const tint = card.panelTint ?? "surface";
               const bg = PANEL_BG[tint];
@@ -65,7 +129,7 @@ export function DesignShowcaseGridSection({
                       <Media
                         image={card.visual}
                         fill
-                        sizes="(max-width: 640px) 100vw, 50vw"
+                        sizes={mediaSizes}
                         preferLargestSource
                         className="object-contain object-center"
                       />
@@ -78,9 +142,7 @@ export function DesignShowcaseGridSection({
                         className="[&_p]:mb-1 [&_p:last-child]:mb-0 prose-p:text-navy-deep prose-headings:text-navy-deep"
                       />
                     </div>
-                    <span className="inline-flex shrink-0" aria-hidden>
-                      <ArrowInCircle variant="on-light" className="h-10 w-10" />
-                    </span>
+                    <ShowcaseCardCornerArrow className="h-10 w-10 shrink-0" />
                   </div>
                 </>
               );

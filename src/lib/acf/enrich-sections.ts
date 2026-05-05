@@ -72,19 +72,34 @@ export async function enrichSections(
   return out;
 }
 
+/** Fetches newest services with featured media embed; paginates past the default REST per_page cap. */
+async function fetchServicesEmbeddedUpTo(lang: Locale, limit: number): Promise<WpServiceListEmbedded[]> {
+  const rest = getCptRestBase("service");
+  const out: WpServiceListEmbedded[] = [];
+  let page = 1;
+  const batch = 100;
+  const safeLimit = Math.max(1, limit);
+  while (out.length < safeLimit && page <= 50) {
+    const chunk = await wpFetchOptional<WpServiceListEmbedded[]>(
+      `/wp/v2/${rest}?per_page=${batch}&page=${page}&_embed=1&orderby=date&order=desc`,
+      { lang, revalidate: 30 }
+    );
+    if (!chunk?.length) break;
+    out.push(...chunk);
+    if (chunk.length < batch) break;
+    page++;
+  }
+  return out.slice(0, safeLimit);
+}
+
 async function enrichDesignShowcaseGrid(
   s: DesignShowcaseGridSectionT,
   { lang }: EnrichContext
 ): Promise<DesignShowcaseGridSectionT> {
   const n = s.count;
-  const rest = getCptRestBase("service");
-  const list = await wpFetchOptional<WpServiceListEmbedded[]>(
-    `/wp/v2/${rest}?per_page=${n}&_embed=1&orderby=date&order=desc`,
-    { lang, revalidate: 30 }
-  );
+  const list = await fetchServicesEmbeddedUpTo(lang, n);
   const tint = s.cardPanelTint ?? "surface";
-  const cards =
-    list?.map((p) => {
+  const cards = list.map((p) => {
       const featured = p._embedded?.["wp:featuredmedia"]?.[0];
       const titlePlain = stripTags(p.title.rendered);
       const visual =
@@ -97,7 +112,7 @@ async function enrichDesignShowcaseGrid(
         href: buildLocalePath(lang, p.slug),
         panelTint: tint,
       };
-    }) ?? [];
+    });
   return { ...s, cards };
 }
 

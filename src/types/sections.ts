@@ -270,8 +270,14 @@ export type DesignShowcaseGridSectionT = CoreSection & {
   type: "design_showcase_grid";
   title?: string;
   intro?: string;
-  /** Max services to load from WordPress REST (`items_count` in ACF). */
+  /** Horizontal bands of cards (≥1). Total services loaded = rows × columns. */
+  gridRows: number;
+  /** Desktop/tablet columns (max 3); mobile stays one column until breakpoints. */
+  gridColumns: 1 | 2 | 3;
+  /** WordPress REST `per_page` (= gridRows × gridColumns). */
   count: number;
+  /** Full-width band behind section content (cards stay white). */
+  whiteBackground?: boolean;
   /** Panel tint applied to every auto-generated card. */
   cardPanelTint?: DesignShowcaseGridCardTint;
   cards: DesignShowcaseGridCardT[];
