@@ -454,6 +454,32 @@
                 "preview_size": "medium"
             },
             {
+                "key": "field_omb_footer_top_shape_image",
+                "label": "Footer top shape (optional)",
+                "name": "footer_top_shape_image",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "Wide graphic for the top edge of the footer (rounded corners + centre notch). PNG/SVG with transparency recommended. When set, this replaces the built-in notch mask so the curve matches your design asset.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "png,svg,jpg,jpeg,webp",
+                "allow_in_bindings": 0,
+                "preview_size": "medium"
+            },
+            {
                 "key": "field_omb_footer_cta_tab",
                 "label": "Footer CTA",
                 "name": "",

@@ -86,6 +86,10 @@ npm run start    # next start (NODE_ENV=production)
 npm run lint     # next lint
 ```
 
+## Globals (footer)
+
+- Optional **`footer_top_shape_image`** (OMB Footer options): wide image for the footer’s top edge / centre notch. When set, `SiteFooter` uses it instead of the built-in CSS notch mask.
+
 ## Integrations
 
 - **WordPress REST** — pages, posts, CPTs, ACF in JSON, ACF options (`acf/v3` or `acf/v1` per WP), menus if exposed (`menu-items`).

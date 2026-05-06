@@ -111,6 +111,7 @@ function omb_rest_globals_field_keys_by_menu_slug(): array {
             'footer_title',
             'footer_text',
             'footer_logo',
+            'footer_top_shape_image',
             'footer_cta_text',
             'footer_cta_primary_link',
             'footer_cta_secondary_link',

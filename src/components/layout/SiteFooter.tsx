@@ -113,6 +113,10 @@ export function SiteFooter({
   const hasNav = footerMenu.length > 0;
   const hasFollow = sList.length > 0;
   const showMidDivider = hasNav && hasFollow;
+  const topShapeImage = g.footer.footerTopShapeImage;
+  const useNotchMask = Boolean(g.footer.footerLogo) && !topShapeImage;
+  const topShapeW = topShapeImage?.width ?? 1440;
+  const topShapeH = topShapeImage?.height ?? 160;
 
   return (
     <footer className="relative z-0 mt-auto overflow-x-clip overflow-y-visible pt-20 text-white sm:pt-24 md:pt-28">
@@ -120,12 +124,12 @@ export function SiteFooter({
         <div
           className="relative rounded-t-3xl bg-navy-deep sm:rounded-t-[1.5rem] md:rounded-t-[50px]"
           style={
-            g.footer.footerLogo
+            useNotchMask
               ? ({
                   WebkitMaskImage:
-                    "radial-gradient(circle 130px at 50% 0px, transparent 0 129px, rgba(0,0,0,0.9) 129.5px, black 130px)",
+                    "radial-gradient(circle 109px at 50% 0px, transparent 0 108.5px, rgba(0,0,0,0.9) 109.5px, black 110px)",
                   maskImage:
-                    "radial-gradient(circle 130px at 50% 0px, transparent 0 129px, rgba(0,0,0,0.9) 129.5px, black 130px)",
+                    "radial-gradient(circle 109px at 50% 0px, transparent 0 108.5px, rgba(0,0,0,0.9) 109.5px, black 110px)",
                   WebkitMaskRepeat: "no-repeat",
                   maskRepeat: "no-repeat",
                   WebkitMaskSize: "100% 100%",
@@ -134,6 +138,18 @@ export function SiteFooter({
               : undefined
           }
         >
+          {topShapeImage && (
+            <div className="pointer-events-none absolute inset-x-0 top-0 z-[15] overflow-hidden rounded-t-[inherit]">
+              <Media
+                image={topShapeImage}
+                width={topShapeW}
+                height={topShapeH}
+                preferLargestSource
+                className="block h-auto w-full max-h-[min(240px,45vw)] object-cover object-top sm:max-h-[280px]"
+                sizes="100vw"
+              />
+            </div>
+          )}
           <div
             className="pointer-events-none absolute inset-0 rounded-t-[inherit]"
             style={{
