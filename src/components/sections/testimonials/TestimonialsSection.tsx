@@ -5,7 +5,29 @@ import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
 import type { TestimonialsSectionT } from "@/types/sections";
+import type { CSSProperties } from "react";
 import { TestimonialsCarousel } from "./TestimonialsCarousel";
+
+/** Same mesh + blend as Figma testimonials frame (`346:5621`…`346:5622` under `974:30`); matches `feature-highlight-split`. */
+const HERO_BG_SRC = "/feature-highlight-split-hero-bg.png";
+
+const heroBgImageLayer: CSSProperties = {
+  position: "absolute",
+  top: 0,
+  left: "-19.42%",
+  width: "138.84%",
+  height: "134.3%",
+  minHeight: "100%",
+  backgroundImage: `url("${HERO_BG_SRC}")`,
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "center top",
+  backgroundSize: "cover",
+};
+
+const brandColorBlendLayer: CSSProperties = {
+  backgroundColor: "var(--palette-brand)",
+  mixBlendMode: "color",
+};
 
 export function TestimonialsSection({
   section,
@@ -19,16 +41,18 @@ export function TestimonialsSection({
   const narrowSingleTotal = items.length === 1;
 
   return (
-    <section className="relative overflow-hidden py-16 md:py-24">
-      <div
-        className="pointer-events-none absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse 90% 60% at 50% 0%, var(--palette-surface), var(--palette-white))",
-        }}
-        aria-hidden
-      />
-      <Container className="relative max-w-[1314px]">
+    <section className="relative isolate overflow-hidden py-16 md:py-24">
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden>
+        <div
+          className="absolute inset-0"
+          style={{
+            background: "color-mix(in srgb, var(--palette-white) 88%, var(--palette-surface))",
+          }}
+        />
+        <div style={heroBgImageLayer} />
+        <div className="absolute inset-0" style={brandColorBlendLayer} />
+      </div>
+      <Container className="relative z-10 max-w-[1314px]">
         {section.title ? (
           <h2
             className={`${REVEAL_ITEM} mx-auto max-w-[min(100%,477px)] text-center text-3xl font-semibold leading-tight tracking-tight text-navy-deep sm:text-4xl lg:leading-[56px]`}
