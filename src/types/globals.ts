@@ -14,6 +14,11 @@ export type FooterSettings = {
   footerTitle: string;
   footerText: string;
   footerLogo: WpImage | null;
+  /**
+   * Optional wide strip (PNG/SVG) for the footer top edge with centre notch — replaces the built-in CSS mask when set.
+   * ACF: `footer_top_shape_image` (Footer options).
+   */
+  footerTopShapeImage: WpImage | null;
   footerCopyright: string;
   showFooterLanguageSwitcher: boolean;
   /**
