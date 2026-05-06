@@ -130,7 +130,7 @@ export function SiteFooter({
   const useDefaultNavy = !hasBgImage && !hasBgGradient && !hasBgColor;
 
   const footerMainStyle: CSSProperties = {};
-  if (hasBgImage && bgImageUrl) {
+  if (!useBgImageLayer && hasRenderableBgUrl && bgImageUrl) {
     footerMainStyle.backgroundImage = `url(${JSON.stringify(bgImageUrl)})`;
     footerMainStyle.backgroundSize = "cover";
     footerMainStyle.backgroundPosition = "center top";
