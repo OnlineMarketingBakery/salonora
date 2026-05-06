@@ -144,7 +144,10 @@ function fromFooter(o: Record<string, unknown> | null) {
     footerTitle: asString(o.footer_title),
     footerText: asString(o.footer_text),
     footerLogo: asImage(o.footer_logo),
+    /** Same lookup pattern as `footer_logo`: direct keys first, then camel/snake picks + legacy field. */
     footerBackgroundImage:
+      asImage(o.footer_background_image) ??
+      asImage(o.footerBackgroundImage) ??
       asImage(acfPick(o, "footer_background_image", "footerBackgroundImage")) ??
       asImage(acfPick(o, "footer_top_shape_image", "footerTopShapeImage")),
     footerBackgroundColor: asString(acfPick(o, "footer_background_color", "footerBackgroundColor")),
