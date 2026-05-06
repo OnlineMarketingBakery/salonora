@@ -344,7 +344,7 @@ export function SiteFooter({
 
         {g.footer.footerLogo && (
           <div className="absolute left-1/2 top-0 z-30 -translate-x-1/2 translate-y-[-40%] sm:translate-y-[-45%] md:translate-y-[calc(-50%+6px)]">
-            <div className="flex h-[100px] w-[100px] items-center justify-center rounded-full border border-brand bg-white p-2 shadow-[0px_23px_17px_rgba(67,87,128,0.34)] sm:h-[140px] sm:w-[140px] sm:p-2.5 md:h-[180px] md:w-[180px] md:pb-[39px] md:pl-[55px] md:pr-[54px] md:pt-[38px]">
+            <div className="flex h-[100px] w-[100px] items-center justify-center rounded-full border border-[#3990F0] bg-white p-2 shadow-[0px_23px_17px_rgba(67,87,128,0.34)] sm:h-[140px] sm:w-[140px] sm:p-2.5 md:h-[180px] md:w-[180px] md:pb-[39px] md:pl-[55px] md:pr-[54px] md:pt-[38px]">
               <Media image={g.footer.footerLogo} width={120} height={64} className="h-10 w-auto sm:h-18" />
             </div>
           </div>
