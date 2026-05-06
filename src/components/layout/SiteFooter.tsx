@@ -116,23 +116,24 @@ export function SiteFooter({
 
   return (
     <footer className="relative z-0 mt-auto overflow-x-clip overflow-y-visible pt-20 text-white sm:pt-24 md:pt-28">
-      <div
-        className="relative rounded-t-3xl bg-navy-deep sm:rounded-t-[1.5rem] md:rounded-t-[50px]"
-        style={
-          g.footer.footerLogo
-            ? ({
-                WebkitMaskImage:
-                  "radial-gradient(circle 109px at 50% 0px, transparent 0 109px, black 110px)",
-                maskImage:
-                  "radial-gradient(circle 109px at 50% 0px, transparent 0 109px, black 110px)",
-                WebkitMaskRepeat: "no-repeat",
-                maskRepeat: "no-repeat",
-                WebkitMaskSize: "100% 100%",
-                maskSize: "100% 100%",
-              } as const)
-            : undefined
-        }
-      >
+      <div className="relative">
+        <div
+          className="relative rounded-t-3xl bg-navy-deep sm:rounded-t-[1.5rem] md:rounded-t-[50px]"
+          style={
+            g.footer.footerLogo
+              ? ({
+                  WebkitMaskImage:
+                    "radial-gradient(circle 109px at 50% 0px, transparent 0 108.5px, rgba(0,0,0,0.9) 109.5px, black 110px)",
+                  maskImage:
+                    "radial-gradient(circle 109px at 50% 0px, transparent 0 108.5px, rgba(0,0,0,0.9) 109.5px, black 110px)",
+                  WebkitMaskRepeat: "no-repeat",
+                  maskRepeat: "no-repeat",
+                  WebkitMaskSize: "100% 100%",
+                  maskSize: "100% 100%",
+                } as const)
+              : undefined
+          }
+        >
         <div
           className="pointer-events-none absolute inset-0 rounded-t-[inherit]"
           style={{
@@ -146,19 +147,6 @@ export function SiteFooter({
           style={gridStyle}
           aria-hidden
         />
-
-        {g.footer.footerLogo && (
-          <div className="absolute left-1/2 top-0 z-20 -translate-x-1/2 translate-y-[-40%] sm:translate-y-[-45%] md:translate-y-[calc(-50%+6px)]">
-            <div className="flex h-[100px] w-[100px] items-center justify-center rounded-full border border-brand bg-white p-2 shadow-[0px_23px_17px_rgba(67,87,128,0.34)] sm:h-[140px] sm:w-[140px] sm:p-2.5 md:h-[180px] md:w-[180px] md:pb-[39px] md:pl-[55px] md:pr-[54px] md:pt-[38px]">
-              <Media
-                image={g.footer.footerLogo}
-                width={120}
-                height={64}
-                className="h-10 w-auto sm:h-18"
-              />
-            </div>
-          </div>
-        )}
 
         <div
           className={[
@@ -352,6 +340,15 @@ export function SiteFooter({
             </div>
           </div>
         </div>
+        </div>
+
+        {g.footer.footerLogo && (
+          <div className="absolute left-1/2 top-0 z-30 -translate-x-1/2 translate-y-[-40%] sm:translate-y-[-45%] md:translate-y-[calc(-50%+6px)]">
+            <div className="flex h-[100px] w-[100px] items-center justify-center rounded-full border border-brand bg-white p-2 shadow-[0px_23px_17px_rgba(67,87,128,0.34)] sm:h-[140px] sm:w-[140px] sm:p-2.5 md:h-[180px] md:w-[180px] md:pb-[39px] md:pl-[55px] md:pr-[54px] md:pt-[38px]">
+              <Media image={g.footer.footerLogo} width={120} height={64} className="h-10 w-auto sm:h-18" />
+            </div>
+          </div>
+        )}
       </div>
     </footer>
   );
