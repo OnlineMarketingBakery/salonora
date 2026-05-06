@@ -176,6 +176,69 @@ function omb_rest_globals_pick_keys(array $source, array $keys): array {
 }
 
 /**
+ * Merge every `footer_*` key from the flat options array into the footer chunk.
+ * New ACF fields are included even if this plugin's allowlist was not redeployed yet.
+ *
+ * @param array<string, mixed> $flat
+ * @param array<string, mixed> $footer_chunk
+ *
+ * @return array<string, mixed>
+ */
+function omb_rest_globals_merge_footer_keys_from_flat(array $flat, array $footer_chunk): array {
+    foreach ($flat as $key => $value) {
+        if (is_string($key) && strpos($key, 'footer_') === 0) {
+            $footer_chunk[$key] = $value;
+        }
+    }
+    return $footer_chunk;
+}
+
+/**
+ * Resolve attachment IDs / incomplete image arrays to absolute URLs for headless apps.
+ *
+ * @param array<string, mixed> $footer
+ */
+function omb_rest_normalize_footer_image_urls(array &$footer): void {
+    $keys = ['footer_background_image', 'footer_top_shape_image', 'footer_logo'];
+    foreach ($keys as $key) {
+        if (!array_key_exists($key, $footer)) {
+            continue;
+        }
+        $v = $footer[$key];
+        $id = 0;
+        if (is_numeric($v)) {
+            $id = (int) $v;
+        } elseif (is_array($v)) {
+            $has_url = !empty($v['url']) && is_string($v['url']) && $v['url'] !== '' && $v['url'] !== 'false';
+            if ($has_url) {
+                $url_str = (string) $v['url'];
+                if ($url_str !== '' && $url_str[0] === '/' && strncmp($url_str, '//', 2) !== 0) {
+                    $footer[$key] = array_merge($v, ['url' => home_url($url_str)]);
+                }
+                continue;
+            }
+            if (!empty($v['ID'])) {
+                $id = (int) $v['ID'];
+            } elseif (!empty($v['id'])) {
+                $id = (int) $v['id'];
+            }
+        }
+        if ($id <= 0 || !function_exists('wp_get_attachment_image_url')) {
+            continue;
+        }
+        $url = wp_get_attachment_image_url($id, 'full');
+        if (!$url) {
+            continue;
+        }
+        if (is_array($v)) {
+            $footer[$key] = array_merge($v, ['url' => $url, 'ID' => $id, 'id' => $id]);
+        } else {
+            $footer[$key] = ['url' => $url, 'ID' => $id, 'id' => $id];
+        }
+    }
+}
+
+/**
  * ACF resolves options storage post_id per page; subpages often default to "option" / "options".
  */
 function omb_rest_globals_resolve_acf_post_id(string $menu_slug): string {
@@ -213,7 +276,11 @@ function omb_rest_globals_collect_fields(): array {
         }
         foreach ($response_keys as $response_key => $menu_slug) {
             $names = $keys_by_slug[$menu_slug] ?? [];
-            $out[$response_key] = omb_rest_globals_pick_keys($flat, $names);
+            $chunk = omb_rest_globals_pick_keys($flat, $names);
+            if ($response_key === 'footer') {
+                $chunk = omb_rest_globals_merge_footer_keys_from_flat($flat, $chunk);
+            }
+            $out[$response_key] = $chunk;
         }
         return $out;
     }
@@ -236,6 +303,9 @@ function omb_rest_globals_collect_fields(): array {
             $fields = omb_rest_globals_get_fields_for_post_id($post_id);
             if (is_array($fields) && $fields !== []) {
                 $chunk = $names ? omb_rest_globals_pick_keys($fields, $names) : $fields;
+                if ($response_key === 'footer') {
+                    $chunk = omb_rest_globals_merge_footer_keys_from_flat($fields, $chunk);
+                }
                 break;
             }
         }
@@ -271,6 +341,10 @@ function omb_rest_get_globals(WP_REST_Request $request): WP_REST_Response {
     }
 
     $out = omb_rest_globals_collect_fields();
+
+    if (!empty($out['footer']) && is_array($out['footer'])) {
+        omb_rest_normalize_footer_image_urls($out['footer']);
+    }
 
     return new WP_REST_Response($out, 200);
 }

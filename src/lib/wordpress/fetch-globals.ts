@@ -198,6 +198,31 @@ function attachmentLikeId(raw: unknown): number | null {
 }
 
 /** When ACF stores only an attachment ID, resolve URL via WP REST. */
+/**
+ * OMB `/globals` can omit newer `footer_*` keys until the plugin allowlist is deployed.
+ * When the footer background URL is still missing, merge direct ACF options (same path as the non-OMB fallback).
+ */
+async function fetchFooterViaOmbWithAcfFallback(
+  lang: Locale,
+  ombFooter: Record<string, unknown> | null,
+  siteUnwrapped: Record<string, unknown> | null
+): Promise<FooterSettings> {
+  let raw = unwrapAcfOptionsPayload(ombFooter) as Record<string, unknown> | null;
+  let merged = mergeFooterCtaMigrations(fromFooter(raw), siteUnwrapped);
+  let footer = await resolveFooterBackgroundFromAttachmentId(lang, raw, merged);
+
+  if (!getImageUrl(footer.footerBackgroundImage)?.trim()) {
+    const direct = await fetchAcfOptions("omb-footer-settings", lang);
+    const extra = unwrapAcfOptionsPayload(direct);
+    if (extra && Object.keys(extra).length > 0) {
+      raw = { ...(raw ?? {}), ...extra };
+      merged = mergeFooterCtaMigrations(fromFooter(raw), siteUnwrapped);
+      footer = await resolveFooterBackgroundFromAttachmentId(lang, raw, merged);
+    }
+  }
+  return footer;
+}
+
 async function resolveFooterBackgroundFromAttachmentId(
   lang: Locale,
   raw: Record<string, unknown> | null,
@@ -319,9 +344,7 @@ export async function fetchGlobals(lang: Locale): Promise<GlobalSettings> {
   const omb = await fetchGlobalsViaOmbRest(lang);
   if (omb != null) {
     const siteUnwrapped = unwrapAcfOptionsPayload(omb.site ?? null);
-    const footerRaw = unwrapAcfOptionsPayload(omb.footer ?? null) as Record<string, unknown> | null;
-    const footerMerged = mergeFooterCtaMigrations(fromFooter(footerRaw), siteUnwrapped);
-    const footer = await resolveFooterBackgroundFromAttachmentId(lang, footerRaw, footerMerged);
+    const footer = await fetchFooterViaOmbWithAcfFallback(lang, omb.footer ?? null, siteUnwrapped);
     return {
       header: fromHeader(unwrapAcfOptionsPayload(omb.header ?? null)),
       footer,

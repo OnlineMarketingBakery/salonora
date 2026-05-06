@@ -116,26 +116,21 @@ export function SiteFooter({
   const hasFollow = sList.length > 0;
   const showMidDivider = hasNav && hasFollow;
 
-  /** Same asset path as footer logo: prefer rendering via `Media` / `next/image` when WP returns an image object. */
-  const useBgImageLayer = Boolean(g.footer.footerBackgroundImage);
+  /** Prefer a plain `<img>` with an absolutized URL so uploads never depend on `next/image` remotePatterns alone. */
   const bgImageUrl = resolveAbsoluteMediaUrl(
     getLargestImageUrl(g.footer.footerBackgroundImage) ?? getImageUrl(g.footer.footerBackgroundImage),
   );
-  const hasRenderableBgUrl = Boolean(bgImageUrl);
+  const showFooterBgImg = Boolean(bgImageUrl?.trim());
+  const hasFooterBgAttachment = g.footer.footerBackgroundImage != null;
   const bgGradient = g.footer.footerBackgroundGradient.trim();
   const bgColor = g.footer.footerBackgroundColor.trim();
-  const hasBgImage = useBgImageLayer || hasRenderableBgUrl;
+  const hasBgImage = showFooterBgImg || hasFooterBgAttachment;
   const hasBgGradient = bgGradient.length > 0;
   const hasBgColor = bgColor.length > 0;
   const useDefaultNavy = !hasBgImage && !hasBgGradient && !hasBgColor;
 
   const footerMainStyle: CSSProperties = {};
-  if (!useBgImageLayer && hasRenderableBgUrl && bgImageUrl) {
-    footerMainStyle.backgroundImage = `url(${JSON.stringify(bgImageUrl)})`;
-    footerMainStyle.backgroundSize = "cover";
-    footerMainStyle.backgroundPosition = "center top";
-    footerMainStyle.backgroundRepeat = "no-repeat";
-  } else if (hasBgGradient) {
+  if (hasBgGradient) {
     footerMainStyle.backgroundImage = bgGradient;
     footerMainStyle.backgroundSize = "cover";
     footerMainStyle.backgroundPosition = "center top";
@@ -144,8 +139,7 @@ export function SiteFooter({
   }
 
   /** Upload row exists in CMS even if URL resolution fails — still disable the stock notch. */
-  const hasFooterBgAttachment = g.footer.footerBackgroundImage != null;
-  const anyCustomFooterBg = hasBgImage || hasBgGradient || hasBgColor || hasFooterBgAttachment;
+  const anyCustomFooterBg = hasBgImage || hasBgGradient || hasBgColor;
 
   /** Built-in circular notch only when the footer uses stock navy + logo and no custom bg fields at all. */
   const useNotchMask = Boolean(g.footer.footerLogo) && !anyCustomFooterBg;
@@ -173,7 +167,17 @@ export function SiteFooter({
               : {}),
           }}
         >
-          {useBgImageLayer && (
+          {showFooterBgImg && bgImageUrl ? (
+            <div className="pointer-events-none absolute inset-0 z-[1] overflow-hidden rounded-t-[inherit]">
+              <img
+                src={bgImageUrl}
+                alt=""
+                className="absolute inset-0 h-full w-full object-cover object-top"
+                decoding="async"
+                fetchPriority="low"
+              />
+            </div>
+          ) : hasFooterBgAttachment ? (
             <div className="pointer-events-none absolute inset-0 z-[1] overflow-hidden rounded-t-[inherit]">
               <Media
                 image={g.footer.footerBackgroundImage}
@@ -184,7 +188,7 @@ export function SiteFooter({
                 className="object-cover object-top"
               />
             </div>
-          )}
+          ) : null}
           {showRadialGlow && (
             <div
               className="pointer-events-none absolute inset-0 rounded-t-[inherit]"
