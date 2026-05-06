@@ -123,9 +123,9 @@ export function SiteFooter({
             g.footer.footerLogo
               ? ({
                   WebkitMaskImage:
-                    "radial-gradient(circle 130px at 50% 0px, transparent 0 129px, rgba(0,0,0,0.9) 129.5px, black 130px)",
+                    "radial-gradient(circle 109px at 50% 0px, transparent 0 108.5px, rgba(0,0,0,0.9) 109.5px, black 110px)",
                   maskImage:
-                    "radial-gradient(circle 130px at 50% 0px, transparent 0 129px, rgba(0,0,0,0.9) 129.5px, black 130px)",
+                    "radial-gradient(circle 109px at 50% 0px, transparent 0 108.5px, rgba(0,0,0,0.9) 109.5px, black 110px)",
                   WebkitMaskRepeat: "no-repeat",
                   maskRepeat: "no-repeat",
                   WebkitMaskSize: "100% 100%",
