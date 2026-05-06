@@ -454,12 +454,48 @@
                 "preview_size": "medium"
             },
             {
-                "key": "field_omb_footer_top_shape_image",
-                "label": "Footer top shape (optional)",
-                "name": "footer_top_shape_image",
+                "key": "field_omb_footer_bg_tab",
+                "label": "Footer background",
+                "name": "",
+                "aria-label": "",
+                "type": "tab",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "placement": "top",
+                "endpoint": 0,
+                "selected": 0
+            },
+            {
+                "key": "field_omb_footer_bg_message",
+                "label": "How this works",
+                "name": "",
+                "aria-label": "",
+                "type": "message",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                },
+                "message": "<strong>Precedence:</strong> background image (if set) wins, then gradient (CSS), then solid colour. If all are empty, the theme uses the default navy footer. A background image replaces the built‑in blue fill and usually includes your curved top edge in the asset.",
+                "new_lines": "",
+                "esc_html": 0
+            },
+            {
+                "key": "field_omb_footer_background_image",
+                "label": "Background image",
+                "name": "footer_background_image",
                 "aria-label": "",
                 "type": "image",
-                "instructions": "Wide graphic for the top edge of the footer (rounded corners + centre notch). PNG/SVG with transparency recommended. When set, this replaces the built-in notch mask so the curve matches your design asset.",
+                "instructions": "Full‑width footer artwork (PNG/WebP/JPEG/SVG). Covers the main footer block; use the largest export for crisp edges.",
                 "required": 0,
                 "conditional_logic": 0,
                 "wrapper": {
@@ -478,6 +514,48 @@
                 "mime_types": "png,svg,jpg,jpeg,webp",
                 "allow_in_bindings": 0,
                 "preview_size": "medium"
+            },
+            {
+                "key": "field_omb_footer_background_color",
+                "label": "Background colour (hex)",
+                "name": "footer_background_color",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Example: <code>#002752</code>. Used only when no background image is set. Overrides default navy when gradient is also empty.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "#002752",
+                "prepend": "",
+                "append": ""
+            },
+            {
+                "key": "field_omb_footer_background_gradient",
+                "label": "Background gradient (CSS)",
+                "name": "footer_background_gradient",
+                "aria-label": "",
+                "type": "textarea",
+                "instructions": "Full CSS <code>background-image</code> value, e.g. <code>linear-gradient(180deg, #002752 0%, #001428 100%)</code>. Used when no background image is set; takes precedence over the colour field.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                    "width": "50",
+                    "class": "",
+                    "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "rows": 3,
+                "placeholder": "linear-gradient(180deg, #002752 0%, #001428 100%)",
+                "new_lines": ""
             },
             {
                 "key": "field_omb_footer_cta_tab",

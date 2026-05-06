@@ -15,10 +15,14 @@ export type FooterSettings = {
   footerText: string;
   footerLogo: WpImage | null;
   /**
-   * Optional wide strip (PNG/SVG) for the footer top edge with centre notch — replaces the built-in CSS mask when set.
-   * ACF: `footer_top_shape_image` (Footer options).
+   * Footer main block background. Precedence: image → gradient (CSS) → solid color → default navy (`bg-navy-deep`).
+   * Legacy ACF `footer_top_shape_image` is merged into `footerBackgroundImage` in `fetch-globals`.
    */
-  footerTopShapeImage: WpImage | null;
+  footerBackgroundImage: WpImage | null;
+  /** Hex or any valid CSS color (e.g. `#002752`). Empty uses default when image/gradient unset. */
+  footerBackgroundColor: string;
+  /** Full CSS `background-image` value, e.g. `linear-gradient(180deg, #002752, #001a38)`. Empty when unused. */
+  footerBackgroundGradient: string;
   footerCopyright: string;
   showFooterLanguageSwitcher: boolean;
   /**

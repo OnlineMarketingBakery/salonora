@@ -88,7 +88,7 @@ npm run lint     # next lint
 
 ## Globals (footer)
 
-- Optional **`footer_top_shape_image`** (OMB Footer options): wide image for the footer’s top edge / centre notch. When set, `SiteFooter` uses it instead of the built-in CSS notch mask.
+- **Footer background** (tab on OMB Footer options): `footer_background_image` (full-bleed cover), `footer_background_color` (hex text), `footer_background_gradient` (CSS `background-image` value). Precedence: image → gradient → color → default `bg-navy-deep`. Legacy `footer_top_shape_image` is still read and merged into the image if the new field is empty.
 
 ## Integrations
 

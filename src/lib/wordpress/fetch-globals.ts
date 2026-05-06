@@ -129,7 +129,9 @@ function fromFooter(o: Record<string, unknown> | null) {
       footerTitle: "",
       footerText: "",
       footerLogo: null,
-      footerTopShapeImage: null,
+      footerBackgroundImage: null,
+      footerBackgroundColor: "",
+      footerBackgroundGradient: "",
       footerCopyright: "",
       showFooterLanguageSwitcher: true,
       footerCtaFootnote: "",
@@ -141,7 +143,11 @@ function fromFooter(o: Record<string, unknown> | null) {
     footerTitle: asString(o.footer_title),
     footerText: asString(o.footer_text),
     footerLogo: asImage(o.footer_logo),
-    footerTopShapeImage: asImage(acfPick(o, "footer_top_shape_image", "footerTopShapeImage")),
+    footerBackgroundImage:
+      asImage(acfPick(o, "footer_background_image", "footerBackgroundImage")) ??
+      asImage(acfPick(o, "footer_top_shape_image", "footerTopShapeImage")),
+    footerBackgroundColor: asString(acfPick(o, "footer_background_color", "footerBackgroundColor")),
+    footerBackgroundGradient: asString(acfPick(o, "footer_background_gradient", "footerBackgroundGradient")),
     footerCopyright: asString(o.footer_copyright),
     showFooterLanguageSwitcher: asBool(o.show_footer_language_switcher),
     footerCtaFootnote: asString(acfPick(o, "footer_cta_text", "footerCtaText")),
