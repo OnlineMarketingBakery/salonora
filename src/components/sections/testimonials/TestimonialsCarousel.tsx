@@ -43,16 +43,17 @@ function QuoteGlyph({ className }: { className?: string }) {
 function RatingPill({ rating }: { rating: number }) {
   return (
     <div
-      className="relative inline-grid shrink-0 place-items-start leading-none"
+      className="flex h-[30px] w-[65px] shrink-0 items-center gap-[5px] rounded-[15px] bg-white p-0.5"
       aria-label={`${formatRatingLabel(rating)} van 5 sterren`}
     >
-      <div className="col-start-1 row-start-1 h-[30px] w-[65px] rounded-[15px] bg-white shadow-md ring-1 ring-navy-deep/10" />
-      <div className="col-start-1 row-start-1 ml-0.5 mt-0.5 flex size-[26px] items-center justify-center rounded-full bg-surface">
-        <span className="text-sm leading-none" style={{ color: "var(--palette-star)" }} aria-hidden>
-          ★
-        </span>
-      </div>
-      <p className="col-start-1 row-start-1 ml-[33px] mt-2 font-sans text-sm font-medium leading-none tabular-nums text-navy">
+      <span
+        className="flex size-[26px] shrink-0 items-center justify-center text-sm leading-none"
+        style={{ color: "var(--palette-star)" }}
+        aria-hidden
+      >
+        ★
+      </span>
+      <p className="w-[22px] text-center font-sans text-sm font-medium leading-[1.6] text-navy tabular-nums">
         {formatRatingLabel(rating)}
       </p>
     </div>
@@ -117,18 +118,18 @@ export function TestimonialsCarousel({
               className="shrink-0 px-0"
               style={{ width: `${slideFractionPct}%` }}
             >
-              <div className={`grid w-full gap-6 md:gap-8 ${gridColsClass(perView)}`}>
+              <div className={`grid w-full gap-6 ${gridColsClass(perView)}`}>
                 {slideItems.map((t) => (
                   <blockquote
                     key={t.id}
-                    className={`${REVEAL_ITEM} relative flex h-full min-h-[200px] flex-col gap-6 rounded-2xl bg-gradient-to-b from-white to-white/50 p-6 shadow-lg shadow-navy-deep/10 md:p-8`}
+                    className={`${REVEAL_ITEM} relative flex h-full min-h-[200px] flex-col gap-[23px] rounded-[14px] bg-linear-to-b from-white to-[rgba(255,255,255,0.48)] p-[34px] shadow-[0px_18px_48px_0px_rgba(67,87,128,0.08)]`}
                   >
                     <QuoteGlyph />
                     <RichText
                       html={t.clientTestimonial}
                       className="text-left text-sm font-normal leading-5 text-navy [&_p]:mb-3 [&_p:last-child]:mb-0"
                     />
-                    <div className="h-px w-full shrink-0 bg-navy/10" aria-hidden />
+                    <div className="h-px w-full shrink-0 bg-[rgba(21,41,81,0.12)]" aria-hidden />
                     <div className="flex items-center justify-between gap-3">
                       <div className="flex min-w-0 flex-1 items-center gap-2">
                         {t.avatar ? (
@@ -155,9 +156,9 @@ export function TestimonialsCarousel({
                               .toUpperCase() || "?"}
                           </div>
                         )}
-                        <div className="min-w-0">
-                          <p className="truncate text-base font-medium leading-relaxed text-navy">{t.clientName}</p>
-                          <p className="truncate text-xs font-medium leading-snug text-muted">{t.clientRole}</p>
+                        <div className="flex min-w-0 flex-col gap-[10px]">
+                          <p className="truncate text-base font-medium leading-[1.6] text-navy">{t.clientName}</p>
+                          <p className="truncate text-xs font-normal leading-[1.4] text-[#475569]">{t.clientRole}</p>
                         </div>
                       </div>
                       {typeof t.rating === "number" && t.rating > 0 && <RatingPill rating={t.rating} />}
@@ -172,7 +173,7 @@ export function TestimonialsCarousel({
 
       {slides.length > 1 && (
         <div className="mt-10 flex justify-center md:mt-12" role="tablist" aria-label="Testimonial slides">
-          <div className="flex flex-wrap items-center justify-center gap-1">
+          <div className="flex flex-wrap items-center justify-center gap-[3px]">
             {slides.map((_, i) => (
               <button
                 key={`${sectionId}-dot-${i}`}
@@ -182,8 +183,8 @@ export function TestimonialsCarousel({
                 aria-label={`Slide ${i + 1} van ${slides.length}`}
                 className={
                   i === active
-                    ? "h-3 w-9 rounded-full bg-brand transition-[width] duration-200"
-                    : "size-3 rounded-full bg-brand/30 transition-colors duration-200 hover:bg-brand/50"
+                    ? "h-3 w-[37px] shrink-0 rounded-[29px] bg-brand transition-[width] duration-200"
+                    : "size-3 shrink-0 rounded-[29px] bg-[rgba(57,144,240,0.28)] transition-colors duration-200 hover:bg-[rgba(57,144,240,0.45)]"
                 }
                 onClick={() => go(i)}
               />
