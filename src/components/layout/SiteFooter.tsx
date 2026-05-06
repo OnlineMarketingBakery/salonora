@@ -114,39 +114,26 @@ export function SiteFooter({
   const hasFollow = sList.length > 0;
   const showMidDivider = hasNav && hasFollow;
 
-  // Two-layer CSS mask:
-  // Layer 1: The notch — a 96px tall tile at the top, with a semicircle cut out.
-  //   `circle 96px at 50% 100%` → centre at bottom-centre of the tile.
-  //   Transparent inside (hole), black outside → cuts the notch shape.
-  //   Size: 100% wide × 96px tall, pinned to top.
-  // Layer 2: Solid black covering the FULL element (shows everything).
-  //   Combined via default mask-composite (source-over): both layers alpha-multiply.
-  //   Where layer1 is transparent, the element is hidden. Where black, shown.
-  //   Layer2 ensures the rest of the footer (below 96px) is fully visible.
-  const notchMask = g.footer.footerLogo
-    ? ({
-        WebkitMaskImage:
-          "radial-gradient(circle 96px at 50% 100%, transparent 96px, black 97px), linear-gradient(black, black)",
-        maskImage:
-          "radial-gradient(circle 96px at 50% 100%, transparent 96px, black 97px), linear-gradient(black, black)",
-        WebkitMaskRepeat: "no-repeat, no-repeat",
-        maskRepeat: "no-repeat, no-repeat",
-        WebkitMaskSize: "100% 96px, 100% 100%",
-        maskSize: "100% 96px, 100% 100%",
-        WebkitMaskPosition: "0 0, 0 0",
-        maskPosition: "0 0, 0 0",
-      } as React.CSSProperties)
-    : undefined;
-
   return (
     <footer className="relative z-0 mt-auto overflow-x-clip overflow-y-visible pt-20 text-white sm:pt-24 md:pt-28">
       <div className="relative">
-        {/* ── FOOTER BODY ──────────────────────────────────────────────────── */}
         <div
           className="relative rounded-t-3xl bg-navy-deep sm:rounded-t-[1.5rem] md:rounded-t-[50px]"
-          style={notchMask}
+          style={
+            g.footer.footerLogo
+              ? ({
+                  WebkitMaskImage:
+                    "radial-gradient(circle 109px at 50% 0px, transparent 0 108.5px, rgba(0,0,0,0.9) 109.5px, black 110px)",
+                  maskImage:
+                    "radial-gradient(circle 109px at 50% 0px, transparent 0 108.5px, rgba(0,0,0,0.9) 109.5px, black 110px)",
+                  WebkitMaskRepeat: "no-repeat",
+                  maskRepeat: "no-repeat",
+                  WebkitMaskSize: "100% 100%",
+                  maskSize: "100% 100%",
+                } as const)
+              : undefined
+          }
         >
-          {/* Blue radial glow */}
           <div
             className="pointer-events-none absolute inset-0 rounded-t-[inherit]"
             style={{
@@ -155,22 +142,21 @@ export function SiteFooter({
             }}
             aria-hidden
           />
-
-          {/* Grid texture */}
           <div
             className="pointer-events-none absolute inset-0 rounded-t-[inherit] opacity-30"
             style={gridStyle}
             aria-hidden
           />
 
-          {/* ── MAIN CONTENT ─────────────────────────────────────────────── */}
           <div
             className={[
               "relative z-10 mx-auto w-full max-w-[1300px] px-4 sm:px-6 md:px-8",
               g.footer.footerLogo
                 ? "pt-20 sm:pt-24 md:pt-28"
                 : "pt-14 sm:pt-16",
-            ].join(" ")}
+            ]
+              .filter(Boolean)
+              .join(" ")}
           >
             <div className="mb-4 flex flex-col gap-10 lg:flex-row lg:items-stretch lg:gap-10 lg:pl-0 xl:gap-14 2xl:gap-20 2xl:pl-2 2xl:pr-0 sm:mb-10">
               <div
@@ -319,7 +305,6 @@ export function SiteFooter({
             </div>
           </div>
 
-          {/* ── FOOTER BOTTOM BAR ────────────────────────────────────────── */}
           <div className="w-full">
             <div className="mx-auto w-full max-w-[1300px] pointer-events-none relative [filter:drop-shadow(0_-6px_24px_rgba(57,144,240,0.55))_drop-shadow(0_-16px_48px_rgba(57,144,240,0.4))_drop-shadow(0_-28px_72px_rgba(57,144,240,0.28))_drop-shadow(0_-40px_104px_rgba(57,144,240,0.16))_drop-shadow(0_-52px_140px_rgba(57,144,240,0.08))_drop-shadow(0_-64px_180px_rgba(57,144,240,0.04))]">
               <img
@@ -332,7 +317,7 @@ export function SiteFooter({
                 decoding="async"
               />
             </div>
-            <div className="bg-navy-deep relative z-10">
+            <div className={` bg-navy-deep relative z-10`}>
               <div className="mx-auto flex w-full max-w-[1300px] flex-col items-center justify-center px-4 pb-5 sm:px-6 md:px-8">
                 <p className="mt-2 text-center text-sm font-light text-white/90 sm:-mt-6">
                   {g.footer.footerCopyright ||
@@ -367,13 +352,8 @@ export function SiteFooter({
           </div>
         </div>
 
-        {/* ── LOGO CIRCLE ──────────────────────────────────────────────────
-            -translate-y-1/2 places the circle's centre exactly on top:0
-            (the footer's top edge), so it half-overlaps above and the CSS
-            mask notch (96px radius) cleanly cradles it.
-        */}
         {g.footer.footerLogo && (
-          <div className="absolute left-1/2 top-0 z-30 -translate-x-1/2 -translate-y-1/2">
+          <div className="absolute left-1/2 top-0 z-30 -translate-x-1/2 translate-y-[-40%] sm:translate-y-[-45%] md:translate-y-[calc(-50%+6px)]">
             <div className="flex h-[100px] w-[100px] items-center justify-center rounded-full border border-[#3990F0] bg-white p-2 shadow-[0px_23px_17px_rgba(67,87,128,0.34)] sm:h-[140px] sm:w-[140px] sm:p-2.5 md:h-[180px] md:w-[180px] md:pb-[39px] md:pl-[55px] md:pr-[54px] md:pt-[38px]">
               <Media
                 image={g.footer.footerLogo}
