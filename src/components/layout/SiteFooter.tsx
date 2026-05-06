@@ -115,15 +115,24 @@ export function SiteFooter({
   const showMidDivider = hasNav && hasFollow;
 
   return (
-    <footer className="relative z-0 mt-auto overflow-x-clip overflow-y-visible text-white">
-      <div className="relative rounded-t-3xl bg-navy-deep sm:rounded-t-[1.5rem] md:rounded-t-[50px]">
-        {/* Figma-style notch cutout behind the floating logo badge */}
-        {g.footer.footerLogo && (
-          <div
-            className="pointer-events-none absolute left-1/2 top-[-119px] z-10 h-[218px] w-[218px] -translate-x-1/2 rounded-full bg-white"
-            aria-hidden
-          />
-        )}
+    <footer className="relative z-0 mt-auto overflow-x-clip overflow-y-visible pt-20 text-white sm:pt-24 md:pt-28">
+      <div
+        className="relative rounded-t-3xl bg-navy-deep sm:rounded-t-[1.5rem] md:rounded-t-[50px]"
+        style={
+          g.footer.footerLogo
+            ? ({
+                WebkitMaskImage:
+                  "radial-gradient(circle 109px at 50% 0px, transparent 0 109px, black 110px)",
+                maskImage:
+                  "radial-gradient(circle 109px at 50% 0px, transparent 0 109px, black 110px)",
+                WebkitMaskRepeat: "no-repeat",
+                maskRepeat: "no-repeat",
+                WebkitMaskSize: "100% 100%",
+                maskSize: "100% 100%",
+              } as const)
+            : undefined
+        }
+      >
         <div
           className="pointer-events-none absolute inset-0 rounded-t-[inherit]"
           style={{
@@ -139,7 +148,7 @@ export function SiteFooter({
         />
 
         {g.footer.footerLogo && (
-          <div className="absolute left-1/2 top-0 z-20 -translate-x-1/2 translate-y-[-50%] md:translate-y-[calc(-50%-14px)]">
+          <div className="absolute left-1/2 top-0 z-20 -translate-x-1/2 translate-y-[-40%] sm:translate-y-[-45%] md:translate-y-[calc(-50%+6px)]">
             <div className="flex h-[100px] w-[100px] items-center justify-center rounded-full border border-brand bg-white p-2 shadow-[0px_23px_17px_rgba(67,87,128,0.34)] sm:h-[140px] sm:w-[140px] sm:p-2.5 md:h-[180px] md:w-[180px] md:pb-[39px] md:pl-[55px] md:pr-[54px] md:pt-[38px]">
               <Media
                 image={g.footer.footerLogo}
@@ -154,7 +163,7 @@ export function SiteFooter({
         <div
           className={[
             "relative z-10 mx-auto w-full max-w-[1300px] px-4 sm:px-6 md:px-8",
-            g.footer.footerLogo ? "pt-16 sm:pt-18 md:pt-20" : "pt-14 sm:pt-16",
+            g.footer.footerLogo ? "pt-20 sm:pt-24 md:pt-28" : "pt-14 sm:pt-16",
           ]
             .filter(Boolean)
             .join(" ")}
