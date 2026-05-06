@@ -140,8 +140,12 @@ export function SiteFooter({
     footerMainStyle.backgroundColor = bgColor;
   }
 
-  /** Built-in circular notch mask only when no full-bleed background image (asset usually includes the curve). */
-  const useNotchMask = Boolean(g.footer.footerLogo) && !hasBgImage;
+  /** Upload row exists in CMS even if URL resolution fails — still disable the stock notch. */
+  const hasFooterBgAttachment = g.footer.footerBackgroundImage != null;
+  const anyCustomFooterBg = hasBgImage || hasBgGradient || hasBgColor || hasFooterBgAttachment;
+
+  /** Built-in circular notch only when the footer uses stock navy + logo and no custom bg fields at all. */
+  const useNotchMask = Boolean(g.footer.footerLogo) && !anyCustomFooterBg;
   const showRadialGlow = useDefaultNavy;
   const showGridOverlay = !hasBgImage;
 
