@@ -4,9 +4,11 @@ import { RichText } from "@/components/ui/RichText";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
+import { getLargestImageUrl } from "@/lib/utils/media";
 import type { GlobalSettings } from "@/types/globals";
 import type { MenuItem } from "@/types/menu";
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 
 const gridStyle = {
@@ -113,18 +115,42 @@ export function SiteFooter({
   const hasNav = footerMenu.length > 0;
   const hasFollow = sList.length > 0;
   const showMidDivider = hasNav && hasFollow;
-  const topShapeImage = g.footer.footerTopShapeImage;
-  const useNotchMask = Boolean(g.footer.footerLogo) && !topShapeImage;
-  const topShapeW = topShapeImage?.width ?? 1440;
-  const topShapeH = topShapeImage?.height ?? 160;
+
+  const bgImageUrl = getLargestImageUrl(g.footer.footerBackgroundImage);
+  const bgGradient = g.footer.footerBackgroundGradient.trim();
+  const bgColor = g.footer.footerBackgroundColor.trim();
+  const hasBgImage = Boolean(bgImageUrl);
+  const hasBgGradient = bgGradient.length > 0;
+  const hasBgColor = bgColor.length > 0;
+  const useDefaultNavy = !hasBgImage && !hasBgGradient && !hasBgColor;
+
+  const footerMainStyle: CSSProperties = {};
+  if (hasBgImage && bgImageUrl) {
+    footerMainStyle.backgroundImage = `url(${JSON.stringify(bgImageUrl)})`;
+    footerMainStyle.backgroundSize = "cover";
+    footerMainStyle.backgroundPosition = "center top";
+    footerMainStyle.backgroundRepeat = "no-repeat";
+  } else if (hasBgGradient) {
+    footerMainStyle.backgroundImage = bgGradient;
+    footerMainStyle.backgroundSize = "cover";
+    footerMainStyle.backgroundPosition = "center top";
+  } else if (hasBgColor) {
+    footerMainStyle.backgroundColor = bgColor;
+  }
+
+  /** Built-in circular notch mask only when no full-bleed background image (asset usually includes the curve). */
+  const useNotchMask = Boolean(g.footer.footerLogo) && !hasBgImage;
+  const showRadialGlow = useDefaultNavy;
+  const showGridOverlay = !hasBgImage;
 
   return (
     <footer className="relative z-0 mt-auto overflow-x-clip overflow-y-visible pt-20 text-white sm:pt-24 md:pt-28">
       <div className="relative">
         <div
-          className="relative rounded-t-3xl bg-navy-deep sm:rounded-t-[1.5rem] md:rounded-t-[50px]"
-          style={
-            useNotchMask
+          className={`relative rounded-t-3xl sm:rounded-t-[1.5rem] md:rounded-t-[50px] ${useDefaultNavy ? "bg-navy-deep" : ""}`}
+          style={{
+            ...footerMainStyle,
+            ...(useNotchMask
               ? ({
                   WebkitMaskImage:
                     "radial-gradient(circle 109px at 50% 0px, transparent 0 108.5px, rgba(0,0,0,0.9) 109.5px, black 110px)",
@@ -135,34 +161,26 @@ export function SiteFooter({
                   WebkitMaskSize: "100% 100%",
                   maskSize: "100% 100%",
                 } as const)
-              : undefined
-          }
+              : {}),
+          }}
         >
-          {topShapeImage && (
-            <div className="pointer-events-none absolute inset-x-0 top-0 z-[15] overflow-hidden rounded-t-[inherit]">
-              <Media
-                image={topShapeImage}
-                width={topShapeW}
-                height={topShapeH}
-                preferLargestSource
-                className="block h-auto w-full max-h-[min(240px,45vw)] object-cover object-top sm:max-h-[280px]"
-                sizes="100vw"
-              />
-            </div>
+          {showRadialGlow && (
+            <div
+              className="pointer-events-none absolute inset-0 rounded-t-[inherit]"
+              style={{
+                background:
+                  "radial-gradient(ellipse 50% 80% at 50% 0%, rgba(57,144,240,0.1) 0%, transparent 55%)",
+              }}
+              aria-hidden
+            />
           )}
-          <div
-            className="pointer-events-none absolute inset-0 rounded-t-[inherit]"
-            style={{
-              background:
-                "radial-gradient(ellipse 50% 80% at 50% 0%, rgba(57,144,240,0.1) 0%, transparent 55%)",
-            }}
-            aria-hidden
-          />
-          <div
-            className="pointer-events-none absolute inset-0 rounded-t-[inherit] opacity-30"
-            style={gridStyle}
-            aria-hidden
-          />
+          {showGridOverlay && (
+            <div
+              className="pointer-events-none absolute inset-0 rounded-t-[inherit] opacity-30"
+              style={gridStyle}
+              aria-hidden
+            />
+          )}
 
           <div
             className={[
