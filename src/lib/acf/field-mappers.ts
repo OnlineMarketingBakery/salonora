@@ -36,20 +36,29 @@ export function asImage(v: unknown): WpImage | null {
     if ((u.startsWith("http://") || u.startsWith("https://") || u.startsWith("//")) && u.length > 8) {
       return { url: u.startsWith("//") ? `https:${u}` : u, alt: "" };
     }
+    if (/^\d+$/.test(u)) {
+      return { url: "", id: parseInt(u, 10), alt: "" };
+    }
     return null;
   }
   if (typeof v !== "object") return null;
   const o = v as Record<string, unknown>;
   const sizes = o.sizes;
+  const isUsableHref = (u: string): boolean =>
+    u.length > 0 && (u.startsWith("http://") || u.startsWith("https://") || u.startsWith("//") || u.startsWith("/"));
+
   const urlFromSizes = (): string | null => {
     if (!sizes || typeof sizes !== "object") return null;
     const s = sizes as Record<string, unknown>;
     for (const key of ["full", "2048x2048", "1536x1536", "large", "medium_large", "medium", "thumbnail"] as const) {
       const entry = s[key];
-      if (typeof entry === "string" && entry.startsWith("http")) return entry;
+      if (typeof entry === "string") {
+        const t = entry.trim();
+        if (isUsableHref(t)) return t;
+      }
       if (entry && typeof entry === "object" && typeof (entry as { url?: unknown }).url === "string") {
-        const u = (entry as { url: string }).url;
-        if (u.startsWith("http")) return u;
+        const u = (entry as { url: string }).url.trim();
+        if (isUsableHref(u)) return u;
       }
     }
     return null;
@@ -59,9 +68,32 @@ export function asImage(v: unknown): WpImage | null {
     guid && typeof guid === "object" && typeof (guid as { rendered?: unknown }).rendered === "string"
       ? String((guid as { rendered: string }).rendered).trim()
       : "";
-  const rawUrl = o.url ?? o.source_url ?? (guidRendered.startsWith("http") ? guidRendered : null);
-  const urlCandidate =
-    typeof rawUrl === "string" && rawUrl.length > 2 && rawUrl !== "false" ? rawUrl : urlFromSizes();
+  const rawUrl =
+    typeof o.url === "string"
+      ? o.url
+      : typeof o.source_url === "string"
+        ? o.source_url
+        : guidRendered.startsWith("http") || guidRendered.startsWith("/")
+          ? guidRendered
+          : null;
+  let urlCandidate: string | null =
+    typeof rawUrl === "string" && rawUrl.length > 0 && rawUrl !== "false" ? rawUrl.trim() : urlFromSizes();
+  if (!urlCandidate && typeof o.preview === "string" && isUsableHref(o.preview.trim())) {
+    urlCandidate = o.preview.trim();
+  }
+  const idOnly =
+    typeof o.id === "number" && o.id > 0
+      ? Math.floor(o.id)
+      : typeof o.ID === "number" && o.ID > 0
+        ? Math.floor(o.ID)
+        : typeof o.id === "string" && /^\d+$/.test(o.id.trim())
+          ? parseInt(o.id.trim(), 10)
+          : typeof o.ID === "string" && /^\d+$/.test(o.ID.trim())
+            ? parseInt(o.ID.trim(), 10)
+            : null;
+  if ((!urlCandidate || typeof urlCandidate !== "string") && idOnly) {
+    return { url: "", id: idOnly, alt: "" };
+  }
   if (!urlCandidate || typeof urlCandidate !== "string") return null;
   const alt =
     typeof o.alt === "string"

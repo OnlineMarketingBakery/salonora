@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { getImageAlt, getImageUrl, getLargestImageUrl } from "@/lib/utils/media";
+import { getImageAlt, getImageUrl, getLargestImageUrl, resolveAbsoluteMediaUrl } from "@/lib/utils/media";
 import type { WpImage } from "@/types/wordpress";
 
 type Props = {
@@ -30,7 +30,9 @@ export function Media({
   width = 800,
   height = 600,
 }: Props) {
-  const src = preferLargestSource ? (getLargestImageUrl(image) || getImageUrl(image)) : getImageUrl(image);
+  const rawSrc = preferLargestSource ? (getLargestImageUrl(image) || getImageUrl(image)) : getImageUrl(image);
+  /** Root-relative `/wp-content/…` breaks `next/image` (it resolves against the Next host, not WP). */
+  const src = resolveAbsoluteMediaUrl(rawSrc) ?? rawSrc;
   if (!src) return null;
   const alt = getImageAlt(image);
   if (fill) {

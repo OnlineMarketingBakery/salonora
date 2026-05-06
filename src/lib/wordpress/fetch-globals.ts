@@ -1,3 +1,4 @@
+import { getImageUrl } from "@/lib/utils/media";
 import { getWordpressApiUrl, getWordpressAuthorizationHeader } from "./config";
 import { wpFetchOptional } from "./client";
 import type { FooterSettings, GlobalSettings } from "@/types/globals";
@@ -177,27 +178,45 @@ function mergeFooterCtaMigrations(
   };
 }
 
+/** ACF REST often returns `{ ID }` / `{ id }` with no `url`; resolve via `wp/v2/media`. */
+function attachmentLikeId(raw: unknown): number | null {
+  if (raw == null) return null;
+  if (typeof raw === "number" && raw > 0) return Math.floor(raw);
+  if (typeof raw === "string") {
+    const t = raw.trim();
+    if (/^\d+$/.test(t)) return parseInt(t, 10);
+  }
+  if (typeof raw !== "object") return null;
+  const o = raw as Record<string, unknown>;
+  const idKeys = ["ID", "id", "attachment_id", "attachmentId"] as const;
+  for (const k of idKeys) {
+    const v = o[k];
+    if (typeof v === "number" && v > 0) return Math.floor(v);
+    if (typeof v === "string" && /^\d+$/.test(v.trim())) return parseInt(v.trim(), 10);
+  }
+  return null;
+}
+
 /** When ACF stores only an attachment ID, resolve URL via WP REST. */
 async function resolveFooterBackgroundFromAttachmentId(
   lang: Locale,
   raw: Record<string, unknown> | null,
   footer: FooterSettings
 ): Promise<FooterSettings> {
-  if (footer.footerBackgroundImage) return footer;
-  if (!raw) return footer;
-  const candidates = [
-    acfPick(raw, "footer_background_image", "footerBackgroundImage"),
-    acfPick(raw, "footer_top_shape_image", "footerTopShapeImage"),
-  ];
-  let id: number | null = null;
-  for (const v of candidates) {
-    if (typeof v === "number" && v > 0) {
-      id = v;
-      break;
-    }
-    if (typeof v === "string" && /^\d+$/.test(v.trim())) {
-      id = parseInt(v.trim(), 10);
-      break;
+  const bg = footer.footerBackgroundImage;
+  if (getImageUrl(bg)?.trim()) return footer;
+
+  let id: number | null =
+    bg && typeof bg.id === "number" && bg.id > 0 ? Math.floor(bg.id) : null;
+
+  if (!id && raw) {
+    const candidates = [
+      acfPick(raw, "footer_background_image", "footerBackgroundImage"),
+      acfPick(raw, "footer_top_shape_image", "footerTopShapeImage"),
+    ];
+    for (const v of candidates) {
+      id = attachmentLikeId(v);
+      if (id) break;
     }
   }
   if (!id) return footer;
