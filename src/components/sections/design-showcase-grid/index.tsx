@@ -175,7 +175,7 @@ export function DesignShowcaseGridSection({
                   key={`${section.id}-footer-${i}`}
                   href={r.href}
                   target={r.target}
-                  variant="ctaWhite"
+                  variant="ctaNavy"
                   ctaSize="promo"
                   ctaFullWidth={false}
                   ctaJustify="center"
