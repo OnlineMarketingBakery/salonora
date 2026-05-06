@@ -114,21 +114,27 @@ export function SiteFooter({
   const hasFollow = sList.length > 0;
   const showMidDivider = hasNav && hasFollow;
 
-  // Logo circle at md breakpoint = 180px diameter → 90px radius.
-  // Circle centre sits exactly on footer top edge (top:0, -translate-y-1/2).
-  // Notch radius = logo radius + 6px breathing room = 96px.
-  // mask-size: 100% 100% ensures the gradient stretches across the full
-  // element width so the notch always stays centred regardless of viewport.
+  // Two-layer CSS mask:
+  // Layer 1: The notch — a 96px tall tile at the top, with a semicircle cut out.
+  //   `circle 96px at 50% 100%` → centre at bottom-centre of the tile.
+  //   Transparent inside (hole), black outside → cuts the notch shape.
+  //   Size: 100% wide × 96px tall, pinned to top.
+  // Layer 2: Solid black covering the FULL element (shows everything).
+  //   Combined via default mask-composite (source-over): both layers alpha-multiply.
+  //   Where layer1 is transparent, the element is hidden. Where black, shown.
+  //   Layer2 ensures the rest of the footer (below 96px) is fully visible.
   const notchMask = g.footer.footerLogo
     ? ({
         WebkitMaskImage:
-          "radial-gradient(circle 96px at 50% 0px, transparent 0px, transparent 95px, black 96px)",
+          "radial-gradient(circle 96px at 50% 100%, transparent 96px, black 97px), linear-gradient(black, black)",
         maskImage:
-          "radial-gradient(circle 96px at 50% 0px, transparent 0px, transparent 95px, black 96px)",
-        WebkitMaskRepeat: "no-repeat",
-        maskRepeat: "no-repeat",
-        WebkitMaskSize: "100% 100%",
-        maskSize: "100% 100%",
+          "radial-gradient(circle 96px at 50% 100%, transparent 96px, black 97px), linear-gradient(black, black)",
+        WebkitMaskRepeat: "no-repeat, no-repeat",
+        maskRepeat: "no-repeat, no-repeat",
+        WebkitMaskSize: "100% 96px, 100% 100%",
+        maskSize: "100% 96px, 100% 100%",
+        WebkitMaskPosition: "0 0, 0 0",
+        maskPosition: "0 0, 0 0",
       } as React.CSSProperties)
     : undefined;
 
