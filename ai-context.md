@@ -89,6 +89,7 @@ npm run lint     # next lint
 ## Globals (footer)
 
 - **Footer background** (tab on OMB Footer options): `footer_background_image` (full-bleed cover), `footer_background_color` (hex text), `footer_background_gradient` (CSS `background-image` value). Precedence: image → gradient → color → default `bg-navy-deep`. Legacy `footer_top_shape_image` is still read and merged into the image if the new field is empty.
+- **OMB `/omb-headless/v1/globals`:** the WordPress plugin merges every `footer_*` key from the flat options record into the `footer` object (so new ACF fields are not dropped if the allowlist lags) and normalizes `footer_background_image` / `footer_logo` / `footer_top_shape_image` to absolute URLs when possible. Next.js absolutizes root-relative paths via `WORDPRESS_BASE_URL`, renders the footer background with a plain `<img>` when a URL resolves, and falls back to a second ACF options fetch if the image URL is still missing after OMB.
 
 ## Integrations
 

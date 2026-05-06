@@ -1,4 +1,4 @@
-import { getWordpressBaseUrl } from "@/lib/wordpress/config";
+import { getWordpressApiUrl, getWordpressBaseUrl } from "@/lib/wordpress/config";
 import type { WpImage } from "@/types/wordpress";
 
 function sizeEntryUrl(
@@ -53,7 +53,16 @@ export function resolveAbsoluteMediaUrl(url: string | null | undefined): string 
   if (u.startsWith("//")) return `https:${u}`;
   if (u.startsWith("/")) {
     const base = getWordpressBaseUrl().replace(/\/$/, "");
-    return `${base}${u}`;
+    if (base) return `${base}${u}`;
+    const api = getWordpressApiUrl();
+    if (api) {
+      try {
+        const origin = new URL(api).origin;
+        return `${origin}${u}`;
+      } catch {
+        /* noop */
+      }
+    }
   }
   return u;
 }
