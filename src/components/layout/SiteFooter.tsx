@@ -1,13 +1,13 @@
-import Link from "next/link";
+import { Button } from "@/components/ui/Button";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
+import { REVEAL_ITEM } from "@/lib/animation-classes";
+import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
-import { LanguageSwitcher } from "./LanguageSwitcher";
-import { Button } from "@/components/ui/Button";
 import type { GlobalSettings } from "@/types/globals";
 import type { MenuItem } from "@/types/menu";
-import type { Locale } from "@/lib/i18n/locales";
-import { REVEAL_ITEM } from "@/lib/animation-classes";
+import Link from "next/link";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 const gridStyle = {
   backgroundImage: `
@@ -96,68 +96,6 @@ function socialIcon(label: string) {
   return null;
 }
 
-/**
- * FooterNotchTop renders the top edge of the footer as an inline SVG.
- * It draws the full-width bar with a smooth circular cutout in the centre
- * sized to perfectly cradle the logo circle (180 px diameter at md).
- *
- * Using an SVG instead of a CSS mask gives us pixel-perfect control and
- * avoids browser anti-aliasing artefacts on the notch edge.
- */
-function FooterNotchTop({ hasLogo }: { hasLogo: boolean }) {
-  if (!hasLogo) return null;
-
-  // The notch radius should match the logo circle radius at the largest
-  // breakpoint (180px diameter → 90px radius). We add a small gap (4px)
-  // so the circle visually floats just above the footer surface.
-  const R = 94; // px — notch circle radius
-  // SVG is 1 unit tall (we scale via CSS height). Width is 100 %.
-  // We work in a 1000-unit coordinate space for precision.
-  const W = 1000;
-  const H = 120; // enough height to contain the arc dip + rounded corners
-  const cx = W / 2; // notch centre x
-
-  // Arc sweep: we want the path to dip DOWN into the footer by R px then
-  // come back up. We use a semicircle whose endpoints are on the top edge (y=0):
-  // at y=0: x = cx ± R. That gives us a perfect semicircle dip.
-  const x1 = cx - R; // left tangent point
-  const x2 = cx + R; // right tangent point
-
-  // Rounded top corners on the footer body (matching Tailwind rounded-t-[50px])
-  const cornerR = 50;
-
-  // Full path: start top-left corner → across to notch left → arc → notch right
-  // → across to top-right corner → down and across the bottom → close.
-  const d = [
-    `M ${cornerR} 0`,
-    `L ${x1} 0`,
-    // Arc: radius R, large-arc=0, sweep=1 (clockwise = dips down)
-    `A ${R} ${R} 0 0 1 ${x2} 0`,
-    `L ${W - cornerR} 0`,
-    // Top-right rounded corner
-    `Q ${W} 0 ${W} ${cornerR}`,
-    `L ${W} ${H}`,
-    `L 0 ${H}`,
-    `L 0 ${cornerR}`,
-    // Top-left rounded corner
-    `Q 0 0 ${cornerR} 0`,
-    `Z`,
-  ].join(" ");
-
-  return (
-    <svg
-      viewBox={`0 0 ${W} ${H}`}
-      preserveAspectRatio="none"
-      className="absolute left-0 top-0 w-full"
-      style={{ height: `${H}px`, display: "block" }}
-      aria-hidden
-    >
-      {/* Fill with the footer background colour */}
-      <path d={d} fill="var(--color-navy-deep, #0a1628)" />
-    </svg>
-  );
-}
-
 export function SiteFooter({
   globals,
   lang,
@@ -175,33 +113,34 @@ export function SiteFooter({
   const hasNav = footerMenu.length > 0;
   const hasFollow = sList.length > 0;
   const showMidDivider = hasNav && hasFollow;
-  const hasLogo = Boolean(g.footer.footerLogo);
+
+  // Logo circle at md breakpoint = 180px diameter → 90px radius.
+  // Circle centre sits exactly on footer top edge (top:0, -translate-y-1/2).
+  // Notch radius = logo radius + 6px breathing room = 96px.
+  // mask-size: 100% 100% ensures the gradient stretches across the full
+  // element width so the notch always stays centred regardless of viewport.
+  const notchMask = g.footer.footerLogo
+    ? ({
+        WebkitMaskImage:
+          "radial-gradient(circle 96px at 50% 0px, transparent 0px, transparent 95px, black 96px)",
+        maskImage:
+          "radial-gradient(circle 96px at 50% 0px, transparent 0px, transparent 95px, black 96px)",
+        WebkitMaskRepeat: "no-repeat",
+        maskRepeat: "no-repeat",
+        WebkitMaskSize: "100% 100%",
+        maskSize: "100% 100%",
+      } as React.CSSProperties)
+    : undefined;
 
   return (
     <footer className="relative z-0 mt-auto overflow-x-clip overflow-y-visible pt-20 text-white sm:pt-24 md:pt-28">
       <div className="relative">
-        {/*
-          ── FOOTER BODY ─────────────────────────────────────────────────────
-          When there IS a logo we do NOT apply rounded-t or CSS mask on this
-          div. Instead we overlay the FooterNotchTop SVG which draws both the
-          notch and the rounded corners as a single crisp shape.
-          When there is NO logo we keep the original rounded-t styling.
-        */}
+        {/* ── FOOTER BODY ──────────────────────────────────────────────────── */}
         <div
-          className={[
-            "relative",
-            hasLogo
-              ? "" // corners + notch are drawn by the SVG overlay below
-              : "rounded-t-3xl sm:rounded-t-[1.5rem] md:rounded-t-[50px]",
-            "bg-navy-deep",
-          ]
-            .filter(Boolean)
-            .join(" ")}
+          className="relative rounded-t-3xl bg-navy-deep sm:rounded-t-[1.5rem] md:rounded-t-[50px]"
+          style={notchMask}
         >
-          {/* SVG notch + rounded corners overlay (replaces CSS mask) */}
-          {hasLogo && <FooterNotchTop hasLogo={hasLogo} />}
-
-          {/* Radial blue glow at the top */}
+          {/* Blue radial glow */}
           <div
             className="pointer-events-none absolute inset-0 rounded-t-[inherit]"
             style={{
@@ -211,7 +150,7 @@ export function SiteFooter({
             aria-hidden
           />
 
-          {/* Subtle grid texture */}
+          {/* Grid texture */}
           <div
             className="pointer-events-none absolute inset-0 rounded-t-[inherit] opacity-30"
             style={gridStyle}
@@ -222,13 +161,10 @@ export function SiteFooter({
           <div
             className={[
               "relative z-10 mx-auto w-full max-w-[1300px] px-4 sm:px-6 md:px-8",
-              // Extra top padding to clear the SVG notch height (120px) + some breathing room
-              hasLogo
-                ? "pt-[140px] sm:pt-[148px] md:pt-[152px]"
+              g.footer.footerLogo
+                ? "pt-20 sm:pt-24 md:pt-28"
                 : "pt-14 sm:pt-16",
-            ]
-              .filter(Boolean)
-              .join(" ")}
+            ].join(" ")}
           >
             <div className="mb-4 flex flex-col gap-10 lg:flex-row lg:items-stretch lg:gap-10 lg:pl-0 xl:gap-14 2xl:gap-20 2xl:pl-2 2xl:pr-0 sm:mb-10">
               <div
@@ -390,7 +326,7 @@ export function SiteFooter({
                 decoding="async"
               />
             </div>
-            <div className={` bg-navy-deep relative z-10`}>
+            <div className="bg-navy-deep relative z-10">
               <div className="mx-auto flex w-full max-w-[1300px] flex-col items-center justify-center px-4 pb-5 sm:px-6 md:px-8">
                 <p className="mt-2 text-center text-sm font-light text-white/90 sm:-mt-6">
                   {g.footer.footerCopyright ||
@@ -425,30 +361,14 @@ export function SiteFooter({
           </div>
         </div>
 
-        {/*
-          ── LOGO CIRCLE ──────────────────────────────────────────────────────
-          Positioned absolutely, centred horizontally, sitting half above the
-          footer top edge. z-30 keeps it on top of the SVG notch overlay.
-
-          Sizes match the SVG notch radius (R=94):
-            sm  → 100px diameter (r=50) — notch R=94 gives comfortable margin
-            md  → 140px diameter (r=70)
-            lg+ → 180px diameter (r=90) — notch R=94, 4px breathing room ✓
-
-          translate-y offsets: move the circle up by exactly half its height
-          so the centre sits on the footer top edge (y=0 of the SVG).
+        {/* ── LOGO CIRCLE ──────────────────────────────────────────────────
+            -translate-y-1/2 places the circle's centre exactly on top:0
+            (the footer's top edge), so it half-overlaps above and the CSS
+            mask notch (96px radius) cleanly cradles it.
         */}
-        {hasLogo && (
+        {g.footer.footerLogo && (
           <div className="absolute left-1/2 top-0 z-30 -translate-x-1/2 -translate-y-1/2">
-            <div
-              className={[
-                "flex items-center justify-center rounded-full border border-[#3990F0] bg-white shadow-[0px_23px_17px_rgba(67,87,128,0.34)]",
-                // Size steps
-                "h-[100px] w-[100px] p-2",
-                "sm:h-[140px] sm:w-[140px] sm:p-2.5",
-                "md:h-[180px] md:w-[180px] md:pb-[39px] md:pl-[55px] md:pr-[54px] md:pt-[38px]",
-              ].join(" ")}
-            >
+            <div className="flex h-[100px] w-[100px] items-center justify-center rounded-full border border-[#3990F0] bg-white p-2 shadow-[0px_23px_17px_rgba(67,87,128,0.34)] sm:h-[140px] sm:w-[140px] sm:p-2.5 md:h-[180px] md:w-[180px] md:pb-[39px] md:pl-[55px] md:pr-[54px] md:pt-[38px]">
               <Media
                 image={g.footer.footerLogo}
                 width={120}
