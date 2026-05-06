@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
@@ -85,10 +85,28 @@ export function TestimonialsCarousel({
 }) {
   const slides = useMemo(() => chunk(items, perView), [items, perView]);
   const [active, setActive] = useState(0);
+  const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [slideHeights, setSlideHeights] = useState<number[]>([]);
+  const [viewportHeight, setViewportHeight] = useState<number | null>(null);
 
   useEffect(() => {
     setActive((a) => (slides.length === 0 ? 0 : Math.min(a, slides.length - 1)));
   }, [slides.length]);
+
+  useLayoutEffect(() => {
+    // Measure each slide so we can animate the viewport height between slides.
+    const heights = slides.map((_, idx) => {
+      const el = slideRefs.current[idx];
+      if (!el) return 0;
+      return Math.ceil(el.getBoundingClientRect().height);
+    });
+    setSlideHeights(heights);
+  }, [slides]);
+
+  useEffect(() => {
+    const h = slideHeights[active] ?? 0;
+    if (h > 0) setViewportHeight(h);
+  }, [active, slideHeights]);
 
   const go = useCallback(
     (i: number) => {
@@ -104,7 +122,10 @@ export function TestimonialsCarousel({
 
   return (
     <div className={narrowSingleTotal ? "mx-auto w-full max-w-[637px]" : "w-full"}>
-      <div className="relative w-full overflow-hidden">
+      <div
+        className="relative w-full overflow-hidden will-change-[height] [transition-property:height] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
+        style={viewportHeight != null ? { height: viewportHeight } : undefined}
+      >
         <div
           className="flex will-change-transform [transition-property:transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
           style={{
@@ -118,7 +139,12 @@ export function TestimonialsCarousel({
               className="shrink-0 px-0"
               style={{ width: `${slideFractionPct}%` }}
             >
-              <div className={`grid w-full gap-6 ${gridColsClass(perView)}`}>
+              <div
+                ref={(el) => {
+                  slideRefs.current[slideIdx] = el;
+                }}
+                className={`grid w-full gap-6 ${gridColsClass(perView)}`}
+              >
                 {slideItems.map((t) => (
                   <blockquote
                     key={t.id}
