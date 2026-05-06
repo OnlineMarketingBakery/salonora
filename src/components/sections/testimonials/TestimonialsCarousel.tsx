@@ -106,10 +106,10 @@ export function TestimonialsCarousel({
     <div className={narrowSingleTotal ? "mx-auto w-full max-w-[637px]" : "w-full"}>
       <div className="relative w-full overflow-hidden">
         <div
-          className="flex transition-transform duration-300 ease-out"
+          className="flex will-change-transform [transition-property:transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
           style={{
             width: `${slides.length * 100}%`,
-            transform: `translateX(-${active * slideFractionPct}%)`,
+            transform: `translate3d(-${active * slideFractionPct}%, 0, 0)`,
           }}
         >
           {slides.map((slideItems, slideIdx) => (
