@@ -116,12 +116,15 @@ export function SiteFooter({
   const hasFollow = sList.length > 0;
   const showMidDivider = hasNav && hasFollow;
 
+  /** Same asset path as footer logo: prefer rendering via `Media` / `next/image` when WP returns an image object. */
+  const useBgImageLayer = Boolean(g.footer.footerBackgroundImage);
   const bgImageUrl = resolveAbsoluteMediaUrl(
     getLargestImageUrl(g.footer.footerBackgroundImage) ?? getImageUrl(g.footer.footerBackgroundImage),
   );
+  const hasRenderableBgUrl = Boolean(bgImageUrl);
   const bgGradient = g.footer.footerBackgroundGradient.trim();
   const bgColor = g.footer.footerBackgroundColor.trim();
-  const hasBgImage = Boolean(bgImageUrl);
+  const hasBgImage = useBgImageLayer || hasRenderableBgUrl;
   const hasBgGradient = bgGradient.length > 0;
   const hasBgColor = bgColor.length > 0;
   const useDefaultNavy = !hasBgImage && !hasBgGradient && !hasBgColor;
@@ -170,6 +173,18 @@ export function SiteFooter({
               : {}),
           }}
         >
+          {useBgImageLayer && (
+            <div className="pointer-events-none absolute inset-0 z-[1] overflow-hidden rounded-t-[inherit]">
+              <Media
+                image={g.footer.footerBackgroundImage}
+                fill
+                preferLargestSource
+                quality={92}
+                sizes="100vw"
+                className="object-cover object-top"
+              />
+            </div>
+          )}
           {showRadialGlow && (
             <div
               className="pointer-events-none absolute inset-0 rounded-t-[inherit]"
