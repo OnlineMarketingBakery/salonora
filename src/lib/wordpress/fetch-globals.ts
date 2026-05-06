@@ -1,5 +1,6 @@
 import { getWordpressApiUrl, getWordpressAuthorizationHeader } from "./config";
-import type { GlobalSettings } from "@/types/globals";
+import { wpFetchOptional } from "./client";
+import type { FooterSettings, GlobalSettings } from "@/types/globals";
 import { asBool, asImage, asLink, asString } from "@/lib/acf/field-mappers";
 import { logger } from "@/lib/utils/logger";
 import type { Locale } from "@/lib/i18n/locales";
@@ -173,6 +174,39 @@ function mergeFooterCtaMigrations(
   };
 }
 
+/** When ACF stores only an attachment ID, resolve URL via WP REST. */
+async function resolveFooterBackgroundFromAttachmentId(
+  lang: Locale,
+  raw: Record<string, unknown> | null,
+  footer: FooterSettings
+): Promise<FooterSettings> {
+  if (footer.footerBackgroundImage) return footer;
+  if (!raw) return footer;
+  const candidates = [
+    acfPick(raw, "footer_background_image", "footerBackgroundImage"),
+    acfPick(raw, "footer_top_shape_image", "footerTopShapeImage"),
+  ];
+  let id: number | null = null;
+  for (const v of candidates) {
+    if (typeof v === "number" && v > 0) {
+      id = v;
+      break;
+    }
+    if (typeof v === "string" && /^\d+$/.test(v.trim())) {
+      id = parseInt(v.trim(), 10);
+      break;
+    }
+  }
+  if (!id) return footer;
+  const media = await wpFetchOptional<Record<string, unknown>>(`/wp/v2/media/${id}`, {
+    lang,
+    revalidate: 60,
+  });
+  const img = asImage(media);
+  if (!img) return footer;
+  return { ...footer, footerBackgroundImage: img };
+}
+
 function fromContact(o: Record<string, unknown> | null) {
   if (!o) {
     return {
@@ -263,9 +297,12 @@ export async function fetchGlobals(lang: Locale): Promise<GlobalSettings> {
   const omb = await fetchGlobalsViaOmbRest(lang);
   if (omb != null) {
     const siteUnwrapped = unwrapAcfOptionsPayload(omb.site ?? null);
+    const footerRaw = unwrapAcfOptionsPayload(omb.footer ?? null) as Record<string, unknown> | null;
+    const footerMerged = mergeFooterCtaMigrations(fromFooter(footerRaw), siteUnwrapped);
+    const footer = await resolveFooterBackgroundFromAttachmentId(lang, footerRaw, footerMerged);
     return {
       header: fromHeader(unwrapAcfOptionsPayload(omb.header ?? null)),
-      footer: mergeFooterCtaMigrations(fromFooter(unwrapAcfOptionsPayload(omb.footer ?? null)), siteUnwrapped),
+      footer,
       contact: fromContact(unwrapAcfOptionsPayload(omb.contact ?? null)),
       site: fromSite(siteUnwrapped),
       integrations: fromIntegrations(unwrapAcfOptionsPayload(omb.integrations ?? null)),
@@ -283,9 +320,12 @@ export async function fetchGlobals(lang: Locale): Promise<GlobalSettings> {
   ]);
 
   const siteUnwrapped = unwrapAcfOptionsPayload(siteRaw);
+  const footerRawFlat = unwrapAcfOptionsPayload(footerRaw) as Record<string, unknown> | null;
+  const footerMerged = mergeFooterCtaMigrations(fromFooter(footerRawFlat), siteUnwrapped);
+  const footer = await resolveFooterBackgroundFromAttachmentId(lang, footerRawFlat, footerMerged);
   return {
     header: fromHeader(unwrapAcfOptionsPayload(headerRaw)),
-    footer: mergeFooterCtaMigrations(fromFooter(unwrapAcfOptionsPayload(footerRaw)), siteUnwrapped),
+    footer,
     contact: fromContact(unwrapAcfOptionsPayload(contactRaw)),
     site: fromSite(siteUnwrapped),
     integrations: fromIntegrations(unwrapAcfOptionsPayload(integrationsRaw)),

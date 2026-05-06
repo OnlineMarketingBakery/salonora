@@ -4,7 +4,7 @@ import { RichText } from "@/components/ui/RichText";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
-import { getLargestImageUrl } from "@/lib/utils/media";
+import { getImageUrl, getLargestImageUrl, resolveAbsoluteMediaUrl } from "@/lib/utils/media";
 import type { GlobalSettings } from "@/types/globals";
 import type { MenuItem } from "@/types/menu";
 import Link from "next/link";
@@ -116,7 +116,9 @@ export function SiteFooter({
   const hasFollow = sList.length > 0;
   const showMidDivider = hasNav && hasFollow;
 
-  const bgImageUrl = getLargestImageUrl(g.footer.footerBackgroundImage);
+  const bgImageUrl = resolveAbsoluteMediaUrl(
+    getLargestImageUrl(g.footer.footerBackgroundImage) ?? getImageUrl(g.footer.footerBackgroundImage),
+  );
   const bgGradient = g.footer.footerBackgroundGradient.trim();
   const bgColor = g.footer.footerBackgroundColor.trim();
   const hasBgImage = Boolean(bgImageUrl);

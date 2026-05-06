@@ -1,3 +1,4 @@
+import { getWordpressBaseUrl } from "@/lib/wordpress/config";
 import type { WpImage } from "@/types/wordpress";
 
 function sizeEntryUrl(
@@ -37,4 +38,22 @@ export function getImageAlt(image: WpImage | null | undefined): string {
   if (!image) return "";
   if (typeof image === "string") return "";
   return image.alt || image.title || "";
+}
+
+/**
+ * WordPress/ACF often return root-relative upload paths. The marketing site uses
+ * them in CSS `background-image` and in `<img src>`; without a host, the browser
+ * requests the Next app origin and the asset 404s.
+ */
+export function resolveAbsoluteMediaUrl(url: string | null | undefined): string | null {
+  if (url == null || typeof url !== "string") return null;
+  const u = url.trim();
+  if (!u) return null;
+  if (u.startsWith("http://") || u.startsWith("https://")) return u;
+  if (u.startsWith("//")) return `https:${u}`;
+  if (u.startsWith("/")) {
+    const base = getWordpressBaseUrl().replace(/\/$/, "");
+    return `${base}${u}`;
+  }
+  return u;
 }
