@@ -1,13 +1,19 @@
+import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { RichText } from "@/components/ui/RichText";
-import { Button } from "@/components/ui/Button";
-import { resolveLink } from "@/lib/utils/links";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
-import type { TestimonialsSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
+import { resolveLink } from "@/lib/utils/links";
+import type { TestimonialsSectionT } from "@/types/sections";
 import { TestimonialsCarousel } from "./TestimonialsCarousel";
 
-export function TestimonialsSection({ section, lang }: { section: TestimonialsSectionT; lang: Locale }) {
+export function TestimonialsSection({
+  section,
+  lang,
+}: {
+  section: TestimonialsSectionT;
+  lang: Locale;
+}) {
   const perView = section.items_per_view ?? 2;
   const items = section.items;
   const narrowSingleTotal = items.length === 1;
@@ -25,7 +31,7 @@ export function TestimonialsSection({ section, lang }: { section: TestimonialsSe
       <Container className="relative max-w-[1314px]">
         {section.title ? (
           <h2
-            className={`${REVEAL_ITEM} mx-auto max-w-[min(100%,477px)] text-center text-3xl font-semibold leading-tight tracking-tight text-navy-deep sm:text-4xl lg:text-5xl lg:leading-[56px]`}
+            className={`${REVEAL_ITEM} mx-auto max-w-[min(100%,477px)] text-center text-3xl font-semibold leading-tight tracking-tight text-navy-deep sm:text-4xl lg:leading-[56px]`}
           >
             {section.title}
           </h2>
@@ -53,7 +59,10 @@ export function TestimonialsSection({ section, lang }: { section: TestimonialsSe
               const t = c.text || l?.label;
               if (!l?.href) {
                 return t ? (
-                  <p key={`${section.id}-cta-${i}`} className="text-center text-sm text-muted">
+                  <p
+                    key={`${section.id}-cta-${i}`}
+                    className="text-center text-sm text-muted"
+                  >
                     {t}
                   </p>
                 ) : null;
