@@ -117,6 +117,13 @@ export function SiteFooter({
   return (
     <footer className="relative z-0 mt-auto overflow-x-clip overflow-y-visible text-white">
       <div className="relative rounded-t-3xl bg-navy-deep sm:rounded-t-[1.5rem] md:rounded-t-[50px]">
+        {/* Figma-style notch cutout behind the floating logo badge */}
+        {g.footer.footerLogo && (
+          <div
+            className="pointer-events-none absolute left-1/2 top-[-119px] z-10 h-[218px] w-[218px] -translate-x-1/2 rounded-full bg-white"
+            aria-hidden
+          />
+        )}
         <div
           className="pointer-events-none absolute inset-0 rounded-t-[inherit]"
           style={{
@@ -132,7 +139,7 @@ export function SiteFooter({
         />
 
         {g.footer.footerLogo && (
-          <div className="absolute left-1/2 top-0 z-20 -translate-x-1/2 translate-y-[-50%]">
+          <div className="absolute left-1/2 top-0 z-20 -translate-x-1/2 translate-y-[-50%] md:translate-y-[calc(-50%-14px)]">
             <div className="flex h-[100px] w-[100px] items-center justify-center rounded-full border border-brand bg-white p-2 shadow-[0px_23px_17px_rgba(67,87,128,0.34)] sm:h-[140px] sm:w-[140px] sm:p-2.5 md:h-[180px] md:w-[180px] md:pb-[39px] md:pl-[55px] md:pr-[54px] md:pt-[38px]">
               <Media
                 image={g.footer.footerLogo}
@@ -147,8 +154,7 @@ export function SiteFooter({
         <div
           className={[
             "relative z-10 mx-auto w-full max-w-[1300px] px-4 sm:px-6 md:px-8",
-            g.footer.footerLogo ? "pt-2 sm:pt-0" : "pt-14 sm:pt-16",
-            g.footer.footerLogo && "sm:pt-2 md:pt-3",
+            g.footer.footerLogo ? "pt-16 sm:pt-18 md:pt-20" : "pt-14 sm:pt-16",
           ]
             .filter(Boolean)
             .join(" ")}
@@ -294,7 +300,7 @@ export function SiteFooter({
         </div>
 
         <div className="w-full">
-          <div className="w-[75%] mx-auto pointer-events-none relative [filter:drop-shadow(0_-6px_24px_rgba(57,144,240,0.55))_drop-shadow(0_-16px_48px_rgba(57,144,240,0.4))_drop-shadow(0_-28px_72px_rgba(57,144,240,0.28))_drop-shadow(0_-40px_104px_rgba(57,144,240,0.16))_drop-shadow(0_-52px_140px_rgba(57,144,240,0.08))_drop-shadow(0_-64px_180px_rgba(57,144,240,0.04))]">
+          <div className="mx-auto w-full max-w-[1300px] pointer-events-none relative [filter:drop-shadow(0_-6px_24px_rgba(57,144,240,0.55))_drop-shadow(0_-16px_48px_rgba(57,144,240,0.4))_drop-shadow(0_-28px_72px_rgba(57,144,240,0.28))_drop-shadow(0_-40px_104px_rgba(57,144,240,0.16))_drop-shadow(0_-52px_140px_rgba(57,144,240,0.08))_drop-shadow(0_-64px_180px_rgba(57,144,240,0.04))]">
             <img
               src="/footer-shape-top.svg"
               width={1283}
