@@ -134,7 +134,8 @@ export type WhyWeDoThisSectionT = CoreSection & {
   image: WpImage | null;
   eyebrow: string;
   title: string;
-  subtitle: string;
+  body: string;
+  highlightLine: string;
 };
 
 export type ImageIntroSplitRowT = { icon: WpImage | null; text: string };

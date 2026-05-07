@@ -236,7 +236,8 @@ function mapKnownPageSectionLayout(
         image: asImage(row.image),
         eyebrow: asString(row.eyebrow),
         title: asString(row.title),
-        subtitle: asString(row.subtitle),
+        body: asHtml(row.body),
+        highlightLine: asHtml(row.highlight_line),
       };
     case "image_intro_split":
       return {
