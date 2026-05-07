@@ -3651,6 +3651,223 @@
                         "min": "",
                         "max": ""
                     },
+                    "layout_omb_combined_strengths": {
+                        "key": "layout_omb_combined_strengths",
+                        "name": "combined_strengths",
+                        "label": "Combined strengths",
+                        "display": "block",
+                        "sub_fields": [
+                            {
+                                "key": "field_omb_combined_strengths_title",
+                                "label": "Left panel title",
+                                "name": "title",
+                                "aria-label": "",
+                                "type": "text",
+                                "instructions": "Headline on the blue gradient card (line breaks allowed). Figma 1090:47.",
+                                "required": 1,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "maxlength": "",
+                                "allow_in_bindings": 0,
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": ""
+                            },
+                            {
+                                "key": "field_omb_combined_strengths_left_rows",
+                                "label": "Left panel rows",
+                                "name": "left_rows",
+                                "aria-label": "",
+                                "type": "repeater",
+                                "instructions": "Portrait + expertise copy for each row (e.g. two founders).",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "layout": "block",
+                                "min": 0,
+                                "max": 0,
+                                "collapsed": "field_omb_combined_strengths_left_description",
+                                "button_label": "Add row",
+                                "rows_per_page": 20,
+                                "sub_fields": [
+                                    {
+                                        "key": "field_omb_combined_strengths_left_image",
+                                        "label": "Image",
+                                        "name": "image",
+                                        "aria-label": "",
+                                        "type": "image",
+                                        "instructions": "Square portrait (~124×124 display).",
+                                        "required": 0,
+                                        "conditional_logic": 0,
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
+                                        "return_format": "array",
+                                        "library": "all",
+                                        "min_width": "",
+                                        "min_height": "",
+                                        "min_size": "",
+                                        "max_width": "",
+                                        "max_height": "",
+                                        "max_size": "",
+                                        "mime_types": "",
+                                        "allow_in_bindings": 0,
+                                        "preview_size": "thumbnail",
+                                        "parent_repeater": "field_omb_combined_strengths_left_rows"
+                                    },
+                                    {
+                                        "key": "field_omb_combined_strengths_left_description",
+                                        "label": "Description",
+                                        "name": "description",
+                                        "aria-label": "",
+                                        "type": "wysiwyg",
+                                        "instructions": "Expertise line next to the portrait.",
+                                        "required": 0,
+                                        "conditional_logic": 0,
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
+                                        "default_value": "",
+                                        "allow_in_bindings": 0,
+                                        "tabs": "all",
+                                        "toolbar": "basic",
+                                        "media_upload": 0,
+                                        "delay": 0,
+                                        "parent_repeater": "field_omb_combined_strengths_left_rows"
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "field_omb_combined_strengths_content_cards",
+                                "label": "Story cards",
+                                "name": "content_cards",
+                                "aria-label": "",
+                                "type": "repeater",
+                                "instructions": "Three stacked cards on the right column.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "layout": "block",
+                                "min": 0,
+                                "max": 0,
+                                "collapsed": "field_omb_combined_strengths_card_title",
+                                "button_label": "Add card",
+                                "rows_per_page": 20,
+                                "sub_fields": [
+                                    {
+                                        "key": "field_omb_combined_strengths_card_title",
+                                        "label": "Title",
+                                        "name": "title",
+                                        "aria-label": "",
+                                        "type": "text",
+                                        "instructions": "",
+                                        "required": 0,
+                                        "conditional_logic": 0,
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
+                                        "default_value": "",
+                                        "maxlength": "",
+                                        "allow_in_bindings": 0,
+                                        "placeholder": "",
+                                        "prepend": "",
+                                        "append": "",
+                                        "parent_repeater": "field_omb_combined_strengths_content_cards"
+                                    },
+                                    {
+                                        "key": "field_omb_combined_strengths_card_description",
+                                        "label": "Description",
+                                        "name": "description",
+                                        "aria-label": "",
+                                        "type": "wysiwyg",
+                                        "instructions": "",
+                                        "required": 0,
+                                        "conditional_logic": 0,
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
+                                        "default_value": "",
+                                        "allow_in_bindings": 0,
+                                        "tabs": "all",
+                                        "toolbar": "basic",
+                                        "media_upload": 0,
+                                        "delay": 0,
+                                        "parent_repeater": "field_omb_combined_strengths_content_cards"
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "field_omb_combined_strengths_footer_logo",
+                                "label": "Footer logo",
+                                "name": "footer_logo",
+                                "aria-label": "",
+                                "type": "image",
+                                "instructions": "Brand mark in the bottom gradient strip.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "return_format": "array",
+                                "library": "all",
+                                "min_width": "",
+                                "min_height": "",
+                                "min_size": "",
+                                "max_width": "",
+                                "max_height": "",
+                                "max_size": "",
+                                "mime_types": "",
+                                "allow_in_bindings": 0,
+                                "preview_size": "medium"
+                            },
+                            {
+                                "key": "field_omb_combined_strengths_footer_text",
+                                "label": "Footer text",
+                                "name": "footer_text",
+                                "aria-label": "",
+                                "type": "text",
+                                "instructions": "e.g. Dat is Salonora geworden!",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "maxlength": "",
+                                "allow_in_bindings": 0,
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": ""
+                            }
+                        ],
+                        "min": "",
+                        "max": ""
+                    },
                     "layout_omb_partner_intro_split": {
                         "key": "layout_omb_partner_intro_split",
                         "name": "partner_intro_split",
