@@ -24,6 +24,7 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   faq: true,
   feature_highlight_grid: true,
   feature_highlight_split: true,
+  founder_story_split: true,
   faq_contact_split: true,
   form_embed: true,
   guarantee_split: true,
@@ -262,6 +263,17 @@ function mapKnownPageSectionLayout(
         body: asHtml(row.body),
         image: asImage(row.image),
         ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
+      };
+    case "founder_story_split":
+      return {
+        ...base,
+        type: "founder_story_split",
+        avatar: asImage(row.avatar),
+        title: asString(row.title),
+        subtitle: asString(row.subtitle),
+        content: asHtml(row.content),
+        conclusion: asString(row.conclusion),
+        main_image: asImage(row.main_image),
       };
     case "image_intro_split":
       return {
