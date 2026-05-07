@@ -18,6 +18,7 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   announcement_bar: true,
   benefits_grid: true,
   cards: true,
+  combined_strengths: true,
   cost_comparison: true,
   cta: true,
   design_showcase_grid: true,
@@ -112,6 +113,26 @@ function mapKnownPageSectionLayout(
         offerTextSize,
       };
     }
+    case "combined_strengths":
+      return {
+        ...base,
+        type: "combined_strengths",
+        title: asString(row.title),
+        left_rows: Array.isArray(row.left_rows)
+          ? (row.left_rows as { image?: unknown; description?: unknown }[]).map((r) => ({
+              image: asImage(r.image),
+              text: asHtml(r.description),
+            }))
+          : [],
+        content_cards: Array.isArray(row.content_cards)
+          ? (row.content_cards as { title?: unknown; description?: unknown }[]).map((c) => ({
+              title: asString(c.title),
+              text: asHtml(c.description),
+            }))
+          : [],
+        footer_logo: asImage(row.footer_logo),
+        footer_text: asString(row.footer_text),
+      };
     case "cards":
       return {
         ...base,

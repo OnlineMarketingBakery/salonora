@@ -37,6 +37,10 @@ export function SectionRenderer({ sections, lang }: { sections: AnySectionT[]; l
             return (
               <sectionRegistry.founder_story_split key={section.id} section={section} lang={lang} />
             );
+          case "combined_strengths":
+            return (
+              <sectionRegistry.combined_strengths key={section.id} section={section} lang={lang} />
+            );
           case "image_intro_split":
             return <sectionRegistry.image_intro_split key={section.id} section={section} lang={lang} />;
           case "salon_value_proposition":

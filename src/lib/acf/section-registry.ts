@@ -73,6 +73,14 @@ const FounderStorySplitSectionLazy = dynamic(
   { ssr: true }
 );
 
+const CombinedStrengthsSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/combined-strengths").then((mod) => ({
+      default: mod.CombinedStrengthsSection,
+    })),
+  { ssr: true }
+);
+
 const PricingDualCardsSectionLazy = dynamic(
   () =>
     import("@/components/sections/pricing-dual-cards").then((mod) => ({
@@ -121,6 +129,9 @@ export const sectionRegistry = {
   ),
   founder_story_split: asSection(
     FounderStorySplitSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
+  combined_strengths: asSection(
+    CombinedStrengthsSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
   cta: asSection(CtaSection as (p: { section: never; lang: Locale }) => ReactNode),
   pricing_cta: asSection(PricingCtaSection as (p: { section: never; lang: Locale }) => ReactNode),

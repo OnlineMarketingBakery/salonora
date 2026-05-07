@@ -142,6 +142,19 @@ export type WhyWeDoThisSectionT = CoreSection & {
   highlightLine: string;
 };
 
+/** Figma **1090:47** (“Group 595”) — blue gradient panel with portrait rows; three stacked story cards; navy footer strip with logo + line */
+export type CombinedStrengthsLeftRowT = { image: WpImage | null; text: string };
+export type CombinedStrengthsContentCardT = { title: string; text: string };
+
+export type CombinedStrengthsSectionT = CoreSection & {
+  type: "combined_strengths";
+  title: string;
+  left_rows: CombinedStrengthsLeftRowT[];
+  content_cards: CombinedStrengthsContentCardT[];
+  footer_logo: WpImage | null;
+  footer_text: string;
+};
+
 /** Figma 1072:29 — navy visual half with arc + duo photo, pale blue copy half, divider, brand highlight */
 export type PartnerIntroSplitSectionT = CoreSection & {
   type: "partner_intro_split";
@@ -494,6 +507,7 @@ export type AnySectionT =
   | GuaranteeSplitSectionT
   | StorySplitSectionT
   | WhyWeDoThisSectionT
+  | CombinedStrengthsSectionT
   | PartnerIntroSplitSectionT
   | OriginStorySplitSectionT
   | FounderStorySplitSectionT
