@@ -7,14 +7,32 @@ import type {
   CombinedStrengthsCardAccentT,
   CombinedStrengthsSectionT,
 } from "@/types/sections";
-import { Fragment } from "react";
+import { Fragment, type CSSProperties } from "react";
 
-function storyCardAccentCorners(accent: CombinedStrengthsCardAccentT): string {
-  return accent === "rose" ? "bg-[var(--palette-rose)]" : "bg-[var(--palette-brand)]";
+/**
+ * “Border” in Figma for these cards is not a uniform stroke: it’s **two soft hotspots**
+ * on the anti-diagonal — strongest at **top-right** and **bottom-left**, fading toward the
+ * other corners. Implemented as **two radial gradients** clipped to a **2px border box**
+ * (plus solid white fill clipped to padding), not `border-image`.
+ */
+function storyCardShellStyle(accent: CombinedStrengthsCardAccentT): CSSProperties {
+  const tint = accent === "rose" ? "var(--palette-rose)" : "var(--palette-brand)";
+  return {
+    border: "2px solid transparent",
+    borderRadius: "22px",
+    backgroundImage: `
+      linear-gradient(var(--palette-white), var(--palette-white)),
+      radial-gradient(ellipse 125px 92px at 100% 0%, ${tint}, transparent 70%),
+      radial-gradient(ellipse 125px 92px at 0% 100%, ${tint}, transparent 70%)
+    `,
+    backgroundOrigin: "padding-box, border-box, border-box",
+    backgroundClip: "padding-box, border-box, border-box",
+    boxShadow: "0px 6px 20px rgba(129, 154, 205, 0.26)",
+  };
 }
 
 /**
- * Story cards: white panel + offset corner accents (top-right & bottom-left) using CMS `accent` (brand | rose; auto-alternate in normalizer).
+ * Story cards: white fill + TR/BL gradient “border” (CMS `accent` brand | rose; auto-alternate).
  */
 export function CombinedStrengthsSection({
   section,
@@ -86,36 +104,23 @@ export function CombinedStrengthsSection({
             <div className={`${REVEAL_ITEM} flex w-full flex-col gap-[29px]`}>
               {section.content_cards.map((card, i) => {
                 const titleBodyGap = i === 0 ? "gap-[14px]" : "gap-[15px]";
-                const corner = storyCardAccentCorners(card.accent);
                 return (
                   <div
                     key={i}
-                    className="relative w-full rounded-[26px] p-2"
+                    style={storyCardShellStyle(card.accent)}
+                    className={`flex w-full flex-col justify-center px-[34px] py-[34px] lg:min-h-[184px] ${titleBodyGap}`}
                   >
-                    {/* Peek-through corners (behind white card — ~8px gutter matches design offset) */}
-                    <div
-                      aria-hidden
-                      className={`pointer-events-none absolute right-0 top-0 z-0 h-16 w-16 rounded-tr-[22px] ${corner}`}
-                    />
-                    <div
-                      aria-hidden
-                      className={`pointer-events-none absolute bottom-0 left-0 z-0 h-16 w-16 rounded-bl-[22px] ${corner}`}
-                    />
-                    <div
-                      className={`relative z-10 flex w-full flex-col justify-center rounded-[20px] bg-[var(--palette-white)] px-[34px] py-[34px] shadow-[0px_6px_20px_rgba(129,154,205,0.26)] lg:min-h-[184px] ${titleBodyGap}`}
-                    >
-                      {card.title ? (
-                        <h3 className="font-sans text-2xl font-semibold leading-[1.1] tracking-[-0.04em] text-navy-deep">
-                          {card.title}
-                        </h3>
-                      ) : null}
-                      {card.text ? (
-                        <RichText
-                          html={card.text}
-                          className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:text-base !prose-p:font-normal !prose-p:leading-[1.4] !prose-p:text-[var(--palette-muted)] [&_p]:!text-[var(--palette-muted)] [&_strong]:font-semibold [&_strong]:!text-[var(--palette-navy-deep)]"
-                        />
-                      ) : null}
-                    </div>
+                    {card.title ? (
+                      <h3 className="font-sans text-2xl font-semibold leading-[1.1] tracking-[-0.04em] text-navy-deep">
+                        {card.title}
+                      </h3>
+                    ) : null}
+                    {card.text ? (
+                      <RichText
+                        html={card.text}
+                        className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:text-base !prose-p:font-normal !prose-p:leading-[1.4] !prose-p:text-[var(--palette-muted)] [&_p]:!text-[var(--palette-muted)] [&_strong]:font-semibold [&_strong]:!text-[var(--palette-navy-deep)]"
+                      />
+                    ) : null}
                   </div>
                 );
               })}
