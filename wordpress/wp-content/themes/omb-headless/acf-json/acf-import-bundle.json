@@ -3205,7 +3205,7 @@
                                 "name": "image",
                                 "aria-label": "",
                                 "type": "image",
-                                "instructions": "Cutout/portrait image for the left side.",
+                                "instructions": "Left-side cutout/portrait. Prefer a PNG/WebP with transparent background so it can sit on the tilted brand panel.",
                                 "required": 0,
                                 "conditional_logic": 0,
                                 "wrapper": {
@@ -3231,7 +3231,7 @@
                                 "name": "eyebrow",
                                 "aria-label": "",
                                 "type": "text",
-                                "instructions": "Small pill label above the title (e.g. “Why We Do This”).",
+                                "instructions": "Small pill label above the title (Figma example: “Waarom Wij Dit Doen”).",
                                 "required": 0,
                                 "conditional_logic": 0,
                                 "wrapper": {
@@ -3252,7 +3252,7 @@
                                 "name": "title",
                                 "aria-label": "",
                                 "type": "text",
-                                "instructions": "",
+                                "instructions": "Main headline (Figma example: “Het begon met frustratie”).",
                                 "required": 1,
                                 "conditional_logic": 0,
                                 "wrapper": {
@@ -3273,7 +3273,7 @@
                                 "name": "subtitle",
                                 "aria-label": "",
                                 "type": "textarea",
-                                "instructions": "Short supporting line under the title.",
+                                "instructions": "Short supporting line under the title (kept plain text in this section).",
                                 "required": 0,
                                 "conditional_logic": 0,
                                 "wrapper": {
