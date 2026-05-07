@@ -142,9 +142,15 @@ export type WhyWeDoThisSectionT = CoreSection & {
   highlightLine: string;
 };
 
-/** Figma **1090:47** (“Group 595”) — blue gradient panel with portrait rows; three stacked story cards; navy footer strip with logo + line */
+/** Figma **1090:47** (“Group 595”) — blue panel with portrait rows; three stacked story cards (blue / rose top+bottom accents); footer gradient strip */
+export type CombinedStrengthsCardAccentT = "brand" | "rose";
 export type CombinedStrengthsLeftRowT = { image: WpImage | null; text: string };
-export type CombinedStrengthsContentCardT = { title: string; text: string };
+export type CombinedStrengthsContentCardT = {
+  title: string;
+  text: string;
+  /** Top/bottom hairline accent; defaults by card index when unset in CMS */
+  accent: CombinedStrengthsCardAccentT;
+};
 
 export type CombinedStrengthsSectionT = CoreSection & {
   type: "combined_strengths";
