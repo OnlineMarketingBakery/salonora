@@ -75,16 +75,16 @@ export function WhyWeDoThisSection({ section }: { section: WhyWeDoThisSectionT; 
 
           {section.image ? (
             <div className={`${REVEAL_ITEM} pointer-events-none absolute left-0 top-0 z-20 hidden h-full w-[650px] lg:block`}>
-              <Media
-                image={section.image}
-                width={1300}
-                height={830}
-                preferLargestSource
-                className="absolute left-16 bottom-0 h-auto w-auto max-w-[520px] object-contain object-bottom"
-                // Let the head overflow out of the blue panel into white space above.
-                style={{ transform: "translateY(-34px)" }}
-                sizes="520px"
-              />
+              <div className="absolute left-16 bottom-0 translate-y-[-34px]">
+                <Media
+                  image={section.image}
+                  width={1300}
+                  height={830}
+                  preferLargestSource
+                  className="h-auto w-[520px] max-w-none object-contain object-bottom"
+                  sizes="520px"
+                />
+              </div>
             </div>
           ) : null}
 
