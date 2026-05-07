@@ -44,7 +44,7 @@ export function PartnerIntroSplitSection({
                   image={section.image}
                   width={1112}
                   height={956}
-                  className="h-auto w-full max-w-[556px] object-contain object-bottom"
+                  className="h-auto w-full max-w-[556px] object-contain object-bottom -mb-14"
                   sizes="(min-width: 1024px) 50vw, 100vw"
                   preferLargestSource
                 />
