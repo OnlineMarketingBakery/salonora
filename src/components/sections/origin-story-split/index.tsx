@@ -83,7 +83,7 @@ export function OriginStorySplitSection({
                   image={section.image}
                   width={920}
                   height={1046}
-                  className="h-full w-full object-cover object-center"
+                  className="h-full w-full object-cover object-center margin-b-[-56px]"
                   sizes="(min-width: 1024px) 460px, 90vw"
                   preferLargestSource
                 />
