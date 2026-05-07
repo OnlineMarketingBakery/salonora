@@ -49,6 +49,14 @@ const FeatureHighlightSplitSectionLazy = dynamic(
   { ssr: true }
 );
 
+const OriginStorySplitSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/origin-story-split").then((mod) => ({
+      default: mod.OriginStorySplitSection,
+    })),
+  { ssr: true }
+);
+
 const PricingDualCardsSectionLazy = dynamic(
   () =>
     import("@/components/sections/pricing-dual-cards").then((mod) => ({
@@ -89,6 +97,9 @@ export const sectionRegistry = {
   faq_contact_split: asSection(FaqContactSplitSection as (p: { section: never; lang: Locale }) => ReactNode),
   form_embed: asSection(FormEmbedSection as (p: { section: never; lang: Locale }) => ReactNode),
   latest_posts: asSection(LatestPostsSection as (p: { section: never; lang: Locale }) => ReactNode),
+  origin_story_split: asSection(
+    OriginStorySplitSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
   cta: asSection(CtaSection as (p: { section: never; lang: Locale }) => ReactNode),
   pricing_cta: asSection(PricingCtaSection as (p: { section: never; lang: Locale }) => ReactNode),
   rich_text: asSection(RichTextSection as (p: { section: never; lang: Locale }) => ReactNode),
