@@ -142,6 +142,17 @@ export type WhyWeDoThisSectionT = CoreSection & {
   highlightLine: string;
 };
 
+/** Figma 1072:29 — navy visual half with arc + duo photo, pale blue copy half, divider, brand highlight */
+export type PartnerIntroSplitSectionT = CoreSection & {
+  type: "partner_intro_split";
+  title: string;
+  body: string;
+  /** Mapped from ACF `highlight_line` */
+  highlightLine: string;
+  image: WpImage | null;
+  ctas: CtaItem[];
+};
+
 /** Figma 1063:27 — badge + headline + rich text, right masked image with tilted brand panel */
 export type OriginStorySplitSectionT = CoreSection & {
   type: "origin_story_split";
@@ -472,6 +483,7 @@ export type AnySectionT =
   | GuaranteeSplitSectionT
   | StorySplitSectionT
   | WhyWeDoThisSectionT
+  | PartnerIntroSplitSectionT
   | OriginStorySplitSectionT
   | ImageIntroSplitSectionT
   | SalonValuePropositionSectionT
