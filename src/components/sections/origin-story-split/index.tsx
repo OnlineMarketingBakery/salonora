@@ -1,5 +1,5 @@
-import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
+import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
@@ -26,10 +26,12 @@ export function OriginStorySplitSection({
     .filter(Boolean);
 
   return (
-    <section className="bg-white py-20 md:py-24">
+    <section className="bg-white py-10 md:py-24">
       <Container className="max-w-340!">
         <div className="flex flex-col items-start gap-10 lg:flex-row lg:items-center lg:gap-[60px]">
-          <div className={`${REVEAL_ITEM} flex w-full min-w-0 flex-col gap-6 lg:max-w-[626px]`}>
+          <div
+            className={`${REVEAL_ITEM} flex w-full min-w-0 flex-col gap-6 lg:max-w-[626px]`}
+          >
             {section.eyebrow ? (
               <div className="inline-flex h-[42px] self-start items-center justify-center rounded-[21px] bg-pill px-[21px] text-base font-medium leading-[1.6] text-brand">
                 {section.eyebrow}
@@ -69,7 +71,9 @@ export function OriginStorySplitSection({
           </div>
 
           {section.image ? (
-            <div className={`${REVEAL_ITEM} relative mx-auto w-full max-w-[460px] shrink-0 lg:mx-0`}>
+            <div
+              className={`${REVEAL_ITEM} relative mx-auto w-full max-w-[460px] shrink-0 lg:mx-0`}
+            >
               <div
                 aria-hidden
                 className="pointer-events-none absolute left-0 top-2 z-0 aspect-460/523 w-[min(100%,460px)] origin-center rotate-[-4.13deg] rounded-[14px] bg-brand sm:top-3"
@@ -91,4 +95,3 @@ export function OriginStorySplitSection({
     </section>
   );
 }
-
