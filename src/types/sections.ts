@@ -6,6 +6,9 @@ export type CtaItem = { text: string; url: WpAcfLink | null };
 
 export type CoreSection = { _key: string; id: string };
 
+/** Hero variant — controls vertical density. `default` keeps existing layout; `compact` is for shorter intro headers (e.g. About-style pages). */
+export type HeroVariantT = "default" | "compact";
+
 export type HeroSectionT = CoreSection & {
   type: "hero";
   eyebrow: string;
@@ -19,6 +22,12 @@ export type HeroSectionT = CoreSection & {
   /** Large visual behind the foreground person (e.g. product UI), optional */
   behindImage: WpImage | null;
   image: WpImage | null;
+  /** Optional small line under the eyebrow (e.g. "We are Salonora"). */
+  tagline?: string;
+  /** Optional small overlay card next to the image (e.g. "From €10 per month…"). HTML allowed. */
+  floatingCard?: string;
+  /** Layout density. Defaults to "default" (full hero). */
+  variant?: HeroVariantT;
 };
 
 export type CardItemT = {
@@ -422,17 +431,6 @@ export type FeatureHighlightSplitSectionT = CoreSection & {
   promise_items?: FeatureHighlightSplitPromiseItemT[];
 };
 
-/** Figma About-style band: plain eyebrow + tagline + headline, soft gradient, visual with optional floating note card */
-export type AboutVisualSplitSectionT = CoreSection & {
-  type: "about_visual_split";
-  eyebrow?: string;
-  tagline?: string;
-  title?: string;
-  visual?: WpImage | null;
-  /** Small overlay card on the visual column (e.g. pricing line) */
-  floating_card?: string;
-};
-
 export type AnySectionT =
   | HeroSectionT
   | CardsSectionT
@@ -461,7 +459,6 @@ export type AnySectionT =
   | RichTextSectionT
   | FaqSectionT
   | FeatureHighlightGridSectionT
-  | FeatureHighlightSplitSectionT
-  | AboutVisualSplitSectionT;
+  | FeatureHighlightSplitSectionT;
 
 export type LatestPostResolved = { id: number; title: string; excerpt: string; href: string };

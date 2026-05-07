@@ -15,7 +15,6 @@ type RawRow = Record<string, unknown> & { acf_fc_layout: string };
 
 /** Known page flexible-layout names → normalized section types (must stay aligned with `mapKnownPageSectionLayout`). */
 const PAGE_SECTION_ACF_LAYOUTS = {
-  about_visual_split: true,
   announcement_bar: true,
   benefits_grid: true,
   cards: true,
@@ -84,6 +83,8 @@ function mapKnownPageSectionLayout(
         if (secondary) legacy.push({ cta_url: secondary });
         ctas = mapCtaRepeater(legacy);
       }
+      const rawVariant = asString(row.variant);
+      const variant = rawVariant === "compact" ? "compact" : "default";
       return {
         ...base,
         type: "hero",
@@ -96,6 +97,9 @@ function mapKnownPageSectionLayout(
         trustImage: asImage(row.trust_image),
         behindImage: asImage(row.behind_image),
         image: asImage(row.image),
+        tagline: asString(row.tagline),
+        floatingCard: asHtml(row.floating_card),
+        variant,
       };
     }
     case "cards":
@@ -419,16 +423,6 @@ function mapKnownPageSectionLayout(
               text: asHtml(p.text),
             }))
           : [],
-      };
-    case "about_visual_split":
-      return {
-        ...base,
-        type: "about_visual_split",
-        eyebrow: asString(row.eyebrow),
-        tagline: asString(row.tagline),
-        title: asString(row.title),
-        visual: asImage(row.visual),
-        floating_card: asHtml(row.floating_card),
       };
     case "faq_contact_split": {
       const ctaform = asString(row.ctaform);
