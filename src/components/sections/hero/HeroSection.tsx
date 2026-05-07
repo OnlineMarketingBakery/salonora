@@ -23,6 +23,14 @@ export function HeroSection({ section, lang }: { section: HeroSectionT; lang: Lo
     ? "text-[2rem] font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-[2.5rem] md:text-[2.75rem] lg:text-[3.25rem] lg:leading-[3.75rem]"
     : "text-[2rem] font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-4xl md:text-5xl lg:text-[4rem] lg:leading-[4.625rem]";
 
+  const offerSize = section.offerTextSize ?? "large";
+  const offerSizeClass =
+    offerSize === "small"
+      ? "text-lg sm:text-xl lg:text-[24px]"
+      : offerSize === "medium"
+        ? "text-xl sm:text-2xl lg:text-[30px]"
+        : "text-2xl sm:text-3xl lg:text-[36px]";
+
   return (
     <section className={`relative overflow-hidden pb-0 ${sectionPaddingClass}`}>
       <div
@@ -56,7 +64,7 @@ export function HeroSection({ section, lang }: { section: HeroSectionT; lang: Lo
             {section.offerText && (
               <RichText
                 html={section.offerText}
-                className={`${REVEAL_ITEM} mt-3 !prose-p:text-inherit text-2xl font-semibold !text-accent !prose-p:text-inherit !prose-strong:text-navy sm:text-3xl lg:mt-4 lg:text-[36px] [&_p]:!m-0 [&_p]:leading-tight`}
+                className={`${REVEAL_ITEM} mt-3 !prose-p:text-inherit ${offerSizeClass} font-semibold !text-accent !prose-p:text-inherit !prose-strong:text-navy lg:mt-4 [&_p]:!m-0 [&_p]:leading-tight`}
               />
             )}
             {section.ctas.length > 0 && (

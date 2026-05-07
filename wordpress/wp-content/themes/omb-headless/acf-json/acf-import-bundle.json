@@ -1502,6 +1502,38 @@
                                 "allow_in_bindings": 0,
                                 "create_options": 0,
                                 "save_options": 0
+                            },
+                            {
+                                "key": "field_hero_offer_text_size",
+                                "label": "Offer text size",
+                                "name": "offer_text_size",
+                                "aria-label": "",
+                                "type": "select",
+                                "instructions": "Responsive size for the Offer Text line. \"Large\" matches the homepage (lg: 36px). \"Medium\" (lg: 30px) and \"Small\" (lg: 24px) suit inner pages.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "choices": {
+                                    "large": "Large (36px)",
+                                    "medium": "Medium (30px)",
+                                    "small": "Small (24px)"
+                                },
+                                "default_value": "large",
+                                "return_format": "value",
+                                "multiple": 0,
+                                "allow_null": 0,
+                                "ui": 0,
+                                "ajax": 0,
+                                "placeholder": "",
+                                "allow_custom": 0,
+                                "search_placeholder": "",
+                                "allow_in_bindings": 0,
+                                "create_options": 0,
+                                "save_options": 0
                             }
                         ],
                         "min": "",

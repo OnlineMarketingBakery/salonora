@@ -85,6 +85,11 @@ function mapKnownPageSectionLayout(
       }
       const rawVariant = asString(row.variant);
       const variant = rawVariant === "compact" ? "compact" : "default";
+      const rawOfferSize = asString(row.offer_text_size);
+      const offerTextSize =
+        rawOfferSize === "medium" || rawOfferSize === "small"
+          ? rawOfferSize
+          : "large";
       return {
         ...base,
         type: "hero",
@@ -100,6 +105,7 @@ function mapKnownPageSectionLayout(
         tagline: asString(row.tagline),
         floatingCard: asHtml(row.floating_card),
         variant,
+        offerTextSize,
       };
     }
     case "cards":
