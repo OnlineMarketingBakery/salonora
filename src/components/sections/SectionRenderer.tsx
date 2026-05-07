@@ -23,6 +23,8 @@ export function SectionRenderer({ sections, lang }: { sections: AnySectionT[]; l
             return <sectionRegistry.guarantee_split key={section.id} section={section} lang={lang} />;
           case "story_split":
             return <sectionRegistry.story_split key={section.id} section={section} lang={lang} />;
+          case "why_we_do_this":
+            return <sectionRegistry.why_we_do_this key={section.id} section={section} lang={lang} />;
           case "image_intro_split":
             return <sectionRegistry.image_intro_split key={section.id} section={section} lang={lang} />;
           case "salon_value_proposition":
