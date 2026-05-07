@@ -39,6 +39,7 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   salon_value_proposition: true,
   scrolling_ticker: true,
   story_split: true,
+  why_we_do_this: true,
   testimonials: true,
   why_owners_choose: true,
   why_salonora_anders: true,
@@ -223,20 +224,19 @@ function mapKnownPageSectionLayout(
         ...base,
         type: "story_split",
         image: asImage(row.image),
-        eyebrow: asString(row.eyebrow) || undefined,
         title: asString(row.title),
         body: asHtml(row.body),
-        highlightLine: asHtml(row.highlight_line) || asString(row.highlight_line) || undefined,
         ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
         showAccentShape: row.show_accent_shape === undefined ? true : asBool(row.show_accent_shape),
-        theme: (() => {
-          const s = asString(row.theme);
-          return s === "brand_gradient" ? "brand_gradient" : "default";
-        })(),
-        imageStyle: (() => {
-          const s = asString(row.image_style);
-          return s === "cutout" ? "cutout" : "card";
-        })(),
+      };
+    case "why_we_do_this":
+      return {
+        ...base,
+        type: "why_we_do_this",
+        image: asImage(row.image),
+        eyebrow: asString(row.eyebrow),
+        title: asString(row.title),
+        subtitle: asString(row.subtitle),
       };
     case "image_intro_split":
       return {

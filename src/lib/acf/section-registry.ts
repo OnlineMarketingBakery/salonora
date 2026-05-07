@@ -6,6 +6,7 @@ import { BenefitsGridSection } from "@/components/sections/benefits-grid/Benefit
 import { PricingPackagesSection } from "@/components/sections/pricing-packages/PricingPackagesSection";
 import { GuaranteeSplitSection } from "@/components/sections/guarantee-split/GuaranteeSplitSection";
 import { StorySplitSection } from "@/components/sections/story-split/StorySplitSection";
+import { WhyWeDoThisSection } from "@/components/sections/why-we-do-this";
 import { ImageIntroSplitSection } from "@/components/sections/image-intro-split/ImageIntroSplitSection";
 import { SalonValuePropositionSection } from "@/components/sections/salon-value-proposition/SalonValuePropositionSection";
 import { WhyOwnersChooseSection } from "@/components/sections/why-owners-choose/WhyOwnersChooseSection";
@@ -75,6 +76,7 @@ export const sectionRegistry = {
   pricing_packages: asSection(PricingPackagesSection as (p: { section: never; lang: Locale }) => ReactNode),
   guarantee_split: asSection(GuaranteeSplitSection as (p: { section: never; lang: Locale }) => ReactNode),
   story_split: asSection(StorySplitSection as (p: { section: never; lang: Locale }) => ReactNode),
+  why_we_do_this: asSection(WhyWeDoThisSection as (p: { section: never; lang: Locale }) => ReactNode),
   image_intro_split: asSection(ImageIntroSplitSection as (p: { section: never; lang: Locale }) => ReactNode),
   salon_value_proposition: asSection(SalonValuePropositionSection as (p: { section: never; lang: Locale }) => ReactNode),
   why_owners_choose: asSection(WhyOwnersChooseSection as (p: { section: never; lang: Locale }) => ReactNode),

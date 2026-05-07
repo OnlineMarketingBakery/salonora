@@ -123,18 +123,18 @@ export type GuaranteeSplitSectionT = CoreSection & {
 export type StorySplitSectionT = CoreSection & {
   type: "story_split";
   image: WpImage | null;
-  /** Optional pill/eyebrow label above the title (Figma: “Waarom Wij Dit Doen”). */
-  eyebrow?: string;
   title: string;
   body: string;
-  /** Optional emphasized line after `body` (Figma: bold closing sentence). */
-  highlightLine?: string;
   ctas: CtaItem[];
   showAccentShape: boolean;
-  /** Visual theme variant. Defaults to "default" (existing behavior). */
-  theme?: "default" | "brand_gradient";
-  /** Image presentation. Defaults to "card" (existing behavior). */
-  imageStyle?: "card" | "cutout";
+};
+
+export type WhyWeDoThisSectionT = CoreSection & {
+  type: "why_we_do_this";
+  image: WpImage | null;
+  eyebrow: string;
+  title: string;
+  subtitle: string;
 };
 
 export type ImageIntroSplitRowT = { icon: WpImage | null; text: string };
@@ -452,6 +452,7 @@ export type AnySectionT =
   | PricingPackagesSectionT
   | GuaranteeSplitSectionT
   | StorySplitSectionT
+  | WhyWeDoThisSectionT
   | ImageIntroSplitSectionT
   | SalonValuePropositionSectionT
   | WhyOwnersChooseSectionT
