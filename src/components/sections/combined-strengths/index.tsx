@@ -31,15 +31,16 @@ function storyCardShellStyle(accent: CombinedStrengthsCardAccentT): CSSPropertie
   };
 }
 
-/** Figma `597:3051` — footer frame uses layered vector artwork; visually = **135°** wash (brand-tinted corners → white center). */
+/** Footer strip (Figma `597:3051` comp): **dark navy** field with **brand blue glow** on left & right, thin light top rim — not a light/white center. */
 function combinedStrengthsFooterStripStyle(): CSSProperties {
   return {
-    background: `linear-gradient(135deg,
-      color-mix(in srgb, var(--palette-brand) 82%, var(--palette-white)) 0%,
-      var(--palette-white) 44%,
-      var(--palette-white) 56%,
-      color-mix(in srgb, var(--palette-brand) 82%, var(--palette-white)) 100%)`,
-    boxShadow: `inset 0 1px 0 color-mix(in srgb, var(--palette-white) 65%, transparent)`,
+    background: `linear-gradient(90deg,
+      var(--palette-brand) 0%,
+      var(--palette-navy-deep) 17%,
+      var(--palette-navy-deep) 83%,
+      var(--palette-brand) 100%)`,
+    boxShadow: `inset 0 1px 0 color-mix(in srgb, var(--palette-white) 22%, transparent),
+      inset 0 -1px 0 color-mix(in srgb, var(--palette-navy-deep) 72%, transparent)`,
   };
 }
 
@@ -157,7 +158,7 @@ export function CombinedStrengthsSection({
                 </div>
               ) : null}
               {section.footer_text ? (
-                <p className="text-center font-sans text-lg font-semibold leading-snug text-navy-deep sm:text-left sm:text-xl">
+                <p className="text-center font-sans text-lg font-semibold leading-snug text-[var(--palette-white)] sm:text-left sm:text-xl">
                   {section.footer_text}
                 </p>
               ) : null}
