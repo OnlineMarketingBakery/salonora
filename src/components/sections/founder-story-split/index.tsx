@@ -8,11 +8,45 @@ import type { FounderStorySplitSectionT } from "@/types/sections";
 
 /** Figma `597:2281` — soft wash behind `597:2282` (`mix-blend-color`). */
 const CARD_BG_SRC = "/founder-story-card-bg.png";
-/** Figma `597:2283` (Group 111). */
-const SPARK_SRC = "/founder-story-spark.png";
-
 /** Card width / grid — Figma 1083:46 */
 const CARD_MAX = 1298;
+
+/**
+ * Figma `597:2283` (Group 111) — three stroked bars (~27.37px).
+ * Inline SVG + `currentColor` avoids blurry PNG / wrong contrast on the gradient wash.
+ */
+function FounderStorySparkMark({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 28 28"
+      width={28}
+      height={28}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+    >
+      <path
+        d="M22.25 5v17.5"
+        stroke="currentColor"
+        strokeWidth={2.35}
+        strokeLinecap="round"
+      />
+      <path
+        d="M5.75 7.25 L14 14.25"
+        stroke="currentColor"
+        strokeWidth={2.35}
+        strokeLinecap="round"
+      />
+      <path
+        d="M5.25 21.25h13.25"
+        stroke="currentColor"
+        strokeWidth={2.35}
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
 
 export function FounderStorySplitSection(props: {
   section: FounderStorySplitSectionT;
@@ -112,18 +146,10 @@ export function FounderStorySplitSection(props: {
                   {/* Figma `597:2283` — mobile/tablet: anchor to photo stack (stacked layout has no 714px gutter) */}
                   <div
                     aria-hidden
-                    className="pointer-events-none absolute left-6 top-2 z-[25] mix-blend-normal lg:hidden"
+                    className="pointer-events-none absolute left-6 top-2 z-[25] text-brand drop-shadow-[0_1px_2px_color-mix(in_srgb,var(--palette-navy-deep)_14%,transparent)] mix-blend-normal lg:hidden"
                   >
                     <div className="size-[27.372px] rotate-180">
-                      <Image
-                        src={SPARK_SRC}
-                        alt=""
-                        width={28}
-                        height={28}
-                        unoptimized
-                        className="block size-[27.372px] max-h-none max-w-none select-none"
-                        draggable={false}
-                      />
+                      <FounderStorySparkMark className="block size-[27.372px] shrink-0" />
                     </div>
                   </div>
 
@@ -149,18 +175,10 @@ export function FounderStorySplitSection(props: {
             {section.main_image ? (
               <div
                 aria-hidden
-                className="pointer-events-none absolute left-[calc(741.372*100%/1298)] top-[112px] z-[25] hidden mix-blend-normal lg:block"
+                className="pointer-events-none absolute left-[calc(741.372*100%/1298)] top-[112px] z-[40] hidden text-brand drop-shadow-[0_1px_2px_color-mix(in_srgb,var(--palette-navy-deep)_14%,transparent)] mix-blend-normal lg:block"
               >
                 <div className="size-[27.372px] rotate-180">
-                  <Image
-                    src={SPARK_SRC}
-                    alt=""
-                    width={28}
-                    height={28}
-                    unoptimized
-                    className="block size-[27.372px] max-h-none max-w-none select-none"
-                    draggable={false}
-                  />
+                  <FounderStorySparkMark className="block size-[27.372px] shrink-0" />
                 </div>
               </div>
             ) : null}
