@@ -275,6 +275,9 @@ function mapKnownPageSectionLayout(
         title: asString(row.title),
         intro: asHtml(row.intro),
         visualImage: asImage(row.visual_image),
+        footerTitle: asString(row.footer_title),
+        footerCtaLink: asLink(row.footer_cta_link),
+        footerCtaIcon: asImage(row.footer_cta_icon),
         cards: Array.isArray(row.feature_cards)
           ? (row.feature_cards as { accent?: unknown; icon?: unknown; title?: unknown; text?: unknown }[]).map((c) => {
               const a = asString(c.accent);
