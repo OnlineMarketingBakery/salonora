@@ -1,14 +1,20 @@
-import { Fragment } from "react";
 import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { Locale } from "@/lib/i18n/locales";
-import type { CombinedStrengthsSectionT } from "@/types/sections";
+import type {
+  CombinedStrengthsCardAccentT,
+  CombinedStrengthsSectionT,
+} from "@/types/sections";
+import { Fragment } from "react";
+
+function storyCardAccentCorners(accent: CombinedStrengthsCardAccentT): string {
+  return accent === "rose" ? "bg-[var(--palette-rose)]" : "bg-[var(--palette-brand)]";
+}
 
 /**
- * Figma 1090:47 — Two columns (638px + gap + 638px @ 1300): solid brand panel + portrait rows;
- * three plain white floating cards (Figma shadow); flat navy footer strip. Accent field in CMS is unused visually.
+ * Story cards: white panel + offset corner accents (top-right & bottom-left) using CMS `accent` (brand | rose; auto-alternate in normalizer).
  */
 export function CombinedStrengthsSection({
   section,
@@ -23,7 +29,7 @@ export function CombinedStrengthsSection({
     .filter(Boolean);
 
   return (
-    <section lang={lang} className="bg-[var(--palette-surface)] py-10 lg:py-16">
+    <section lang={lang} className="bg-[var(--palette-surface)] py-10 lg:py-24">
       <Container className="!max-w-[81.25rem]">
         <div className="mx-auto flex w-full max-w-[1300px] flex-col gap-6">
           {/* Top: equal-height columns, 24px gutter — matches Figma 732 − (70+638) */}
@@ -80,22 +86,36 @@ export function CombinedStrengthsSection({
             <div className={`${REVEAL_ITEM} flex w-full flex-col gap-[29px]`}>
               {section.content_cards.map((card, i) => {
                 const titleBodyGap = i === 0 ? "gap-[14px]" : "gap-[15px]";
+                const corner = storyCardAccentCorners(card.accent);
                 return (
                   <div
                     key={i}
-                    className={`flex w-full flex-col justify-center rounded-[20px] bg-[var(--palette-white)] px-[34px] py-[34px] shadow-[0px_6px_20px_rgba(129,154,205,0.26)] lg:min-h-[184px] ${titleBodyGap}`}
+                    className="relative w-full rounded-[26px] p-2"
                   >
-                    {card.title ? (
-                      <h3 className="font-sans text-2xl font-semibold leading-[1.1] tracking-[-0.04em] text-navy-deep">
-                        {card.title}
-                      </h3>
-                    ) : null}
-                    {card.text ? (
-                      <RichText
-                        html={card.text}
-                        className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:text-base !prose-p:font-normal !prose-p:leading-[1.4] !prose-p:text-[var(--palette-muted)] [&_p]:!text-[var(--palette-muted)] [&_strong]:font-semibold [&_strong]:!text-[var(--palette-navy-deep)]"
-                      />
-                    ) : null}
+                    {/* Peek-through corners (behind white card — ~8px gutter matches design offset) */}
+                    <div
+                      aria-hidden
+                      className={`pointer-events-none absolute right-0 top-0 z-0 h-16 w-16 rounded-tr-[22px] ${corner}`}
+                    />
+                    <div
+                      aria-hidden
+                      className={`pointer-events-none absolute bottom-0 left-0 z-0 h-16 w-16 rounded-bl-[22px] ${corner}`}
+                    />
+                    <div
+                      className={`relative z-10 flex w-full flex-col justify-center rounded-[20px] bg-[var(--palette-white)] px-[34px] py-[34px] shadow-[0px_6px_20px_rgba(129,154,205,0.26)] lg:min-h-[184px] ${titleBodyGap}`}
+                    >
+                      {card.title ? (
+                        <h3 className="font-sans text-2xl font-semibold leading-[1.1] tracking-[-0.04em] text-navy-deep">
+                          {card.title}
+                        </h3>
+                      ) : null}
+                      {card.text ? (
+                        <RichText
+                          html={card.text}
+                          className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:text-base !prose-p:font-normal !prose-p:leading-[1.4] !prose-p:text-[var(--palette-muted)] [&_p]:!text-[var(--palette-muted)] [&_strong]:font-semibold [&_strong]:!text-[var(--palette-navy-deep)]"
+                        />
+                      ) : null}
+                    </div>
                   </div>
                 );
               })}
