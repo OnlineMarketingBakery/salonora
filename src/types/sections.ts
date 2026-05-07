@@ -163,6 +163,17 @@ export type OriginStorySplitSectionT = CoreSection & {
   ctas: CtaItem[];
 };
 
+/** About page — light gradient card: avatar + title row, brand subtitle, rich text, conclusion; photo + tilted panel (Figma: content `597:2954`, visuals from `597:2279` / `597:2287` / `597:2288`; node `597:2279` alone is only the bg/spark layer). */
+export type FounderStorySplitSectionT = CoreSection & {
+  type: "founder_story_split";
+  avatar: WpImage | null;
+  title: string;
+  subtitle: string;
+  content: string;
+  conclusion: string;
+  main_image: WpImage | null;
+};
+
 export type ImageIntroSplitRowT = { icon: WpImage | null; text: string };
 
 export type ImageIntroSplitSectionT = CoreSection & {
@@ -485,6 +496,7 @@ export type AnySectionT =
   | WhyWeDoThisSectionT
   | PartnerIntroSplitSectionT
   | OriginStorySplitSectionT
+  | FounderStorySplitSectionT
   | ImageIntroSplitSectionT
   | SalonValuePropositionSectionT
   | WhyOwnersChooseSectionT

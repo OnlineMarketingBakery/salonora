@@ -3505,6 +3505,152 @@
                         "min": "",
                         "max": ""
                     },
+                    "layout_omb_founder_story_split": {
+                        "key": "layout_omb_founder_story_split",
+                        "name": "founder_story_split",
+                        "label": "Founder story split",
+                        "display": "block",
+                        "sub_fields": [
+                            {
+                                "key": "field_omb_founder_story_split_avatar",
+                                "label": "Avatar",
+                                "name": "avatar",
+                                "aria-label": "",
+                                "type": "image",
+                                "instructions": "Small square image next to the title (Figma ~62×62).",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "return_format": "array",
+                                "library": "all",
+                                "min_width": "",
+                                "min_height": "",
+                                "min_size": "",
+                                "max_width": "",
+                                "max_height": "",
+                                "max_size": "",
+                                "mime_types": "",
+                                "allow_in_bindings": 0,
+                                "preview_size": "thumbnail"
+                            },
+                            {
+                                "key": "field_omb_founder_story_split_title",
+                                "label": "Title",
+                                "name": "title",
+                                "aria-label": "",
+                                "type": "text",
+                                "instructions": "Main heading beside the avatar (line breaks allowed).",
+                                "required": 1,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "maxlength": "",
+                                "allow_in_bindings": 0,
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": ""
+                            },
+                            {
+                                "key": "field_omb_founder_story_split_subtitle",
+                                "label": "Subtitle",
+                                "name": "subtitle",
+                                "aria-label": "",
+                                "type": "text",
+                                "instructions": "Accent line under the title row (e.g. Van Kapper naar Marketeer).",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "maxlength": "",
+                                "allow_in_bindings": 0,
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": ""
+                            },
+                            {
+                                "key": "field_omb_founder_story_split_content",
+                                "label": "Content",
+                                "name": "content",
+                                "aria-label": "",
+                                "type": "wysiwyg",
+                                "instructions": "Body copy inside the gradient card.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "allow_in_bindings": 0,
+                                "tabs": "all",
+                                "toolbar": "full",
+                                "media_upload": 1,
+                                "delay": 0
+                            },
+                            {
+                                "key": "field_omb_founder_story_split_conclusion",
+                                "label": "Conclusion",
+                                "name": "conclusion",
+                                "aria-label": "",
+                                "type": "text",
+                                "instructions": "Closing emphasis line below the body.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "maxlength": "",
+                                "allow_in_bindings": 0,
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": ""
+                            },
+                            {
+                                "key": "field_omb_founder_story_split_main_image",
+                                "label": "Main image",
+                                "name": "main_image",
+                                "aria-label": "",
+                                "type": "image",
+                                "instructions": "Large portrait on the right (rounded mask + tilted brand panel per Figma).",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "return_format": "array",
+                                "library": "all",
+                                "min_width": "",
+                                "min_height": "",
+                                "min_size": "",
+                                "max_width": "",
+                                "max_height": "",
+                                "max_size": "",
+                                "mime_types": "",
+                                "allow_in_bindings": 0,
+                                "preview_size": "medium"
+                            }
+                        ],
+                        "min": "",
+                        "max": ""
+                    },
                     "layout_omb_partner_intro_split": {
                         "key": "layout_omb_partner_intro_split",
                         "name": "partner_intro_split",

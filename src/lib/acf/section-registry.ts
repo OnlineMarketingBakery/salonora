@@ -65,6 +65,14 @@ const PartnerIntroSplitSectionLazy = dynamic(
   { ssr: true }
 );
 
+const FounderStorySplitSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/founder-story-split").then((mod) => ({
+      default: mod.FounderStorySplitSection,
+    })),
+  { ssr: true }
+);
+
 const PricingDualCardsSectionLazy = dynamic(
   () =>
     import("@/components/sections/pricing-dual-cards").then((mod) => ({
@@ -110,6 +118,9 @@ export const sectionRegistry = {
   ),
   partner_intro_split: asSection(
     PartnerIntroSplitSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
+  founder_story_split: asSection(
+    FounderStorySplitSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
   cta: asSection(CtaSection as (p: { section: never; lang: Locale }) => ReactNode),
   pricing_cta: asSection(PricingCtaSection as (p: { section: never; lang: Locale }) => ReactNode),
