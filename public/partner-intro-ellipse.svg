@@ -1,0 +1,13 @@
+<svg preserveAspectRatio="xMidYMid meet" width="757" height="757" overflow="visible" style="display:block" viewBox="0 0 757 757" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <circle cx="378.5" cy="378.5" r="376.5" fill="url(#partner-intro-ellipse-fill)" stroke="url(#partner-intro-ellipse-stroke)" stroke-width="4"/>
+  <defs>
+    <linearGradient id="partner-intro-ellipse-fill" x1="378.5" y1="0" x2="379" y2="339" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3990F0"/>
+      <stop offset="1" stop-color="#3990F0" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="partner-intro-ellipse-stroke" x1="378.5" y1="0" x2="378.5" y2="161" gradientUnits="userSpaceOnUse">
+      <stop stop-color="white"/>
+      <stop offset="1" stop-color="white" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+</svg>
