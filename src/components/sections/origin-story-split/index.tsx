@@ -26,7 +26,7 @@ export function OriginStorySplitSection({
     .filter(Boolean);
 
   return (
-    <section className="bg-white py-10 md:py-24">
+    <section className="bg-white py-10">
       <Container className="max-w-340!">
         <div className="flex flex-col items-start gap-10 lg:flex-row lg:items-center lg:gap-[60px]">
           <div

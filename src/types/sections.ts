@@ -174,7 +174,7 @@ export type SalonValueCardT = {
   text: string;
 };
 
-/** Figma: eyebrow + headline + intro, blue gradient visual, three accent cards */
+/** Figma: eyebrow + headline + intro, blue gradient visual, three accent cards. When no panel visual (empty `visualImage`), render centered headline + optional footer CTA pill (597:2910-style). */
 export type SalonValuePropositionSectionT = CoreSection & {
   type: "salon_value_proposition";
   eyebrow: string;
@@ -183,6 +183,10 @@ export type SalonValuePropositionSectionT = CoreSection & {
   /** Composite illustration for the gradient panel */
   visualImage: WpImage | null;
   cards: SalonValueCardT[];
+  /** Line above the footer CTA (centered variant, when panel visual is empty). */
+  footerTitle?: string;
+  footerCtaLink?: WpAcfLink | null;
+  footerCtaIcon?: WpImage | null;
 };
 
 /** Figma: centered header, light panel + stacked feature cards, navy CTA panel with optional composite art */

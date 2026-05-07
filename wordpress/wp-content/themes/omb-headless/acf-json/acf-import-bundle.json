@@ -3862,6 +3862,58 @@
                                         "parent_repeater": "field_svp_feature_cards"
                                     }
                                 ]
+                            },
+                            {
+                                "key": "field_omb_svp_footer_title",
+                                "label": "Footer title",
+                                "name": "footer_title",
+                                "aria-label": "",
+                                "type": "text",
+                                "instructions": "Optional line above the footer CTA when “Panel visual” is empty (centered layout, e.g. Figma 597:2910).",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "default_value": "",
+                                "maxlength": "",
+                                "allow_in_bindings": 0,
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": ""
+                            },
+                            {
+                                "key": "field_omb_svp_footer_cta_link",
+                                "label": "Footer CTA link",
+                                "name": "footer_cta_link",
+                                "aria-label": "",
+                                "type": "link",
+                                "instructions": "Optional pill CTA when panel visual is empty. Button label uses the link title.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "return_format": "array",
+                                "allow_in_bindings": 0
+                            },
+                            {
+                                "key": "field_omb_svp_footer_cta_icon",
+                                "label": "Footer CTA icon",
+                                "name": "footer_cta_icon",
+                                "aria-label": "",
+                                "type": "image",
+                                "instructions": "Optional graphic shown to the left inside the footer CTA pill (e.g. logo in circle).",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "return_format": "array",
+                                "library": "all",
+                                "min_width": "",
+                                "min_height": "",
+                                "min_size": "",
+                                "max_width": "",
+                                "max_height": "",
+                                "max_size": "",
+                                "mime_types": "",
+                                "allow_in_bindings": 0,
+                                "preview_size": "thumbnail"
                             }
                         ],
                         "min": "",
