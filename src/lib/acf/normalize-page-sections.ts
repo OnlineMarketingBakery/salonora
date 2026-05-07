@@ -223,10 +223,20 @@ function mapKnownPageSectionLayout(
         ...base,
         type: "story_split",
         image: asImage(row.image),
+        eyebrow: asString(row.eyebrow) || undefined,
         title: asString(row.title),
         body: asHtml(row.body),
+        highlightLine: asHtml(row.highlight_line) || asString(row.highlight_line) || undefined,
         ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
         showAccentShape: row.show_accent_shape === undefined ? true : asBool(row.show_accent_shape),
+        theme: (() => {
+          const s = asString(row.theme);
+          return s === "brand_gradient" ? "brand_gradient" : "default";
+        })(),
+        imageStyle: (() => {
+          const s = asString(row.image_style);
+          return s === "cutout" ? "cutout" : "card";
+        })(),
       };
     case "image_intro_split":
       return {
