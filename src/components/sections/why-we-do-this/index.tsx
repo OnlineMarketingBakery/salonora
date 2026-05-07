@@ -10,6 +10,18 @@ export function WhyWeDoThisSection({ section }: { section: WhyWeDoThisSectionT; 
     <section className="bg-white py-20 md:py-24">
       <Container className="max-w-340!">
         <div className="relative overflow-hidden rounded-[14px] bg-[linear-gradient(180deg,var(--palette-brand),var(--palette-brand-strong))]">
+          {section.backgroundGraphic ? (
+            <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
+              <Media
+                image={section.backgroundGraphic}
+                width={2624}
+                height={830}
+                preferLargestSource
+                className="h-full w-full object-cover object-left opacity-100"
+                sizes="(min-width: 1024px) 1312px, 100vw"
+              />
+            </div>
+          ) : null}
           <div className="relative flex flex-col gap-10 px-6 py-12 sm:px-10 sm:py-14 lg:min-h-[415px] lg:justify-center lg:pl-[650px] lg:pr-16 lg:py-16">
             {section.behindGraphic ? (
               <div
@@ -34,7 +46,7 @@ export function WhyWeDoThisSection({ section }: { section: WhyWeDoThisSectionT; 
                   width={1300}
                   height={830}
                   preferLargestSource
-                  className="mx-auto h-auto w-full max-w-[520px] object-contain object-bottom lg:absolute lg:left-16 lg:bottom-0 lg:mx-0 lg:max-w-[520px]"
+                  className="mx-auto h-auto w-full max-w-[520px] object-contain object-bottom lg:absolute lg:left-16 lg:bottom-0 lg:mx-0 lg:max-h-[390px] lg:w-auto"
                   sizes="(min-width: 1024px) 520px, 92vw"
                 />
               </div>

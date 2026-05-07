@@ -3226,6 +3226,32 @@
                                 "preview_size": "medium"
                             },
                             {
+                                "key": "field_why_we_do_this_background_graphic",
+                                "label": "Background graphic",
+                                "name": "background_graphic",
+                                "aria-label": "",
+                                "type": "image",
+                                "instructions": "Optional full-panel decorative overlay (e.g. the diagonal pattern from Figma). Upload a transparent PNG/SVG export sized for the whole panel.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "return_format": "array",
+                                "library": "all",
+                                "min_width": "",
+                                "min_height": "",
+                                "min_size": "",
+                                "max_width": "",
+                                "max_height": "",
+                                "max_size": "",
+                                "mime_types": "",
+                                "allow_in_bindings": 0,
+                                "preview_size": "medium"
+                            },
+                            {
                                 "key": "field_why_we_do_this_behind_graphic",
                                 "label": "Behind graphic",
                                 "name": "behind_graphic",
