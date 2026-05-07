@@ -9,6 +9,9 @@ export type CoreSection = { _key: string; id: string };
 /** Hero variant — controls vertical density. `default` keeps existing layout; `compact` is for shorter intro headers (e.g. About-style pages). */
 export type HeroVariantT = "default" | "compact";
 
+/** Offer text scale. `large` is the original homepage size (lg:36px); `medium` (lg:30px) and `small` (lg:24px) for inner pages. */
+export type HeroOfferTextSizeT = "large" | "medium" | "small";
+
 export type HeroSectionT = CoreSection & {
   type: "hero";
   eyebrow: string;
@@ -28,6 +31,8 @@ export type HeroSectionT = CoreSection & {
   floatingCard?: string;
   /** Layout density. Defaults to "default" (full hero). */
   variant?: HeroVariantT;
+  /** Responsive size scale for `offerText`. Defaults to "large" (current homepage). */
+  offerTextSize?: HeroOfferTextSizeT;
 };
 
 export type CardItemT = {
