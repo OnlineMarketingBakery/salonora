@@ -1,18 +1,26 @@
 import { Container } from "@/components/ui/Container";
-import { RichText } from "@/components/ui/RichText";
 import { Media } from "@/components/ui/Media";
+import { RichText } from "@/components/ui/RichText";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
-import type { WhyWeDoThisSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
+import type { WhyWeDoThisSectionT } from "@/types/sections";
 
-export function WhyWeDoThisSection({ section }: { section: WhyWeDoThisSectionT; lang: Locale }) {
+export function WhyWeDoThisSection({
+  section,
+}: {
+  section: WhyWeDoThisSectionT;
+  lang: Locale;
+}) {
   return (
     <section className="bg-white py-20 md:py-24">
       <Container className="max-w-340!">
         <div className="relative">
           <div className="relative overflow-hidden rounded-[14px] bg-[linear-gradient(180deg,var(--palette-brand),var(--palette-brand-strong))]">
             {section.backgroundGraphic ? (
-              <div aria-hidden className="pointer-events-none absolute inset-0 z-0">
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-0 z-0"
+              >
                 <Media
                   image={section.backgroundGraphic}
                   width={2624}
@@ -41,7 +49,9 @@ export function WhyWeDoThisSection({ section }: { section: WhyWeDoThisSectionT; 
                 </div>
               ) : null}
 
-              <div className={`${REVEAL_ITEM} relative z-10 flex w-full flex-col items-start gap-6 lg:w-[535px]`}>
+              <div
+                className={`${REVEAL_ITEM} relative z-10 flex w-full flex-col items-start gap-6 lg:w-[535px]`}
+              >
                 {section.eyebrow ? (
                   <div className="inline-flex h-[42px] w-[200px] items-center justify-center rounded-[21px] bg-white px-3 text-base font-medium leading-[1.6] text-brand">
                     {section.eyebrow}
@@ -74,15 +84,17 @@ export function WhyWeDoThisSection({ section }: { section: WhyWeDoThisSectionT; 
           </div>
 
           {section.image ? (
-            <div className={`${REVEAL_ITEM} pointer-events-none absolute left-0 top-0 z-20 hidden h-full w-[650px] lg:block`}>
-              <div className="absolute left-10 bottom-0 translate-y-[-44px]">
+            <div
+              className={`${REVEAL_ITEM} pointer-events-none absolute left-0 top-0 z-20 hidden h-full w-[650px] lg:block`}
+            >
+              <div className="absolute left-16 bottom-[-8px] translate-y-[-72px]">
                 <Media
                   image={section.image}
                   width={1300}
                   height={830}
                   preferLargestSource
-                  className="h-auto w-[460px] max-w-none object-contain object-bottom"
-                  sizes="460px"
+                  className="h-auto w-[560px] max-w-none object-contain object-bottom"
+                  sizes="560px"
                 />
               </div>
             </div>
@@ -105,4 +117,3 @@ export function WhyWeDoThisSection({ section }: { section: WhyWeDoThisSectionT; 
     </section>
   );
 }
-
