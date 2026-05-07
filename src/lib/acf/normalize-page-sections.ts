@@ -125,10 +125,24 @@ function mapKnownPageSectionLayout(
             }))
           : [],
         content_cards: Array.isArray(row.content_cards)
-          ? (row.content_cards as { title?: unknown; description?: unknown }[]).map((c) => ({
-              title: asString(c.title),
-              text: asHtml(c.description),
-            }))
+          ? (
+              row.content_cards as { title?: unknown; description?: unknown; accent?: unknown }[]
+            ).map((c, idx) => {
+              const rawAccent = asString(c.accent);
+              const accent =
+                rawAccent === "rose"
+                  ? ("rose" as const)
+                  : rawAccent === "brand"
+                    ? ("brand" as const)
+                    : idx % 2 === 1
+                      ? ("rose" as const)
+                      : ("brand" as const);
+              return {
+                title: asString(c.title),
+                text: asHtml(c.description),
+                accent,
+              };
+            })
           : [],
         footer_logo: asImage(row.footer_logo),
         footer_text: asString(row.footer_text),
