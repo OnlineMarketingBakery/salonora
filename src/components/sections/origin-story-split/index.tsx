@@ -31,7 +31,7 @@ export function OriginStorySplitSection({
         <div className="flex flex-col items-start gap-10 lg:flex-row lg:items-center lg:gap-[60px]">
           <div className={`${REVEAL_ITEM} flex w-full min-w-0 flex-col gap-6 lg:max-w-[626px]`}>
             {section.eyebrow ? (
-              <div className="inline-flex h-[42px] max-w-full items-center justify-center rounded-[21px] bg-pill px-[21px] text-base font-medium leading-[1.6] text-brand">
+              <div className="inline-flex h-[42px] self-start items-center justify-center rounded-[21px] bg-pill px-[21px] text-base font-medium leading-[1.6] text-brand">
                 {section.eyebrow}
               </div>
             ) : null}
