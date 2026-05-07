@@ -87,13 +87,13 @@ export function WhyWeDoThisSection({
             <div
               className={`${REVEAL_ITEM} pointer-events-none absolute left-0 top-0 z-20 hidden h-full w-[650px] lg:block`}
             >
-              <div className="absolute left-16 bottom-[-8px] translate-y-[-72px]">
+              <div className="absolute left-16 bottom-[-8px] translate-y-[-9px]">
                 <Media
                   image={section.image}
                   width={1300}
                   height={830}
                   preferLargestSource
-                  className="h-auto w-[560px] max-w-none object-contain object-bottom"
+                  className="h-auto w-[420px] max-w-none object-contain object-bottom"
                   sizes="560px"
                 />
               </div>
