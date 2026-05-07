@@ -5654,6 +5654,126 @@
                         "min": "",
                         "max": ""
                     },
+                    "layout_omb_about_visual_split": {
+                        "key": "layout_omb_about_visual_split",
+                        "name": "about_visual_split",
+                        "label": "About Visual Split",
+                        "display": "block",
+                        "sub_fields": [
+                            {
+                                "key": "field_omb_avs_eyebrow",
+                                "label": "Eyebrow",
+                                "name": "eyebrow",
+                                "aria-label": "",
+                                "type": "text",
+                                "instructions": "Small heading above the tagline (e.g. About Us).",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "maxlength": "",
+                                "allow_in_bindings": 0,
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": ""
+                            },
+                            {
+                                "key": "field_omb_avs_tagline",
+                                "label": "Tagline",
+                                "name": "tagline",
+                                "aria-label": "",
+                                "type": "text",
+                                "instructions": "One line under the eyebrow (e.g. We are Salonora).",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "maxlength": "",
+                                "allow_in_bindings": 0,
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": ""
+                            },
+                            {
+                                "key": "field_omb_avs_title",
+                                "label": "Title",
+                                "name": "title",
+                                "aria-label": "",
+                                "type": "text",
+                                "instructions": "Main headline. Use line breaks if needed.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "maxlength": "",
+                                "allow_in_bindings": 0,
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": ""
+                            },
+                            {
+                                "key": "field_omb_avs_visual",
+                                "label": "Visual",
+                                "name": "visual",
+                                "aria-label": "",
+                                "type": "image",
+                                "instructions": "Right-column hero graphic (e.g. phone with social icons).",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "return_format": "array",
+                                "library": "all",
+                                "min_width": "",
+                                "min_height": "",
+                                "min_size": "",
+                                "max_width": "",
+                                "max_height": "",
+                                "max_size": "",
+                                "mime_types": "",
+                                "allow_in_bindings": 0,
+                                "preview_size": "medium"
+                            },
+                            {
+                                "key": "field_omb_avs_floating_card",
+                                "label": "Floating card",
+                                "name": "floating_card",
+                                "aria-label": "",
+                                "type": "wysiwyg",
+                                "instructions": "Optional small card overlaid on the visual (e.g. pricing line).",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "allow_in_bindings": 0,
+                                "tabs": "all",
+                                "toolbar": "basic",
+                                "media_upload": 0,
+                                "delay": 0
+                            }
+                        ],
+                        "min": "",
+                        "max": ""
+                    },
                     "layout_omb_form_embed": {
                         "key": "layout_omb_form_embed",
                         "name": "form_embed",

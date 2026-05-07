@@ -21,20 +21,11 @@ function linesFromHeading(raw: string | undefined): string[] {
 }
 
 /**
- * Hero wash layer — matches node `346:5625`: img scaled past bounds inside clipped frame,
- * then tinted by brand `mix-blend-mode: color` (`346:5626`).
+ * Hero wash — desktop `346:5625` (img h 134.3%); mobile artboard `597:2296` under `597:2295`
+ * (img h 186.44%, same asset + crop). Brand tint still `346:5626` / `597:2297`.
  */
-const heroBgImageLayer: CSSProperties = {
-  position: "absolute",
-  top: 0,
-  left: "-19.42%",
-  width: "138.84%",
-  height: "134.3%",
-  minHeight: "100%",
+const heroBgImageStyle: Pick<CSSProperties, "backgroundImage"> = {
   backgroundImage: `url("${HERO_BG_SRC}")`,
-  backgroundRepeat: "no-repeat",
-  backgroundPosition: "center top",
-  backgroundSize: "cover",
 };
 
 const brandColorBlendLayer: CSSProperties = {
@@ -117,7 +108,11 @@ export function FeatureHighlightSplitSection({
           }}
           aria-hidden
         />
-        <div style={heroBgImageLayer} aria-hidden />
+        <div
+          className="absolute top-0 left-[-19.42%] h-[186.44%] min-h-full w-[138.84%] bg-cover bg-top bg-no-repeat lg:h-[134.3%]"
+          style={heroBgImageStyle}
+          aria-hidden
+        />
         <div className="absolute inset-0" style={brandColorBlendLayer} aria-hidden />
       </div>
 

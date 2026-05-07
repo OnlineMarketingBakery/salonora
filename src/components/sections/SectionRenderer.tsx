@@ -37,6 +37,10 @@ export function SectionRenderer({ sections, lang }: { sections: AnySectionT[]; l
             return <sectionRegistry.testimonials key={section.id} section={section} lang={lang} />;
           case "announcement_bar":
             return <sectionRegistry.announcement_bar key={section.id} section={section} lang={lang} />;
+          case "about_visual_split":
+            return (
+              <sectionRegistry.about_visual_split key={section.id} section={section} lang={lang} />
+            );
           case "process_steps":
             return <sectionRegistry.process_steps key={section.id} section={section} lang={lang} />;
           case "how_it_works_steps":

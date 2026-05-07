@@ -13,6 +13,7 @@ import { WhySalonoraDifferentSection } from "@/components/sections/why-salonora-
 import { WhySalonoraAndersSection } from "@/components/sections/why-salonora-anders/WhySalonoraAndersSection";
 import { TestimonialsSection } from "@/components/sections/testimonials/TestimonialsSection";
 import { AnnouncementBarSection } from "@/components/sections/announcement-bar/AnnouncementBarSection";
+import { AboutVisualSplitSection } from "@/components/sections/about-visual-split";
 import { ProcessStepsSection } from "@/components/sections/process-steps/ProcessStepsSection";
 import { FaqContactSplitSection } from "@/components/sections/faq-contact-split/FaqContactSplitSection";
 import { FormEmbedSection } from "@/components/sections/form-embed/FormEmbedSection";
@@ -82,6 +83,7 @@ export const sectionRegistry = {
   why_salonora_anders: asSection(WhySalonoraAndersSection as (p: { section: never; lang: Locale }) => ReactNode),
   testimonials: asSection(TestimonialsSection as (p: { section: never; lang: Locale }) => ReactNode),
   announcement_bar: asSection(AnnouncementBarSection as (p: { section: never; lang: Locale }) => ReactNode),
+  about_visual_split: asSection(AboutVisualSplitSection as (p: { section: never; lang: Locale }) => ReactNode),
   process_steps: asSection(ProcessStepsSection as (p: { section: never; lang: Locale }) => ReactNode),
   how_it_works_steps: asSection(HowItWorksStepsSectionShell as (p: { section: never; lang: Locale }) => ReactNode),
   faq_contact_split: asSection(FaqContactSplitSection as (p: { section: never; lang: Locale }) => ReactNode),
