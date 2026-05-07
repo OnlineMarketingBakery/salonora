@@ -31,6 +31,18 @@ function storyCardShellStyle(accent: CombinedStrengthsCardAccentT): CSSPropertie
   };
 }
 
+/** Figma `597:3051` — footer frame uses layered vector artwork; visually = **135°** wash (brand-tinted corners → white center). */
+function combinedStrengthsFooterStripStyle(): CSSProperties {
+  return {
+    background: `linear-gradient(135deg,
+      color-mix(in srgb, var(--palette-brand) 82%, var(--palette-white)) 0%,
+      var(--palette-white) 44%,
+      var(--palette-white) 56%,
+      color-mix(in srgb, var(--palette-brand) 82%, var(--palette-white)) 100%)`,
+    boxShadow: `inset 0 1px 0 color-mix(in srgb, var(--palette-white) 65%, transparent)`,
+  };
+}
+
 /**
  * Story cards: white fill + TR/BL gradient “border” (CMS `accent` brand | rose; auto-alternate).
  */
@@ -129,7 +141,8 @@ export function CombinedStrengthsSection({
 
           {(section.footer_logo || section.footer_text) && (
             <div
-              className={`${REVEAL_ITEM} flex min-h-[111px] w-full flex-col items-center justify-center gap-4 rounded-[20px] bg-[var(--palette-navy-deep)] px-6 py-8 sm:flex-row sm:gap-6 sm:px-10`}
+              style={combinedStrengthsFooterStripStyle()}
+              className={`${REVEAL_ITEM} flex min-h-[111px] w-full flex-col items-center justify-center gap-4 overflow-hidden rounded-[20px] px-6 py-8 sm:flex-row sm:gap-6 sm:px-10`}
             >
               {section.footer_logo ? (
                 <div className="relative h-10 w-auto shrink-0 sm:h-11">
@@ -144,7 +157,7 @@ export function CombinedStrengthsSection({
                 </div>
               ) : null}
               {section.footer_text ? (
-                <p className="text-center font-sans text-lg font-semibold leading-snug text-[var(--palette-white)] sm:text-left sm:text-xl">
+                <p className="text-center font-sans text-lg font-semibold leading-snug text-navy-deep sm:text-left sm:text-xl">
                   {section.footer_text}
                 </p>
               ) : null}
