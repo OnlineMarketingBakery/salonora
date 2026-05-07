@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
@@ -6,6 +7,9 @@ import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
 import type { PartnerIntroSplitSectionT } from "@/types/sections";
+
+/** Figma Ellipse 1997 — exported gradient circle + white stroke (see `public/partner-intro-ellipse.svg`). */
+const PARTNER_INTRO_ELLIPSE_SRC = "/partner-intro-ellipse.svg";
 
 export function PartnerIntroSplitSection({
   section,
@@ -33,18 +37,28 @@ export function PartnerIntroSplitSection({
           <div
             className={`${REVEAL_ITEM} relative flex min-h-[360px] w-full shrink-0 flex-col items-center justify-end overflow-hidden bg-navy-deep lg:w-1/2 lg:max-w-none lg:flex-1 lg:items-center lg:pb-12 lg:pt-14`}
           >
-            {/* Vibrant gradient disc anchored bottom-left (“portal”), full white rim + soft glow — matches reference comps. */}
-            <div
-              aria-hidden
-              className="pointer-events-none absolute bottom-0 left-0 aspect-square w-[min(168vw,920px)] max-w-none translate-x-[-46%] translate-y-[34%] rounded-full border-2 border-(--palette-white) bg-[radial-gradient(circle_at_30%_72%,var(--palette-brand)_0%,var(--palette-brand-strong)_36%,color-mix(in_srgb,var(--palette-navy-deep)_22%,var(--palette-brand-strong))_72%,color-mix(in_srgb,var(--palette-navy-deep)_55%,var(--palette-brand-strong))_100%)] shadow-[0_0_72px_12px_color-mix(in_srgb,var(--palette-brand)_36%,transparent)] sm:w-[min(140vw,880px)] sm:translate-x-[-42%] sm:translate-y-[32%] lg:w-[min(135%,860px)] lg:translate-x-[-44%] lg:translate-y-[36%]"
-            />
+            {/* Figma asset: gradient ellipse + white rim — replaces CSS-only circle for pixel match */}
+            <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+              {/* Anchor ~ Figma `left-[calc(12.5%+50.8px)]` + `rotate-[22.57deg]` on the 757×757 ellipse */}
+              <div className="absolute left-[28%] top-12 flex size-[min(757px,132vw)] max-h-[757px] max-w-[757px] -translate-x-1/2 rotate-[22.57deg] sm:left-[30%] sm:top-10 lg:left-[32%] lg:top-8">
+                <Image
+                  src={PARTNER_INTRO_ELLIPSE_SRC}
+                  alt=""
+                  width={757}
+                  height={757}
+                  unoptimized
+                  className="block h-auto w-full max-h-[757px] max-w-[757px] select-none"
+                  draggable={false}
+                />
+              </div>
+            </div>
             {section.image ? (
               <div className="relative z-10 flex w-full justify-center px-5 pb-8 pt-10 sm:px-8 sm:pb-10 lg:max-w-[556px] lg:px-0 lg:pb-14">
                 <Media
                   image={section.image}
                   width={1112}
                   height={956}
-                  className="h-auto w-full max-w-[556px] object-contain object-bottom -mb-14"
+                  className="h-auto w-full max-w-[556px] object-contain object-bottom mb-[-105px]"
                   sizes="(min-width: 1024px) 50vw, 100vw"
                   preferLargestSource
                 />
