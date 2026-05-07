@@ -422,6 +422,17 @@ export type FeatureHighlightSplitSectionT = CoreSection & {
   promise_items?: FeatureHighlightSplitPromiseItemT[];
 };
 
+/** Figma About-style band: plain eyebrow + tagline + headline, soft gradient, visual with optional floating note card */
+export type AboutVisualSplitSectionT = CoreSection & {
+  type: "about_visual_split";
+  eyebrow?: string;
+  tagline?: string;
+  title?: string;
+  visual?: WpImage | null;
+  /** Small overlay card on the visual column (e.g. pricing line) */
+  floating_card?: string;
+};
+
 export type AnySectionT =
   | HeroSectionT
   | CardsSectionT
@@ -450,6 +461,7 @@ export type AnySectionT =
   | RichTextSectionT
   | FaqSectionT
   | FeatureHighlightGridSectionT
-  | FeatureHighlightSplitSectionT;
+  | FeatureHighlightSplitSectionT
+  | AboutVisualSplitSectionT;
 
 export type LatestPostResolved = { id: number; title: string; excerpt: string; href: string };
