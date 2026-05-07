@@ -11,8 +11,20 @@ import type { Locale } from "@/lib/i18n/locales";
 
 export function HeroSection({ section, lang }: { section: HeroSectionT; lang: Locale }) {
   const showSocial = Boolean(section.trustImage || section.trustLine);
+  const isCompact = section.variant === "compact";
+  const hasTagline = Boolean(section.tagline?.trim());
+  const hasFloatingCard = Boolean(
+    section.floatingCard?.replace(/<[^>]+>/g, "").trim()
+  );
+  const sectionPaddingClass = isCompact
+    ? "pt-20 sm:pt-24 md:pt-28"
+    : "pt-28 sm:pt-32 md:pt-36";
+  const titleSizeClass = isCompact
+    ? "text-[2rem] font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-[2.5rem] md:text-[2.75rem] lg:text-[3.25rem] lg:leading-[3.75rem]"
+    : "text-[2rem] font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-4xl md:text-5xl lg:text-[4rem] lg:leading-[4.625rem]";
+
   return (
-    <section className="relative overflow-hidden pt-28 sm:pt-32 md:pt-36 pb-0">
+    <section className={`relative overflow-hidden pb-0 ${sectionPaddingClass}`}>
       <div
         className="pointer-events-none absolute inset-0 -z-20 bg-cover bg-center bg-no-repeat"
         style={{ backgroundImage: "url('/hero-gradiant.png')" }}
@@ -28,9 +40,14 @@ export function HeroSection({ section, lang }: { section: HeroSectionT; lang: Lo
                 {section.eyebrow}
               </p>
             )}
-            <h1
-              className={`${REVEAL_ITEM} text-[2rem] font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-4xl md:text-5xl lg:text-[4rem] lg:leading-[4.625rem]`}
-            >
+            {hasTagline && (
+              <p
+                className={`${REVEAL_ITEM} mb-3 text-sm font-normal leading-snug text-muted sm:text-base`}
+              >
+                {section.tagline?.trim()}
+              </p>
+            )}
+            <h1 className={`${REVEAL_ITEM} ${titleSizeClass}`}>
               {section.title}
             </h1>
             {section.text && (
@@ -42,24 +59,26 @@ export function HeroSection({ section, lang }: { section: HeroSectionT; lang: Lo
                 className={`${REVEAL_ITEM} mt-3 !prose-p:text-inherit text-2xl font-semibold !text-accent !prose-p:text-inherit !prose-strong:text-navy sm:text-3xl lg:mt-4 lg:text-[36px] [&_p]:!m-0 [&_p]:leading-tight`}
               />
             )}
-            <div className={`${REVEAL_ITEM} mt-8 flex w-full min-w-0 flex-row flex-wrap items-start gap-[18px] sm:mt-9`}>
-              {section.ctas.map((cta, i) => {
-                const r = resolveLink(cta.url, lang);
-                if (!r) return null;
-                return (
-                  <Button
-                    key={`${section.id}-cta-${i}`}
-                    href={r.href}
-                    target={r.target}
-                    variant={ctaVariantAt(i)}
-                    ctaSize="hero"
-                    ctaFullWidth={false}
-                  >
-                    {cta.text || r.label}
-                  </Button>
-                );
-              })}
-            </div>
+            {section.ctas.length > 0 && (
+              <div className={`${REVEAL_ITEM} mt-8 flex w-full min-w-0 flex-row flex-wrap items-start gap-[18px] sm:mt-9`}>
+                {section.ctas.map((cta, i) => {
+                  const r = resolveLink(cta.url, lang);
+                  if (!r) return null;
+                  return (
+                    <Button
+                      key={`${section.id}-cta-${i}`}
+                      href={r.href}
+                      target={r.target}
+                      variant={ctaVariantAt(i)}
+                      ctaSize="hero"
+                      ctaFullWidth={false}
+                    >
+                      {cta.text || r.label}
+                    </Button>
+                  );
+                })}
+              </div>
+            )}
             {showSocial && (
               <div
                 className={`${REVEAL_ITEM} mt-9 flex flex-col items-start justify-start gap-2 sm:mt-10 sm:flex-row sm:items-center sm:gap-4`}
@@ -109,6 +128,16 @@ export function HeroSection({ section, lang }: { section: HeroSectionT; lang: Lo
                 height={750}
                 sizes="(min-width: 1024px) 38vw, 100vw"
               />
+            )}
+            {hasFloatingCard && (
+              <div
+                className="pointer-events-auto absolute z-20 left-1/2 top-auto bottom-6 w-[min(86%,260px)] -translate-x-1/2 rounded-2xl bg-white px-5 py-4 shadow-[0_11px_24px_color-mix(in_srgb,var(--palette-muted)_12%,transparent)] sm:bottom-8 lg:left-auto lg:right-0 lg:translate-x-0 lg:top-1/2 lg:bottom-auto lg:-translate-y-1/2 lg:px-6 lg:py-5"
+              >
+                <RichText
+                  html={section.floatingCard ?? ""}
+                  className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-none !prose-p:text-left !prose-p:text-sm !prose-p:font-medium !prose-p:leading-snug !prose-p:text-navy-deep sm:!prose-p:text-base [&_p+_p]:mt-2!"
+                />
+              </div>
             )}
           </div>
         </div>
