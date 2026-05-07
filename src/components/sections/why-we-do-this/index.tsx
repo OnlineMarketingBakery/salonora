@@ -1,4 +1,5 @@
 import { Container } from "@/components/ui/Container";
+import { RichText } from "@/components/ui/RichText";
 import { Media } from "@/components/ui/Media";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { WhyWeDoThisSectionT } from "@/types/sections";
@@ -39,10 +40,17 @@ export function WhyWeDoThisSection({ section }: { section: WhyWeDoThisSectionT; 
                 {section.title}
               </h2>
             ) : null}
-            {section.subtitle ? (
-              <p className="text-base font-medium leading-relaxed text-muted">
-                {section.subtitle}
-              </p>
+            {section.body ? (
+              <RichText
+                html={section.body}
+                className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-none !prose-p:text-left !prose-p:text-base !prose-p:font-normal !prose-p:leading-[1.6] !prose-p:text-muted [&_p+_p]:mt-[18px]! [&_strong]:font-bold [&_strong]:text-navy-deep"
+              />
+            ) : null}
+            {section.highlightLine ? (
+              <RichText
+                html={section.highlightLine}
+                className="text-xl font-semibold leading-[1.6] text-navy-deep [&_p]:m-0"
+              />
             ) : null}
           </div>
         </div>

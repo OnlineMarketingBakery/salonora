@@ -3268,12 +3268,12 @@
                                 "append": ""
                             },
                             {
-                                "key": "field_why_we_do_this_subtitle",
-                                "label": "Subtitle",
-                                "name": "subtitle",
+                                "key": "field_why_we_do_this_body",
+                                "label": "Body",
+                                "name": "body",
                                 "aria-label": "",
-                                "type": "textarea",
-                                "instructions": "Short supporting line under the title (kept plain text in this section).",
+                                "type": "wysiwyg",
+                                "instructions": "Main paragraph text (Figma example: “Ik ben Rubin Koot…”).",
                                 "required": 0,
                                 "conditional_logic": 0,
                                 "wrapper": {
@@ -3282,11 +3282,32 @@
                                     "id": ""
                                 },
                                 "default_value": "",
-                                "maxlength": "",
                                 "allow_in_bindings": 0,
-                                "rows": 2,
-                                "placeholder": "",
-                                "new_lines": ""
+                                "tabs": "all",
+                                "toolbar": "full",
+                                "media_upload": 1,
+                                "delay": 0
+                            },
+                            {
+                                "key": "field_why_we_do_this_highlight_line",
+                                "label": "Highlight line",
+                                "name": "highlight_line",
+                                "aria-label": "",
+                                "type": "wysiwyg",
+                                "instructions": "Bold emphasis line under the paragraph (Figma example: “Daar zag ik iets wat me niet lekker zat!”).",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "allow_in_bindings": 0,
+                                "tabs": "all",
+                                "toolbar": "basic",
+                                "media_upload": 0,
+                                "delay": 0
                             }
                         ],
                         "min": "",
