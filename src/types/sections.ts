@@ -132,6 +132,8 @@ export type StorySplitSectionT = CoreSection & {
 export type WhyWeDoThisSectionT = CoreSection & {
   type: "why_we_do_this";
   image: WpImage | null;
+  /** Optional decorative graphic behind the person (Figma background layer). */
+  behindGraphic?: WpImage | null;
   eyebrow: string;
   title: string;
   body: string;

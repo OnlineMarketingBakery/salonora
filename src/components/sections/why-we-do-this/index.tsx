@@ -21,13 +21,28 @@ export function WhyWeDoThisSection({ section }: { section: WhyWeDoThisSectionT; 
 
           <div className="relative z-10 flex flex-col items-center justify-between gap-10 lg:flex-row lg:gap-12">
             <div className={`${REVEAL_ITEM} relative w-full max-w-[560px] shrink-0`}>
+              {section.behindGraphic ? (
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute left-0 top-1/2 z-0 w-[520px] max-w-[92%] -translate-y-1/2 opacity-100"
+                >
+                  <Media
+                    image={section.behindGraphic}
+                    width={1040}
+                    height={1040}
+                    preferLargestSource
+                    className="h-auto w-full object-contain"
+                    sizes="(min-width: 1024px) 520px, 92vw"
+                  />
+                </div>
+              ) : null}
               {section.image ? (
                 <Media
                   image={section.image}
                   width={1120}
                   height={1120}
                   preferLargestSource
-                  className="h-auto w-full max-w-full object-contain object-bottom"
+                  className="relative z-10 h-auto w-full max-w-full object-contain object-bottom"
                   sizes="(min-width: 1024px) 520px, 92vw"
                 />
               ) : null}

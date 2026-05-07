@@ -234,6 +234,7 @@ function mapKnownPageSectionLayout(
         ...base,
         type: "why_we_do_this",
         image: asImage(row.image),
+        behindGraphic: asImage(row.behind_graphic),
         eyebrow: asString(row.eyebrow),
         title: asString(row.title),
         body: asHtml(row.body),
