@@ -31,6 +31,7 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   how_it_works_steps: true,
   image_intro_split: true,
   latest_posts: true,
+  origin_story_split: true,
   pricing_cta: true,
   pricing_dual_cards: true,
   pricing_packages: true,
@@ -240,6 +241,16 @@ function mapKnownPageSectionLayout(
         title: asString(row.title),
         body: asHtml(row.body),
         highlightLine: asHtml(row.highlight_line),
+      };
+    case "origin_story_split":
+      return {
+        ...base,
+        type: "origin_story_split",
+        eyebrow: asString(row.eyebrow),
+        title: asString(row.title),
+        body: asHtml(row.body),
+        image: asImage(row.image),
+        ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
       };
     case "image_intro_split":
       return {

@@ -142,6 +142,16 @@ export type WhyWeDoThisSectionT = CoreSection & {
   highlightLine: string;
 };
 
+/** Figma 1063:27 — badge + headline + rich text, right masked image with tilted brand panel */
+export type OriginStorySplitSectionT = CoreSection & {
+  type: "origin_story_split";
+  eyebrow: string;
+  title: string;
+  body: string;
+  image: WpImage | null;
+  ctas: CtaItem[];
+};
+
 export type ImageIntroSplitRowT = { icon: WpImage | null; text: string };
 
 export type ImageIntroSplitSectionT = CoreSection & {
@@ -458,6 +468,7 @@ export type AnySectionT =
   | GuaranteeSplitSectionT
   | StorySplitSectionT
   | WhyWeDoThisSectionT
+  | OriginStorySplitSectionT
   | ImageIntroSplitSectionT
   | SalonValuePropositionSectionT
   | WhyOwnersChooseSectionT

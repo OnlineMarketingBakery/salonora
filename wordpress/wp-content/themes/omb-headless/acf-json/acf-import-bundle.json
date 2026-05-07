@@ -3365,6 +3365,146 @@
                         "min": "",
                         "max": ""
                     },
+                    "layout_omb_origin_story_split": {
+                        "key": "layout_omb_origin_story_split",
+                        "name": "origin_story_split",
+                        "label": "Origin story split",
+                        "display": "block",
+                        "sub_fields": [
+                            {
+                                "key": "field_omb_origin_story_split_eyebrow",
+                                "label": "Eyebrow",
+                                "name": "eyebrow",
+                                "aria-label": "",
+                                "type": "text",
+                                "instructions": "Small pill label above the title (Figma example: “Waar Het Allemaal Mee Begon”).",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "maxlength": "",
+                                "allow_in_bindings": 0,
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": ""
+                            },
+                            {
+                                "key": "field_omb_origin_story_split_title",
+                                "label": "Title",
+                                "name": "title",
+                                "aria-label": "",
+                                "type": "text",
+                                "instructions": "Main headline (supports line breaks).",
+                                "required": 1,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "maxlength": "",
+                                "allow_in_bindings": 0,
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": ""
+                            },
+                            {
+                                "key": "field_omb_origin_story_split_body",
+                                "label": "Body",
+                                "name": "body",
+                                "aria-label": "",
+                                "type": "wysiwyg",
+                                "instructions": "Main paragraph text.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "allow_in_bindings": 0,
+                                "tabs": "all",
+                                "toolbar": "full",
+                                "media_upload": 1,
+                                "delay": 0
+                            },
+                            {
+                                "key": "field_omb_origin_story_split_image",
+                                "label": "Image",
+                                "name": "image",
+                                "aria-label": "",
+                                "type": "image",
+                                "instructions": "Right-side photo (shown inside a rounded mask, with a tilted brand panel behind).",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "return_format": "array",
+                                "library": "all",
+                                "min_width": "",
+                                "min_height": "",
+                                "min_size": "",
+                                "max_width": "",
+                                "max_height": "",
+                                "max_size": "",
+                                "mime_types": "",
+                                "allow_in_bindings": 0,
+                                "preview_size": "medium"
+                            },
+                            {
+                                "key": "field_omb_origin_story_split_ctas",
+                                "label": "CTA",
+                                "name": "ctas",
+                                "aria-label": "",
+                                "type": "repeater",
+                                "instructions": "Optional. Add one row. Use “CTA URL” (link) for both destination and button label (link title). The first row is shown on the page.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "layout": "table",
+                                "min": 0,
+                                "max": 0,
+                                "collapsed": "",
+                                "button_label": "Add Row",
+                                "rows_per_page": 20,
+                                "sub_fields": [
+                                    {
+                                        "key": "field_omb_origin_story_split_cta_url",
+                                        "label": "CTA URL",
+                                        "name": "cta_url",
+                                        "aria-label": "",
+                                        "type": "link",
+                                        "instructions": "",
+                                        "required": 0,
+                                        "conditional_logic": 0,
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
+                                        "return_format": "array",
+                                        "allow_in_bindings": 0,
+                                        "parent_repeater": "field_omb_origin_story_split_ctas"
+                                    }
+                                ]
+                            }
+                        ],
+                        "min": "",
+                        "max": ""
+                    },
                     "layout_omb_image_intro_split": {
                         "key": "layout_omb_image_intro_split",
                         "name": "image_intro_split",
