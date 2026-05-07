@@ -3129,6 +3129,110 @@
                                 "delay": 0
                             },
                             {
+                                "key": "field_story_split_eyebrow",
+                                "label": "Eyebrow",
+                                "name": "eyebrow",
+                                "aria-label": "",
+                                "type": "text",
+                                "instructions": "Optional pill label above the title (Figma: “Waarom Wij Dit Doen”).",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "maxlength": "",
+                                "allow_in_bindings": 0,
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": ""
+                            },
+                            {
+                                "key": "field_story_split_highlight_line",
+                                "label": "Highlight line",
+                                "name": "highlight_line",
+                                "aria-label": "",
+                                "type": "wysiwyg",
+                                "instructions": "Optional emphasized line after the body (Figma: bold closing sentence).",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "allow_in_bindings": 0,
+                                "tabs": "all",
+                                "toolbar": "basic",
+                                "media_upload": 0,
+                                "delay": 0
+                            },
+                            {
+                                "key": "field_story_split_theme",
+                                "label": "Theme",
+                                "name": "theme",
+                                "aria-label": "",
+                                "type": "select",
+                                "instructions": "Optional styling variant. Default keeps existing appearance.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "choices": {
+                                    "default": "Default",
+                                    "brand_gradient": "Brand gradient"
+                                },
+                                "default_value": "default",
+                                "return_format": "value",
+                                "multiple": 0,
+                                "allow_null": 0,
+                                "ui": 1,
+                                "ajax": 0,
+                                "placeholder": "",
+                                "allow_custom": 0,
+                                "search_placeholder": "",
+                                "allow_in_bindings": 0,
+                                "create_options": 0,
+                                "save_options": 0
+                            },
+                            {
+                                "key": "field_story_split_image_style",
+                                "label": "Image style",
+                                "name": "image_style",
+                                "aria-label": "",
+                                "type": "select",
+                                "instructions": "Controls image presentation. Default keeps existing card framing.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "choices": {
+                                    "card": "Card (framed)",
+                                    "cutout": "Cutout"
+                                },
+                                "default_value": "card",
+                                "return_format": "value",
+                                "multiple": 0,
+                                "allow_null": 0,
+                                "ui": 1,
+                                "ajax": 0,
+                                "placeholder": "",
+                                "allow_custom": 0,
+                                "search_placeholder": "",
+                                "allow_in_bindings": 0,
+                                "create_options": 0,
+                                "save_options": 0
+                            },
+                            {
                                 "key": "field_story_split_show_accent",
                                 "label": "Show brand shape behind image",
                                 "name": "show_accent_shape",
