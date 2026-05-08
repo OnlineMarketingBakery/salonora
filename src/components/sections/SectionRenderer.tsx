@@ -25,6 +25,14 @@ export function SectionRenderer({ sections, lang }: { sections: AnySectionT[]; l
             return (
               <sectionRegistry.guarantees_promise_split key={section.id} section={section} lang={lang} />
             );
+          case "growth_plans_split":
+            return (
+              <sectionRegistry.growth_plans_split key={section.id} section={section} lang={lang} />
+            );
+          case "founders_banner":
+            return (
+              <sectionRegistry.founders_banner key={section.id} section={section} lang={lang} />
+            );
           case "story_split":
             return <sectionRegistry.story_split key={section.id} section={section} lang={lang} />;
           case "why_we_do_this":
@@ -76,6 +84,10 @@ export function SectionRenderer({ sections, lang }: { sections: AnySectionT[]; l
           case "pricing_dual_cards":
             return (
               <sectionRegistry.pricing_dual_cards key={section.id} section={section} lang={lang} />
+            );
+          case "talk_dual_cards":
+            return (
+              <sectionRegistry.talk_dual_cards key={section.id} section={section} lang={lang} />
             );
           case "rich_text":
             return <sectionRegistry.rich_text key={section.id} section={section} lang={lang} />;

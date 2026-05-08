@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/Button";
-import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
@@ -31,7 +30,11 @@ export function PartnerIntroSplitSection({
 
   return (
     <section className="bg-[var(--palette-white)] py-10 lg:py-16">
-      <Container className="!max-w-[90rem]">
+      {/*
+        Full-bleed 50/50 split: no outer Container — Figma runs navy + surface edge-to-edge.
+        Inner columns keep their own padding (photo strip / copy column).
+      */}
+      <div className="w-full">
         {/* Reference: sharp 50/50; left navy + portal disc; right pale surface (~Figma 597:2353). */}
         <div className="flex min-h-0 flex-col overflow-hidden lg:min-h-[523px] lg:flex-row lg:items-stretch">
           <div
@@ -116,7 +119,7 @@ export function PartnerIntroSplitSection({
             </div>
           </div>
         </div>
-      </Container>
+      </div>
     </section>
   );
 }

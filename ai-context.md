@@ -16,7 +16,7 @@ Salonora is a **multilingual (nl/en) Next.js 15 App Router** marketing site that
 
 | Package | Version (caret) |
 |---------|-----------------|
-| next | ^15.5.15 |
+| next | ^15.5.18 (see `overrides.postcss` in `package.json` for GHSA-qx2v) |
 | react / react-dom | ^19.0.0 |
 | typescript | ^5 |
 | tailwindcss | ^4 |
@@ -65,6 +65,8 @@ public/                  # static assets (SVGs, hero-gradiant.png, etc.)
 
 | File | Role |
 |------|------|
+| `wordpress/.../acf-import-bundle.json` | **Bulk ACF import** (JSON array) for `npm run acf:push` or manual Tools import. Lives at **theme root**, not in `acf-json/`. |
+| `wordpress/.../acf-json/group_*.json` | **ACF Local JSON** (one file per field group; [ACF docs](https://www.advancedcustomfields.com/resources/local-json/)). Regenerate: **`npm run acf:extract-local-json`** (sets **`modified`** for Sync). Recovery: **`docs/acf-field-group-recovery.md`**. |
 | `src/lib/acf/section-registry.ts` | Maps section `type` → React component |
 | `src/components/sections/SectionRenderer.tsx` | Renders section list |
 | `src/lib/wordpress/client.ts` | All REST calls |
@@ -115,12 +117,17 @@ npm run lint     # next lint
 
 ## Section registry keys (reference)
 
-`hero`, `cards`, `combined_strengths`, `cost_comparison`, `benefits_grid`, `pricing_packages`, `guarantee_split`, `guarantees_promise_split`, `story_split`, `why_we_do_this`, `partner_intro_split`, `origin_story_split`, `founder_story_split`, `image_intro_split`, `salon_value_proposition`, `why_owners_choose`, `why_salonora_different`, `why_salonora_anders`, `testimonials`, `announcement_bar`, `process_steps`, `how_it_works_steps`, `scrolling_ticker`, `design_showcase_grid`, `feature_highlight_grid`, `feature_highlight_split`, `team_behind_salonora`, `faq_contact_split`, `form_embed`, `latest_posts`, `cta`, `pricing_cta`, `pricing_dual_cards`, `rich_text`, `faq` — must stay in sync with `section-registry.ts`.
+`hero`, `cards`, `combined_strengths`, `cost_comparison`, `benefits_grid`, `pricing_packages`, `guarantee_split`, `guarantees_promise_split`, `growth_plans_split`, `story_split`, `why_we_do_this`, `partner_intro_split`, `origin_story_split`, `founder_story_split`, `founders_banner`, `image_intro_split`, `salon_value_proposition`, `why_owners_choose`, `why_salonora_different`, `why_salonora_anders`, `testimonials`, `announcement_bar`, `process_steps`, `how_it_works_steps`, `scrolling_ticker`, `design_showcase_grid`, `feature_highlight_grid`, `feature_highlight_split`, `talk_dual_cards`, `team_behind_salonora`, `faq_contact_split`, `form_embed`, `latest_posts`, `cta`, `pricing_cta`, `pricing_dual_cards`, `rich_text`, `faq` — must stay in sync with `section-registry.ts`.
 
 - **`team_behind_salonora`** — About page “Het Team Achter Salonora”: two (or more) team member cards with social links, plus a bordered bottom tagline; optional decorative background/wordmark assets.
 
+- **`talk_dual_cards`** — Figma **597:2720** (“Frame 2147228539”): centered heading + two rounded panels (brand gradient left with optional **`left_corner_graphic`**, navy + optional **`right_overlay_graphic`**); one primary CTA vs two secondary CTAs with optional trailing icons.
+
 - **`guarantees_promise_split`** — Figma **1127:55** (“Group 596”): portrait + floating badges; checklist + download CTA. Icons from CMS: **`list_default_icon`** or per-row **`points[].icon`**; **`cta_trailing_icon`** on the download pill (avoid hardcoded SVG conversions).
+
+- **`growth_plans_split`** — Figma **1149:32** (“Group 600”) split row: left collage **`max-w-[30.25rem]`**, no CSS wash/shadow layers; **`main_visual`** + **`floating_circles`** only ( **`decorative_panel`** is accepted from CMS but not rendered — bake overlays into **`main_visual`** if needed). Copy + CTAs as above; **`media_position`** swaps columns.
 
 - **`combined_strengths`** — Figma **1090:47** (“Group 595”): solid brand panel + `left_rows`; white cards use TR/BL corner-emphasis gradient border (brand/rose via CMS `accent`) + Figma shadow `0 6px 20px rgba(129,154,205,.26)`. Footer **`597:3051`**: horizontal gradient **brand → `navy-deep` → brand**, inset highlight, white footer text, **`min-h-[111px]`**. Section background `palette-white`.
 - **`partner_intro_split`** — Figma 1072:29 (“Partner intro split”): navy visual column with layered brand arc + optional duo image; pale `--palette-surface` copy column (`title`, `body`, divider, brand `highlight_line`, optional CTAs).
 - **`founder_story_split`** — About-style gradient card: `avatar`, `title`, `subtitle`, WYSIWYG `content`, `conclusion`, `main_image` (Figma **1083:46** “Group 594”; bg texture **`597:2281`** → `public/founder-story-card-bg.png` + **`597:2282`** brand `mix-blend-color`; **`597:2283`**: `FounderStorySparkMark` (inline SVG, brand stroke); photo stack **`597:2287`**/**`597:2288`**; copy **`597:2954`** — lg grid `528 + 118 + 460` inside **1298×756** card, `rounded-[20px]`).
+- **`founders_banner`** — Figma **597:3120** (“Frame 2147228004”): wide rounded blue gradient strip with faint concentric rings; optional **`left_image`** / **`right_image`** cutouts (bottom fade into panel); centered WYSIWYG **`headline`** + white pill **`badge_text`** with side rules (auto width). Optional **`pill_link`** — when unset or empty URL, pill is non-interactive; when set, same visuals but `<Link>` / `<a>` (see `resolveLink`). Fields live in **Local JSON** like other layouts (`layout_omb_founders_banner` in `group_omb_page_builder.json` / `acf-import-bundle.json`); sync or `acf:push` like any other section.

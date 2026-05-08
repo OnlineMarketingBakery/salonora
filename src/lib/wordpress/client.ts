@@ -7,6 +7,11 @@ import type { Locale } from "@/lib/i18n/locales";
 export type WpFetchInit = RequestInit & {
   lang?: Locale;
   revalidate?: number | false;
+  /**
+   * When false, non-OK responses are not logged (used by `wpFetchOptional` so expected
+   * misses e.g. missing plugin routes do not spam the console).
+   */
+  logErrors?: boolean;
 };
 
 /**
@@ -17,7 +22,7 @@ export async function wpFetch<T>(path: string, init: WpFetchInit = {}): Promise<
   if (!base) {
     throw new Error("WORDPRESS_API_URL is not set");
   }
-  const { revalidate, lang, ...fetchInit } = init;
+  const { revalidate, lang, logErrors = true, ...fetchInit } = init;
   const url = new URL(path.startsWith("http") ? path : `${base}${path.startsWith("/") ? path : `/${path}`}`);
   if (lang) {
     url.searchParams.set("lang", lang);
@@ -35,7 +40,9 @@ export async function wpFetch<T>(path: string, init: WpFetchInit = {}): Promise<
   const res = await fetch(url.toString(), next);
   if (!res.ok) {
     const text = await res.text();
-    logger.warn("wpFetch error", { url: url.toString(), status: res.status, text: text.slice(0, 500) });
+    if (logErrors) {
+      logger.warn("wpFetch error", { url: url.toString(), status: res.status, text: text.slice(0, 500) });
+    }
     throw new Error(`WordPress request failed: ${res.status} ${res.statusText}`);
   }
   return (await res.json()) as T;
@@ -44,7 +51,7 @@ export async function wpFetch<T>(path: string, init: WpFetchInit = {}): Promise<
 export async function wpFetchOptional<T>(path: string, init: WpFetchInit = {}): Promise<T | null> {
   if (!apiBase()) return null;
   try {
-    return await wpFetch<T>(path, init);
+    return await wpFetch<T>(path, { ...init, logErrors: false });
   } catch {
     return null;
   }

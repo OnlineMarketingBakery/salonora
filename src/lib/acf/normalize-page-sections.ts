@@ -28,7 +28,9 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   founder_story_split: true,
   faq_contact_split: true,
   form_embed: true,
+  founders_banner: true,
   guarantee_split: true,
+  growth_plans_split: true,
   guarantees_promise_split: true,
   hero: true,
   how_it_works_steps: true,
@@ -44,6 +46,7 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   salon_value_proposition: true,
   scrolling_ticker: true,
   story_split: true,
+  talk_dual_cards: true,
   team_behind_salonora: true,
   why_we_do_this: true,
   testimonials: true,
@@ -258,6 +261,54 @@ function mapKnownPageSectionLayout(
           : [],
         ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
         mediaPosition: (asString(row.media_position) as "left" | "right") || "left",
+      };
+    case "growth_plans_split":
+      return (() => {
+        const listDefaultIcon = asImage(row.list_default_icon);
+        const mediaRaw = asString(row.media_position);
+        const media_position = mediaRaw === "right" ? ("right" as const) : ("left" as const);
+        return {
+          ...base,
+          type: "growth_plans_split",
+          title: asString(row.title),
+          intro: asHtml(row.intro),
+          upcoming_heading: asString(row.upcoming_heading),
+          list_default_icon: listDefaultIcon,
+          upcoming_items: Array.isArray(row.upcoming_items)
+            ? (
+                row.upcoming_items as {
+                  icon?: unknown;
+                  text?: unknown;
+                }[]
+              ).map((p) => ({
+                icon: asImage(p.icon) ?? listDefaultIcon,
+                text: asHtml(p.text),
+              }))
+            : [],
+          body: asHtml(row.body),
+          highlight_line: asHtml(row.highlight_line),
+          ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
+          cta_trailing_icon: asImage(row.cta_trailing_icon),
+          decorative_panel: asImage(row.decorative_panel),
+          main_visual: asImage(row.main_visual),
+          floating_circles: Array.isArray(row.floating_circles)
+            ? (row.floating_circles as { image?: unknown }[]).flatMap((r) => {
+                const img = asImage(r.image);
+                return img ? [img] : [];
+              })
+            : [],
+          media_position,
+        };
+      })();
+    case "founders_banner":
+      return {
+        ...base,
+        type: "founders_banner",
+        headline: asHtml(row.headline),
+        badge_text: asString(row.badge_text),
+        pill_link: asLink(row.pill_link),
+        left_image: asImage(row.left_image),
+        right_image: asImage(row.right_image),
       };
     case "guarantees_promise_split":
       return (() => {
@@ -766,6 +817,22 @@ function mapKnownPageSectionLayout(
               };
             })
           : [],
+      };
+    case "talk_dual_cards":
+      return {
+        ...base,
+        type: "talk_dual_cards",
+        title: asString(row.title),
+        left_body: asHtml(row.left_body),
+        left_link: asLink(row.left_link),
+        left_button_icon: asImage(row.left_button_icon),
+        left_corner_graphic: asImage(row.left_corner_graphic),
+        right_body: asHtml(row.right_body),
+        right_primary_link: asLink(row.right_primary_link),
+        right_secondary_link: asLink(row.right_secondary_link),
+        right_primary_button_icon: asImage(row.right_primary_button_icon),
+        right_secondary_button_icon: asImage(row.right_secondary_button_icon),
+        right_overlay_graphic: asImage(row.right_overlay_graphic),
       };
     case "rich_text":
       return {

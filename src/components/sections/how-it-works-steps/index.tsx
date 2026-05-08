@@ -100,7 +100,7 @@ export function HowItWorksStepsSection({
   const ctas = section.ctas ?? [];
 
   return (
-    <section className="bg-surface py-16 sm:py-20 md:py-24">
+    <section className="bg-surface pt-10 pb-20">
       <Container className="max-w-7xl!">
         <div className="mx-auto flex max-w-6xl flex-col items-center gap-[30px]">
           <header
