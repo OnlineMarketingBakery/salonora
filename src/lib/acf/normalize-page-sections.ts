@@ -306,6 +306,7 @@ function mapKnownPageSectionLayout(
         type: "founders_banner",
         headline: asHtml(row.headline),
         badge_text: asString(row.badge_text),
+        pill_link: asLink(row.pill_link),
         left_image: asImage(row.left_image),
         right_image: asImage(row.right_image),
       };

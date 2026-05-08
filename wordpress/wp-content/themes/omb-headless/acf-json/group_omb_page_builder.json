@@ -2780,12 +2780,12 @@
                             "delay": 0
                         },
                         {
-                            "key": "field_omb_founders_banner_white_pill_v2",
+                            "key": "field_omb_founders_banner_badge_text",
                             "label": "White pill text",
                             "name": "badge_text",
                             "aria-label": "",
                             "type": "text",
-                            "instructions": "Name(s) in the white pill under the headline (e.g. Rubin & Didi). Plain text.",
+                            "instructions": "Label in the white pill (e.g. Rubin & Didi). Use “Pill link” below only if the pill should navigate somewhere.",
                             "required": 0,
                             "conditional_logic": 0,
                             "wrapper": {
@@ -2799,6 +2799,23 @@
                             "placeholder": "",
                             "prepend": "",
                             "append": ""
+                        },
+                        {
+                            "key": "field_omb_founders_banner_pill_link",
+                            "label": "Pill link (optional)",
+                            "name": "pill_link",
+                            "aria-label": "",
+                            "type": "link",
+                            "instructions": "Leave empty for a static badge. When set, the pill keeps the same look but acts as a link.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "return_format": "array",
+                            "allow_in_bindings": 0
                         },
                         {
                             "key": "field_omb_founders_banner_left_image",
@@ -8489,5 +8506,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1778266754
+    "modified": 1778267550
 }

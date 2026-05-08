@@ -178,6 +178,8 @@ export type FoundersBannerSectionT = CoreSection & {
   type: "founders_banner";
   headline: string;
   badge_text: string;
+  /** Optional: when present with a URL, the pill acts as a link; otherwise same badge styling. */
+  pill_link: WpAcfLink | null;
   left_image: WpImage | null;
   right_image: WpImage | null;
 };
