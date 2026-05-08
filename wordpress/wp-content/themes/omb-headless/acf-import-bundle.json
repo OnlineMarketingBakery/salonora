@@ -1590,7 +1590,7 @@
                                 "sub_fields": [
                                     {
                                         "key": "field_cards_item_icon",
-                                        "label": "Card Icon\/Image",
+                                        "label": "Card Icon/Image",
                                         "name": "icon",
                                         "aria-label": "",
                                         "type": "image",
@@ -3411,6 +3411,547 @@
                         "min": "",
                         "max": ""
                     },
+                    "layout_omb_growth_plans_split": {
+                        "key": "layout_omb_growth_plans_split",
+                        "name": "growth_plans_split",
+                        "label": "Growth Plans Split",
+                        "display": "block",
+                        "sub_fields": [
+                            {
+                                "key": "field_omb_growth_plans_split_media_position",
+                                "label": "Visual column position",
+                                "name": "media_position",
+                                "aria-label": "",
+                                "type": "select",
+                                "instructions": "Desktop: visual column on the left or right of the copy.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "choices": {
+                                    "left": "Left",
+                                    "right": "Right"
+                                },
+                                "default_value": "left",
+                                "return_format": "value",
+                                "multiple": 0,
+                                "allow_null": 0,
+                                "ui": 1,
+                                "ajax": 0,
+                                "placeholder": "",
+                                "allow_custom": 0,
+                                "search_placeholder": "",
+                                "allow_in_bindings": 0,
+                                "create_options": 0,
+                                "save_options": 0
+                            },
+                            {
+                                "key": "field_omb_growth_plans_split_title",
+                                "label": "Title",
+                                "name": "title",
+                                "aria-label": "",
+                                "type": "text",
+                                "instructions": "",
+                                "required": 1,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "maxlength": "",
+                                "allow_in_bindings": 0,
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": ""
+                            },
+                            {
+                                "key": "field_omb_growth_plans_split_intro",
+                                "label": "Intro",
+                                "name": "intro",
+                                "aria-label": "",
+                                "type": "wysiwyg",
+                                "instructions": "Opening paragraphs under the title.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "allow_in_bindings": 0,
+                                "tabs": "all",
+                                "toolbar": "basic",
+                                "media_upload": 0,
+                                "delay": 0
+                            },
+                            {
+                                "key": "field_omb_growth_plans_split_upcoming_heading",
+                                "label": "Upcoming section heading",
+                                "name": "upcoming_heading",
+                                "aria-label": "",
+                                "type": "text",
+                                "instructions": "e.g. “Binnenkort beschikbaar”",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "maxlength": "",
+                                "allow_in_bindings": 0,
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": ""
+                            },
+                            {
+                                "key": "field_omb_growth_plans_split_list_default_icon",
+                                "label": "Upcoming list icon (default)",
+                                "name": "list_default_icon",
+                                "aria-label": "",
+                                "type": "image",
+                                "instructions": "Check-style icon for each upcoming row unless the row overrides.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "return_format": "array",
+                                "library": "all",
+                                "min_width": "",
+                                "min_height": "",
+                                "min_size": "",
+                                "max_width": "",
+                                "max_height": "",
+                                "max_size": "",
+                                "mime_types": "png,jpg,jpeg,webp,svg",
+                                "allow_in_bindings": 0,
+                                "preview_size": "thumbnail"
+                            },
+                            {
+                                "key": "field_omb_growth_plans_split_upcoming_items",
+                                "label": "Upcoming items",
+                                "name": "upcoming_items",
+                                "aria-label": "",
+                                "type": "repeater",
+                                "instructions": "",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "layout": "row",
+                                "pagination": 0,
+                                "min": 0,
+                                "max": 0,
+                                "collapsed": "",
+                                "button_label": "Add row",
+                                "rows_per_page": 20,
+                                "sub_fields": [
+                                    {
+                                        "key": "field_omb_growth_plans_split_upcoming_items_icon",
+                                        "label": "Icon override",
+                                        "name": "icon",
+                                        "aria-label": "",
+                                        "type": "image",
+                                        "instructions": "Optional; falls back to default list icon.",
+                                        "required": 0,
+                                        "conditional_logic": 0,
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
+                                        "return_format": "array",
+                                        "library": "all",
+                                        "min_width": "",
+                                        "min_height": "",
+                                        "min_size": "",
+                                        "max_width": "",
+                                        "max_height": "",
+                                        "max_size": "",
+                                        "mime_types": "png,jpg,jpeg,webp,svg",
+                                        "allow_in_bindings": 0,
+                                        "preview_size": "thumbnail",
+                                        "parent_repeater": "field_omb_growth_plans_split_upcoming_items"
+                                    },
+                                    {
+                                        "key": "field_omb_growth_plans_split_upcoming_items_text",
+                                        "label": "Text",
+                                        "name": "text",
+                                        "aria-label": "",
+                                        "type": "wysiwyg",
+                                        "instructions": "",
+                                        "required": 1,
+                                        "conditional_logic": 0,
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
+                                        "default_value": "",
+                                        "allow_in_bindings": 0,
+                                        "tabs": "all",
+                                        "toolbar": "basic",
+                                        "media_upload": 0,
+                                        "delay": 0,
+                                        "parent_repeater": "field_omb_growth_plans_split_upcoming_items"
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "field_omb_growth_plans_split_body",
+                                "label": "Body",
+                                "name": "body",
+                                "aria-label": "",
+                                "type": "wysiwyg",
+                                "instructions": "Long supporting paragraph before the highlight line.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "allow_in_bindings": 0,
+                                "tabs": "all",
+                                "toolbar": "basic",
+                                "media_upload": 0,
+                                "delay": 0
+                            },
+                            {
+                                "key": "field_omb_growth_plans_split_highlight_line",
+                                "label": "Highlight line",
+                                "name": "highlight_line",
+                                "aria-label": "",
+                                "type": "wysiwyg",
+                                "instructions": "Bold line above the CTA (e.g. “En misschien ben jij de volgende!”).",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "allow_in_bindings": 0,
+                                "tabs": "all",
+                                "toolbar": "basic",
+                                "media_upload": 0,
+                                "delay": 0
+                            },
+                            {
+                                "key": "field_omb_growth_plans_split_decorative_panel",
+                                "label": "Decorative panel (behind card)",
+                                "name": "decorative_panel",
+                                "aria-label": "",
+                                "type": "image",
+                                "instructions": "Optional angled/large shape behind the main visual (PNG/WebP/SVG).",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "return_format": "array",
+                                "library": "all",
+                                "min_width": "",
+                                "min_height": "",
+                                "min_size": "",
+                                "max_width": "",
+                                "max_height": "",
+                                "max_size": "",
+                                "mime_types": "",
+                                "allow_in_bindings": 0,
+                                "preview_size": "medium"
+                            },
+                            {
+                                "key": "field_omb_growth_plans_split_main_visual",
+                                "label": "Main visual (dashboard card)",
+                                "name": "main_visual",
+                                "aria-label": "",
+                                "type": "image",
+                                "instructions": "Primary screenshot or illustration for the left collage.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "return_format": "array",
+                                "library": "all",
+                                "min_width": "",
+                                "min_height": "",
+                                "min_size": "",
+                                "max_width": "",
+                                "max_height": "",
+                                "max_size": "",
+                                "mime_types": "",
+                                "allow_in_bindings": 0,
+                                "preview_size": "medium"
+                            },
+                            {
+                                "key": "field_omb_growth_plans_split_floating_circles",
+                                "label": "Floating circle images",
+                                "name": "floating_circles",
+                                "aria-label": "",
+                                "type": "repeater",
+                                "instructions": "Usually three circular crops around the main visual.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "layout": "row",
+                                "pagination": 0,
+                                "min": 0,
+                                "max": 6,
+                                "collapsed": "",
+                                "button_label": "Add circle",
+                                "rows_per_page": 20,
+                                "sub_fields": [
+                                    {
+                                        "key": "field_omb_growth_plans_split_floating_circles_image",
+                                        "label": "Image",
+                                        "name": "image",
+                                        "aria-label": "",
+                                        "type": "image",
+                                        "instructions": "",
+                                        "required": 1,
+                                        "conditional_logic": 0,
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
+                                        "return_format": "array",
+                                        "library": "all",
+                                        "min_width": "",
+                                        "min_height": "",
+                                        "min_size": "",
+                                        "max_width": "",
+                                        "max_height": "",
+                                        "max_size": "",
+                                        "mime_types": "",
+                                        "allow_in_bindings": 0,
+                                        "preview_size": "thumbnail",
+                                        "parent_repeater": "field_omb_growth_plans_split_floating_circles"
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "field_omb_growth_plans_split_ctas",
+                                "label": "CTAs",
+                                "name": "ctas",
+                                "aria-label": "",
+                                "type": "repeater",
+                                "instructions": "First row is used for the primary pill button.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "layout": "table",
+                                "min": 0,
+                                "max": 0,
+                                "collapsed": "",
+                                "button_label": "Add Row",
+                                "rows_per_page": 20,
+                                "sub_fields": [
+                                    {
+                                        "key": "field_omb_growth_plans_split_cta_text",
+                                        "label": "CTA Text",
+                                        "name": "cta_text",
+                                        "aria-label": "",
+                                        "type": "text",
+                                        "instructions": "",
+                                        "required": 0,
+                                        "conditional_logic": 0,
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
+                                        "default_value": "",
+                                        "maxlength": "",
+                                        "allow_in_bindings": 0,
+                                        "placeholder": "",
+                                        "prepend": "",
+                                        "append": "",
+                                        "parent_repeater": "field_omb_growth_plans_split_ctas"
+                                    },
+                                    {
+                                        "key": "field_omb_growth_plans_split_cta_url",
+                                        "label": "CTA URL",
+                                        "name": "cta_url",
+                                        "aria-label": "",
+                                        "type": "link",
+                                        "instructions": "",
+                                        "required": 0,
+                                        "conditional_logic": 0,
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
+                                        "return_format": "array",
+                                        "allow_in_bindings": 0,
+                                        "parent_repeater": "field_omb_growth_plans_split_ctas"
+                                    }
+                                ]
+                            },
+                            {
+                                "key": "field_omb_growth_plans_split_cta_trailing_icon",
+                                "label": "CTA trailing icon",
+                                "name": "cta_trailing_icon",
+                                "aria-label": "",
+                                "type": "image",
+                                "instructions": "Icon inside the circle at the right of the button (e.g. arrow).",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "return_format": "array",
+                                "library": "all",
+                                "min_width": "",
+                                "min_height": "",
+                                "min_size": "",
+                                "max_width": "",
+                                "max_height": "",
+                                "max_size": "",
+                                "mime_types": "png,jpg,jpeg,webp,svg",
+                                "allow_in_bindings": 0,
+                                "preview_size": "thumbnail"
+                            }
+                        ],
+                        "min": "",
+                        "max": ""
+                    },
+                    "layout_omb_founders_banner": {
+                        "key": "layout_omb_founders_banner",
+                        "name": "founders_banner",
+                        "label": "Founders Banner",
+                        "display": "block",
+                        "sub_fields": [
+                            {
+                                "key": "field_omb_founders_banner_headline",
+                                "label": "Headline",
+                                "name": "headline",
+                                "aria-label": "",
+                                "type": "wysiwyg",
+                                "instructions": "Centered white headline; use Shift+Enter for a second line.",
+                                "required": 1,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "allow_in_bindings": 0,
+                                "tabs": "all",
+                                "toolbar": "basic",
+                                "media_upload": 0,
+                                "delay": 0
+                            },
+                            {
+                                "key": "field_omb_founders_banner_white_pill_v2",
+                                "label": "White pill text",
+                                "name": "badge_text",
+                                "aria-label": "",
+                                "type": "text",
+                                "instructions": "Name(s) in the white pill under the headline (e.g. Rubin & Didi). Plain text.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "maxlength": "",
+                                "allow_in_bindings": 0,
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": ""
+                            },
+                            {
+                                "key": "field_omb_founders_banner_left_image",
+                                "label": "Left portrait",
+                                "name": "left_image",
+                                "aria-label": "",
+                                "type": "image",
+                                "instructions": "Cutout / PNG with transparency recommended; anchored bottom-left.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "return_format": "array",
+                                "library": "all",
+                                "min_width": "",
+                                "min_height": "",
+                                "min_size": "",
+                                "max_width": "",
+                                "max_height": "",
+                                "max_size": "",
+                                "mime_types": "",
+                                "allow_in_bindings": 0,
+                                "preview_size": "medium"
+                            },
+                            {
+                                "key": "field_omb_founders_banner_right_image",
+                                "label": "Right portrait",
+                                "name": "right_image",
+                                "aria-label": "",
+                                "type": "image",
+                                "instructions": "Cutout / PNG with transparency recommended; anchored bottom-right.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "return_format": "array",
+                                "library": "all",
+                                "min_width": "",
+                                "min_height": "",
+                                "min_size": "",
+                                "max_width": "",
+                                "max_height": "",
+                                "max_size": "",
+                                "mime_types": "",
+                                "allow_in_bindings": 0,
+                                "preview_size": "medium"
+                            }
+                        ],
+                        "min": "",
+                        "max": ""
+                    },
                     "layout_omb_story_split": {
                         "key": "layout_omb_story_split",
                         "name": "story_split",
@@ -4583,7 +5124,11 @@
                                 "instructions": "Pill label above the title (e.g. Wij zijn meer).",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "default_value": "",
                                 "maxlength": "",
                                 "allow_in_bindings": 0,
@@ -4600,7 +5145,11 @@
                                 "instructions": "Use line breaks for multi-line headings.",
                                 "required": 1,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "default_value": "",
                                 "maxlength": "",
                                 "allow_in_bindings": 0,
@@ -4617,7 +5166,11 @@
                                 "instructions": "Supporting paragraph next to the visual.",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "default_value": "",
                                 "allow_in_bindings": 0,
                                 "tabs": "all",
@@ -4634,7 +5187,11 @@
                                 "instructions": "Composite image for the blue gradient panel (people + UI), wide aspect (~16:9).",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "return_format": "array",
                                 "library": "all",
                                 "min_width": "",
@@ -4656,7 +5213,11 @@
                                 "instructions": "Up to three cards with accent colour, icon, title and text.",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "layout": "block",
                                 "pagination": 0,
                                 "min": 0,
@@ -4674,7 +5235,11 @@
                                         "instructions": "Blue matches brand; rose for the middle card style.",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
                                         "choices": {
                                             "brand": "Brand (blue)",
                                             "rose": "Rose (pink)"
@@ -4702,7 +5267,11 @@
                                         "instructions": "Square icon on coloured tile.",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
                                         "return_format": "array",
                                         "library": "all",
                                         "min_width": "",
@@ -4725,7 +5294,11 @@
                                         "instructions": "",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
                                         "default_value": "",
                                         "maxlength": "",
                                         "allow_in_bindings": 0,
@@ -4743,7 +5316,11 @@
                                         "instructions": "",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
                                         "default_value": "",
                                         "maxlength": "",
                                         "allow_in_bindings": 0,
@@ -4763,7 +5340,11 @@
                                 "instructions": "Optional line above the footer CTA when “Panel visual” is empty (centered layout, e.g. Figma 597:2910).",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "default_value": "",
                                 "maxlength": "",
                                 "allow_in_bindings": 0,
@@ -4780,7 +5361,11 @@
                                 "instructions": "Optional pill CTA when panel visual is empty. Button label uses the link title.",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "return_format": "array",
                                 "allow_in_bindings": 0
                             },
@@ -4793,7 +5378,11 @@
                                 "instructions": "Optional graphic shown to the left inside the footer CTA pill (e.g. logo in circle).",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "return_format": "array",
                                 "library": "all",
                                 "min_width": "",
@@ -4825,7 +5414,11 @@
                                 "instructions": "Pill label above the title (e.g. Dit kiezen ondernemers voor ons).",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "default_value": "",
                                 "maxlength": "",
                                 "allow_in_bindings": 0,
@@ -4842,7 +5435,11 @@
                                 "instructions": "Use line breaks for multi-line headings.",
                                 "required": 1,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "default_value": "",
                                 "maxlength": "",
                                 "allow_in_bindings": 0,
@@ -4859,7 +5456,11 @@
                                 "instructions": "Stacked cards in the light panel (icon, title, body). Second card uses solid white styling in the front-end.",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "layout": "block",
                                 "pagination": 0,
                                 "min": 0,
@@ -4877,7 +5478,11 @@
                                         "instructions": "Blue or rose for bar and icon tile.",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
                                         "choices": {
                                             "brand": "Brand (blue)",
                                             "rose": "Rose (pink)"
@@ -4905,7 +5510,11 @@
                                         "instructions": "Square icon on coloured tile.",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
                                         "return_format": "array",
                                         "library": "all",
                                         "min_width": "",
@@ -4928,7 +5537,11 @@
                                         "instructions": "",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
                                         "default_value": "",
                                         "maxlength": "",
                                         "allow_in_bindings": 0,
@@ -4946,7 +5559,11 @@
                                         "instructions": "",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
                                         "default_value": "",
                                         "maxlength": "",
                                         "allow_in_bindings": 0,
@@ -4966,7 +5583,11 @@
                                 "instructions": "Large headline on the dark panel.",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "default_value": "",
                                 "maxlength": "",
                                 "allow_in_bindings": 0,
@@ -4983,7 +5604,11 @@
                                 "instructions": "Supporting copy on the dark panel.",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "default_value": "",
                                 "allow_in_bindings": 0,
                                 "tabs": "all",
@@ -5000,7 +5625,11 @@
                                 "instructions": "Optional composite (e.g. portrait + orb). When empty, a gradient orb is shown.",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "return_format": "array",
                                 "library": "all",
                                 "min_width": "",
@@ -5022,7 +5651,11 @@
                                 "instructions": "First row is used as the panel button (e.g. Lees meer).",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "layout": "table",
                                 "min": 0,
                                 "max": 2,
@@ -5039,7 +5672,11 @@
                                         "instructions": "",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
                                         "default_value": "",
                                         "maxlength": "",
                                         "allow_in_bindings": 0,
@@ -5057,7 +5694,11 @@
                                         "instructions": "",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
                                         "return_format": "array",
                                         "allow_in_bindings": 0,
                                         "parent_repeater": "field_woc_ctas"
@@ -5083,7 +5724,11 @@
                                 "instructions": "Use line breaks for multi-line headings (e.g. Waarom Salonora / Anders Is).",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "default_value": "",
                                 "maxlength": "",
                                 "allow_in_bindings": 0,
@@ -5100,7 +5745,11 @@
                                 "instructions": "Left column — first body paragraph.",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "default_value": "",
                                 "allow_in_bindings": 0,
                                 "tabs": "visual",
@@ -5117,7 +5766,11 @@
                                 "instructions": "Left column — second body paragraph.",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "default_value": "",
                                 "allow_in_bindings": 0,
                                 "tabs": "visual",
@@ -5134,7 +5787,11 @@
                                 "instructions": "First row is the pill button under the copy (e.g. Ontdek het verschil).",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "layout": "table",
                                 "min": 0,
                                 "max": 2,
@@ -5151,7 +5808,11 @@
                                         "instructions": "",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
                                         "default_value": "",
                                         "maxlength": "",
                                         "allow_in_bindings": 0,
@@ -5169,7 +5830,11 @@
                                         "instructions": "",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
                                         "return_format": "array",
                                         "allow_in_bindings": 0,
                                         "parent_repeater": "field_wsd_ctas"
@@ -5185,7 +5850,11 @@
                                 "instructions": "White headline on the blue panel (e.g. Wist je dat).",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "default_value": "",
                                 "maxlength": "",
                                 "allow_in_bindings": 0,
@@ -5202,7 +5871,11 @@
                                 "instructions": "White stacked boxes inside the blue panel (typically three).",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "layout": "block",
                                 "pagination": 0,
                                 "min": 0,
@@ -5220,7 +5893,11 @@
                                         "instructions": "Centered in the card; line breaks are preserved.",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
                                         "default_value": "",
                                         "maxlength": "",
                                         "allow_in_bindings": 0,
@@ -5240,7 +5917,11 @@
                                 "instructions": "Composite device screenshot for the right side of the blue panel.",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "return_format": "array",
                                 "library": "all",
                                 "min_width": "",
@@ -5272,7 +5953,11 @@
                                 "instructions": "Use line breaks for multi-line headings (e.g. Waarom Salonora / Anders Is).",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "default_value": "",
                                 "maxlength": "",
                                 "allow_in_bindings": 0,
@@ -5289,7 +5974,11 @@
                                 "instructions": "Left column — first body paragraph.",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "default_value": "",
                                 "allow_in_bindings": 0,
                                 "tabs": "visual",
@@ -5306,7 +5995,11 @@
                                 "instructions": "Left column — second body paragraph.",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "default_value": "",
                                 "allow_in_bindings": 0,
                                 "tabs": "visual",
@@ -5323,7 +6016,11 @@
                                 "instructions": "First row is the pill button under the copy (e.g. Ontdek het verschil).",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "layout": "table",
                                 "min": 0,
                                 "max": 2,
@@ -5340,7 +6037,11 @@
                                         "instructions": "",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
                                         "default_value": "",
                                         "maxlength": "",
                                         "allow_in_bindings": 0,
@@ -5358,7 +6059,11 @@
                                         "instructions": "",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
                                         "return_format": "array",
                                         "allow_in_bindings": 0,
                                         "parent_repeater": "field_wsa_ctas"
@@ -5374,7 +6079,11 @@
                                 "instructions": "White headline on the blue panel (e.g. Wist je dat).",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "default_value": "",
                                 "maxlength": "",
                                 "allow_in_bindings": 0,
@@ -5391,7 +6100,11 @@
                                 "instructions": "White stacked boxes inside the blue panel (typically three).",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "layout": "block",
                                 "pagination": 0,
                                 "min": 0,
@@ -5409,7 +6122,11 @@
                                         "instructions": "Centered in the card; line breaks are preserved.",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
                                         "default_value": "",
                                         "maxlength": "",
                                         "allow_in_bindings": 0,
@@ -5429,7 +6146,11 @@
                                 "instructions": "Composite device screenshot for the right side of the blue panel.",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "return_format": "array",
                                 "library": "all",
                                 "min_width": "",
@@ -5954,7 +6675,11 @@
                                 "instructions": "Small pill above the heading (e.g. “In drie stappen online”).",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "default_value": "",
                                 "maxlength": "",
                                 "allow_in_bindings": 0,
@@ -5971,7 +6696,11 @@
                                 "instructions": "Use line breaks for multi-line headings.",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "default_value": "",
                                 "maxlength": "",
                                 "allow_in_bindings": 0,
@@ -5988,7 +6717,11 @@
                                 "instructions": "Three cards with icon, headline, and description.",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "layout": "row",
                                 "pagination": 0,
                                 "min": 0,
@@ -6006,7 +6739,11 @@
                                         "instructions": "Prefer PNG/SVG on transparent background (shown white on tile).",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
                                         "return_format": "array",
                                         "library": "all",
                                         "min_width": "",
@@ -6029,8 +6766,15 @@
                                         "instructions": "",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
-                                        "choices": { "brand": "Brand blue", "rose": "Rose / accent" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
+                                        "choices": {
+                                            "brand": "Brand blue",
+                                            "rose": "Rose / accent"
+                                        },
                                         "default_value": "brand",
                                         "return_format": "value",
                                         "multiple": 0,
@@ -6050,7 +6794,11 @@
                                         "instructions": "",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
                                         "default_value": "",
                                         "maxlength": "",
                                         "allow_in_bindings": 0,
@@ -6068,7 +6816,11 @@
                                         "instructions": "",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
                                         "default_value": "",
                                         "maxlength": "",
                                         "allow_in_bindings": 0,
@@ -6088,7 +6840,11 @@
                                 "instructions": "",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "layout": "table",
                                 "min": 0,
                                 "max": 0,
@@ -6105,7 +6861,11 @@
                                         "instructions": "",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
                                         "default_value": "",
                                         "maxlength": "",
                                         "allow_in_bindings": 0,
@@ -6123,7 +6883,11 @@
                                         "instructions": "",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
                                         "return_format": "array",
                                         "allow_in_bindings": 0,
                                         "parent_repeater": "field_omb_how_it_works_steps_ctas"
@@ -6139,7 +6903,11 @@
                                 "instructions": "Single line of highlights (e.g. separated by “|”).",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "default_value": "",
                                 "maxlength": "",
                                 "allow_in_bindings": 0,
@@ -6166,7 +6934,11 @@
                                 "instructions": "",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "default_value": "",
                                 "maxlength": "",
                                 "allow_in_bindings": 0,
@@ -6183,7 +6955,11 @@
                                 "instructions": "Optional subtitle row (e.g. phrases separated by arrows).",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "default_value": "",
                                 "allow_in_bindings": 0,
                                 "tabs": "all",
@@ -6200,7 +6976,11 @@
                                 "instructions": "Adds a full-width white band behind this section (cards remain white with shadow).",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "message": "",
                                 "default_value": 0,
                                 "ui": 1,
@@ -6217,8 +6997,112 @@
                                 "instructions": "How many horizontal rows of cards. Total services loaded = rows × columns (newest first). Need more than 99 rows? Add another section or extend choices in this field group.",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
-                                "choices": {"1":"1 row","2":"2 rows","3":"3 rows","4":"4 rows","5":"5 rows","6":"6 rows","7":"7 rows","8":"8 rows","9":"9 rows","10":"10 rows","11":"11 rows","12":"12 rows","13":"13 rows","14":"14 rows","15":"15 rows","16":"16 rows","17":"17 rows","18":"18 rows","19":"19 rows","20":"20 rows","21":"21 rows","22":"22 rows","23":"23 rows","24":"24 rows","25":"25 rows","26":"26 rows","27":"27 rows","28":"28 rows","29":"29 rows","30":"30 rows","31":"31 rows","32":"32 rows","33":"33 rows","34":"34 rows","35":"35 rows","36":"36 rows","37":"37 rows","38":"38 rows","39":"39 rows","40":"40 rows","41":"41 rows","42":"42 rows","43":"43 rows","44":"44 rows","45":"45 rows","46":"46 rows","47":"47 rows","48":"48 rows","49":"49 rows","50":"50 rows","51":"51 rows","52":"52 rows","53":"53 rows","54":"54 rows","55":"55 rows","56":"56 rows","57":"57 rows","58":"58 rows","59":"59 rows","60":"60 rows","61":"61 rows","62":"62 rows","63":"63 rows","64":"64 rows","65":"65 rows","66":"66 rows","67":"67 rows","68":"68 rows","69":"69 rows","70":"70 rows","71":"71 rows","72":"72 rows","73":"73 rows","74":"74 rows","75":"75 rows","76":"76 rows","77":"77 rows","78":"78 rows","79":"79 rows","80":"80 rows","81":"81 rows","82":"82 rows","83":"83 rows","84":"84 rows","85":"85 rows","86":"86 rows","87":"87 rows","88":"88 rows","89":"89 rows","90":"90 rows","91":"91 rows","92":"92 rows","93":"93 rows","94":"94 rows","95":"95 rows","96":"96 rows","97":"97 rows","98":"98 rows","99":"99 rows"},
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "choices": {
+                                    "1": "1 row",
+                                    "2": "2 rows",
+                                    "3": "3 rows",
+                                    "4": "4 rows",
+                                    "5": "5 rows",
+                                    "6": "6 rows",
+                                    "7": "7 rows",
+                                    "8": "8 rows",
+                                    "9": "9 rows",
+                                    "10": "10 rows",
+                                    "11": "11 rows",
+                                    "12": "12 rows",
+                                    "13": "13 rows",
+                                    "14": "14 rows",
+                                    "15": "15 rows",
+                                    "16": "16 rows",
+                                    "17": "17 rows",
+                                    "18": "18 rows",
+                                    "19": "19 rows",
+                                    "20": "20 rows",
+                                    "21": "21 rows",
+                                    "22": "22 rows",
+                                    "23": "23 rows",
+                                    "24": "24 rows",
+                                    "25": "25 rows",
+                                    "26": "26 rows",
+                                    "27": "27 rows",
+                                    "28": "28 rows",
+                                    "29": "29 rows",
+                                    "30": "30 rows",
+                                    "31": "31 rows",
+                                    "32": "32 rows",
+                                    "33": "33 rows",
+                                    "34": "34 rows",
+                                    "35": "35 rows",
+                                    "36": "36 rows",
+                                    "37": "37 rows",
+                                    "38": "38 rows",
+                                    "39": "39 rows",
+                                    "40": "40 rows",
+                                    "41": "41 rows",
+                                    "42": "42 rows",
+                                    "43": "43 rows",
+                                    "44": "44 rows",
+                                    "45": "45 rows",
+                                    "46": "46 rows",
+                                    "47": "47 rows",
+                                    "48": "48 rows",
+                                    "49": "49 rows",
+                                    "50": "50 rows",
+                                    "51": "51 rows",
+                                    "52": "52 rows",
+                                    "53": "53 rows",
+                                    "54": "54 rows",
+                                    "55": "55 rows",
+                                    "56": "56 rows",
+                                    "57": "57 rows",
+                                    "58": "58 rows",
+                                    "59": "59 rows",
+                                    "60": "60 rows",
+                                    "61": "61 rows",
+                                    "62": "62 rows",
+                                    "63": "63 rows",
+                                    "64": "64 rows",
+                                    "65": "65 rows",
+                                    "66": "66 rows",
+                                    "67": "67 rows",
+                                    "68": "68 rows",
+                                    "69": "69 rows",
+                                    "70": "70 rows",
+                                    "71": "71 rows",
+                                    "72": "72 rows",
+                                    "73": "73 rows",
+                                    "74": "74 rows",
+                                    "75": "75 rows",
+                                    "76": "76 rows",
+                                    "77": "77 rows",
+                                    "78": "78 rows",
+                                    "79": "79 rows",
+                                    "80": "80 rows",
+                                    "81": "81 rows",
+                                    "82": "82 rows",
+                                    "83": "83 rows",
+                                    "84": "84 rows",
+                                    "85": "85 rows",
+                                    "86": "86 rows",
+                                    "87": "87 rows",
+                                    "88": "88 rows",
+                                    "89": "89 rows",
+                                    "90": "90 rows",
+                                    "91": "91 rows",
+                                    "92": "92 rows",
+                                    "93": "93 rows",
+                                    "94": "94 rows",
+                                    "95": "95 rows",
+                                    "96": "96 rows",
+                                    "97": "97 rows",
+                                    "98": "98 rows",
+                                    "99": "99 rows"
+                                },
                                 "default_value": "2",
                                 "return_format": "value",
                                 "multiple": 0,
@@ -6241,7 +7125,11 @@
                                 "instructions": "Maximum 3 columns on large screens. Small screens use one column; medium widths step up gradually.",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "choices": {
                                     "1": "1 column",
                                     "2": "2 columns",
@@ -6269,7 +7157,11 @@
                                 "instructions": "Background tone behind each service featured image.",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "choices": {
                                     "surface": "Soft blue (surface)",
                                     "blush": "Blush",
@@ -6298,7 +7190,11 @@
                                 "instructions": "Primary pill below the grid (e.g. View all designs).",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "layout": "table",
                                 "min": 0,
                                 "max": 0,
@@ -6315,7 +7211,11 @@
                                         "instructions": "",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
                                         "default_value": "",
                                         "maxlength": "",
                                         "allow_in_bindings": 0,
@@ -6333,7 +7233,11 @@
                                         "instructions": "",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
                                         "return_format": "array",
                                         "allow_in_bindings": 0,
                                         "parent_repeater": "field_omb_design_showcase_grid_footer_ctas"
@@ -6612,7 +7516,7 @@
                             },
                             {
                                 "key": "field_faq_contact_split_form",
-                                "label": "CTA\/Form",
+                                "label": "CTA/Form",
                                 "name": "ctaform",
                                 "aria-label": "",
                                 "type": "select",
@@ -8004,6 +8908,260 @@
                         "min": "",
                         "max": ""
                     },
+                    "layout_omb_talk_dual_cards": {
+                        "key": "layout_omb_talk_dual_cards",
+                        "name": "talk_dual_cards",
+                        "label": "Talk Dual Cards",
+                        "display": "block",
+                        "sub_fields": [
+                            {
+                                "key": "field_omb_talk_dual_cards_title",
+                                "label": "Heading",
+                                "name": "title",
+                                "aria-label": "",
+                                "type": "text",
+                                "instructions": "Centered headline above the two panels.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "maxlength": "",
+                                "allow_in_bindings": 0,
+                                "placeholder": "",
+                                "prepend": "",
+                                "append": ""
+                            },
+                            {
+                                "key": "field_omb_talk_dual_cards_left_body",
+                                "label": "Left panel — body",
+                                "name": "left_body",
+                                "aria-label": "",
+                                "type": "wysiwyg",
+                                "instructions": "Copy on the brand gradient card (white text).",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "allow_in_bindings": 0,
+                                "tabs": "all",
+                                "toolbar": "basic",
+                                "media_upload": 0,
+                                "delay": 0
+                            },
+                            {
+                                "key": "field_omb_talk_dual_cards_left_link",
+                                "label": "Left panel — button link",
+                                "name": "left_link",
+                                "aria-label": "",
+                                "type": "link",
+                                "instructions": "Primary CTA on the gradient panel (e.g. plan a call).",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "return_format": "array",
+                                "allow_in_bindings": 0
+                            },
+                            {
+                                "key": "field_omb_talk_dual_cards_left_button_icon",
+                                "label": "Left panel — button trailing icon",
+                                "name": "left_button_icon",
+                                "aria-label": "",
+                                "type": "image",
+                                "instructions": "Optional icon at the end of the left CTA (replaces default arrow when set).",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "return_format": "array",
+                                "library": "all",
+                                "min_width": "",
+                                "min_height": "",
+                                "min_size": "",
+                                "max_width": "",
+                                "max_height": "",
+                                "max_size": "",
+                                "mime_types": "png,jpg,jpeg,webp,svg",
+                                "allow_in_bindings": 0,
+                                "preview_size": "thumbnail"
+                            },
+                            {
+                                "key": "field_omb_talk_dual_cards_left_corner_graphic",
+                                "label": "Left panel — bottom-right background graphic",
+                                "name": "left_corner_graphic",
+                                "aria-label": "",
+                                "type": "image",
+                                "instructions": "Optional artwork in the bottom-right of the blue gradient card (e.g. grid pattern). SVG/PNG with transparency recommended; fades toward the copy.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "return_format": "array",
+                                "library": "all",
+                                "min_width": "",
+                                "min_height": "",
+                                "min_size": "",
+                                "max_width": "",
+                                "max_height": "",
+                                "max_size": "",
+                                "mime_types": "png,jpg,jpeg,webp,svg",
+                                "allow_in_bindings": 0,
+                                "preview_size": "medium"
+                            },
+                            {
+                                "key": "field_omb_talk_dual_cards_right_body",
+                                "label": "Right panel — body",
+                                "name": "right_body",
+                                "aria-label": "",
+                                "type": "wysiwyg",
+                                "instructions": "Copy on the navy card (white text).",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "default_value": "",
+                                "allow_in_bindings": 0,
+                                "tabs": "all",
+                                "toolbar": "basic",
+                                "media_upload": 0,
+                                "delay": 0
+                            },
+                            {
+                                "key": "field_omb_talk_dual_cards_right_overlay_graphic",
+                                "label": "Right panel — top overlay graphic",
+                                "name": "right_overlay_graphic",
+                                "aria-label": "",
+                                "type": "image",
+                                "instructions": "Optional decorative strip over the top of the navy panel (e.g. wave vector).",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "return_format": "array",
+                                "library": "all",
+                                "min_width": "",
+                                "min_height": "",
+                                "min_size": "",
+                                "max_width": "",
+                                "max_height": "",
+                                "max_size": "",
+                                "mime_types": "png,jpg,jpeg,webp,svg",
+                                "allow_in_bindings": 0,
+                                "preview_size": "medium"
+                            },
+                            {
+                                "key": "field_omb_talk_dual_cards_right_primary_link",
+                                "label": "Right panel — primary button link",
+                                "name": "right_primary_link",
+                                "aria-label": "",
+                                "type": "link",
+                                "instructions": "First action (e.g. view demo), brand-filled pill.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "return_format": "array",
+                                "allow_in_bindings": 0
+                            },
+                            {
+                                "key": "field_omb_talk_dual_cards_right_secondary_link",
+                                "label": "Right panel — secondary button link",
+                                "name": "right_secondary_link",
+                                "aria-label": "",
+                                "type": "link",
+                                "instructions": "Second action (e.g. download guide), white pill.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "return_format": "array",
+                                "allow_in_bindings": 0
+                            },
+                            {
+                                "key": "field_omb_talk_dual_cards_right_primary_button_icon",
+                                "label": "Right panel — primary button trailing icon",
+                                "name": "right_primary_button_icon",
+                                "aria-label": "",
+                                "type": "image",
+                                "instructions": "Optional trailing icon on the primary navy-card CTA.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "return_format": "array",
+                                "library": "all",
+                                "min_width": "",
+                                "min_height": "",
+                                "min_size": "",
+                                "max_width": "",
+                                "max_height": "",
+                                "max_size": "",
+                                "mime_types": "png,jpg,jpeg,webp,svg",
+                                "allow_in_bindings": 0,
+                                "preview_size": "thumbnail"
+                            },
+                            {
+                                "key": "field_omb_talk_dual_cards_right_secondary_button_icon",
+                                "label": "Right panel — secondary button trailing icon",
+                                "name": "right_secondary_button_icon",
+                                "aria-label": "",
+                                "type": "image",
+                                "instructions": "Optional trailing icon on the secondary navy-card CTA.",
+                                "required": 0,
+                                "conditional_logic": 0,
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
+                                "return_format": "array",
+                                "library": "all",
+                                "min_width": "",
+                                "min_height": "",
+                                "min_size": "",
+                                "max_width": "",
+                                "max_height": "",
+                                "max_size": "",
+                                "mime_types": "png,jpg,jpeg,webp,svg",
+                                "allow_in_bindings": 0,
+                                "preview_size": "thumbnail"
+                            }
+                        ],
+                        "min": "",
+                        "max": ""
+                    },
                     "layout_omb_team_behind_salonora": {
                         "key": "layout_omb_team_behind_salonora",
                         "name": "team_behind_salonora",
@@ -8019,7 +9177,11 @@
                                 "instructions": "",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "default_value": "",
                                 "maxlength": "",
                                 "allow_in_bindings": 0,
@@ -8036,7 +9198,11 @@
                                 "instructions": "Up to 4 members supported on the frontend (Figma shows 2).",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "layout": "row",
                                 "pagination": 0,
                                 "min": 0,
@@ -8054,7 +9220,11 @@
                                         "instructions": "",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
                                         "default_value": "",
                                         "maxlength": "",
                                         "allow_in_bindings": 0,
@@ -8072,7 +9242,11 @@
                                         "instructions": "",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
                                         "default_value": "",
                                         "allow_in_bindings": 0,
                                         "tabs": "all",
@@ -8090,7 +9264,11 @@
                                         "instructions": "",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
                                         "return_format": "array",
                                         "library": "all",
                                         "min_width": "",
@@ -8113,8 +9291,15 @@
                                         "instructions": "Controls the social button and photo-circle accent (brand blue vs rose).",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
-                                        "choices": { "brand": "Brand", "rose": "Rose" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
+                                        "choices": {
+                                            "brand": "Brand",
+                                            "rose": "Rose"
+                                        },
                                         "default_value": "brand",
                                         "return_format": "value",
                                         "multiple": 0,
@@ -8138,7 +9323,11 @@
                                         "instructions": "",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
                                         "return_format": "array",
                                         "allow_in_bindings": 0,
                                         "parent_repeater": "field_omb_team_behind_salonora_members"
@@ -8152,7 +9341,11 @@
                                         "instructions": "",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
                                         "return_format": "array",
                                         "allow_in_bindings": 0,
                                         "parent_repeater": "field_omb_team_behind_salonora_members"
@@ -8166,7 +9359,11 @@
                                         "instructions": "",
                                         "required": 0,
                                         "conditional_logic": 0,
-                                        "wrapper": { "width": "", "class": "", "id": "" },
+                                        "wrapper": {
+                                            "width": "",
+                                            "class": "",
+                                            "id": ""
+                                        },
                                         "return_format": "array",
                                         "allow_in_bindings": 0,
                                         "parent_repeater": "field_omb_team_behind_salonora_members"
@@ -8182,7 +9379,11 @@
                                 "instructions": "",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "default_value": "",
                                 "allow_in_bindings": 0,
                                 "tabs": "all",
@@ -8199,7 +9400,11 @@
                                 "instructions": "Optional large faint word behind the section (Figma: “THE TEAM”).",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "return_format": "array",
                                 "library": "all",
                                 "min_width": "",
@@ -8221,7 +9426,11 @@
                                 "instructions": "Optional bubble/grid overlay image (Figma background frame).",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "return_format": "array",
                                 "library": "all",
                                 "min_width": "",
@@ -8243,7 +9452,11 @@
                                 "instructions": "",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "return_format": "array",
                                 "library": "all",
                                 "min_width": "",
@@ -8265,7 +9478,11 @@
                                 "instructions": "",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "return_format": "array",
                                 "library": "all",
                                 "min_width": "",
@@ -8287,7 +9504,11 @@
                                 "instructions": "",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "return_format": "array",
                                 "library": "all",
                                 "min_width": "",
@@ -8309,7 +9530,11 @@
                                 "instructions": "",
                                 "required": 0,
                                 "conditional_logic": 0,
-                                "wrapper": { "width": "", "class": "", "id": "" },
+                                "wrapper": {
+                                    "width": "",
+                                    "class": "",
+                                    "id": ""
+                                },
                                 "return_format": "array",
                                 "library": "all",
                                 "min_width": "",
@@ -8359,7 +9584,8 @@
         "show_in_rest": 1,
         "display_title": "",
         "allow_ai_access": false,
-        "ai_description": ""
+        "ai_description": "",
+        "modified": 1778700000
     },
     {
         "key": "group_omb_post_settings",
@@ -9194,7 +10420,7 @@
                                     },
                                     {
                                         "key": "field_cards_item_icon",
-                                        "label": "Card Icon\/Image",
+                                        "label": "Card Icon/Image",
                                         "name": "icon",
                                         "aria-label": "",
                                         "type": "image",

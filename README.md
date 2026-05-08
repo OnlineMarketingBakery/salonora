@@ -67,7 +67,7 @@ salonora/
 ## Prerequisites
 
 - **WordPress** with the stack described in [`docs/wordpress-connection-guide.md`](docs/wordpress-connection-guide.md) (ACF Pro, Polylang `nl`/`en`, Yoast, CF7, custom post types `service` & `testimonial`, option pages, menus).
-- ACF field groups: import from `wordpress/wp-content/themes/omb-headless/acf-json/acf-import-bundle.json` (or your canonical OMB bundle) so flexible layouts match `src/lib/acf/` and `src/components/sections/`.
+- ACF: theme-root `wordpress/wp-content/themes/omb-headless/acf-import-bundle.json` for `npm run acf:push` / import; `acf-json/group_*.json` is generated with **`npm run acf:extract-local-json`** (one file per group, per ACF Local JSON). Layouts must match `src/lib/acf/` and `src/components/sections/`.
 
 ## Setup & installation
 

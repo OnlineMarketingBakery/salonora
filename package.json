@@ -7,14 +7,19 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "acf:push": "node scripts/push-acf-rest.mjs"
+    "acf:push": "node scripts/push-acf-rest.mjs",
+    "acf:extract-local-json": "node scripts/extract-all-acf-local-json.mjs",
+    "acf:extract-page-builder": "node scripts/extract-acf-page-builder.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
     "gsap": "^3.15.0",
-    "next": "^15.5.15",
+    "next": "^15.5.18",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
+  },
+  "overrides": {
+    "postcss": "^8.5.10"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

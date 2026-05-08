@@ -89,6 +89,14 @@ const PricingDualCardsSectionLazy = dynamic(
   { ssr: true }
 );
 
+const TalkDualCardsSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/talk-dual-cards").then((mod) => ({
+      default: mod.TalkDualCardsSection,
+    })),
+  { ssr: true }
+);
+
 const TeamBehindSalonoraSectionLazy = dynamic(
   () =>
     import("@/components/sections/team-behind-salonora").then((mod) => ({
@@ -101,6 +109,22 @@ const GuaranteesPromiseSplitSectionLazy = dynamic(
   () =>
     import("@/components/sections/guarantees-promise-split").then((mod) => ({
       default: mod.GuaranteesPromiseSplitSection,
+    })),
+  { ssr: true }
+);
+
+const GrowthPlansSplitSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/growth-plans-split").then((mod) => ({
+      default: mod.GrowthPlansSplitSection,
+    })),
+  { ssr: true }
+);
+
+const FoundersBannerSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/founders-banner").then((mod) => ({
+      default: mod.FoundersBannerSection,
     })),
   { ssr: true }
 );
@@ -168,11 +192,20 @@ export const sectionRegistry = {
   pricing_dual_cards: asSection(
     PricingDualCardsSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
+  talk_dual_cards: asSection(
+    TalkDualCardsSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
   team_behind_salonora: asSection(
     TeamBehindSalonoraSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
   guarantees_promise_split: asSection(
     GuaranteesPromiseSplitSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
+  growth_plans_split: asSection(
+    GrowthPlansSplitSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
+  founders_banner: asSection(
+    FoundersBannerSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
 } satisfies SectionRegistryShape;
 

@@ -51,7 +51,8 @@ config({ path: envFallback, quiet: true })
 mergeEnvFromFile(envLocal)
 mergeEnvFromFile(envFallback)
 
-const JSON_PATH = resolve(__dirname, '../wordpress/wp-content/themes/omb-headless/acf-json/acf-import-bundle.json')
+/** Bulk array import for POST …/acf-sync — kept OUTSIDE `acf-json/` so ACF Local JSON does not try to load it as a single field group file. */
+const JSON_PATH = resolve(__dirname, '../wordpress/wp-content/themes/omb-headless/acf-import-bundle.json')
 const WP_URL = process.env.WORDPRESS_API_URL?.trim()
 const SECRET = process.env.REVALIDATION_SECRET?.trim()
 

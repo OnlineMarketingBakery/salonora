@@ -150,6 +150,38 @@ export type GuaranteesPromiseSplitSectionT = CoreSection & {
   cta_trailing_icon: WpImage | null;
 };
 
+/** Figma 1144:31 (“Group 599”) — split: collage visual + roadmap copy, upcoming checklist, highlight + pill CTA */
+export type GrowthPlansUpcomingItemT = {
+  text: string;
+  icon: WpImage | null;
+};
+
+export type GrowthPlansSplitSectionT = CoreSection & {
+  type: "growth_plans_split";
+  title: string;
+  intro: string;
+  upcoming_heading: string;
+  list_default_icon: WpImage | null;
+  upcoming_items: GrowthPlansUpcomingItemT[];
+  body: string;
+  highlight_line: string;
+  ctas: CtaItem[];
+  cta_trailing_icon: WpImage | null;
+  decorative_panel: WpImage | null;
+  main_visual: WpImage | null;
+  floating_circles: WpImage[];
+  media_position: "left" | "right";
+};
+
+/** Figma 597:3120 (“Frame 2147228004”) — brand banner: founders photos + centered headline + white badge pill */
+export type FoundersBannerSectionT = CoreSection & {
+  type: "founders_banner";
+  headline: string;
+  badge_text: string;
+  left_image: WpImage | null;
+  right_image: WpImage | null;
+};
+
 export type StorySplitSectionT = CoreSection & {
   type: "story_split";
   image: WpImage | null;
@@ -492,6 +524,24 @@ export type PricingDualCardsSectionT = CoreSection & {
   cards?: PricingDualCardsCardItemT[];
 };
 
+/** Figma **597:2720** (“Frame 2147228539”) — centered headline + two rounded panels (brand gradient vs navy + overlay); primary path CTA + alternate path with demo + download. */
+export type TalkDualCardsSectionT = CoreSection & {
+  type: "talk_dual_cards";
+  title: string;
+  left_body: string;
+  left_link: WpAcfLink | null;
+  left_button_icon: WpImage | null;
+  /** Optional decorative graphic (e.g. grid) anchored bottom-right on the brand gradient panel. */
+  left_corner_graphic: WpImage | null;
+  right_body: string;
+  right_primary_link: WpAcfLink | null;
+  right_secondary_link: WpAcfLink | null;
+  right_primary_button_icon: WpImage | null;
+  right_secondary_button_icon: WpImage | null;
+  /** Decorative top wave / vector over the navy card (optional). */
+  right_overlay_graphic: WpImage | null;
+};
+
 export type RichTextSectionT = CoreSection & {
   type: "rich_text";
   title: string;
@@ -571,6 +621,8 @@ export type AnySectionT =
   | PricingPackagesSectionT
   | GuaranteeSplitSectionT
   | GuaranteesPromiseSplitSectionT
+  | GrowthPlansSplitSectionT
+  | FoundersBannerSectionT
   | StorySplitSectionT
   | WhyWeDoThisSectionT
   | CombinedStrengthsSectionT
@@ -594,6 +646,7 @@ export type AnySectionT =
   | CtaSectionT
   | PricingCtaSectionT
   | PricingDualCardsSectionT
+  | TalkDualCardsSectionT
   | RichTextSectionT
   | FaqSectionT
   | FeatureHighlightGridSectionT
