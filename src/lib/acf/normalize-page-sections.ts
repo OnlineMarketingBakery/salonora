@@ -29,6 +29,7 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   faq_contact_split: true,
   form_embed: true,
   guarantee_split: true,
+  guarantees_promise_split: true,
   hero: true,
   how_it_works_steps: true,
   image_intro_split: true,
@@ -43,6 +44,7 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   salon_value_proposition: true,
   scrolling_ticker: true,
   story_split: true,
+  team_behind_salonora: true,
   why_we_do_this: true,
   testimonials: true,
   why_owners_choose: true,
@@ -257,6 +259,52 @@ function mapKnownPageSectionLayout(
         ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
         mediaPosition: (asString(row.media_position) as "left" | "right") || "left",
       };
+    case "guarantees_promise_split":
+      return (() => {
+        const listDefaultIcon = asImage(row.list_default_icon);
+        return {
+          ...base,
+          type: "guarantees_promise_split",
+          badge: asString(row.badge),
+          title: asString(row.title),
+          image: asImage(row.image),
+          list_default_icon: listDefaultIcon,
+          points: Array.isArray(row.points)
+            ? (
+                row.points as {
+                  text?: unknown;
+                  icon?: unknown;
+                }[]
+              ).map((p) => ({
+                text: asHtml(p.text),
+                icon: asImage(p.icon) ?? listDefaultIcon,
+              }))
+            : [],
+          floatingBadges: Array.isArray(row.floating_badges)
+          ? (
+              row.floating_badges as {
+                icon?: unknown;
+                text?: unknown;
+                accent?: unknown;
+                position?: unknown;
+              }[]
+            ).map((b) => {
+              const a = asString(b.accent);
+              const accent = a === "rose" ? ("rose" as const) : ("brand" as const);
+              const pos = asString(b.position);
+              const position = pos === "right" ? ("right" as const) : ("left" as const);
+              return {
+                icon: asImage(b.icon),
+                text: asString(b.text),
+                accent,
+                position,
+              };
+            })
+          : [],
+          downloadLink: asLink(row.download_link),
+          cta_trailing_icon: asImage(row.cta_trailing_icon),
+        };
+      })();
     case "story_split":
       return {
         ...base,
@@ -514,6 +562,44 @@ function mapKnownPageSectionLayout(
               text: asHtml(p.text),
             }))
           : [],
+      };
+    case "team_behind_salonora":
+      return {
+        ...base,
+        type: "team_behind_salonora",
+        title: asString(row.title),
+        members: Array.isArray(row.members)
+          ? (
+              row.members as {
+                name?: unknown;
+                bio?: unknown;
+                photo?: unknown;
+                accent?: unknown;
+                facebook?: unknown;
+                instagram?: unknown;
+                linkedin?: unknown;
+              }[]
+            ).map((m) => {
+              const a = asString(m.accent);
+              const accent = a === "rose" ? "rose" : "brand";
+              return {
+                name: asString(m.name),
+                bio: asHtml(m.bio),
+                photo: asImage(m.photo),
+                accent,
+                facebook: asLink(m.facebook),
+                instagram: asLink(m.instagram),
+                linkedin: asLink(m.linkedin),
+              };
+            })
+          : [],
+        bottomText: asHtml(row.bottom_text),
+        backgroundWordmark: asImage(row.background_wordmark),
+        backgroundOverlay: asImage(row.background_overlay),
+        cornerTopRight: asImage(row.corner_top_right),
+        cornerBottomLeft: asImage(row.corner_bottom_left),
+        cornerLinesTopLeft: asImage(row.corner_lines_top_left),
+        cornerLinesBottomRight: asImage(row.corner_lines_bottom_right),
       };
     case "faq_contact_split": {
       const ctaform = asString(row.ctaform);

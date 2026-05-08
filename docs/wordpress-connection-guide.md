@@ -33,7 +33,7 @@ This Next.js app expects a headless WordPress site with the OMB ACF field groups
 ## Troubleshooting
 
 - **ACF missing in JSON**: enable REST for the field group; check `acf` in the `pages` response.
-- **Empty menus**: ensure `menu-items` REST is available; set correct `WP_MENU_*` ids; some hosts require a small plugin to expose menus.
+- **Empty menus**: easiest path — leave `WP_MENU_*` env vars unset; the frontend falls back to `/omb-headless/v1/menu?location=<primary|footer|legal>&lang=<nl|en>` exposed by `omb-headless-core`, which resolves the menu by theme location (Polylang-aware) and needs no auth. If you prefer the core route, set `WP_MENU_*` ids and ensure `wp/v2/menu-items` is reachable (set `show_in_rest` per menu, or supply an Application Password).
 - **CF7 404 on submit**: check CF7 version, permalinks, and that the feedback URL is not blocked.
 - **Images broken**: set `WORDPRESS_BASE_URL` and allow the host in `next.config` image `remotePatterns` (or use `unoptimized` in dev when no base URL is set).
 - **Polylang `lang`**: this app passes `?lang=nl` on API calls; if your stack uses a different filter, add a small proxy or filter on WordPress.

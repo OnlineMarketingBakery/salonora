@@ -15,15 +15,27 @@ import { Fragment, type CSSProperties } from "react";
  * other corners. Implemented as **two radial gradients** clipped to a **2px border box**
  * (plus solid white fill clipped to padding), not `border-image`.
  */
-function storyCardShellStyle(accent: CombinedStrengthsCardAccentT): CSSProperties {
-  const tint = accent === "rose" ? "var(--palette-rose)" : "var(--palette-brand)";
+function storyCardShellStyle(
+  accent: CombinedStrengthsCardAccentT,
+): CSSProperties {
+  const tint =
+    accent === "rose" ? "var(--palette-rose)" : "var(--palette-brand)";
   return {
-    border: "2px solid transparent",
-    borderRadius: "22px",
+    // Figma-style: corner-emphasis stroke (TR + BL), not a uniform outline.
+    border: "3px solid transparent",
+    borderRadius: "20px",
     backgroundImage: `
       linear-gradient(var(--palette-white), var(--palette-white)),
-      radial-gradient(ellipse 125px 92px at 100% 0%, ${tint}, transparent 70%),
-      radial-gradient(ellipse 125px 92px at 0% 100%, ${tint}, transparent 70%)
+      conic-gradient(from 180deg at 100% 0%,
+        ${tint} 0deg,
+        color-mix(in srgb, ${tint} 70%, transparent) 26deg,
+        transparent 72deg
+      ),
+      conic-gradient(from 0deg at 0% 100%,
+        ${tint} 0deg,
+        color-mix(in srgb, ${tint} 70%, transparent) 26deg,
+        transparent 72deg
+      )
     `,
     backgroundOrigin: "padding-box, border-box, border-box",
     backgroundClip: "padding-box, border-box, border-box",
