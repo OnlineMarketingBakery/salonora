@@ -83,6 +83,8 @@ type Props = {
   ctaFullWidth?: boolean;
   showArrow?: boolean;
   arrowClassName?: string;
+  /** Replace default circled-arrow image (brand CTAs, etc.). Hover animation still targets `[data-cta-arrow]`. */
+  arrowContent?: ReactNode;
 };
 
 const standardBase =
@@ -242,6 +244,7 @@ export function Button({
   ctaFullWidth = true,
   showArrow,
   arrowClassName,
+  arrowContent,
 }: Props) {
   const rootRef = useRef<HTMLElement | null>(null);
   const dis = disabled ? "pointer-events-none opacity-60" : "";
@@ -264,7 +267,9 @@ export function Button({
         <CtaLabel>{children}</CtaLabel>
         {useArrow ? (
           <span data-cta-arrow className="inline-flex shrink-0 will-change-[transform]">
-            <ArrowInCircle variant={ctaArrowVariant[variant]} className={arrowClassName ?? "h-5 w-5 shrink-0"} />
+            {arrowContent ?? (
+              <ArrowInCircle variant={ctaArrowVariant[variant]} className={arrowClassName ?? "h-5 w-5 shrink-0"} />
+            )}
           </span>
         ) : null}
       </>

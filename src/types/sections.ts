@@ -120,6 +120,36 @@ export type GuaranteeSplitSectionT = CoreSection & {
   mediaPosition: "left" | "right";
 };
 
+export type GuaranteesPromiseSplitFloatingBadgeT = {
+  icon: WpImage | null;
+  text: string;
+  /** Visual accent for the badge icon background. */
+  accent: "brand" | "rose";
+  /** Where the floating badge sits over the image. */
+  position: "left" | "right";
+};
+
+/** Figma: 1127:55 (“Group 596”) — portrait with floating badges + guarantee checklist + download CTA */
+export type GuaranteesPromiseSplitPointT = {
+  text: string;
+  /** Resolved: row image, else optional section `list_default_icon`. */
+  icon: WpImage | null;
+};
+
+export type GuaranteesPromiseSplitSectionT = CoreSection & {
+  type: "guarantees_promise_split";
+  badge: string;
+  title: string;
+  image: WpImage | null;
+  /** Applies to rows with no row-level icon when set. */
+  list_default_icon: WpImage | null;
+  points: GuaranteesPromiseSplitPointT[];
+  floatingBadges: GuaranteesPromiseSplitFloatingBadgeT[];
+  downloadLink: WpAcfLink | null;
+  /** Trailing graphic on download CTA (e.g. export SVG/PNG/SVG asset from design). */
+  cta_trailing_icon: WpImage | null;
+};
+
 export type StorySplitSectionT = CoreSection & {
   type: "story_split";
   image: WpImage | null;
@@ -504,6 +534,35 @@ export type FeatureHighlightSplitSectionT = CoreSection & {
   promise_items?: FeatureHighlightSplitPromiseItemT[];
 };
 
+export type TeamBehindSalonoraMemberAccentT = "brand" | "rose";
+
+export type TeamBehindSalonoraMemberT = {
+  name: string;
+  bio: string;
+  photo: WpImage | null;
+  accent: TeamBehindSalonoraMemberAccentT;
+  facebook?: WpAcfLink | null;
+  instagram?: WpAcfLink | null;
+  linkedin?: WpAcfLink | null;
+};
+
+/** Figma: composite section on About page — background `597:2404`, wordmark `597:2719`, content/cards `597:2975` (“Het Team Achter Salonora”). */
+export type TeamBehindSalonoraSectionT = CoreSection & {
+  type: "team_behind_salonora";
+  title: string;
+  members: TeamBehindSalonoraMemberT[];
+  bottomText: string;
+  /** Optional background wordmark image (Figma “THE TEAM”). */
+  backgroundWordmark?: WpImage | null;
+  /** Optional bubble/grid overlay layer (Figma background frame `597:2404`). */
+  backgroundOverlay?: WpImage | null;
+  /** Optional corner decoration images. */
+  cornerTopRight?: WpImage | null;
+  cornerBottomLeft?: WpImage | null;
+  cornerLinesTopLeft?: WpImage | null;
+  cornerLinesBottomRight?: WpImage | null;
+};
+
 export type AnySectionT =
   | HeroSectionT
   | CardsSectionT
@@ -511,6 +570,7 @@ export type AnySectionT =
   | BenefitsGridSectionT
   | PricingPackagesSectionT
   | GuaranteeSplitSectionT
+  | GuaranteesPromiseSplitSectionT
   | StorySplitSectionT
   | WhyWeDoThisSectionT
   | CombinedStrengthsSectionT
@@ -537,6 +597,7 @@ export type AnySectionT =
   | RichTextSectionT
   | FaqSectionT
   | FeatureHighlightGridSectionT
-  | FeatureHighlightSplitSectionT;
+  | FeatureHighlightSplitSectionT
+  | TeamBehindSalonoraSectionT;
 
 export type LatestPostResolved = { id: number; title: string; excerpt: string; href: string };

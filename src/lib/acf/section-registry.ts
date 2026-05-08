@@ -89,6 +89,22 @@ const PricingDualCardsSectionLazy = dynamic(
   { ssr: true }
 );
 
+const TeamBehindSalonoraSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/team-behind-salonora").then((mod) => ({
+      default: mod.TeamBehindSalonoraSection,
+    })),
+  { ssr: true }
+);
+
+const GuaranteesPromiseSplitSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/guarantees-promise-split").then((mod) => ({
+      default: mod.GuaranteesPromiseSplitSection,
+    })),
+  { ssr: true }
+);
+
 import type { AnySectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 import type { ReactNode } from "react";
@@ -151,6 +167,12 @@ export const sectionRegistry = {
   ),
   pricing_dual_cards: asSection(
     PricingDualCardsSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
+  team_behind_salonora: asSection(
+    TeamBehindSalonoraSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
+  guarantees_promise_split: asSection(
+    GuaranteesPromiseSplitSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
 } satisfies SectionRegistryShape;
 

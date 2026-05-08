@@ -49,16 +49,15 @@ function StepCard({ step }: { step: HowItWorksStepsStepItemT }) {
     >
       <div className="flex w-full flex-col items-center gap-5">
         {step.icon ? (
-          <div
-            className="flex size-[62px] shrink-0 items-center justify-center rounded-[10px] p-4"
-            style={iconTileBackground(step.iconAccent)}
-          >
+          /* CMS icons are often full Figma tiles (opaque coloured squircle + glyph).
+             `brightness-0 invert` was for transparent monochrome glyphs only — it wipes those tiles to a white square. */
+          <div className="flex size-[62px] shrink-0 overflow-hidden rounded-[10px]">
             <Media
               image={step.icon}
-              width={60}
-              height={60}
-              className="size-[30px] object-contain brightness-0 invert"
-              sizes="30px"
+              width={62}
+              height={62}
+              className="size-[62px] object-cover"
+              sizes="62px"
               preferLargestSource
             />
           </div>

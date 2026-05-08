@@ -93,7 +93,7 @@ npm run lint     # next lint
 
 ## Integrations
 
-- **WordPress REST** — pages, posts, CPTs, ACF in JSON, ACF options (`acf/v3` or `acf/v1` per WP), menus if exposed (`menu-items`).
+- **WordPress REST** — pages, posts, CPTs, ACF in JSON, ACF options (`acf/v3` or `acf/v1` per WP). Menus: `wp/v2/menu-items` when env IDs are set, otherwise public fallback `/omb-headless/v1/menu?location=…&lang=…` (resolves theme location server-side; no env IDs required).
 - **Polylang** — `lang` query on `wpFetch`; `src/lib/wordpress/polylang-locale-hrefs.ts` + `/api/locale-hrefs`.
 - **Yoast** — fetched with content; mapped in `src/lib/seo/`.
 - **CF7** — REST list/submit; `src/lib/wordpress/submit-cf7-form.ts`, `FormEmbedSection`, `CF7Form`.
@@ -115,8 +115,12 @@ npm run lint     # next lint
 
 ## Section registry keys (reference)
 
-`hero`, `cards`, `combined_strengths`, `cost_comparison`, `benefits_grid`, `pricing_packages`, `guarantee_split`, `story_split`, `why_we_do_this`, `partner_intro_split`, `origin_story_split`, `founder_story_split`, `image_intro_split`, `salon_value_proposition`, `why_owners_choose`, `why_salonora_different`, `why_salonora_anders`, `testimonials`, `announcement_bar`, `process_steps`, `how_it_works_steps`, `scrolling_ticker`, `design_showcase_grid`, `feature_highlight_grid`, `feature_highlight_split`, `faq_contact_split`, `form_embed`, `latest_posts`, `cta`, `pricing_cta`, `pricing_dual_cards`, `rich_text`, `faq` — must stay in sync with `section-registry.ts`.
+`hero`, `cards`, `combined_strengths`, `cost_comparison`, `benefits_grid`, `pricing_packages`, `guarantee_split`, `guarantees_promise_split`, `story_split`, `why_we_do_this`, `partner_intro_split`, `origin_story_split`, `founder_story_split`, `image_intro_split`, `salon_value_proposition`, `why_owners_choose`, `why_salonora_different`, `why_salonora_anders`, `testimonials`, `announcement_bar`, `process_steps`, `how_it_works_steps`, `scrolling_ticker`, `design_showcase_grid`, `feature_highlight_grid`, `feature_highlight_split`, `team_behind_salonora`, `faq_contact_split`, `form_embed`, `latest_posts`, `cta`, `pricing_cta`, `pricing_dual_cards`, `rich_text`, `faq` — must stay in sync with `section-registry.ts`.
 
-- **`combined_strengths`** — Figma **1090:47** (“Group 595”): solid brand panel + `left_rows`; white cards use **TR/BL radial gradient “border”** (2px, brand/rose via CMS `accent`) + Figma shadow `0 6px 20px rgba(129,154,205,.26)`. Footer **`597:3051`**: horizontal gradient **brand → `navy-deep` → brand**, inset highlight, white footer text, **`min-h-[111px]`**. Section `palette-surface`.
+- **`team_behind_salonora`** — About page “Het Team Achter Salonora”: two (or more) team member cards with social links, plus a bordered bottom tagline; optional decorative background/wordmark assets.
+
+- **`guarantees_promise_split`** — Figma **1127:55** (“Group 596”): portrait + floating badges; checklist + download CTA. Icons from CMS: **`list_default_icon`** or per-row **`points[].icon`**; **`cta_trailing_icon`** on the download pill (avoid hardcoded SVG conversions).
+
+- **`combined_strengths`** — Figma **1090:47** (“Group 595”): solid brand panel + `left_rows`; white cards use TR/BL corner-emphasis gradient border (brand/rose via CMS `accent`) + Figma shadow `0 6px 20px rgba(129,154,205,.26)`. Footer **`597:3051`**: horizontal gradient **brand → `navy-deep` → brand**, inset highlight, white footer text, **`min-h-[111px]`**. Section background `palette-white`.
 - **`partner_intro_split`** — Figma 1072:29 (“Partner intro split”): navy visual column with layered brand arc + optional duo image; pale `--palette-surface` copy column (`title`, `body`, divider, brand `highlight_line`, optional CTAs).
 - **`founder_story_split`** — About-style gradient card: `avatar`, `title`, `subtitle`, WYSIWYG `content`, `conclusion`, `main_image` (Figma **1083:46** “Group 594”; bg texture **`597:2281`** → `public/founder-story-card-bg.png` + **`597:2282`** brand `mix-blend-color`; **`597:2283`**: `FounderStorySparkMark` (inline SVG, brand stroke); photo stack **`597:2287`**/**`597:2288`**; copy **`597:2954`** — lg grid `528 + 118 + 460` inside **1298×756** card, `rounded-[20px]`).

@@ -21,6 +21,10 @@ export function SectionRenderer({ sections, lang }: { sections: AnySectionT[]; l
             return <sectionRegistry.pricing_packages key={section.id} section={section} lang={lang} />;
           case "guarantee_split":
             return <sectionRegistry.guarantee_split key={section.id} section={section} lang={lang} />;
+          case "guarantees_promise_split":
+            return (
+              <sectionRegistry.guarantees_promise_split key={section.id} section={section} lang={lang} />
+            );
           case "story_split":
             return <sectionRegistry.story_split key={section.id} section={section} lang={lang} />;
           case "why_we_do_this":
@@ -90,6 +94,10 @@ export function SectionRenderer({ sections, lang }: { sections: AnySectionT[]; l
           case "feature_highlight_split":
             return (
               <sectionRegistry.feature_highlight_split key={section.id} section={section} lang={lang} />
+            );
+          case "team_behind_salonora":
+            return (
+              <sectionRegistry.team_behind_salonora key={section.id} section={section} lang={lang} />
             );
           default:
             assertNever(section);

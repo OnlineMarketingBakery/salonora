@@ -59,27 +59,54 @@ function toTree(items: WpMenuItem[], lang: Locale): MenuItem[] {
   return build(0);
 }
 
+type OmbMenuPayload = {
+  location: string;
+  lang: string;
+  menu_id: number;
+  items: WpMenuItem[];
+};
+
 /**
- * Fetches a WordPress menu by id (configure `WP_MENU_{LOCATION}_{LOCALE}`) and returns a tree.
- * Requires a REST route for `menu-items` (core or a small plugin) to be available.
+ * Fetches a WordPress menu and returns a tree.
+ *
+ * 1) If `WP_MENU_{LOCATION}_{LOCALE}` is set, uses the core `wp/v2/menu-items` route.
+ *    Requires that route to be public (auth-locked by default — set `show_in_rest`
+ *    on the menu, or supply an Application Password).
+ * 2) Otherwise falls back to the headless plugin route
+ *    `/omb-headless/v1/menu?location=…&lang=…` which is public and resolves the
+ *    menu ID server-side from the theme location (Polylang-aware). Add this only
+ *    in `omb-headless-core` ≥ the version that registers `/menu`.
  */
 export async function fetchMenu(
   location: "primary" | "footer" | "legal",
   lang: Locale
 ): Promise<MenuItem[]> {
   const menuId = getMenuId(location, lang);
-  if (!menuId) return [];
+  if (menuId) {
+    try {
+      const items = await wpFetchOptional<WpMenuItem[]>(
+        `/wp/v2/menu-items?menus=${menuId}&per_page=100&orderby=menu_order&order=asc`,
+        { lang, revalidate: 60 }
+      );
+      if (items && Array.isArray(items) && items.length) {
+        return toTree(items, lang);
+      }
+    } catch (e) {
+      logger.warn("fetchMenu", e);
+    }
+  }
+
   try {
-    const items = await wpFetchOptional<WpMenuItem[]>(
-      `/wp/v2/menu-items?menus=${menuId}&per_page=100&orderby=menu_order&order=asc`,
+    const payload = await wpFetchOptional<OmbMenuPayload>(
+      `/omb-headless/v1/menu?location=${encodeURIComponent(location)}&lang=${encodeURIComponent(lang)}`,
       { lang, revalidate: 60 }
     );
-    if (!items || !Array.isArray(items) || !items.length) {
-      return [];
+    if (payload && Array.isArray(payload.items) && payload.items.length) {
+      return toTree(payload.items, lang);
     }
-    return toTree(items, lang);
   } catch (e) {
-    logger.warn("fetchMenu", e);
-    return [];
+    logger.warn("fetchMenu fallback", e);
   }
+
+  return [];
 }

@@ -59,6 +59,22 @@ add_action('rest_api_init', function () {
         'callback' => 'omb_rest_acf_sync',
     ]);
 
+    register_rest_route('omb-headless/v1', '/menu', [
+        'methods'             => 'GET',
+        'permission_callback' => '__return_true',
+        'callback'            => 'omb_rest_get_menu',
+        'args'                => [
+            'location' => [
+                'required'          => true,
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
+            'lang' => [
+                'required'          => false,
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
+        ],
+    ]);
+
     register_rest_route('omb-headless/v1', '/acf-sync-status', [
         'methods'             => 'GET',
         'permission_callback' => '__return_true',
@@ -403,6 +419,72 @@ function omb_rest_resolve_route(WP_REST_Request $request): WP_REST_Response {
         'lang'         => function_exists('pll_get_post_language') ? pll_get_post_language($post->ID, 'slug') : null,
         'translations' => $translations,
     ]);
+}
+
+/**
+ * Public menu items by theme location, optionally per Polylang language.
+ *
+ * Why: WP core `wp/v2/menu-items` requires authentication; for a headless
+ * frontend that wants the footer/primary/legal menus we expose a tiny
+ * read-only payload here so the Next app does not need numeric menu IDs in env.
+ */
+function omb_rest_get_menu(WP_REST_Request $request): WP_REST_Response {
+    $location = (string) $request->get_param('location');
+    $lang     = (string) $request->get_param('lang');
+
+    $allowed_locations = ['primary', 'footer', 'legal'];
+    if (!in_array($location, $allowed_locations, true)) {
+        return new WP_REST_Response([
+            'error'   => 'invalid_location',
+            'message' => 'location must be one of: ' . implode(', ', $allowed_locations),
+        ], 400);
+    }
+
+    if ($lang !== '' && function_exists('PLL')) {
+        $pll = PLL();
+        if ($pll && is_callable([$pll, 'switch_language'])) {
+            $pll->switch_language($lang);
+        } elseif ($pll && isset($pll->model) && is_object($pll->model)) {
+            $pll_lang = $pll->model->get_language($lang);
+            if ($pll_lang) {
+                $pll->curlang = $pll_lang;
+            }
+        }
+    }
+
+    $locations = get_nav_menu_locations();
+    if (!is_array($locations) || empty($locations[$location])) {
+        return new WP_REST_Response([
+            'location'  => $location,
+            'lang'      => $lang,
+            'menu_id'   => 0,
+            'items'     => [],
+        ], 200);
+    }
+
+    $menu_id = (int) $locations[$location];
+    $items   = wp_get_nav_menu_items($menu_id);
+    if (!is_array($items)) {
+        $items = [];
+    }
+
+    $payload = array_map(static function ($item) {
+        return [
+            'id'         => (int) $item->ID,
+            'parent'     => (int) ($item->menu_item_parent ?? 0),
+            'title'      => ['rendered' => (string) ($item->title ?? '')],
+            'url'        => (string) ($item->url ?? ''),
+            'menu_order' => (int) ($item->menu_order ?? 0),
+            'target'     => (string) ($item->target ?? ''),
+        ];
+    }, $items);
+
+    return new WP_REST_Response([
+        'location' => $location,
+        'lang'     => $lang,
+        'menu_id'  => $menu_id,
+        'items'    => $payload,
+    ], 200);
 }
 
 function omb_rest_acf_sync(WP_REST_Request $request): WP_REST_Response {
