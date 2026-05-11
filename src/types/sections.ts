@@ -186,6 +186,49 @@ export type FoundersBannerSectionT = CoreSection & {
   right_image: WpImage | null;
 };
 
+/** Figma 597:3970 (“Frame 2147228606”) — centered heading + row of audience pills (gradient disc, icon tile, label). */
+export type WhoWeAreForItemAccentT = "brand" | "rose";
+
+export type WhoWeAreForItemT = {
+  icon: WpImage | null;
+  label: string;
+  icon_accent: WhoWeAreForItemAccentT;
+};
+
+export type WhoWeAreForSectionT = CoreSection & {
+  type: "who_we_are_for";
+  title: string;
+  items: WhoWeAreForItemT[];
+  ctas: CtaItem[];
+};
+
+/** Figma **597:3503** (“Frame 2147228620”) — rounded card: copy + checklist + pricing + CTA; stacked media column for mirror variant (`media_position`). */
+export type MediaTextChecklistRowT = {
+  text: string;
+  /** Resolved per-row icon, else section `list_default_icon`. `null` falls back to the built-in brand check. */
+  icon: WpImage | null;
+};
+
+export type MediaTextChecklistSectionT = CoreSection & {
+  type: "media_text_checklist";
+  media_position: "left" | "right";
+  /** `soft_surface` ≈ Figma pale blue card; `white_card` = white panel + subtle ring (Kappers-style). */
+  panel_style: "soft_surface" | "white_card";
+  image_top: WpImage | null;
+  image_bottom: WpImage | null;
+  title: string;
+  subtitle: string;
+  description: string;
+  checklist_title: string;
+  /** Applied to rows with no row-level icon when set. */
+  list_default_icon: WpImage | null;
+  checklist: MediaTextChecklistRowT[];
+  pricing_label: string;
+  button: WpAcfLink | null;
+  /** Optional trailing graphic on the primary CTA; default circled arrow when unset. */
+  button_trailing_icon: WpImage | null;
+};
+
 export type StorySplitSectionT = CoreSection & {
   type: "story_split";
   image: WpImage | null;
@@ -627,6 +670,8 @@ export type AnySectionT =
   | GuaranteesPromiseSplitSectionT
   | GrowthPlansSplitSectionT
   | FoundersBannerSectionT
+  | WhoWeAreForSectionT
+  | MediaTextChecklistSectionT
   | StorySplitSectionT
   | WhyWeDoThisSectionT
   | CombinedStrengthsSectionT

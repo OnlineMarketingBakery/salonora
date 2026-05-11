@@ -1,0 +1,241 @@
+/** @see Figma **597:3503** (“Frame 2147228620”) — two-column audience card: stacked media + copy, checklist, accent pricing line, brand CTA. */
+import { Button } from "@/components/ui/Button";
+import { Container } from "@/components/ui/Container";
+import { Media } from "@/components/ui/Media";
+import { RichText } from "@/components/ui/RichText";
+import { REVEAL_ITEM } from "@/lib/animation-classes";
+import type { Locale } from "@/lib/i18n/locales";
+import { resolveLink } from "@/lib/utils/links";
+import type { MediaTextChecklistSectionT } from "@/types/sections";
+import type { WpImage } from "@/types/wordpress";
+
+function ChecklistIcon({ icon }: { icon: WpImage | null }) {
+  if (icon) {
+    return (
+      <span className="mt-0.5 inline-flex size-[25px] shrink-0 items-center justify-center [&_img]:object-contain">
+        <Media
+          image={icon}
+          width={25}
+          height={25}
+          className="h-[25px] w-[25px]"
+          sizes="25px"
+          preferLargestSource
+        />
+      </span>
+    );
+  }
+  return <CheckIcon />;
+}
+
+function CheckIcon() {
+  return (
+    <span
+      className="relative mt-0.5 inline-flex size-[25px] shrink-0 items-center justify-center rounded-full bg-[var(--palette-brand)]"
+      aria-hidden
+    >
+      <svg
+        className="h-[13px] w-[15px] text-[var(--palette-white)]"
+        viewBox="0 0 15 13"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M1 6.5L5.5 11L14 1"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </span>
+  );
+}
+
+export function MediaTextChecklistSection({
+  section,
+  lang,
+}: {
+  section: MediaTextChecklistSectionT;
+  lang: Locale;
+}) {
+  const resolved = resolveLink(section.button, lang);
+  const ctaLabel =
+    resolved?.label?.trim() || section.button?.title?.trim() || "";
+  const ctaHref = resolved?.href;
+
+  const outerCard =
+    section.panel_style === "white_card"
+      ? "bg-[var(--palette-white)] border border-[color-mix(in_srgb,var(--palette-brand)_18%,transparent)] shadow-[0_6px_20px_0px_rgba(57,144,240,0.14)]"
+      : "bg-[var(--palette-surface)]";
+
+  const bottomFrameBg =
+    section.panel_style === "white_card"
+      ? "bg-[var(--palette-surface)]"
+      : "bg-[var(--palette-white)]";
+
+  const mediaOrder =
+    section.media_position === "left"
+      ? "order-1 lg:order-1"
+      : "order-1 lg:order-2";
+  const copyOrder =
+    section.media_position === "left"
+      ? "order-2 lg:order-2"
+      : "order-2 lg:order-1";
+
+  const hasMedia = Boolean(section.image_top || section.image_bottom);
+  const hasUpperBlock =
+    Boolean(section.title || section.subtitle || section.description) ||
+    Boolean(section.checklist_title) ||
+    section.checklist.length > 0;
+  const hasChecklistBlock =
+    Boolean(section.checklist_title) || section.checklist.length > 0;
+  const hasTitleBlock = Boolean(
+    section.title || section.subtitle || section.description,
+  );
+
+  const hasFooter = Boolean(section.pricing_label || (ctaHref && ctaLabel));
+
+  const mediaColumn = (
+    <div
+      className={`flex min-w-0 flex-col gap-[16px] sm:gap-[22px] lg:h-full lg:min-h-0 ${hasMedia ? mediaOrder : ""}`}
+    >
+      {section.image_top ? (
+        <div className="relative h-[min(188px,52vw)] w-full shrink-0 overflow-hidden rounded-[14px] sm:rounded-2xl lg:h-[188px]">
+          <Media
+            image={section.image_top}
+            fill
+            className="object-cover"
+            sizes="(min-width: 1024px) 42vw, 100vw"
+            preferLargestSource
+          />
+        </div>
+      ) : null}
+      {section.image_bottom ? (
+        <div className={`rounded-2xl p-[10px] sm:p-3 lg:p-[15px] ${bottomFrameBg}`}>
+          <div className="relative h-[min(415px,80vw)] w-full overflow-hidden rounded-xl sm:rounded-2xl lg:h-[415px]">
+            <Media
+              image={section.image_bottom}
+              fill
+              className="object-cover"
+              sizes="(min-width: 1024px) 42vw, 100vw"
+              preferLargestSource
+            />
+          </div>
+        </div>
+      ) : null}
+    </div>
+  );
+
+  const titleBlock = hasTitleBlock ? (
+    <div className="flex flex-col gap-[14px]">
+      {section.title ? (
+        <h2 className="font-sans text-[32px] font-semibold leading-[1.17] text-[var(--palette-navy)] sm:text-[40px] lg:text-[48px] lg:leading-[56px]">
+          {section.title}
+        </h2>
+      ) : null}
+      {section.subtitle ? (
+        <p className="font-sans text-base font-normal leading-[1.4] text-[var(--palette-muted)]">
+          {section.subtitle}
+        </p>
+      ) : null}
+      {section.description ? (
+        <RichText
+          html={section.description}
+          className="!prose-p:mb-0 !prose-p:mt-0 [&_p+p]:mt-[14px] [&_p]:text-[16px] [&_p]:font-normal [&_p]:leading-[1.5] [&_p]:text-[var(--palette-muted)] prose-strong:font-semibold prose-strong:text-[var(--palette-navy)]"
+        />
+      ) : null}
+    </div>
+  ) : null;
+
+  const checklistBlock = hasChecklistBlock ? (
+    <div className="flex flex-col gap-[14px]">
+      {section.checklist_title ? (
+        <p className="font-sans text-[20px] font-semibold leading-[1.4] text-[var(--palette-navy)]">
+          {section.checklist_title}
+        </p>
+      ) : null}
+      {section.checklist.length > 0 ? (
+        <ul className="flex flex-col gap-[10px]">
+          {section.checklist.map((row, idx) =>
+            row.text ? (
+              <li
+                key={`${section.id}-chk-${idx}`}
+                className="flex items-center gap-[7px]"
+              >
+                <ChecklistIcon icon={row.icon} />
+                <span className="font-sans text-base font-normal leading-[1.4] text-[var(--palette-muted)]">
+                  {row.text}
+                </span>
+              </li>
+            ) : null,
+          )}
+        </ul>
+      ) : null}
+    </div>
+  ) : null;
+
+  const copyColumn = (
+    <div
+      className={`flex min-w-0 flex-col gap-[22px] lg:min-h-0 lg:max-w-[36rem] ${hasMedia ? `${copyOrder} lg:h-full lg:justify-between lg:gap-0` : ""}`}
+    >
+      {hasUpperBlock ? (
+        <div className="flex shrink-0 flex-col gap-[18px]">
+          {titleBlock}
+          {checklistBlock}
+        </div>
+      ) : null}
+
+      {hasFooter ? (
+        <div className="flex shrink-0 flex-col gap-[22px]">
+          {section.pricing_label ? (
+            <p className="font-sans text-[20px] font-semibold leading-[1.4] text-[var(--palette-accent)]">
+              {section.pricing_label}
+            </p>
+          ) : null}
+
+          {ctaHref && ctaLabel ? (
+            <Button
+              href={ctaHref}
+              target={resolved?.target}
+              variant="ctaBrand"
+              ctaSize="default"
+              ctaFullWidth={false}
+              ctaElevation="none"
+              ctaJustify="between"
+              arrowContent={
+                section.button_trailing_icon ? (
+                  <span className="inline-flex size-6 shrink-0 items-center justify-center [&_img]:object-contain">
+                    <Media
+                      image={section.button_trailing_icon}
+                      width={20}
+                      height={20}
+                      className="h-10 w-10"
+                      sizes="28px"
+                      preferLargestSource
+                    />
+                  </span>
+                ) : undefined
+              }
+              className="h-12 min-h-12 w-[290px] max-w-full shrink-0 self-start px-[18px] shadow-[0px_6px_10px_rgba(57,144,240,0.54)]"
+            >
+              {ctaLabel}
+            </Button>
+          ) : null}
+        </div>
+      ) : null}
+    </div>
+  );
+
+  return (
+    <section lang={lang} className="bg-[var(--palette-white)] py-8 md:py-12">
+      <Container className="!max-w-[85rem]">
+        <div
+          className={`${REVEAL_ITEM} grid gap-10 rounded-[20px] p-6 sm:p-10 md:gap-12 lg:items-stretch lg:gap-[60px] lg:p-[54px] ${hasMedia ? "lg:grid-cols-2" : ""} ${outerCard}`}
+        >
+          {hasMedia ? mediaColumn : null}
+          {copyColumn}
+        </div>
+      </Container>
+    </section>
+  );
+}
