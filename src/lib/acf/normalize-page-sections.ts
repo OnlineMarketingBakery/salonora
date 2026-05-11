@@ -362,6 +362,11 @@ function mapKnownPageSectionLayout(
               icon: asImage(r.icon) ?? listDefaultIcon,
             }))
           : [],
+        testimonial_heading: asString(row.testimonial_heading),
+        testimonial_body: asHtml(row.testimonial_body),
+        testimonial_author_image: asImage(row.testimonial_author_image),
+        testimonial_author_name: asString(row.testimonial_author_name),
+        testimonial_author_role: asString(row.testimonial_author_role),
         pricing_label: asString(row.pricing_label),
         button: asLink(row.button),
         button_trailing_icon: asImage(row.button_trailing_icon),

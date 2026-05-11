@@ -94,6 +94,18 @@ export function MediaTextChecklistSection({
   );
 
   const hasFooter = Boolean(section.pricing_label || (ctaHref && ctaLabel));
+  const hasTestimonial = Boolean(
+    section.testimonial_heading ||
+    section.testimonial_body ||
+    section.testimonial_author_image ||
+    section.testimonial_author_name ||
+    section.testimonial_author_role,
+  );
+  const hasAuthorRow = Boolean(
+    section.testimonial_author_image ||
+    section.testimonial_author_name ||
+    section.testimonial_author_role,
+  );
 
   const mediaColumn = (
     <div
@@ -111,8 +123,10 @@ export function MediaTextChecklistSection({
         </div>
       ) : null}
       {section.image_bottom ? (
-        <div className={`rounded-2xl p-[10px] sm:p-3 lg:p-[15px] ${bottomFrameBg}`}>
-          <div className="relative h-[min(415px,80vw)] w-full overflow-hidden rounded-xl sm:rounded-2xl lg:h-[415px]">
+        <div
+          className={`flex min-h-0 flex-col rounded-2xl p-[10px] sm:p-3 lg:min-h-0 lg:flex-1 lg:p-[15px] ${bottomFrameBg}`}
+        >
+          <div className="relative h-[min(415px,80vw)] w-full overflow-hidden rounded-xl sm:rounded-2xl lg:h-auto lg:min-h-[400px] lg:flex-1">
             <Media
               image={section.image_bottom}
               fill
@@ -178,17 +192,67 @@ export function MediaTextChecklistSection({
     <div
       className={`flex min-w-0 flex-col gap-[22px] lg:min-h-0 lg:max-w-[36rem] ${hasMedia ? `${copyOrder} lg:h-full lg:justify-between lg:gap-0` : ""}`}
     >
-      {hasUpperBlock ? (
-        <div className="flex shrink-0 flex-col gap-[18px]">
-          {titleBlock}
-          {checklistBlock}
+      {hasUpperBlock || hasTestimonial ? (
+        <div className="flex shrink-0 flex-col gap-[22px]">
+          {hasUpperBlock ? (
+            <div className="flex flex-col gap-[18px]">
+              {titleBlock}
+              {checklistBlock}
+            </div>
+          ) : null}
+          {hasTestimonial ? (
+            <div className="flex flex-col gap-[14px]">
+              {section.testimonial_heading ? (
+                <p className="font-sans text-[20px] font-semibold leading-[1.4] tracking-[-0.02em] text-[var(--palette-navy)]">
+                  {section.testimonial_heading}
+                </p>
+              ) : null}
+              {section.testimonial_body ? (
+                <RichText
+                  html={section.testimonial_body}
+                  className="!prose-p:mb-0 !prose-p:mt-0 [&_p+p]:mt-[14px] [&_p]:text-[16px] [&_p]:font-normal [&_p]:leading-[1.5] [&_p]:text-[var(--palette-muted)] prose-strong:font-semibold prose-strong:text-[var(--palette-navy)]"
+                />
+              ) : null}
+              {hasAuthorRow ? (
+                <div className="flex items-start gap-4">
+                  {section.testimonial_author_image ? (
+                    <span className="relative mt-0.5 inline-flex size-11 shrink-0 overflow-hidden rounded-full ring-1 ring-[color-mix(in_srgb,var(--palette-navy)_8%,transparent)] [&_img]:object-cover">
+                      <Media
+                        image={section.testimonial_author_image}
+                        width={44}
+                        height={44}
+                        className="h-11 w-11"
+                        sizes="44px"
+                        preferLargestSource
+                      />
+                    </span>
+                  ) : null}
+                  {section.testimonial_author_name ||
+                  section.testimonial_author_role ? (
+                    <div className="flex min-w-0 flex-col gap-0.5 pt-0.5">
+                      {section.testimonial_author_name ? (
+                        <span className="font-sans text-base font-semibold leading-[1.35] text-[var(--palette-navy)]">
+                          {section.testimonial_author_name}
+                        </span>
+                      ) : null}
+                      {section.testimonial_author_role ? (
+                        <span className="font-sans text-[15px] font-normal leading-[1.4] text-[var(--palette-muted)]">
+                          {section.testimonial_author_role}
+                        </span>
+                      ) : null}
+                    </div>
+                  ) : null}
+                </div>
+              ) : null}
+            </div>
+          ) : null}
         </div>
       ) : null}
 
       {hasFooter ? (
         <div className="flex shrink-0 flex-col gap-[22px]">
           {section.pricing_label ? (
-            <p className="font-sans text-[20px] font-semibold leading-[1.4] text-[var(--palette-accent)]">
+            <p className="font-sans text-[20px] font-semibold leading-[1.4] text-[var(--palette-accent)] mt-2">
               {section.pricing_label}
             </p>
           ) : null}
@@ -204,13 +268,13 @@ export function MediaTextChecklistSection({
               ctaJustify="between"
               arrowContent={
                 section.button_trailing_icon ? (
-                  <span className="inline-flex size-6 shrink-0 items-center justify-center [&_img]:object-contain">
+                  <span className="inline-flex size-5 shrink-0 items-center justify-center [&_img]:object-contain">
                     <Media
                       image={section.button_trailing_icon}
                       width={20}
                       height={20}
-                      className="h-10 w-10"
-                      sizes="28px"
+                      className="h-5 w-5"
+                      sizes="20px"
                       preferLargestSource
                     />
                   </span>

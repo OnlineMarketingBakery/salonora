@@ -3399,6 +3399,116 @@
               ]
             },
             {
+              "key": "field_omb_media_text_checklist_testimonial_heading",
+              "label": "Testimonial heading (optional)",
+              "name": "testimonial_heading",
+              "aria-label": "",
+              "type": "text",
+              "instructions": "Bold line above the testimonial body (e.g. “Melanie Koelemeijer van Voetzorg Roermond ging je voor!”). Leave all testimonial fields empty to hide the block.",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "maxlength": "",
+              "allow_in_bindings": 0,
+              "placeholder": "",
+              "prepend": "",
+              "append": ""
+            },
+            {
+              "key": "field_omb_media_text_checklist_testimonial_body",
+              "label": "Testimonial body (optional)",
+              "name": "testimonial_body",
+              "aria-label": "",
+              "type": "wysiwyg",
+              "instructions": "Quote / paragraph rendered between the heading and the author row.",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "allow_in_bindings": 0,
+              "tabs": "all",
+              "toolbar": "basic",
+              "media_upload": 0,
+              "delay": 0
+            },
+            {
+              "key": "field_omb_media_text_checklist_testimonial_author_image",
+              "label": "Testimonial author image (optional)",
+              "name": "testimonial_author_image",
+              "aria-label": "",
+              "type": "image",
+              "instructions": "Small round avatar shown next to the author name.",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "return_format": "array",
+              "library": "all",
+              "min_width": "",
+              "min_height": "",
+              "min_size": "",
+              "max_width": "",
+              "max_height": "",
+              "max_size": "",
+              "mime_types": "png,jpg,jpeg,webp",
+              "allow_in_bindings": 0,
+              "preview_size": "thumbnail"
+            },
+            {
+              "key": "field_omb_media_text_checklist_testimonial_author_name",
+              "label": "Testimonial author name (optional)",
+              "name": "testimonial_author_name",
+              "aria-label": "",
+              "type": "text",
+              "instructions": "",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "maxlength": "",
+              "allow_in_bindings": 0,
+              "placeholder": "",
+              "prepend": "",
+              "append": ""
+            },
+            {
+              "key": "field_omb_media_text_checklist_testimonial_author_role",
+              "label": "Testimonial author role / company (optional)",
+              "name": "testimonial_author_role",
+              "aria-label": "",
+              "type": "text",
+              "instructions": "Shown under the author name (e.g. “Voetzorg Roermond”).",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "maxlength": "",
+              "allow_in_bindings": 0,
+              "placeholder": "",
+              "prepend": "",
+              "append": ""
+            },
+            {
               "key": "field_omb_media_text_checklist_pricing_label",
               "label": "Pricing / highlight line",
               "name": "pricing_label",
@@ -9099,5 +9209,5 @@
   "display_title": "",
   "allow_ai_access": false,
   "ai_description": "",
-  "modified": 1779000320
+  "modified": 1779000420
 }

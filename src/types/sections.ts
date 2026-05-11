@@ -223,6 +223,12 @@ export type MediaTextChecklistSectionT = CoreSection & {
   /** Applied to rows with no row-level icon when set. */
   list_default_icon: WpImage | null;
   checklist: MediaTextChecklistRowT[];
+  /** Optional testimonial slot rendered between checklist and footer (pricing + CTA). All fields optional; block is hidden when every field is empty. */
+  testimonial_heading: string;
+  testimonial_body: string;
+  testimonial_author_image: WpImage | null;
+  testimonial_author_name: string;
+  testimonial_author_role: string;
   pricing_label: string;
   button: WpAcfLink | null;
   /** Optional trailing graphic on the primary CTA; default circled arrow when unset. */
