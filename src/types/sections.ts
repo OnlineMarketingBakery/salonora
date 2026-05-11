@@ -24,6 +24,8 @@ export type HeroSectionT = CoreSection & {
   trustImage: WpImage | null;
   /** Large visual behind the foreground person (e.g. product UI), optional */
   behindImage: WpImage | null;
+  /** Extra space on the right of the behind-image layer (px). 0 = none. */
+  behindImageRightPadding?: number;
   image: WpImage | null;
   /** Optional small line under the eyebrow (e.g. "We are Salonora"). */
   tagline?: string;

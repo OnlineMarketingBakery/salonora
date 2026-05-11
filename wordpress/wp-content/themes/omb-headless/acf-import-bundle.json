@@ -1380,7 +1380,7 @@
                 "name": "behind_image",
                 "aria-label": "",
                 "type": "image",
-                "instructions": "Optional layer behind the main hero figure (e.g. app screenshot). Shown on the right half of the hero visual area.",
+                "instructions": "Optional layer behind the main hero figure (e.g. app screenshot). With a main hero image, it sits on the right half; with only this layer (no main image), the layout uses 40% width on the right.",
                 "required": 0,
                 "conditional_logic": 0,
                 "wrapper": {
@@ -1399,6 +1399,29 @@
                 "mime_types": "",
                 "allow_in_bindings": 0,
                 "preview_size": "medium"
+              },
+              {
+                "key": "field_hero_behind_image_right_padding",
+                "label": "Behind image — right padding",
+                "name": "behind_image_right_padding",
+                "aria-label": "",
+                "type": "number",
+                "instructions": "Optional extra space (pixels) on the right inside the behind-image band. Leave empty or 0 for the default (no extra padding).",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "min": 0,
+                "max": 400,
+                "allow_in_bindings": 0,
+                "placeholder": "0",
+                "prepend": "",
+                "append": "px",
+                "step": 1
               },
               {
                 "key": "field_hero_image",
@@ -9582,7 +9605,7 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1778700000
+    "modified": 1778800000
   },
   {
     "key": "group_omb_post_settings",

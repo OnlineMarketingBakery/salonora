@@ -29,6 +29,18 @@ export function asBool(v: unknown): boolean {
   return false;
 }
 
+/** ACF number fields: non-negative integer, capped for safe CSS usage. */
+export function asNonNegativeInt(v: unknown, max = 400): number {
+  const n =
+    typeof v === "number" && Number.isFinite(v)
+      ? v
+      : typeof v === "string" && v.trim() !== ""
+        ? Number(v.trim())
+        : NaN;
+  if (!Number.isFinite(n) || n < 0) return 0;
+  return Math.min(Math.max(0, Math.floor(n)), max);
+}
+
 export function asImage(v: unknown): WpImage | null {
   if (v == null) return null;
   if (typeof v === "string") {
