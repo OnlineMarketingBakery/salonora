@@ -121,7 +121,7 @@ export function GuaranteesPromiseSplitSection({
   const dl = resolveLink(section.downloadLink, lang);
 
   return (
-    <section className="bg-[var(--palette-white)] pt-20">
+    <section className="bg-[var(--palette-white)] py-16 md:py-24">
       <Container className="!max-w-[85rem]">
         <div className="grid items-center lg:grid-cols-2 lg:items-start lg:gap-[53px]">
           <div className={`${REVEAL_ITEM} relative min-w-0`}>

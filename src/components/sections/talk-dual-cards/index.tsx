@@ -55,7 +55,7 @@ export function TalkDualCardsSection({
     "relative flex h-full min-h-[314px] flex-col overflow-hidden rounded-[24px] p-12";
 
   return (
-    <section className="bg-[var(--palette-white)] pt-16 md:-pt-20 pb-16 md:pb-28">
+      <section className="bg-[var(--palette-white)] py-16 md:pt-4 md:pb-24">
       <Container className="!max-w-[81.25rem]">
         <div className="flex flex-col items-center gap-[54px]">
           {section.title ? (

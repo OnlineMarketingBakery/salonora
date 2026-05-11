@@ -12,7 +12,7 @@ export function WhyWeDoThisSection({
   lang: Locale;
 }) {
   return (
-    <section className="bg-white py-20 md:py-24">
+    <section className="bg-white py-16 md:py-24">
       <Container className="max-w-340!">
         <div className="relative">
           <div className="relative overflow-hidden rounded-[14px] bg-[linear-gradient(180deg,var(--palette-brand),var(--palette-brand-strong))]">
@@ -32,11 +32,11 @@ export function WhyWeDoThisSection({
               </div>
             ) : null}
 
-            <div className="relative flex flex-col gap-10 px-6 py-12 sm:px-10 sm:py-14 lg:min-h-[415px] lg:justify-center lg:pl-[650px] lg:pr-16 lg:py-16">
+            <div className="relative flex flex-col gap-10 px-6 pt-12 sm:px-10 sm:pt-14 lg:min-h-[415px] lg:justify-center lg:pb-16 lg:pl-[650px] lg:pr-16 lg:pt-16">
               {section.behindGraphic ? (
                 <div
                   aria-hidden
-                  className="pointer-events-none absolute left-0 top-0 h-full w-[650px] overflow-hidden"
+                  className="pointer-events-none absolute left-0 top-0 hidden h-full w-[650px] overflow-hidden lg:block"
                 >
                   <Media
                     image={section.behindGraphic}
@@ -80,6 +80,36 @@ export function WhyWeDoThisSection({
                   ) : null}
                 </div>
               </div>
+
+              {section.image ? (
+                <div
+                  className={`${REVEAL_ITEM} relative z-10 mx-auto flex w-full max-w-[420px] items-end justify-center lg:hidden`}
+                >
+                  {section.behindGraphic ? (
+                    <div
+                      aria-hidden
+                      className="pointer-events-none absolute inset-0 z-0"
+                    >
+                      <Media
+                        image={section.behindGraphic}
+                        width={1300}
+                        height={830}
+                        preferLargestSource
+                        className="h-full w-full object-contain object-center opacity-100"
+                        sizes="(max-width: 1023px) 80vw, 0px"
+                      />
+                    </div>
+                  ) : null}
+                  <Media
+                    image={section.image}
+                    width={1120}
+                    height={1120}
+                    preferLargestSource
+                    className="relative z-10 mx-auto h-auto w-full max-w-[340px] object-contain object-bottom"
+                    sizes="(max-width: 1023px) 70vw, 0px"
+                  />
+                </div>
+              ) : null}
             </div>
           </div>
 
@@ -97,19 +127,6 @@ export function WhyWeDoThisSection({
                   sizes="560px"
                 />
               </div>
-            </div>
-          ) : null}
-
-          {section.image ? (
-            <div className={`${REVEAL_ITEM} -mt-6 w-full lg:hidden`}>
-              <Media
-                image={section.image}
-                width={1120}
-                height={1120}
-                preferLargestSource
-                className="mx-auto h-auto w-full max-w-[520px] object-contain object-bottom"
-                sizes="92vw"
-              />
             </div>
           ) : null}
         </div>

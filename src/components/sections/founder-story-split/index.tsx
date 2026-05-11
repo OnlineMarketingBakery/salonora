@@ -59,7 +59,7 @@ export function FounderStorySplitSection(props: {
     .filter(Boolean);
 
   return (
-    <section className="bg-[var(--palette-white)] py-10 lg:py-16">
+    <section className="bg-[var(--palette-white)] py-16 md:py-24">
       <Container className="max-w-[90rem]">
         <div className="mx-auto w-full max-w-[1298px]">
           <div

@@ -200,7 +200,7 @@ export function GrowthPlansSplitSection({
   );
 
   return (
-    <section className="bg-[var(--palette-white)] py-10 lg:py-[4.5rem]">
+    <section className="bg-[var(--palette-white)] py-16 md:py-24">
       <Container className="!max-w-[85rem]">
         <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-2 lg:gap-x-8 lg:gap-y-10 xl:gap-x-10">
           {section.media_position === "left" ? (
