@@ -1056,8 +1056,12 @@
           "class": "",
           "id": ""
         },
-        "post_type": ["wpcf7_contact_form"],
-        "post_status": ["publish"],
+        "post_type": [
+          "wpcf7_contact_form"
+        ],
+        "post_status": [
+          "publish"
+        ],
         "taxonomy": "",
         "return_format": "object",
         "multiple": 0,
@@ -1380,7 +1384,7 @@
                 "name": "behind_image",
                 "aria-label": "",
                 "type": "image",
-                "instructions": "Optional layer behind the main hero figure (e.g. app screenshot). Shown on the right half of the hero visual area.",
+                "instructions": "Optional layer behind the main hero figure (e.g. app screenshot). With a main hero image, it sits on the right half; with only this layer (no main image), the layout uses 40% width on the right.",
                 "required": 0,
                 "conditional_logic": 0,
                 "wrapper": {
@@ -1399,6 +1403,29 @@
                 "mime_types": "",
                 "allow_in_bindings": 0,
                 "preview_size": "medium"
+              },
+              {
+                "key": "field_hero_behind_image_right_padding",
+                "label": "Behind image — right padding",
+                "name": "behind_image_right_padding",
+                "aria-label": "",
+                "type": "number",
+                "instructions": "Optional extra space (pixels) on the right inside the behind-image band. Leave empty or 0 for the default (no extra padding).",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "min": 0,
+                "max": 400,
+                "allow_in_bindings": 0,
+                "placeholder": "0",
+                "prepend": "",
+                "append": "px",
+                "step": 1
               },
               {
                 "key": "field_hero_image",
@@ -3965,6 +3992,906 @@
             "min": "",
             "max": ""
           },
+          "layout_omb_who_we_are_for": {
+            "key": "layout_omb_who_we_are_for",
+            "name": "who_we_are_for",
+            "label": "Who we are for",
+            "display": "block",
+            "sub_fields": [
+              {
+                "key": "field_omb_who_we_are_for_title",
+                "label": "Title",
+                "name": "title",
+                "aria-label": "",
+                "type": "wysiwyg",
+                "instructions": "Centered section heading (e.g. “Voor Wie Zijn Wij Er?”).",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "allow_in_bindings": 0,
+                "tabs": "all",
+                "toolbar": "basic",
+                "media_upload": 0,
+                "delay": 0
+              },
+              {
+                "key": "field_omb_who_we_are_for_items",
+                "label": "Audience items",
+                "name": "items",
+                "aria-label": "",
+                "type": "repeater",
+                "instructions": "Each pill: icon in a colored tile + label. Use Brand (blue) or Rose (pink) for the tile to match the design alternation.",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "layout": "row",
+                "pagination": 0,
+                "min": 1,
+                "max": 0,
+                "collapsed": "",
+                "button_label": "Add item",
+                "rows_per_page": 20,
+                "sub_fields": [
+                  {
+                    "key": "field_omb_who_we_are_for_items_icon",
+                    "label": "Icon",
+                    "name": "icon",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "Square or transparent PNG/SVG; displayed inside the rounded tile.",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "return_format": "array",
+                    "library": "all",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": "png,jpg,jpeg,webp,svg",
+                    "allow_in_bindings": 0,
+                    "preview_size": "thumbnail",
+                    "parent_repeater": "field_omb_who_we_are_for_items"
+                  },
+                  {
+                    "key": "field_omb_who_we_are_for_items_label",
+                    "label": "Label",
+                    "name": "label",
+                    "aria-label": "",
+                    "type": "wysiwyg",
+                    "instructions": "Name under the icon; use Shift+Enter for a second line when needed.",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "default_value": "",
+                    "allow_in_bindings": 0,
+                    "tabs": "all",
+                    "toolbar": "basic",
+                    "media_upload": 0,
+                    "delay": 0,
+                    "parent_repeater": "field_omb_who_we_are_for_items"
+                  },
+                  {
+                    "key": "field_omb_who_we_are_for_items_icon_accent",
+                    "label": "Icon tile color",
+                    "name": "icon_accent",
+                    "aria-label": "",
+                    "type": "select",
+                    "instructions": "Brand = blue tile; Rose = pink tile (Figma alternation).",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "choices": {
+                      "brand": "Brand (blue)",
+                      "rose": "Rose (pink)"
+                    },
+                    "default_value": "brand",
+                    "return_format": "value",
+                    "multiple": 0,
+                    "allow_null": 0,
+                    "ui": 1,
+                    "ajax": 0,
+                    "placeholder": "",
+                    "allow_custom": 0,
+                    "search_placeholder": "",
+                    "allow_in_bindings": 0,
+                    "create_options": 0,
+                    "save_options": 0,
+                    "parent_repeater": "field_omb_who_we_are_for_items"
+                  }
+                ]
+              },
+              {
+                "key": "field_omb_who_we_are_for_ctas",
+                "label": "Optional CTA",
+                "name": "ctas",
+                "aria-label": "",
+                "type": "repeater",
+                "instructions": "Optional button below the row; first row only is shown.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "layout": "table",
+                "min": 0,
+                "max": 1,
+                "collapsed": "",
+                "button_label": "Add Row",
+                "rows_per_page": 20,
+                "sub_fields": [
+                  {
+                    "key": "field_omb_who_we_are_for_ctas_cta_text",
+                    "label": "CTA Text",
+                    "name": "cta_text",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_omb_who_we_are_for_ctas"
+                  },
+                  {
+                    "key": "field_omb_who_we_are_for_ctas_cta_url",
+                    "label": "CTA URL",
+                    "name": "cta_url",
+                    "aria-label": "",
+                    "type": "link",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "return_format": "array",
+                    "allow_in_bindings": 0,
+                    "parent_repeater": "field_omb_who_we_are_for_ctas"
+                  }
+                ]
+              }
+            ],
+            "min": "",
+            "max": ""
+          },
+          "layout_omb_features_checklist": {
+            "key": "layout_omb_features_checklist",
+            "name": "features_checklist",
+            "label": "Features checklist (dark)",
+            "display": "block",
+            "sub_fields": [
+              {
+                "key": "field_omb_features_checklist_title",
+                "label": "Title",
+                "name": "title",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Centered headline over the navy band (Figma 597:4037).",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+              },
+              {
+                "key": "field_omb_features_checklist_description",
+                "label": "Intro",
+                "name": "description",
+                "aria-label": "",
+                "type": "wysiwyg",
+                "instructions": "Intro paragraphs below the title.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "allow_in_bindings": 0,
+                "tabs": "all",
+                "toolbar": "basic",
+                "media_upload": 0,
+                "delay": 0
+              },
+              {
+                "key": "field_omb_features_checklist_list_default_icon",
+                "label": "Default checklist icon",
+                "name": "list_default_icon",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "Optional; rows without a per-row icon inherit this. Empty = built-in brand check.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "png,jpg,jpeg,webp,svg",
+                "allow_in_bindings": 0,
+                "preview_size": "thumbnail"
+              },
+              {
+                "key": "field_omb_features_checklist_checklist",
+                "label": "Checklist",
+                "name": "checklist",
+                "aria-label": "",
+                "type": "repeater",
+                "instructions": "Left column white cards.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "layout": "row",
+                "pagination": 0,
+                "min": 0,
+                "max": 0,
+                "collapsed": "",
+                "button_label": "Add row",
+                "rows_per_page": 20,
+                "sub_fields": [
+                  {
+                    "key": "field_omb_features_checklist_checklist_icon",
+                    "label": "Icon (optional)",
+                    "name": "icon",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "return_format": "array",
+                    "library": "all",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": "png,jpg,jpeg,webp,svg",
+                    "allow_in_bindings": 0,
+                    "preview_size": "thumbnail",
+                    "parent_repeater": "field_omb_features_checklist_checklist"
+                  },
+                  {
+                    "key": "field_omb_features_checklist_checklist_item",
+                    "label": "Line",
+                    "name": "item",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_omb_features_checklist_checklist"
+                  }
+                ]
+              },
+              {
+                "key": "field_omb_features_checklist_image",
+                "label": "Image",
+                "name": "image",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "Right column visual (rounded).",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "",
+                "allow_in_bindings": 0,
+                "preview_size": "medium"
+              },
+              {
+                "key": "field_omb_features_checklist_button",
+                "label": "CTA",
+                "name": "button",
+                "aria-label": "",
+                "type": "link",
+                "instructions": "Primary button over the image (e.g. Start vandaag).",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "allow_in_bindings": 0
+              },
+              {
+                "key": "field_omb_features_checklist_button_trailing_icon",
+                "label": "CTA trailing icon",
+                "name": "button_trailing_icon",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "Optional; replaces the default circled arrow.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "png,jpg,jpeg,webp,svg",
+                "allow_in_bindings": 0,
+                "preview_size": "thumbnail"
+              }
+            ],
+            "min": "",
+            "max": ""
+          },
+          "layout_omb_media_text_checklist": {
+            "key": "layout_omb_media_text_checklist",
+            "name": "media_text_checklist",
+            "label": "Media + text checklist",
+            "display": "block",
+            "sub_fields": [
+              {
+                "key": "field_omb_media_text_checklist_media_position",
+                "label": "Visual column position",
+                "name": "media_position",
+                "aria-label": "",
+                "type": "select",
+                "instructions": "Desktop: media column on the left or right. Mobile: media stacks above copy.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "choices": {
+                  "left": "Left",
+                  "right": "Right"
+                },
+                "default_value": "right",
+                "return_format": "value",
+                "multiple": 0,
+                "allow_null": 0,
+                "ui": 1,
+                "ajax": 0,
+                "placeholder": "",
+                "allow_custom": 0,
+                "search_placeholder": "",
+                "allow_in_bindings": 0,
+                "create_options": 0,
+                "save_options": 0
+              },
+              {
+                "key": "field_omb_media_text_checklist_panel_style",
+                "label": "Card style",
+                "name": "panel_style",
+                "aria-label": "",
+                "type": "select",
+                "instructions": "Soft blue = pale surface card (Figma 597:3503). White card = bordered white panel (mirror variant).",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "choices": {
+                  "soft_surface": "Soft blue card",
+                  "white_card": "White card (bordered)"
+                },
+                "default_value": "soft_surface",
+                "return_format": "value",
+                "multiple": 0,
+                "allow_null": 0,
+                "ui": 1,
+                "ajax": 0,
+                "placeholder": "",
+                "allow_custom": 0,
+                "search_placeholder": "",
+                "allow_in_bindings": 0,
+                "create_options": 0,
+                "save_options": 0
+              },
+              {
+                "key": "field_omb_media_text_checklist_image_top",
+                "label": "Top image",
+                "name": "image_top",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "Primary photo (rounded).",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "",
+                "allow_in_bindings": 0,
+                "preview_size": "medium"
+              },
+              {
+                "key": "field_omb_media_text_checklist_image_bottom",
+                "label": "Bottom graphic",
+                "name": "image_bottom",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "Mockup / secondary visual inside the inner framed area.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "",
+                "allow_in_bindings": 0,
+                "preview_size": "medium"
+              },
+              {
+                "key": "field_omb_media_text_checklist_title",
+                "label": "Title",
+                "name": "title",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+              },
+              {
+                "key": "field_omb_media_text_checklist_subtitle",
+                "label": "Subtitle",
+                "name": "subtitle",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+              },
+              {
+                "key": "field_omb_media_text_checklist_description",
+                "label": "Description",
+                "name": "description",
+                "aria-label": "",
+                "type": "wysiwyg",
+                "instructions": "Intro paragraphs below the subtitle.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "allow_in_bindings": 0,
+                "tabs": "all",
+                "toolbar": "basic",
+                "media_upload": 0,
+                "delay": 0
+              },
+              {
+                "key": "field_omb_media_text_checklist_checklist_title",
+                "label": "Checklist heading",
+                "name": "checklist_title",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+              },
+              {
+                "key": "field_omb_media_text_checklist_list_default_icon",
+                "label": "Default checklist icon",
+                "name": "list_default_icon",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "Applied to every checklist row that has no per-row icon. Leave empty to use the built-in brand check icon.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "png,jpg,jpeg,webp,svg",
+                "allow_in_bindings": 0,
+                "preview_size": "thumbnail"
+              },
+              {
+                "key": "field_omb_media_text_checklist_checklist",
+                "label": "Checklist",
+                "name": "checklist",
+                "aria-label": "",
+                "type": "repeater",
+                "instructions": "One row per bullet. Per-row icon overrides the default; both empty falls back to the built-in brand check.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "layout": "row",
+                "pagination": 0,
+                "min": 0,
+                "max": 0,
+                "collapsed": "",
+                "button_label": "Add row",
+                "rows_per_page": 20,
+                "sub_fields": [
+                  {
+                    "key": "field_omb_media_text_checklist_checklist_icon",
+                    "label": "Icon (optional)",
+                    "name": "icon",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "Square or transparent PNG/SVG. Leave empty to inherit the section default or built-in brand check.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "return_format": "array",
+                    "library": "all",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": "png,jpg,jpeg,webp,svg",
+                    "allow_in_bindings": 0,
+                    "preview_size": "thumbnail",
+                    "parent_repeater": "field_omb_media_text_checklist_checklist"
+                  },
+                  {
+                    "key": "field_omb_media_text_checklist_checklist_item",
+                    "label": "Line",
+                    "name": "item",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_omb_media_text_checklist_checklist"
+                  }
+                ]
+              },
+              {
+                "key": "field_omb_media_text_checklist_testimonial_heading",
+                "label": "Testimonial heading (optional)",
+                "name": "testimonial_heading",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Bold line above the testimonial body (e.g. “Melanie Koelemeijer van Voetzorg Roermond ging je voor!”). Leave all testimonial fields empty to hide the block.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+              },
+              {
+                "key": "field_omb_media_text_checklist_testimonial_body",
+                "label": "Testimonial body (optional)",
+                "name": "testimonial_body",
+                "aria-label": "",
+                "type": "wysiwyg",
+                "instructions": "Quote / paragraph rendered between the heading and the author row.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "allow_in_bindings": 0,
+                "tabs": "all",
+                "toolbar": "basic",
+                "media_upload": 0,
+                "delay": 0
+              },
+              {
+                "key": "field_omb_media_text_checklist_testimonial_author_image",
+                "label": "Testimonial author image (optional)",
+                "name": "testimonial_author_image",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "Small round avatar shown next to the author name.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "png,jpg,jpeg,webp",
+                "allow_in_bindings": 0,
+                "preview_size": "thumbnail"
+              },
+              {
+                "key": "field_omb_media_text_checklist_testimonial_author_name",
+                "label": "Testimonial author name (optional)",
+                "name": "testimonial_author_name",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+              },
+              {
+                "key": "field_omb_media_text_checklist_testimonial_author_role",
+                "label": "Testimonial author role / company (optional)",
+                "name": "testimonial_author_role",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Shown under the author name (e.g. “Voetzorg Roermond”).",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+              },
+              {
+                "key": "field_omb_media_text_checklist_pricing_label",
+                "label": "Pricing / highlight line",
+                "name": "pricing_label",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "e.g. “Vanaf €10 per maand. Direct live!”",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+              },
+              {
+                "key": "field_omb_media_text_checklist_button",
+                "label": "Primary button",
+                "name": "button",
+                "aria-label": "",
+                "type": "link",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "allow_in_bindings": 0
+              },
+              {
+                "key": "field_omb_media_text_checklist_button_trailing_icon",
+                "label": "Button trailing icon",
+                "name": "button_trailing_icon",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "Optional icon on the right of the pill (e.g. arrow in circle). Leave empty to use the default circled arrow.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "png,jpg,jpeg,webp,svg",
+                "allow_in_bindings": 0,
+                "preview_size": "thumbnail"
+              }
+            ],
+            "min": "",
+            "max": ""
+          },
           "layout_omb_story_split": {
             "key": "layout_omb_story_split",
             "name": "story_split",
@@ -6272,10 +7199,18 @@
                   "class": "",
                   "id": ""
                 },
-                "post_type": ["testimonial"],
-                "post_status": ["publish"],
+                "post_type": [
+                  "testimonial"
+                ],
+                "post_status": [
+                  "publish"
+                ],
                 "taxonomy": "",
-                "filters": ["search", "post_type", "taxonomy"],
+                "filters": [
+                  "search",
+                  "post_type",
+                  "taxonomy"
+                ],
                 "return_format": "object",
                 "min": "",
                 "max": "",
@@ -7260,6 +8195,37 @@
             "display": "block",
             "sub_fields": [
               {
+                "key": "field_omb_faq_contact_split_section_background",
+                "label": "Section background",
+                "name": "section_background",
+                "aria-label": "",
+                "type": "select",
+                "instructions": "White (default) or full-width navy behind the FAQ list and contact card.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "choices": {
+                  "white": "White",
+                  "navy": "Navy (dark)"
+                },
+                "default_value": "white",
+                "return_format": "value",
+                "multiple": 0,
+                "allow_null": 0,
+                "ui": 1,
+                "ajax": 0,
+                "placeholder": "",
+                "allow_custom": 0,
+                "search_placeholder": "",
+                "allow_in_bindings": 0,
+                "create_options": 0,
+                "save_options": 0
+              },
+              {
                 "key": "field_faq_contact_split_title",
                 "label": "Section Title",
                 "name": "title",
@@ -7390,6 +8356,28 @@
                 "rows_per_page": 20,
                 "sub_fields": [
                   {
+                    "key": "field_omb_faq_contact_split_pricing_cta_text",
+                    "label": "Button label",
+                    "name": "cta_text",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "Shown on the wide navy pill. If empty, the link field’s title is used.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_69ea6278bb342"
+                  },
+                  {
                     "key": "field_69ea6278bb345",
                     "label": "CTA Link",
                     "name": "cta_link",
@@ -7405,6 +8393,33 @@
                     },
                     "return_format": "array",
                     "allow_in_bindings": 0,
+                    "parent_repeater": "field_69ea6278bb342"
+                  },
+                  {
+                    "key": "field_omb_faq_contact_split_pricing_cta_trailing_icon",
+                    "label": "Trailing icon",
+                    "name": "trailing_icon",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "Optional graphic on the right of the pill (e.g. circled arrow). Leave empty for the default arrow.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "return_format": "array",
+                    "library": "all",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": "png,jpg,jpeg,webp,svg",
+                    "allow_in_bindings": 0,
+                    "preview_size": "thumbnail",
                     "parent_repeater": "field_69ea6278bb342"
                   }
                 ]
@@ -7570,8 +8585,12 @@
                   "class": "",
                   "id": ""
                 },
-                "post_type": ["wpcf7_contact_form"],
-                "post_status": ["publish"],
+                "post_type": [
+                  "wpcf7_contact_form"
+                ],
+                "post_status": [
+                  "publish"
+                ],
                 "taxonomy": "",
                 "return_format": "object",
                 "multiple": 0,
@@ -7981,8 +9000,12 @@
                   "class": "",
                   "id": ""
                 },
-                "post_type": ["wpcf7_contact_form"],
-                "post_status": ["publish"],
+                "post_type": [
+                  "wpcf7_contact_form"
+                ],
+                "post_status": [
+                  "publish"
+                ],
                 "taxonomy": "",
                 "return_format": "object",
                 "multiple": 0,
@@ -9582,7 +10605,7 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1778700000
+    "modified": 1779000420
   },
   {
     "key": "group_omb_post_settings",
@@ -9640,8 +10663,12 @@
           "class": "",
           "id": ""
         },
-        "post_type": ["wpcf7_contact_form"],
-        "post_status": ["publish"],
+        "post_type": [
+          "wpcf7_contact_form"
+        ],
+        "post_status": [
+          "publish"
+        ],
         "taxonomy": "",
         "return_format": "object",
         "multiple": 0,
@@ -9873,8 +10900,12 @@
                   "class": "",
                   "id": ""
                 },
-                "post_type": ["wpcf7_contact_form"],
-                "post_status": ["publish"],
+                "post_type": [
+                  "wpcf7_contact_form"
+                ],
+                "post_status": [
+                  "publish"
+                ],
                 "taxonomy": "",
                 "return_format": "object",
                 "multiple": 0,
@@ -10728,8 +11759,12 @@
                   "class": "",
                   "id": ""
                 },
-                "post_type": ["wpcf7_contact_form"],
-                "post_status": ["publish"],
+                "post_type": [
+                  "wpcf7_contact_form"
+                ],
+                "post_status": [
+                  "publish"
+                ],
                 "taxonomy": "",
                 "return_format": "object",
                 "multiple": 0,

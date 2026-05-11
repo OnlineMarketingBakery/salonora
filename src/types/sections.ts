@@ -24,6 +24,8 @@ export type HeroSectionT = CoreSection & {
   trustImage: WpImage | null;
   /** Large visual behind the foreground person (e.g. product UI), optional */
   behindImage: WpImage | null;
+  /** Extra space on the right of the behind-image layer (px). 0 = none. */
+  behindImageRightPadding?: number;
   image: WpImage | null;
   /** Optional small line under the eyebrow (e.g. "We are Salonora"). */
   tagline?: string;
@@ -182,6 +184,73 @@ export type FoundersBannerSectionT = CoreSection & {
   pill_link: WpAcfLink | null;
   left_image: WpImage | null;
   right_image: WpImage | null;
+};
+
+/** Figma 597:3970 (“Frame 2147228606”) — centered heading + row of audience pills (gradient disc, icon tile, label). */
+export type WhoWeAreForItemAccentT = "brand" | "rose";
+
+export type WhoWeAreForItemT = {
+  icon: WpImage | null;
+  label: string;
+  icon_accent: WhoWeAreForItemAccentT;
+};
+
+export type WhoWeAreForSectionT = CoreSection & {
+  type: "who_we_are_for";
+  title: string;
+  items: WhoWeAreForItemT[];
+  ctas: CtaItem[];
+};
+
+/** Figma **597:3503** (“Frame 2147228620”) — rounded card: copy + checklist + pricing + CTA; stacked media column for mirror variant (`media_position`). */
+export type MediaTextChecklistRowT = {
+  text: string;
+  /** Resolved per-row icon, else section `list_default_icon`. `null` falls back to the built-in brand check. */
+  icon: WpImage | null;
+};
+
+/** Figma content **597:4037** (“Frame 2147228715”) over decorative shell **597:3568** (“Frame 2147228001”) — centered intro + white checklist rows + masked image with CTA. */
+export type FeaturesChecklistRowT = {
+  text: string;
+  /** Resolved per-row icon, else section `list_default_icon`. `null` falls back to the built-in brand check. */
+  icon: WpImage | null;
+};
+
+export type FeaturesChecklistSectionT = CoreSection & {
+  type: "features_checklist";
+  title: string;
+  description: string;
+  list_default_icon: WpImage | null;
+  checklist: FeaturesChecklistRowT[];
+  image: WpImage | null;
+  button: WpAcfLink | null;
+  button_trailing_icon: WpImage | null;
+};
+
+export type MediaTextChecklistSectionT = CoreSection & {
+  type: "media_text_checklist";
+  media_position: "left" | "right";
+  /** `soft_surface` ≈ Figma pale blue card; `white_card` = white panel + subtle ring (Kappers-style). */
+  panel_style: "soft_surface" | "white_card";
+  image_top: WpImage | null;
+  image_bottom: WpImage | null;
+  title: string;
+  subtitle: string;
+  description: string;
+  checklist_title: string;
+  /** Applied to rows with no row-level icon when set. */
+  list_default_icon: WpImage | null;
+  checklist: MediaTextChecklistRowT[];
+  /** Optional testimonial slot rendered between checklist and footer (pricing + CTA). All fields optional; block is hidden when every field is empty. */
+  testimonial_heading: string;
+  testimonial_body: string;
+  testimonial_author_image: WpImage | null;
+  testimonial_author_name: string;
+  testimonial_author_role: string;
+  pricing_label: string;
+  button: WpAcfLink | null;
+  /** Optional trailing graphic on the primary CTA; default circled arrow when unset. */
+  button_trailing_icon: WpImage | null;
 };
 
 export type StorySplitSectionT = CoreSection & {
@@ -436,10 +505,13 @@ export type FaqItemT = { question: string; answer: string };
 
 export type FaqContactSplitSectionT = CoreSection & {
   type: "faq_contact_split";
+  /** Full-bleed section surface behind FAQ + contact columns. */
+  sectionBackground: "white" | "navy";
   title: string;
   intro: string;
   items: FaqItemT[];
-  pricingCtas: { icon: WpImage | null; text: string; link: WpAcfLink | null }[];
+  /** Full-width navy pill(s) under the FAQ list; optional trailing icon (e.g. circled arrow). */
+  pricingCtas: { text: string; link: WpAcfLink | null; trailing_icon: WpImage | null }[];
   cardTitle: string;
   cardText: string;
   contactCtas: { icon: WpImage | null; ctaText: string; ctaLink: WpAcfLink | null }[];
@@ -625,6 +697,9 @@ export type AnySectionT =
   | GuaranteesPromiseSplitSectionT
   | GrowthPlansSplitSectionT
   | FoundersBannerSectionT
+  | WhoWeAreForSectionT
+  | FeaturesChecklistSectionT
+  | MediaTextChecklistSectionT
   | StorySplitSectionT
   | WhyWeDoThisSectionT
   | CombinedStrengthsSectionT

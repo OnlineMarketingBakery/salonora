@@ -33,6 +33,18 @@ export function SectionRenderer({ sections, lang }: { sections: AnySectionT[]; l
             return (
               <sectionRegistry.founders_banner key={section.id} section={section} lang={lang} />
             );
+          case "who_we_are_for":
+            return (
+              <sectionRegistry.who_we_are_for key={section.id} section={section} lang={lang} />
+            );
+          case "media_text_checklist":
+            return (
+              <sectionRegistry.media_text_checklist key={section.id} section={section} lang={lang} />
+            );
+          case "features_checklist":
+            return (
+              <sectionRegistry.features_checklist key={section.id} section={section} lang={lang} />
+            );
           case "story_split":
             return <sectionRegistry.story_split key={section.id} section={section} lang={lang} />;
           case "why_we_do_this":

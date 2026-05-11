@@ -1,10 +1,13 @@
 import Image from "next/image";
+import type { CSSProperties } from "react";
 import { getImageAlt, getImageUrl, getLargestImageUrl, resolveAbsoluteMediaUrl } from "@/lib/utils/media";
 import type { WpImage } from "@/types/wordpress";
 
 type Props = {
   image: WpImage | null;
   className?: string;
+  /** Passed through to the underlying `next/image` root element. */
+  style?: CSSProperties;
   fill?: boolean;
   sizes?: string;
   /** Default 75; use 90+ for small UI graphics that look soft on retina. */
@@ -22,6 +25,7 @@ type Props = {
 export function Media({
   image,
   className = "",
+  style,
   fill,
   sizes,
   quality,
@@ -42,6 +46,7 @@ export function Media({
         alt={alt}
         fill
         className={`object-cover ${className}`}
+        style={style}
         sizes={sizes}
         priority={priority}
         quality={quality}
@@ -55,6 +60,7 @@ export function Media({
       width={width}
       height={height}
       className={className}
+      style={style}
       sizes={sizes}
       priority={priority}
       quality={quality}

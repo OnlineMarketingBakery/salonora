@@ -5,6 +5,7 @@ import {
   asHtml,
   asImage,
   asLink,
+  asNonNegativeInt,
   asRelationshipPostIds,
   asString,
   mapCtaRepeater,
@@ -27,8 +28,11 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   feature_highlight_split: true,
   founder_story_split: true,
   faq_contact_split: true,
+  features_checklist: true,
   form_embed: true,
   founders_banner: true,
+  who_we_are_for: true,
+  media_text_checklist: true,
   guarantee_split: true,
   growth_plans_split: true,
   guarantees_promise_split: true,
@@ -111,6 +115,7 @@ function mapKnownPageSectionLayout(
         ctas,
         trustImage: asImage(row.trust_image),
         behindImage: asImage(row.behind_image),
+        behindImageRightPadding: asNonNegativeInt(row.behind_image_right_padding),
         image: asImage(row.image),
         tagline: asString(row.tagline),
         floatingCard: asHtml(row.floating_card),
@@ -310,6 +315,83 @@ function mapKnownPageSectionLayout(
         left_image: asImage(row.left_image),
         right_image: asImage(row.right_image),
       };
+    case "who_we_are_for":
+      return {
+        ...base,
+        type: "who_we_are_for",
+        title: asHtml(row.title),
+        items: Array.isArray(row.items)
+          ? (
+              row.items as {
+                icon?: unknown;
+                label?: unknown;
+                icon_accent?: unknown;
+              }[]
+            ).map((item) => {
+              const a = asString(item.icon_accent);
+              const icon_accent = a === "rose" ? ("rose" as const) : ("brand" as const);
+              return {
+                icon: asImage(item.icon),
+                label: asHtml(item.label),
+                icon_accent,
+              };
+            })
+          : [],
+        ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
+      };
+    case "features_checklist": {
+      const listDefaultIcon = asImage(row.list_default_icon);
+      return {
+        ...base,
+        type: "features_checklist",
+        title: asString(row.title),
+        description: asHtml(row.description),
+        list_default_icon: listDefaultIcon,
+        checklist: Array.isArray(row.checklist)
+          ? (row.checklist as { item?: unknown; icon?: unknown }[]).map((r) => ({
+              text: asString(r.item),
+              icon: asImage(r.icon) ?? listDefaultIcon,
+            }))
+          : [],
+        image: asImage(row.image),
+        button: asLink(row.button),
+        button_trailing_icon: asImage(row.button_trailing_icon),
+      };
+    }
+    case "media_text_checklist": {
+      const mp = asString(row.media_position);
+      const media_position = mp === "left" ? ("left" as const) : ("right" as const);
+      const ps = asString(row.panel_style);
+      const panel_style = ps === "white_card" ? ("white_card" as const) : ("soft_surface" as const);
+      const listDefaultIcon = asImage(row.list_default_icon);
+      return {
+        ...base,
+        type: "media_text_checklist",
+        media_position,
+        panel_style,
+        image_top: asImage(row.image_top),
+        image_bottom: asImage(row.image_bottom),
+        title: asString(row.title),
+        subtitle: asString(row.subtitle),
+        description: asHtml(row.description),
+        checklist_title: asString(row.checklist_title),
+        list_default_icon: listDefaultIcon,
+        checklist: Array.isArray(row.checklist)
+          ? (row.checklist as { item?: unknown; icon?: unknown }[]).map((r) => ({
+              text: asString(r.item),
+              icon: asImage(r.icon) ?? listDefaultIcon,
+            }))
+          : [],
+        testimonial_heading: asString(row.testimonial_heading),
+        testimonial_body: asHtml(row.testimonial_body),
+        testimonial_author_image: asImage(row.testimonial_author_image),
+        testimonial_author_name: asString(row.testimonial_author_name),
+        testimonial_author_role: asString(row.testimonial_author_role),
+        pricing_label: asString(row.pricing_label),
+        button: asLink(row.button),
+        button_trailing_icon: asImage(row.button_trailing_icon),
+      };
+    }
     case "guarantees_promise_split":
       return (() => {
         const listDefaultIcon = asImage(row.list_default_icon);
@@ -655,9 +737,12 @@ function mapKnownPageSectionLayout(
     case "faq_contact_split": {
       const ctaform = asString(row.ctaform);
       const useForm = ctaform === "form" || ctaform.toLowerCase().includes("form");
+      const bgRaw = asString(row.section_background);
+      const sectionBackground = bgRaw === "navy" ? "navy" : "white";
       return {
         ...base,
         type: "faq_contact_split",
+        sectionBackground,
         title: asString(row.title),
         intro: asHtml(row.intro),
         items: Array.isArray(row.items)
@@ -667,10 +752,16 @@ function mapKnownPageSectionLayout(
             }))
           : [],
         pricingCtas: Array.isArray(row.pricing_ctas)
-          ? (row.pricing_ctas as { cta_icon?: unknown; cta_text?: unknown; cta_link?: unknown }[]).map((c) => ({
-              icon: asImage(c.cta_icon),
+          ? (
+              row.pricing_ctas as {
+                cta_text?: unknown;
+                cta_link?: unknown;
+                trailing_icon?: unknown;
+              }[]
+            ).map((c) => ({
               text: asString(c.cta_text),
               link: asLink(c.cta_link),
+              trailing_icon: asImage(c.trailing_icon),
             }))
           : [],
         cardTitle: asString(row.card_title),

@@ -129,6 +129,30 @@ const FoundersBannerSectionLazy = dynamic(
   { ssr: true }
 );
 
+const WhoWeAreForSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/who-we-are-for").then((mod) => ({
+      default: mod.WhoWeAreForSection,
+    })),
+  { ssr: true }
+);
+
+const MediaTextChecklistSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/media-text-checklist").then((mod) => ({
+      default: mod.MediaTextChecklistSection,
+    })),
+  { ssr: true }
+);
+
+const FeaturesChecklistSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/features-checklist").then((mod) => ({
+      default: mod.FeaturesChecklistSection,
+    })),
+  { ssr: true }
+);
+
 import type { AnySectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 import type { ReactNode } from "react";
@@ -206,6 +230,15 @@ export const sectionRegistry = {
   ),
   founders_banner: asSection(
     FoundersBannerSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
+  who_we_are_for: asSection(
+    WhoWeAreForSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
+  media_text_checklist: asSection(
+    MediaTextChecklistSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
+  features_checklist: asSection(
+    FeaturesChecklistSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
 } satisfies SectionRegistryShape;
 
