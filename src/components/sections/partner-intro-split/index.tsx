@@ -29,7 +29,7 @@ export function PartnerIntroSplitSection({
     primaryCta?.text || ctaLink?.label || (ctaHref ? "Meer informatie" : "");
 
   return (
-    <section className="bg-[var(--palette-white)] py-10 lg:py-16">
+    <section className="bg-[var(--palette-white)] py-16 md:py-24">
       {/*
         Full-bleed 50/50 split: no outer Container — Figma runs navy + surface edge-to-edge.
         Inner columns keep their own padding (photo strip / copy column).

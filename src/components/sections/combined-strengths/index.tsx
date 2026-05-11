@@ -72,7 +72,7 @@ export function CombinedStrengthsSection({
     .filter(Boolean);
 
   return (
-    <section lang={lang} className="bg-[var(--palette-surface)] py-10 lg:py-24">
+    <section lang={lang} className="bg-[var(--palette-surface)] py-16 md:py-24">
       <Container className="!max-w-[81.25rem]">
         <div className="mx-auto flex w-full max-w-[1300px] flex-col gap-6">
           {/* Top: equal-height columns, 24px gutter — matches Figma 732 − (70+638) */}
@@ -80,11 +80,11 @@ export function CombinedStrengthsSection({
             <div
               className={`${REVEAL_ITEM} flex h-full min-h-0 w-full flex-col rounded-[20px] bg-[var(--palette-brand)] p-8 sm:p-10 lg:min-h-[610px] lg:justify-center lg:p-12`}
             >
-              <div className="flex w-full max-w-[33.6875rem] flex-col gap-[51px]">
+              <div className="flex w-full max-w-[33.6875rem] flex-col gap-8 sm:gap-[51px]">
                 {titleLines.length > 0 ? (
-                  <h2 className="font-sans text-[32px] font-semibold leading-none tracking-[-0.04em] text-[var(--palette-white)] sm:text-[40px] lg:text-[48px]">
+                  <h2 className="font-sans text-[28px] font-semibold leading-[1.15] tracking-[-0.04em] text-[var(--palette-white)] sm:text-[40px] lg:text-[48px]">
                     {titleLines.map((line, i) => (
-                      <span key={i} className="block leading-[56px]">
+                      <span key={i} className="block sm:leading-[56px]">
                         {line}
                       </span>
                     ))}
@@ -100,15 +100,15 @@ export function CombinedStrengthsSection({
                           className="h-px w-full max-w-[536px] shrink-0 bg-[color-mix(in_srgb,var(--palette-white)_42%,transparent)]"
                         />
                       ) : null}
-                      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-[29px]">
-                        <div className="relative h-[124px] w-[124px] shrink-0 overflow-hidden rounded-[11px] bg-[var(--palette-white)] ring-1 ring-[color-mix(in_srgb,var(--palette-white)_85%,transparent)]">
+                      <div className="flex flex-row items-center gap-4 sm:gap-[29px]">
+                        <div className="relative h-[88px] w-[88px] shrink-0 overflow-hidden rounded-[11px] bg-[var(--palette-white)] ring-1 ring-[color-mix(in_srgb,var(--palette-white)_85%,transparent)] sm:h-[124px] sm:w-[124px]">
                           {row.image ? (
                             <Media
                               image={row.image}
                               width={248}
                               height={248}
                               className="h-full w-full object-cover"
-                              sizes="124px"
+                              sizes="(max-width: 639px) 88px, 124px"
                               preferLargestSource
                             />
                           ) : null}
@@ -116,7 +116,7 @@ export function CombinedStrengthsSection({
                         {row.text ? (
                           <RichText
                             html={row.text}
-                            className="!prose-p:mb-0 !prose-p:mt-0 max-w-[390px] min-w-0 shrink !prose-p:text-[20px] !prose-p:font-normal !prose-p:leading-[1.4] !prose-p:text-[var(--palette-white)] [&_p]:!text-[var(--palette-white)] [&_strong]:font-semibold [&_strong]:!text-[var(--palette-white)]"
+                            className="!prose-p:mb-0 !prose-p:mt-0 max-w-[390px] min-w-0 shrink !prose-p:text-[16px] sm:!prose-p:text-[20px] !prose-p:font-normal !prose-p:leading-[1.4] !prose-p:text-[var(--palette-white)] [&_p]:!text-[var(--palette-white)] [&_strong]:font-semibold [&_strong]:!text-[var(--palette-white)]"
                           />
                         ) : null}
                       </div>

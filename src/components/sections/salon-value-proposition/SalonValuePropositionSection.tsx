@@ -252,7 +252,7 @@ export function SalonValuePropositionSection({
   const showSplitPanelLayout = Boolean(section.visualImage);
 
   return (
-    <section className="bg-white py-16 sm:py-20 md:py-24">
+    <section className="bg-white py-16 md:py-24">
       <Container className="!max-w-[85rem]">
         {showSplitPanelLayout ? (
           <SplitPanelLayout section={section} titleLines={titleLines} cards={cards} />

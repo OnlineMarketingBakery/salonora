@@ -211,7 +211,7 @@ export function SiteFooter({
             className={[
               "relative z-10 mx-auto w-full max-w-[1300px] px-4 sm:px-6 md:px-8",
               g.footer.footerLogo
-                ? "pt-20 sm:pt-24 md:pt-28"
+                ? "pt-28 sm:pt-32 md:pt-36"
                 : "pt-14 sm:pt-16",
             ]
               .filter(Boolean)

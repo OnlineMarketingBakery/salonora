@@ -129,7 +129,7 @@ export function FoundersBannerSection({
   const pillLabel = rawPillLabel ? decodeHtmlEntitiesPlain(rawPillLabel) : "";
 
   return (
-    <section className="bg-[var(--palette-white)] py-10 lg:py-14">
+    <section className="bg-[var(--palette-white)] py-16 md:py-24">
       <Container className="!max-w-[85rem]">
         <div
           className={`${REVEAL_ITEM} relative isolate flex min-h-[260px] flex-col justify-center overflow-hidden rounded-[24px] bg-[linear-gradient(148deg,var(--palette-brand)_0%,var(--palette-brand-strong)_42%,var(--palette-navy-deep)_100%)] lg:min-h-[314px]`}
@@ -143,14 +143,14 @@ export function FoundersBannerSection({
           />
 
           {section.left_image ? (
-            <div className="pointer-events-none absolute bottom-0 left-0 z-[2] w-[46%] max-w-[268px] sm:w-[40%] lg:left-2 lg:w-[28%] [@media(max-width:639px)]:max-w-[200px]">
+            <div className="pointer-events-none absolute bottom-0 left-0 z-[2] w-[32%] max-w-[140px] sm:w-[34%] sm:max-w-[200px] lg:left-2 lg:w-[28%] lg:max-w-[268px]">
               <div className="relative overflow-x-clip" style={PORTRAIT_MASK}>
                 <Media
                   image={section.left_image}
                   width={536}
                   height={1160}
                   className="h-auto w-full max-h-[min(58vw,580px)] object-contain object-bottom"
-                  sizes="(min-width: 1024px) 268px, 40vw"
+                  sizes="(min-width: 1024px) 268px, (min-width: 640px) 34vw, 32vw"
                   preferLargestSource
                 />
               </div>
@@ -158,14 +158,14 @@ export function FoundersBannerSection({
           ) : null}
 
           {section.right_image ? (
-            <div className="pointer-events-none absolute bottom-0 right-0 z-[2] w-[42%] max-w-[254px] sm:w-[36%] lg:right-2 lg:w-[26%] [@media(max-width:639px)]:max-w-[190px]">
+            <div className="pointer-events-none absolute bottom-0 right-0 z-[2] w-[30%] max-w-[130px] sm:w-[32%] sm:max-w-[190px] lg:right-2 lg:w-[26%] lg:max-w-[254px]">
               <div className="relative" style={PORTRAIT_MASK}>
                 <Media
                   image={section.right_image}
                   width={508}
                   height={606}
                   className="ml-auto h-auto w-full max-h-[min(52vw,520px)] object-contain object-bottom"
-                  sizes="(min-width: 1024px) 254px, 36vw"
+                  sizes="(min-width: 1024px) 254px, (min-width: 640px) 32vw, 30vw"
                   preferLargestSource
                 />
               </div>
