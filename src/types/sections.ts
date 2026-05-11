@@ -209,6 +209,24 @@ export type MediaTextChecklistRowT = {
   icon: WpImage | null;
 };
 
+/** Figma content **597:4037** (“Frame 2147228715”) over decorative shell **597:3568** (“Frame 2147228001”) — centered intro + white checklist rows + masked image with CTA. */
+export type FeaturesChecklistRowT = {
+  text: string;
+  /** Resolved per-row icon, else section `list_default_icon`. `null` falls back to the built-in brand check. */
+  icon: WpImage | null;
+};
+
+export type FeaturesChecklistSectionT = CoreSection & {
+  type: "features_checklist";
+  title: string;
+  description: string;
+  list_default_icon: WpImage | null;
+  checklist: FeaturesChecklistRowT[];
+  image: WpImage | null;
+  button: WpAcfLink | null;
+  button_trailing_icon: WpImage | null;
+};
+
 export type MediaTextChecklistSectionT = CoreSection & {
   type: "media_text_checklist";
   media_position: "left" | "right";
@@ -487,10 +505,13 @@ export type FaqItemT = { question: string; answer: string };
 
 export type FaqContactSplitSectionT = CoreSection & {
   type: "faq_contact_split";
+  /** Full-bleed section surface behind FAQ + contact columns. */
+  sectionBackground: "white" | "navy";
   title: string;
   intro: string;
   items: FaqItemT[];
-  pricingCtas: { icon: WpImage | null; text: string; link: WpAcfLink | null }[];
+  /** Full-width navy pill(s) under the FAQ list; optional trailing icon (e.g. circled arrow). */
+  pricingCtas: { text: string; link: WpAcfLink | null; trailing_icon: WpImage | null }[];
   cardTitle: string;
   cardText: string;
   contactCtas: { icon: WpImage | null; ctaText: string; ctaLink: WpAcfLink | null }[];
@@ -677,6 +698,7 @@ export type AnySectionT =
   | GrowthPlansSplitSectionT
   | FoundersBannerSectionT
   | WhoWeAreForSectionT
+  | FeaturesChecklistSectionT
   | MediaTextChecklistSectionT
   | StorySplitSectionT
   | WhyWeDoThisSectionT

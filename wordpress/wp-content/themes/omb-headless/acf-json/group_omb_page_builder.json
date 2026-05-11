@@ -3095,6 +3095,226 @@
           "min": "",
           "max": ""
         },
+        "layout_omb_features_checklist": {
+          "key": "layout_omb_features_checklist",
+          "name": "features_checklist",
+          "label": "Features checklist (dark)",
+          "display": "block",
+          "sub_fields": [
+            {
+              "key": "field_omb_features_checklist_title",
+              "label": "Title",
+              "name": "title",
+              "aria-label": "",
+              "type": "text",
+              "instructions": "Centered headline over the navy band (Figma 597:4037).",
+              "required": 1,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "maxlength": "",
+              "allow_in_bindings": 0,
+              "placeholder": "",
+              "prepend": "",
+              "append": ""
+            },
+            {
+              "key": "field_omb_features_checklist_description",
+              "label": "Intro",
+              "name": "description",
+              "aria-label": "",
+              "type": "wysiwyg",
+              "instructions": "Intro paragraphs below the title.",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "allow_in_bindings": 0,
+              "tabs": "all",
+              "toolbar": "basic",
+              "media_upload": 0,
+              "delay": 0
+            },
+            {
+              "key": "field_omb_features_checklist_list_default_icon",
+              "label": "Default checklist icon",
+              "name": "list_default_icon",
+              "aria-label": "",
+              "type": "image",
+              "instructions": "Optional; rows without a per-row icon inherit this. Empty = built-in brand check.",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "return_format": "array",
+              "library": "all",
+              "min_width": "",
+              "min_height": "",
+              "min_size": "",
+              "max_width": "",
+              "max_height": "",
+              "max_size": "",
+              "mime_types": "png,jpg,jpeg,webp,svg",
+              "allow_in_bindings": 0,
+              "preview_size": "thumbnail"
+            },
+            {
+              "key": "field_omb_features_checklist_checklist",
+              "label": "Checklist",
+              "name": "checklist",
+              "aria-label": "",
+              "type": "repeater",
+              "instructions": "Left column white cards.",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "layout": "row",
+              "pagination": 0,
+              "min": 0,
+              "max": 0,
+              "collapsed": "",
+              "button_label": "Add row",
+              "rows_per_page": 20,
+              "sub_fields": [
+                {
+                  "key": "field_omb_features_checklist_checklist_icon",
+                  "label": "Icon (optional)",
+                  "name": "icon",
+                  "aria-label": "",
+                  "type": "image",
+                  "instructions": "",
+                  "required": 0,
+                  "conditional_logic": 0,
+                  "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                  },
+                  "return_format": "array",
+                  "library": "all",
+                  "min_width": "",
+                  "min_height": "",
+                  "min_size": "",
+                  "max_width": "",
+                  "max_height": "",
+                  "max_size": "",
+                  "mime_types": "png,jpg,jpeg,webp,svg",
+                  "allow_in_bindings": 0,
+                  "preview_size": "thumbnail",
+                  "parent_repeater": "field_omb_features_checklist_checklist"
+                },
+                {
+                  "key": "field_omb_features_checklist_checklist_item",
+                  "label": "Line",
+                  "name": "item",
+                  "aria-label": "",
+                  "type": "text",
+                  "instructions": "",
+                  "required": 0,
+                  "conditional_logic": 0,
+                  "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                  },
+                  "default_value": "",
+                  "maxlength": "",
+                  "allow_in_bindings": 0,
+                  "placeholder": "",
+                  "prepend": "",
+                  "append": "",
+                  "parent_repeater": "field_omb_features_checklist_checklist"
+                }
+              ]
+            },
+            {
+              "key": "field_omb_features_checklist_image",
+              "label": "Image",
+              "name": "image",
+              "aria-label": "",
+              "type": "image",
+              "instructions": "Right column visual (rounded).",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "return_format": "array",
+              "library": "all",
+              "min_width": "",
+              "min_height": "",
+              "min_size": "",
+              "max_width": "",
+              "max_height": "",
+              "max_size": "",
+              "mime_types": "",
+              "allow_in_bindings": 0,
+              "preview_size": "medium"
+            },
+            {
+              "key": "field_omb_features_checklist_button",
+              "label": "CTA",
+              "name": "button",
+              "aria-label": "",
+              "type": "link",
+              "instructions": "Primary button over the image (e.g. Start vandaag).",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "return_format": "array",
+              "allow_in_bindings": 0
+            },
+            {
+              "key": "field_omb_features_checklist_button_trailing_icon",
+              "label": "CTA trailing icon",
+              "name": "button_trailing_icon",
+              "aria-label": "",
+              "type": "image",
+              "instructions": "Optional; replaces the default circled arrow.",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "return_format": "array",
+              "library": "all",
+              "min_width": "",
+              "min_height": "",
+              "min_size": "",
+              "max_width": "",
+              "max_height": "",
+              "max_size": "",
+              "mime_types": "png,jpg,jpeg,webp,svg",
+              "allow_in_bindings": 0,
+              "preview_size": "thumbnail"
+            }
+          ],
+          "min": "",
+          "max": ""
+        },
         "layout_omb_media_text_checklist": {
           "key": "layout_omb_media_text_checklist",
           "name": "media_text_checklist",
@@ -6879,6 +7099,37 @@
           "display": "block",
           "sub_fields": [
             {
+              "key": "field_omb_faq_contact_split_section_background",
+              "label": "Section background",
+              "name": "section_background",
+              "aria-label": "",
+              "type": "select",
+              "instructions": "White (default) or full-width navy behind the FAQ list and contact card.",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "choices": {
+                "white": "White",
+                "navy": "Navy (dark)"
+              },
+              "default_value": "white",
+              "return_format": "value",
+              "multiple": 0,
+              "allow_null": 0,
+              "ui": 1,
+              "ajax": 0,
+              "placeholder": "",
+              "allow_custom": 0,
+              "search_placeholder": "",
+              "allow_in_bindings": 0,
+              "create_options": 0,
+              "save_options": 0
+            },
+            {
               "key": "field_faq_contact_split_title",
               "label": "Section Title",
               "name": "title",
@@ -7009,6 +7260,28 @@
               "rows_per_page": 20,
               "sub_fields": [
                 {
+                  "key": "field_omb_faq_contact_split_pricing_cta_text",
+                  "label": "Button label",
+                  "name": "cta_text",
+                  "aria-label": "",
+                  "type": "text",
+                  "instructions": "Shown on the wide navy pill. If empty, the link field’s title is used.",
+                  "required": 0,
+                  "conditional_logic": 0,
+                  "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                  },
+                  "default_value": "",
+                  "maxlength": "",
+                  "allow_in_bindings": 0,
+                  "placeholder": "",
+                  "prepend": "",
+                  "append": "",
+                  "parent_repeater": "field_69ea6278bb342"
+                },
+                {
                   "key": "field_69ea6278bb345",
                   "label": "CTA Link",
                   "name": "cta_link",
@@ -7024,6 +7297,33 @@
                   },
                   "return_format": "array",
                   "allow_in_bindings": 0,
+                  "parent_repeater": "field_69ea6278bb342"
+                },
+                {
+                  "key": "field_omb_faq_contact_split_pricing_cta_trailing_icon",
+                  "label": "Trailing icon",
+                  "name": "trailing_icon",
+                  "aria-label": "",
+                  "type": "image",
+                  "instructions": "Optional graphic on the right of the pill (e.g. circled arrow). Leave empty for the default arrow.",
+                  "required": 0,
+                  "conditional_logic": 0,
+                  "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                  },
+                  "return_format": "array",
+                  "library": "all",
+                  "min_width": "",
+                  "min_height": "",
+                  "min_size": "",
+                  "max_width": "",
+                  "max_height": "",
+                  "max_size": "",
+                  "mime_types": "png,jpg,jpeg,webp,svg",
+                  "allow_in_bindings": 0,
+                  "preview_size": "thumbnail",
                   "parent_repeater": "field_69ea6278bb342"
                 }
               ]

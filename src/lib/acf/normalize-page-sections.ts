@@ -28,6 +28,7 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   feature_highlight_split: true,
   founder_story_split: true,
   faq_contact_split: true,
+  features_checklist: true,
   form_embed: true,
   founders_banner: true,
   who_we_are_for: true,
@@ -338,6 +339,25 @@ function mapKnownPageSectionLayout(
           : [],
         ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
       };
+    case "features_checklist": {
+      const listDefaultIcon = asImage(row.list_default_icon);
+      return {
+        ...base,
+        type: "features_checklist",
+        title: asString(row.title),
+        description: asHtml(row.description),
+        list_default_icon: listDefaultIcon,
+        checklist: Array.isArray(row.checklist)
+          ? (row.checklist as { item?: unknown; icon?: unknown }[]).map((r) => ({
+              text: asString(r.item),
+              icon: asImage(r.icon) ?? listDefaultIcon,
+            }))
+          : [],
+        image: asImage(row.image),
+        button: asLink(row.button),
+        button_trailing_icon: asImage(row.button_trailing_icon),
+      };
+    }
     case "media_text_checklist": {
       const mp = asString(row.media_position);
       const media_position = mp === "left" ? ("left" as const) : ("right" as const);
@@ -717,9 +737,12 @@ function mapKnownPageSectionLayout(
     case "faq_contact_split": {
       const ctaform = asString(row.ctaform);
       const useForm = ctaform === "form" || ctaform.toLowerCase().includes("form");
+      const bgRaw = asString(row.section_background);
+      const sectionBackground = bgRaw === "navy" ? "navy" : "white";
       return {
         ...base,
         type: "faq_contact_split",
+        sectionBackground,
         title: asString(row.title),
         intro: asHtml(row.intro),
         items: Array.isArray(row.items)
@@ -729,10 +752,16 @@ function mapKnownPageSectionLayout(
             }))
           : [],
         pricingCtas: Array.isArray(row.pricing_ctas)
-          ? (row.pricing_ctas as { cta_icon?: unknown; cta_text?: unknown; cta_link?: unknown }[]).map((c) => ({
-              icon: asImage(c.cta_icon),
+          ? (
+              row.pricing_ctas as {
+                cta_text?: unknown;
+                cta_link?: unknown;
+                trailing_icon?: unknown;
+              }[]
+            ).map((c) => ({
               text: asString(c.cta_text),
               link: asLink(c.cta_link),
+              trailing_icon: asImage(c.trailing_icon),
             }))
           : [],
         cardTitle: asString(row.card_title),
