@@ -28,7 +28,7 @@ export function FaqContactSplitSection({ section, lang }: { section: FaqContactS
       className={`py-16 sm:py-20 md:py-24 ${navyBg ? "bg-navy-deep text-white" : "bg-white"}`}
     >
       <Container className="!max-w-[85rem]">
-        <div className="mx-auto flex w-full max-w-[1156px] flex-col items-center gap-10 md:gap-[47px]">
+        <div className="mx-auto flex w-full max-w-[1156px] flex-col items-center gap-10 md:gap-12">
           {section.title && (
             <h2
               className={`${REVEAL_ITEM} w-full text-center text-[40px] font-semibold leading-tight tracking-[-0.04em] sm:text-[48px] sm:leading-[56px] ${navyBg ? "text-white" : "text-navy-deep"}`}
@@ -55,15 +55,15 @@ export function FaqContactSplitSection({ section, lang }: { section: FaqContactS
           )}
 
           <div
-            className={`flex w-full flex-col items-stretch gap-8 lg:flex-row lg:gap-[29px] ${hasPricing ? "lg:items-stretch" : "lg:items-start"}`}
+            className={`flex w-full flex-col items-stretch gap-8 lg:flex-row lg:gap-7 ${hasPricing ? "lg:items-stretch" : "lg:items-start"}`}
           >
             <div
-              className={`flex w-full min-w-0 flex-1 flex-col lg:max-w-[638px] ${hasPricing ? "gap-[14px] lg:self-stretch" : "gap-6"}`}
+              className={`flex w-full min-w-0 flex-1 flex-col lg:max-w-[638px] ${hasPricing ? "gap-3.5 lg:self-stretch" : "gap-6"}`}
             >
               <Accordion items={accItems} variant="split" />
 
               {hasPricing && (
-                <div className="flex w-full min-w-0 flex-col gap-[14px]">
+                <div className="flex w-full min-w-0 flex-col gap-3.5">
                   {section.pricingCtas.map((c, i) => {
                     const l = resolveLink(c.link, lang);
                     if (!l?.href) return null;

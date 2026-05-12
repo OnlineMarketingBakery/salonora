@@ -109,7 +109,7 @@ export function MediaTextChecklistSection({
 
   const mediaColumn = (
     <div
-      className={`flex min-w-0 flex-col gap-[16px] sm:gap-[22px] lg:h-full lg:min-h-0 ${hasMedia ? mediaOrder : ""}`}
+      className={`flex min-w-0 flex-col gap-4 sm:gap-6 lg:h-full lg:min-h-0 ${hasMedia ? mediaOrder : ""}`}
     >
       {section.image_top ? (
         <div className="relative h-[min(188px,52vw)] w-full shrink-0 overflow-hidden rounded-[14px] sm:rounded-2xl lg:h-[188px]">
@@ -124,7 +124,7 @@ export function MediaTextChecklistSection({
       ) : null}
       {section.image_bottom ? (
         <div
-          className={`flex min-h-0 flex-col rounded-2xl p-[10px] sm:p-3 lg:min-h-0 lg:flex-1 lg:p-[15px] ${bottomFrameBg}`}
+          className={`flex min-h-0 flex-col rounded-2xl p-2.5 sm:p-3 lg:min-h-0 lg:flex-1 lg:p-4 ${bottomFrameBg}`}
         >
           <div className="relative h-[min(415px,80vw)] w-full overflow-hidden rounded-xl sm:rounded-2xl lg:h-auto lg:min-h-[400px] lg:flex-1">
             <Media
@@ -141,7 +141,7 @@ export function MediaTextChecklistSection({
   );
 
   const titleBlock = hasTitleBlock ? (
-    <div className="flex flex-col gap-[14px]">
+    <div className="flex flex-col gap-3.5">
       {section.title ? (
         <h2 className="font-sans text-[32px] font-semibold leading-[1.17] text-[var(--palette-navy)] sm:text-[40px] lg:text-[48px] lg:leading-[56px]">
           {section.title}
@@ -162,19 +162,19 @@ export function MediaTextChecklistSection({
   ) : null;
 
   const checklistBlock = hasChecklistBlock ? (
-    <div className="flex flex-col gap-[14px]">
+    <div className="flex flex-col gap-3.5">
       {section.checklist_title ? (
         <p className="font-sans text-[20px] font-semibold leading-[1.4] text-[var(--palette-navy)]">
           {section.checklist_title}
         </p>
       ) : null}
       {section.checklist.length > 0 ? (
-        <ul className="flex flex-col gap-[10px]">
+        <ul className="flex flex-col gap-2.5">
           {section.checklist.map((row, idx) =>
             row.text ? (
               <li
                 key={`${section.id}-chk-${idx}`}
-                className="flex items-center gap-[7px]"
+                className="flex items-center gap-2"
               >
                 <ChecklistIcon icon={row.icon} />
                 <span className="font-sans text-base font-normal leading-[1.4] text-[var(--palette-muted)]">
@@ -190,18 +190,18 @@ export function MediaTextChecklistSection({
 
   const copyColumn = (
     <div
-      className={`flex min-w-0 flex-col gap-[22px] lg:min-h-0 lg:max-w-[36rem] ${hasMedia ? `${copyOrder} lg:h-full lg:justify-between lg:gap-0` : ""}`}
+      className={`flex min-w-0 flex-col gap-6 lg:min-h-0 lg:max-w-[36rem] ${hasMedia ? `${copyOrder} lg:h-full lg:justify-between lg:gap-0` : ""}`}
     >
       {hasUpperBlock || hasTestimonial ? (
-        <div className="flex shrink-0 flex-col gap-[22px]">
+        <div className="flex shrink-0 flex-col gap-6">
           {hasUpperBlock ? (
-            <div className="flex flex-col gap-[18px]">
+            <div className="flex flex-col gap-4.5">
               {titleBlock}
               {checklistBlock}
             </div>
           ) : null}
           {hasTestimonial ? (
-            <div className="flex flex-col gap-[14px]">
+            <div className="flex flex-col gap-3.5">
               {section.testimonial_heading ? (
                 <p className="font-sans text-[20px] font-semibold leading-[1.4] tracking-[-0.02em] text-[var(--palette-navy)]">
                   {section.testimonial_heading}
@@ -250,7 +250,7 @@ export function MediaTextChecklistSection({
       ) : null}
 
       {hasFooter ? (
-        <div className="flex shrink-0 flex-col gap-[22px]">
+        <div className="flex shrink-0 flex-col gap-6">
           {section.pricing_label ? (
             <p className="font-sans text-[20px] font-semibold leading-[1.4] text-[var(--palette-accent)] mt-2">
               {section.pricing_label}
@@ -280,7 +280,7 @@ export function MediaTextChecklistSection({
                   </span>
                 ) : undefined
               }
-              className="h-12 min-h-12 w-[290px] max-w-full shrink-0 self-start px-[18px] shadow-[0px_6px_10px_rgba(57,144,240,0.54)]"
+              className="h-12 min-h-12 w-[290px] max-w-full shrink-0 self-start px-5 shadow-[0px_6px_10px_rgba(57,144,240,0.54)]"
             >
               {ctaLabel}
             </Button>
@@ -291,10 +291,10 @@ export function MediaTextChecklistSection({
   );
 
   return (
-    <section lang={lang} className="bg-[var(--palette-white)] py-8 md:py-12">
+    <section lang={lang} className="bg-[var(--palette-white)] py-7 md:py-8">
       <Container className="!max-w-[85rem]">
         <div
-          className={`${REVEAL_ITEM} grid gap-10 rounded-[20px] p-6 sm:p-10 md:gap-12 lg:items-stretch lg:gap-[60px] lg:p-[54px] ${hasMedia ? "lg:grid-cols-2" : ""} ${outerCard}`}
+          className={`${REVEAL_ITEM} grid gap-10 rounded-[20px] p-6 sm:p-10 md:gap-12 lg:items-stretch lg:gap-15 lg:p-14 ${hasMedia ? "lg:grid-cols-2" : ""} ${outerCard}`}
         >
           {hasMedia ? mediaColumn : null}
           {copyColumn}

@@ -189,7 +189,7 @@ export function HeroSection({
           >
             {section.eyebrow && (
               <p
-                className={`${REVEAL_ITEM} mb-2 text-sm font-medium leading-normal text-brand sm:text-base md:text-[20px] md:leading-relaxed`}
+                className={`${REVEAL_ITEM} mb-3.5 text-sm font-medium leading-normal text-brand sm:text-base md:text-[20px] md:leading-relaxed`}
               >
                 {section.eyebrow}
               </p>
@@ -207,7 +207,7 @@ export function HeroSection({
             {section.text && (
               <RichText
                 html={section.text}
-                className={`${REVEAL_ITEM} mt-3 text-sm leading-relaxed text-muted sm:text-base sm:mt-4`}
+                className={`${REVEAL_ITEM} mt-3.5 text-sm leading-relaxed text-muted sm:text-base`}
               />
             )}
             {section.offerText && (
@@ -219,7 +219,7 @@ export function HeroSection({
             {section.ctas.length > 0 && (
               // Mobile: full-width stacked buttons. sm+: auto-width inline row.
               <div
-                className={`${REVEAL_ITEM} mt-6 flex w-full min-w-0 flex-col items-stretch gap-3 sm:mt-8 sm:flex-row sm:flex-wrap sm:items-center sm:gap-[18px]`}
+                className={`${REVEAL_ITEM} mt-6 flex w-full min-w-0 flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5`}
               >
                 {section.ctas.map((cta, i) => {
                   const r = resolveLink(cta.url, lang);

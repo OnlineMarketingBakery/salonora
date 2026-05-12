@@ -4,6 +4,7 @@ import { wpFetchOptional } from "@/lib/wordpress/client";
 import { getCptRestBase } from "@/lib/wordpress/config";
 import type {
   AnySectionT,
+  BlogPostOverviewSectionT,
   DesignShowcaseGridSectionT,
   LatestPostsSectionT,
   TestimonialsSectionT,
@@ -12,6 +13,7 @@ import { buildLocalePath } from "@/lib/i18n/get-alternates";
 import type { Locale } from "@/lib/i18n/locales";
 import { toPlainText, stripTags } from "@/lib/utils/strings";
 import type { GlobalSettings } from "@/types/globals";
+import { fetchBlogPostsCollection, fetchBlogOverviewPostCardById } from "@/lib/wordpress/fetch-blog-posts-collection";
 
 type WpCptList = {
   id: number;
@@ -32,9 +34,18 @@ function escapePlainForHtml(text: string): string {
     .replace(/"/g, "&quot;");
 }
 
+export type BlogArchiveQuery = {
+  page: number;
+  search: string;
+};
+
 export type EnrichContext = {
   lang: Locale;
   globals: GlobalSettings;
+  /** Slug path after locale (e.g. `blog`) for blog overview forms and pagination. */
+  pageSlugPath?: string;
+  /** When set, blog archive pages apply these query params to the blog overview section. */
+  blogArchive?: BlogArchiveQuery;
 };
 
 /**
@@ -57,6 +68,8 @@ export async function enrichSections(
       }
     } else if (s.type === "latest_posts") {
       out.push(await enrichLatest(s as LatestPostsSectionT, ctx));
+    } else if (s.type === "blog_post_overview") {
+      out.push(await enrichBlogPostOverview(s as BlogPostOverviewSectionT, ctx));
     } else if (s.type === "design_showcase_grid") {
       out.push(await enrichDesignShowcaseGrid(s as DesignShowcaseGridSectionT, ctx));
     } else if (s.type === "form_embed") {
@@ -148,4 +161,60 @@ async function enrichLatest(
       href: buildLocalePath(lang, p.slug),
     })) || [];
   return { ...s, items };
+}
+
+async function enrichBlogPostOverview(
+  s: BlogPostOverviewSectionT,
+  ctx: EnrichContext
+): Promise<BlogPostOverviewSectionT> {
+  const archivePath = ctx.pageSlugPath ?? "";
+  const blog = ctx.blogArchive;
+  const currentPage = blog?.page ?? 1;
+  const searchQuery = blog?.search ?? "";
+  const perPage = Math.min(50, Math.max(1, s.postsPerPage));
+
+  const fetched = await fetchBlogPostsCollection({
+    lang: ctx.lang,
+    page: currentPage,
+    perPage,
+    search: searchQuery,
+  });
+
+  if (!fetched) {
+    return {
+      ...s,
+      archivePath,
+      items: [],
+      total: 0,
+      totalPages: 1,
+      currentPage,
+      searchQuery,
+    };
+  }
+
+  let items = fetched.items;
+  const pinId = s.featuredPostId;
+  if (
+    currentPage === 1 &&
+    !searchQuery.trim() &&
+    s.showFeatured &&
+    pinId != null &&
+    pinId > 0
+  ) {
+    const pinned = await fetchBlogOverviewPostCardById(ctx.lang, pinId);
+    if (pinned) {
+      const rest = items.filter((i) => i.id !== pinned.id).slice(0, Math.max(0, perPage - 1));
+      items = [pinned, ...rest];
+    }
+  }
+
+  return {
+    ...s,
+    archivePath,
+    items,
+    total: fetched.total,
+    totalPages: fetched.totalPages,
+    currentPage,
+    searchQuery,
+  };
 }

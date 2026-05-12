@@ -4,7 +4,7 @@ import { fetchPostBySlug } from "./fetch-post";
 import type { GlobalSettings } from "@/types/globals";
 import type { ContentDocument, PageDocument } from "@/types/documents";
 import type { Locale } from "@/lib/i18n/locales";
-import { enrichSections } from "@/lib/acf/enrich-sections";
+import { enrichSections, type BlogArchiveQuery } from "@/lib/acf/enrich-sections";
 import { fetchHomePage } from "./fetch-page";
 
 export type ResolvedRoute = {
@@ -17,17 +17,25 @@ export type ResolvedHome = {
 
 /**
  * Resolves a catch-all slug (final segment) to a page, service, or post in that order.
+ * @param blogArchive Optional query derived from URL search params when the resolved page is a blog archive.
  */
 export async function resolveRoute(
   lang: Locale,
   slugParts: string[],
-  globals: GlobalSettings
+  globals: GlobalSettings,
+  blogArchive?: BlogArchiveQuery | null
 ): Promise<ResolvedRoute> {
   const last = slugParts[slugParts.length - 1];
   if (!last) return null;
+  const pathJoined = slugParts.join("/");
   const page = await fetchPageBySlug(lang, last, globals);
   if (page) {
-    const sections = await enrichSections(page.doc.sections, { lang, globals: globals });
+    const sections = await enrichSections(page.doc.sections, {
+      lang,
+      globals: globals,
+      pageSlugPath: pathJoined,
+      blogArchive: page.doc.isBlogArchive ? blogArchive ?? { page: 1, search: "" } : undefined,
+    });
     return { document: { ...page.doc, sections } };
   }
   const service = await fetchServiceBySlug(lang, last, globals);

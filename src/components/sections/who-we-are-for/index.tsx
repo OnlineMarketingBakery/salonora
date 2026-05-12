@@ -28,7 +28,7 @@ export function WhoWeAreForSection({
     <section lang={lang} className="bg-[var(--palette-white)] py-16 md:py-24">
       <Container className="!max-w-[85rem]">
         <div
-          className={`${REVEAL_ITEM} mx-auto flex w-full max-w-[81.375rem] flex-col items-center gap-10 md:gap-[52px]`}
+          className={`${REVEAL_ITEM} mx-auto flex w-full max-w-[81.375rem] flex-col items-center gap-10 md:gap-13`}
         >
           {section.title ? (
             <RichText
@@ -43,7 +43,7 @@ export function WhoWeAreForSection({
                 key={`${section.id}-item-${index}`}
                 className="flex h-[min(227px,58vw)] w-[min(245px,46vw)] shrink-0 flex-col items-center justify-center rounded-[200px] bg-[linear-gradient(180deg,var(--palette-surface)_0%,var(--palette-white)_100%)] px-4 py-6 sm:h-[227px] sm:w-[244px] sm:max-w-[245px] md:px-6"
               >
-                <div className="flex max-w-[10rem] flex-col items-center gap-5 sm:max-w-none sm:gap-[30px]">
+                <div className="flex max-w-[10rem] flex-col items-center gap-5 sm:max-w-none sm:gap-8">
                   <div
                     className={`flex size-[57px] shrink-0 items-center justify-center rounded-[12px] ${iconTileClass(item.icon_accent)}`}
                   >
