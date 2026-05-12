@@ -41,7 +41,7 @@ This Next.js app expects a headless WordPress site with the OMB ACF field groups
 - **Images broken**: set `WORDPRESS_BASE_URL` and allow the host in `next.config` image `remotePatterns` (or use `unoptimized` in dev when no base URL is set).
 - **Polylang `lang`**: this app passes `?lang=nl` on API calls; if your stack uses a different filter, add a small proxy or filter on WordPress.
 - **Testimonials empty**: the relationship must return post objects with `id`; the app then loads `testimonial` posts by id.
-- **Automated blog posts (n8n)**: see **`docs/n8n-blog-publishing.md`** (REST create/update, featured media, HTML wrappers, revalidation, Polylang notes).
+- **Automated blog posts (n8n)**: see **`docs/n8n-blog-publishing.md`** (REST create/update, featured media, HTML wrappers, revalidation, Polylang notes). Optional full-body Gutenberg-style sample: **`docs/n8n-blog-post-gutenberg-reference.html`**.
 
 ## Reverse proxy (Ploi / Nginx)
 

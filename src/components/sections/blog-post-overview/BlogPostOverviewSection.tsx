@@ -1,4 +1,4 @@
-/** @see Figma **830:2196** — blog index: hero, search, featured row, card grid, pagination (header/footer from layout). */
+/** @see Figma **830:2196** — blog index; grid cards match **892:617** (surface card, 14px radii, 369/260 media, 16/12px vertical rhythm). */
 import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
@@ -71,7 +71,7 @@ function MetaRow({
 }: {
   card: BlogPostOverviewCardT;
   lang: Locale;
-  /** Figma 830:2196 — featured: 16px medium navy + 44px wells; cards: 16px regular muted + 24px icons */
+  /** Featured: Figma 830 — 16px medium navy + 44px wells. Grid cards: Figma 892:617 — 16px #435780 meta, 24px icons, 18px / 2px gaps. */
   variant: "featured" | "card";
 }) {
   const t = COPY[lang];
@@ -322,11 +322,12 @@ export function BlogPostOverviewSection({
           {gridItems.length === 0 ? (
             <p className="mt-6 text-base font-normal leading-[1.4] text-[var(--palette-muted)]">{t.empty}</p>
           ) : (
-            <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <>
+              <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
               {gridItems.map((card) => (
                 <li key={card.id}>
-                  <article className="flex h-full flex-col overflow-hidden rounded-[14px] bg-[var(--palette-surface)] p-6 shadow-sm transition hover:shadow-md">
-                    <div className="relative aspect-[16/10] w-full overflow-hidden rounded-[10px] bg-[var(--palette-white)]">
+                  <article className="flex h-full flex-col overflow-hidden rounded-[14px] bg-[var(--palette-surface)] p-6">
+                    <div className="relative aspect-[369/260] w-full overflow-hidden rounded-[10px] bg-[var(--palette-white)]">
                       {card.image ? (
                         <Image
                           src={card.image.url}
@@ -337,27 +338,33 @@ export function BlogPostOverviewSection({
                         />
                       ) : null}
                     </div>
-                    <div className="mt-[18px] flex flex-1 flex-col gap-4">
+                    <div className="mt-[18px] flex min-h-0 flex-1 flex-col gap-4">
                       <MetaRow card={card} lang={lang} variant="card" />
-                      <div className="h-px w-full bg-[color-mix(in_srgb,var(--palette-navy)_10%,transparent)]" aria-hidden />
-                      <h3 className="text-2xl font-semibold leading-[1.24] text-[var(--palette-navy)]">{card.title}</h3>
-                      {card.excerpt ? (
-                        <p className="line-clamp-3 flex-1 text-base font-normal leading-[1.4] text-[var(--palette-muted)]">
-                          {card.excerpt}
-                        </p>
-                      ) : null}
-                      <Link
-                        href={card.href}
-                        className="mt-1 inline-flex items-center gap-2.5 text-base font-normal leading-[1.4] text-[var(--palette-brand)] hover:underline"
-                      >
-                        {readLabel}
-                        <ArrowRightIcon className="size-[16.667px] shrink-0" />
-                      </Link>
+                      <div
+                        className="h-px w-full bg-[color-mix(in_srgb,var(--palette-navy)_10%,transparent)]"
+                        aria-hidden
+                      />
+                      <div className="flex min-h-0 flex-1 flex-col gap-3">
+                        <h3 className="text-2xl font-semibold leading-[1.24] text-[var(--palette-navy)]">{card.title}</h3>
+                        {card.excerpt ? (
+                          <p className="line-clamp-3 flex-1 text-base font-normal leading-[1.4] text-[var(--palette-muted)]">
+                            {card.excerpt}
+                          </p>
+                        ) : null}
+                        <Link
+                          href={card.href}
+                          className="mt-auto inline-flex items-center gap-[10px] text-base font-normal leading-[1.4] text-[var(--palette-brand)] no-underline transition hover:opacity-90"
+                        >
+                          {readLabel}
+                          <ArrowRightIcon className="size-[16.667px] shrink-0" />
+                        </Link>
+                      </div>
                     </div>
                   </article>
                 </li>
               ))}
-            </ul>
+              </ul>
+            </>
           )}
         </div>
 

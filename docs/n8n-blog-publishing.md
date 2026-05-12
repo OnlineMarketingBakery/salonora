@@ -2,7 +2,7 @@
 
 Salonora reads **posts** from the WordPress REST API. Automated publishing should create or update posts in WordPress, then optionally trigger **Next.js on-demand revalidation** so new content appears without waiting for cache TTL.
 
-See also: [wordpress-connection-guide.md](./wordpress-connection-guide.md), `.env.example`, and `ai-context.md`.
+See also: [wordpress-connection-guide.md](./wordpress-connection-guide.md), `.env.example`, and `ai-context.md`. **Full Gutenberg-style `content` sample** (block comments + `wp:html` for Leena / n8n): [n8n-blog-post-gutenberg-reference.html](./n8n-blog-post-gutenberg-reference.html).
 
 ## Authentication (Application Password)
 
@@ -68,6 +68,12 @@ Example `acf` fragment on `POST /wp/v2/posts`:
 ```
 
 REST shape for ACF can vary by ACF version; confirm with `GET .../posts/{id}?acf_format=standard&lang=nl`.
+
+## Reference: full Gutenberg-style body (copy-paste / REST)
+
+Use **[n8n-blog-post-gutenberg-reference.html](./n8n-blog-post-gutenberg-reference.html)** when you want a **complete example** of post `content` as WordPress saves it: `<!-- wp:paragraph -->`, `<!-- wp:heading … -->`, `<!-- wp:html -->` with inline-styled markup, lists, and CTAs. Copy the file into the WordPress post **Code editor**, or paste the whole string into the **`content`** field of `POST` / `PUT /wp/v2/posts` (escape for JSON in n8n).
+
+**Compared to the HTML contract below:** that contract uses **`salonora-*` wrapper classes** so the Next template gets predictable **TOC** behavior, section numbering, and Figma-aligned callouts. The Gutenberg reference relies on **generic HTML** inside `wp:html` blocks; the site still applies global post styles, and **`markStyleTintedDivs`** may add `salonora-tinted` to some inline-background divs, but you will not get the same guarantees as with the documented wrappers. Prefer **`salonora-*` markup** for production parity with the design system; use the Gutenberg file when your pipeline exports **block editor markup** or you need a **structural template** for a colleague to swap text inside.
 
 ## HTML contract (post body)
 
