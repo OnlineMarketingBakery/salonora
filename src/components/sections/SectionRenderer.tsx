@@ -93,6 +93,10 @@ export function SectionRenderer({ sections, lang }: { sections: AnySectionT[]; l
             return (
               <sectionRegistry.blog_post_overview key={section.id} section={section} lang={lang} />
             );
+          case "case_study_overview":
+            return (
+              <sectionRegistry.case_study_overview key={section.id} section={section} lang={lang} />
+            );
           case "cta":
             return <sectionRegistry.cta key={section.id} section={section} lang={lang} />;
           case "pricing_cta":

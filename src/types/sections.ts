@@ -575,6 +575,41 @@ export type BlogPostOverviewSectionT = CoreSection & {
   searchQuery: string;
 };
 
+export type CaseStudyOverviewMetricT = {
+  label: string;
+  value: string;
+};
+
+export type CaseStudyOverviewCardT = {
+  id: number;
+  title: string;
+  excerpt: string;
+  href: string;
+  image: { url: string; alt: string } | null;
+  /** Shown as the brand line above the card title (e.g. “Project: …”). */
+  projectLabel: string;
+  /** Outcome metrics for the featured block (from CPT ACF); empty on grid cards if unused. */
+  metrics: CaseStudyOverviewMetricT[];
+};
+
+export type CaseStudyOverviewSectionT = CoreSection & {
+  type: "case_study_overview";
+  title: string;
+  intro: string;
+  /** Optional KPI row below the intro (Figma 866:4217). */
+  heroStats: CaseStudyOverviewMetricT[];
+  showFeatured: boolean;
+  featuredCaseStudyId: number | null;
+  postsPerPage: number;
+  readMoreLabel: string;
+  archivePath: string;
+  items: CaseStudyOverviewCardT[];
+  total: number;
+  totalPages: number;
+  currentPage: number;
+  searchQuery: string;
+};
+
 export type CtaSectionT = CoreSection & {
   type: "cta";
   title: string;
@@ -753,6 +788,7 @@ export type AnySectionT =
   | FormEmbedSectionT
   | LatestPostsSectionT
   | BlogPostOverviewSectionT
+  | CaseStudyOverviewSectionT
   | CtaSectionT
   | PricingCtaSectionT
   | PricingDualCardsSectionT

@@ -41,6 +41,7 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   image_intro_split: true,
   latest_posts: true,
   blog_post_overview: true,
+  case_study_overview: true,
   origin_story_split: true,
   partner_intro_split: true,
   pricing_cta: true,
@@ -62,6 +63,30 @@ const PAGE_SECTION_ACF_LAYOUTS = {
 
 function isKnownPageSectionLayout(value: string): value is AnySectionT["type"] {
   return Object.prototype.hasOwnProperty.call(PAGE_SECTION_ACF_LAYOUTS, value);
+}
+
+/** ACF `featured_case_study` post_object → REST may return `{ id }` or `{ ID }`. */
+function featuredCaseStudyIdFromAcf(row: Record<string, unknown>): number | null {
+  const v = row.featured_case_study;
+  if (v == null || v === false || v === "") return null;
+  if (typeof v === "number" && Number.isFinite(v) && v > 0) return v;
+  if (typeof v === "object" && v !== null) {
+    const o = v as { id?: unknown; ID?: unknown };
+    const id = Number(o.ID ?? o.id);
+    return Number.isFinite(id) && id > 0 ? id : null;
+  }
+  return null;
+}
+
+function heroStatsFromAcf(row: Record<string, unknown>): { label: string; value: string }[] {
+  const raw = row.hero_stats;
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .map((item) => {
+      const r = item as Record<string, unknown>;
+      return { label: asString(r.stat_label), value: asString(r.stat_value) };
+    })
+    .filter((x) => x.label.trim() !== "" || x.value.trim() !== "");
 }
 
 /** ACF `featured_post` post_object → REST may return `{ id }` or `{ ID }`. */
@@ -864,6 +889,24 @@ function mapKnownPageSectionLayout(
         showSearch: row.show_search === undefined || row.show_search === null ? true : asBool(row.show_search),
         showFeatured: row.show_featured === undefined || row.show_featured === null ? true : asBool(row.show_featured),
         featuredPostId: featuredPostIdFromAcf(row),
+        postsPerPage: Math.min(50, Math.max(1, Number(row.posts_per_page) || 6)),
+        readMoreLabel: asString(row.read_more_label),
+        archivePath: "",
+        items: [],
+        total: 0,
+        totalPages: 1,
+        currentPage: 1,
+        searchQuery: "",
+      };
+    case "case_study_overview":
+      return {
+        ...base,
+        type: "case_study_overview",
+        title: asString(row.title),
+        intro: asString(row.intro),
+        heroStats: heroStatsFromAcf(row),
+        showFeatured: row.show_featured === undefined || row.show_featured === null ? true : asBool(row.show_featured),
+        featuredCaseStudyId: featuredCaseStudyIdFromAcf(row),
         postsPerPage: Math.min(50, Math.max(1, Number(row.posts_per_page) || 6)),
         readMoreLabel: asString(row.read_more_label),
         archivePath: "",

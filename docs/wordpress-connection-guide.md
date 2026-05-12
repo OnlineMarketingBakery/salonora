@@ -8,7 +8,7 @@ This Next.js app expects a headless WordPress site with the OMB ACF field groups
 - Polylang (or compatible) for `nl` and `en`, with translated content and menus
 - Yoast SEO
 - Contact Form 7 (5.4+ with REST API for forms and feedback)
-- Custom post types: `service`, `testimonial` (exposed in REST)
+- Custom post types: `service`, `testimonial`, `case_study` (exposed in REST; register via `omb-headless-core` and flush permalinks after deploy)
 - ACF `show_in_rest` on options and field groups where needed
 - Option pages filled: header, footer, site, contact & social, integrations, default SEO
 
@@ -24,7 +24,7 @@ This Next.js app expects a headless WordPress site with the OMB ACF field groups
 
 1. Open `https://your-wordpress.test/wp-json` in a browser; you should see the REST index.
 2. Open `https://your-wordpress.test/wp-json/wp/v2/pages?lang=nl&per_page=1` and confirm ACF `acf` keys when ACF-to-REST is enabled.
-3. Confirm `https://your-wordpress.test/wp-json/wp/v2/service?lang=nl&per_page=1` and `.../testimonial?...` return data.
+3. Confirm `https://your-wordpress.test/wp-json/wp/v2/service?lang=nl&per_page=1` and `.../testimonial?...` return data. For case studies overview, confirm `.../wp/v2/case_study?lang=nl&per_page=1&_embed=1&acf_format=standard` (or your `WORDPRESS_CASE_STUDY_REST_BASE` slug) returns posts and an `acf` object when the **OMB Case Study** field group is synced.
 4. Test options: `https://your-wordpress.test/wp-json/acf/v3/options/omb-header-settings?lang=nl` (or `acf/v1` depending on ACF version). If 404, ensure ACF REST is enabled and the options page slug matches.
 5. Test CF7: `https://your-wordpress.test/wp-json/contact-form-7/v1/contact-forms` lists forms.
 6. Create menus for each language and set their IDs in env.

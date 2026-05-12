@@ -6,18 +6,20 @@ import { wpFetchOptional } from "./client";
 import { fetchPageBySlug } from "./fetch-page";
 import { fetchPostBySlug } from "./fetch-post";
 import { fetchServiceBySlug } from "./fetch-service";
+import { fetchCaseStudyBySlug } from "./fetch-case-study";
 import { getCptRestBase } from "./config";
 import type { WpPageRaw } from "@/types/wordpress";
 import { fetchGlobals } from "./fetch-globals";
 import { mapWordPressPermalinkToAppPathname } from "./wp-url-to-app-pathname";
 
-function restItemPath(kind: "page" | "post" | "service", id: number): string {
+function restItemPath(kind: "page" | "post" | "service" | "case_study", id: number): string {
   if (kind === "page") return `/wp/v2/pages/${id}`;
   if (kind === "post") return `/wp/v2/posts/${id}`;
+  if (kind === "case_study") return `/wp/v2/${getCptRestBase("case_study")}/${id}`;
   return `/wp/v2/${getCptRestBase("service")}/${id}`;
 }
 
-type Kind = "page" | "post" | "service";
+type Kind = "page" | "post" | "service" | "case_study";
 
 function withSameSlugForAllLocales(pathAfterLocale: string): Record<Locale, string> {
   return Object.fromEntries(
@@ -177,6 +179,10 @@ async function fromPathname(
   const service = await fetchServiceBySlug(currentLang, last, globals);
   if (service) {
     return localeHrefsFromRestItem("service", service.raw, currentLang, afterLocale.join("/"));
+  }
+  const caseStudy = await fetchCaseStudyBySlug(currentLang, last, globals);
+  if (caseStudy) {
+    return localeHrefsFromRestItem("case_study", caseStudy.raw, currentLang, afterLocale.join("/"));
   }
   const post = await fetchPostBySlug(currentLang, last, globals);
   if (post) {

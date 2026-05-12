@@ -12,6 +12,8 @@ export type PageDocument = {
   hidePrimaryMenu: boolean;
   /** When true, `?page=` and `?s=` query params drive the Blog post overview section (ACF: is_blog_archive). */
   isBlogArchive?: boolean;
+  /** When true, `?page=` and `?s=` query params drive the Case study overview section (ACF: is_case_study_archive). */
+  isCaseStudyArchive?: boolean;
   sections: AnySectionT[];
   seo: SeoPayload;
 };
@@ -75,4 +77,17 @@ export type PostDocument = {
   showToc: boolean;
 };
 
-export type ContentDocument = PageDocument | ServiceDocument | PostDocument;
+export type CaseStudyDocument = {
+  kind: "case_study";
+  id: number;
+  slug: string;
+  title: string;
+  content: string;
+  excerpt: string;
+  featuredImage: string | null;
+  featuredImageAlt: string;
+  sections: AnySectionT[];
+  seo: SeoPayload;
+};
+
+export type ContentDocument = PageDocument | ServiceDocument | PostDocument | CaseStudyDocument;

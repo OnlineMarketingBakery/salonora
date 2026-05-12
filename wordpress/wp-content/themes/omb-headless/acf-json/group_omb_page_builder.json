@@ -113,6 +113,26 @@
       "ui_off_text": "No"
     },
     {
+      "key": "field_omb_is_case_study_archive",
+      "label": "Case study archive page",
+      "name": "is_case_study_archive",
+      "aria-label": "",
+      "type": "true_false",
+      "instructions": "When enabled, URL query parameters ?page= (pagination) and ?s= (search) apply to the Case study overview section on this page.",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "message": "",
+      "default_value": 0,
+      "ui": 1,
+      "ui_on_text": "Yes",
+      "ui_off_text": "No"
+    },
+    {
       "key": "field_omb_sections_tab",
       "label": "Flexible Sections",
       "name": "",
@@ -8288,6 +8308,219 @@
           "min": "",
           "max": ""
         },
+        "layout_omb_case_study_overview": {
+          "key": "layout_omb_case_study_overview",
+          "name": "case_study_overview",
+          "label": "Case study overview",
+          "display": "block",
+          "sub_fields": [
+            {
+              "key": "field_cs_overview_title",
+              "label": "Title",
+              "name": "title",
+              "aria-label": "",
+              "type": "text",
+              "instructions": "",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "maxlength": "",
+              "allow_in_bindings": 0,
+              "placeholder": "",
+              "prepend": "",
+              "append": ""
+            },
+            {
+              "key": "field_cs_overview_intro",
+              "label": "Intro",
+              "name": "intro",
+              "aria-label": "",
+              "type": "textarea",
+              "instructions": "",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "maxlength": "",
+              "allow_in_bindings": 0,
+              "rows": 3,
+              "placeholder": "",
+              "new_lines": "br"
+            },
+            {
+              "key": "field_cs_overview_hero_stats",
+              "label": "Hero stats",
+              "name": "hero_stats",
+              "aria-label": "",
+              "type": "repeater",
+              "instructions": "Optional row of stat cards below the intro (e.g. four KPIs).",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "layout": "row",
+              "pagination": 0,
+              "min": 0,
+              "max": 6,
+              "collapsed": "",
+              "button_label": "Add stat",
+              "rows_per_page": 20,
+              "sub_fields": [
+                {
+                  "key": "field_cs_hero_stat_label",
+                  "label": "Label",
+                  "name": "stat_label",
+                  "aria-label": "",
+                  "type": "text",
+                  "instructions": "",
+                  "required": 0,
+                  "conditional_logic": 0,
+                  "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                  },
+                  "default_value": "",
+                  "maxlength": "",
+                  "allow_in_bindings": 0,
+                  "placeholder": "",
+                  "prepend": "",
+                  "append": "",
+                  "parent_repeater": "field_cs_overview_hero_stats"
+                },
+                {
+                  "key": "field_cs_hero_stat_value",
+                  "label": "Value",
+                  "name": "stat_value",
+                  "aria-label": "",
+                  "type": "text",
+                  "instructions": "",
+                  "required": 0,
+                  "conditional_logic": 0,
+                  "wrapper": {
+                    "width": "",
+                    "class": "",
+                    "id": ""
+                  },
+                  "default_value": "",
+                  "maxlength": "",
+                  "allow_in_bindings": 0,
+                  "placeholder": "",
+                  "prepend": "",
+                  "append": "",
+                  "parent_repeater": "field_cs_overview_hero_stats"
+                }
+              ]
+            },
+            {
+              "key": "field_cs_overview_show_featured",
+              "label": "Show featured case study",
+              "name": "show_featured",
+              "aria-label": "",
+              "type": "true_false",
+              "instructions": "On page 1, a large featured block appears above the grid. If “Featured case study” is set, that entry is shown; otherwise the newest case study is featured.",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "message": "",
+              "default_value": 1,
+              "ui": 1,
+              "ui_on_text": "Yes",
+              "ui_off_text": "No"
+            },
+            {
+              "key": "field_cs_overview_featured_case_study",
+              "label": "Featured case study",
+              "name": "featured_case_study",
+              "aria-label": "",
+              "type": "post_object",
+              "instructions": "Optional. Pin one case study in the featured slot (page 1, no search). Leave empty to use the newest automatically.",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "post_type": [
+                "case_study"
+              ],
+              "post_status": [
+                "publish"
+              ],
+              "taxonomy": "",
+              "return_format": "object",
+              "multiple": 0,
+              "allow_null": 1,
+              "allow_in_bindings": 1,
+              "bidirectional": 0,
+              "ui": 1,
+              "bidirectional_target": []
+            },
+            {
+              "key": "field_cs_overview_posts_per_page",
+              "label": "Case studies per page",
+              "name": "posts_per_page",
+              "aria-label": "",
+              "type": "number",
+              "instructions": "Maximum items returned from WordPress for each page (including the featured slot when enabled).",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "default_value": 6,
+              "min": 1,
+              "max": 50,
+              "allow_in_bindings": 0,
+              "placeholder": "",
+              "prepend": "",
+              "append": "",
+              "step": ""
+            },
+            {
+              "key": "field_cs_overview_read_more_label",
+              "label": "Read more link label (optional)",
+              "name": "read_more_label",
+              "aria-label": "",
+              "type": "text",
+              "instructions": "Leave empty to use the default label per site language.",
+              "required": 0,
+              "conditional_logic": 0,
+              "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+              },
+              "default_value": "",
+              "maxlength": "",
+              "allow_in_bindings": 0,
+              "placeholder": "",
+              "prepend": "",
+              "append": ""
+            }
+          ],
+          "min": "",
+          "max": ""
+        },
         "layout_omb_cta": {
           "key": "layout_omb_cta",
           "name": "cta",
@@ -9694,5 +9927,5 @@
   "display_title": "",
   "allow_ai_access": false,
   "ai_description": "",
-  "modified": 1779300001
+  "modified": 1779400001
 }

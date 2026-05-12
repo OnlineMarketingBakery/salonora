@@ -51,6 +51,8 @@ export type WpPostRaw = WpPageRaw & { type: "post" };
 
 export type WpServiceRaw = WpPageRaw & { type: "service" };
 
+export type WpCaseStudyRaw = WpPageRaw & { type?: string };
+
 export type WpTestimonialRaw = {
   id: number;
   title: { rendered: string };

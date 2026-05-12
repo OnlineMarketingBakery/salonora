@@ -1,12 +1,17 @@
 import { fetchPageBySlug } from "./fetch-page";
 import { fetchServiceBySlug } from "./fetch-service";
 import { fetchPostBySlug } from "./fetch-post";
+import { fetchCaseStudyBySlug } from "./fetch-case-study";
 import type { GlobalSettings } from "@/types/globals";
 import type { ContentDocument, PageDocument } from "@/types/documents";
 import type { Locale } from "@/lib/i18n/locales";
 import { enrichSections, type BlogArchiveQuery } from "@/lib/acf/enrich-sections";
 import { fetchHomePage } from "./fetch-page";
 
+export type ResolveRouteArchiveQueries = {
+  blog?: BlogArchiveQuery | null;
+  caseStudy?: BlogArchiveQuery | null;
+};
 export type ResolvedRoute = {
   document: ContentDocument;
 } | null;
@@ -16,14 +21,14 @@ export type ResolvedHome = {
 } | null;
 
 /**
- * Resolves a catch-all slug (final segment) to a page, service, or post in that order.
- * @param blogArchive Optional query derived from URL search params when the resolved page is a blog archive.
+ * Resolves a catch-all slug (final segment) to a page, case study, service, or post in that order.
+ * @param archiveQueries Optional `?page=` / `?s=` when the resolved page is a blog or case study archive.
  */
 export async function resolveRoute(
   lang: Locale,
   slugParts: string[],
   globals: GlobalSettings,
-  blogArchive?: BlogArchiveQuery | null
+  archiveQueries?: ResolveRouteArchiveQueries | null
 ): Promise<ResolvedRoute> {
   const last = slugParts[slugParts.length - 1];
   if (!last) return null;
@@ -34,9 +39,17 @@ export async function resolveRoute(
       lang,
       globals: globals,
       pageSlugPath: pathJoined,
-      blogArchive: page.doc.isBlogArchive ? blogArchive ?? { page: 1, search: "" } : undefined,
+      blogArchive: page.doc.isBlogArchive ? archiveQueries?.blog ?? { page: 1, search: "" } : undefined,
+      caseStudyArchive: page.doc.isCaseStudyArchive
+        ? archiveQueries?.caseStudy ?? { page: 1, search: "" }
+        : undefined,
     });
     return { document: { ...page.doc, sections } };
+  }
+  const caseStudy = await fetchCaseStudyBySlug(lang, last, globals);
+  if (caseStudy) {
+    const sections = await enrichSections(caseStudy.doc.sections, { lang, globals: globals });
+    return { document: { ...caseStudy.doc, sections } };
   }
   const service = await fetchServiceBySlug(lang, last, globals);
   if (service) {

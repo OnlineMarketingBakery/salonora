@@ -55,11 +55,15 @@ export function getMenuId(
 }
 
 export function getCptRestBase(
-  which: "service" | "testimonial"
+  which: "service" | "testimonial" | "case_study"
 ): string {
-  return process.env[
-    which === "service" ? "WORDPRESS_SERVICE_REST_BASE" : "WORDPRESS_TESTIMONIAL_REST_BASE"
-  ] || which;
+  if (which === "service") {
+    return process.env.WORDPRESS_SERVICE_REST_BASE || "service";
+  }
+  if (which === "testimonial") {
+    return process.env.WORDPRESS_TESTIMONIAL_REST_BASE || "testimonial";
+  }
+  return process.env.WORDPRESS_CASE_STUDY_REST_BASE || "case_study";
 }
 
 /** Single segment path for blog archive (breadcrumbs). Override per locale or fall back to `blog`. */
