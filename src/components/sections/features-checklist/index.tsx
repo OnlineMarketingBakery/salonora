@@ -104,8 +104,8 @@ export function FeaturesChecklistSection({
 
   if (!hasBody) return null;
 
-  /** Symmetric vertical rhythm (Figma 880px-tall band ≈ generous top/bottom). */
-  const sectionPad = "py-[clamp(3.25rem,10vw,9.4375rem)]";
+  /** Vertical padding: Figma shell **597:3568** (~151px inset) → nearest scale steps. */
+  const sectionPad = "py-36 md:py-40";
 
   return (
     <section className={`relative isolate overflow-hidden bg-[var(--palette-navy-deep)] ${sectionPad}`}>
@@ -132,9 +132,9 @@ export function FeaturesChecklistSection({
       />
 
       <Container className="relative z-[1]">
-        <div className={`flex flex-col gap-[34px] ${REVEAL_ITEM}`}>
+        <div className={`flex flex-col gap-9 ${REVEAL_ITEM}`}>
           {(section.title || section.description) && (
-            <header className="mx-auto flex w-full max-w-[800px] flex-col items-center gap-5 text-center text-[var(--palette-white)] sm:gap-6">
+            <header className="mx-auto flex w-full max-w-[800px] flex-col items-center gap-3.5 text-center text-[var(--palette-white)] sm:gap-4">
               {section.title ? (
                 <h2 className="w-full max-w-[720px] text-pretty font-sans text-[clamp(1.75rem,5vw,3rem)] font-semibold leading-[1.12] tracking-[-0.02em] text-[var(--palette-white)] lg:text-[48px] lg:leading-[1.1]">
                   {section.title}
@@ -155,7 +155,7 @@ export function FeaturesChecklistSection({
           */}
           <div className="mx-auto flex w-full max-w-[1080px] flex-col gap-6 lg:w-fit lg:max-w-none lg:flex-row lg:items-start lg:gap-x-6">
             {section.checklist.length > 0 ? (
-              <ul className="flex w-full min-w-0 shrink-0 flex-col gap-[15px] lg:w-[528px] lg:max-w-[528px] lg:shrink-0">
+              <ul className="flex w-full min-w-0 shrink-0 flex-col gap-4 lg:w-[528px] lg:max-w-[528px] lg:shrink-0">
                 {section.checklist.map((row, idx) => (
                   <li
                     key={`${section.id}-chk-${idx}`}

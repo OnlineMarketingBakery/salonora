@@ -23,6 +23,7 @@ function pageToDoc(
     content: p.content?.rendered || "",
     hidePageTitle: asBool((acf as { hide_page_title?: unknown }).hide_page_title),
     hidePrimaryMenu: asBool((acf as { hide_site_navigation?: unknown }).hide_site_navigation),
+    isBlogArchive: asBool((acf as { is_blog_archive?: unknown }).is_blog_archive),
     sections: pageSections,
     seo: mapYoastToSeo(p, gs, { fallbackTitle: p.title?.rendered || "Page" }),
   };

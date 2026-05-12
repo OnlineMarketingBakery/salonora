@@ -18,6 +18,7 @@ import { ProcessStepsSection } from "@/components/sections/process-steps/Process
 import { FaqContactSplitSection } from "@/components/sections/faq-contact-split/FaqContactSplitSection";
 import { FormEmbedSection } from "@/components/sections/form-embed/FormEmbedSection";
 import { LatestPostsSection } from "@/components/sections/latest-posts/LatestPostsSection";
+import { BlogPostOverviewSection } from "@/components/sections/blog-post-overview/BlogPostOverviewSection";
 import { CtaSection } from "@/components/sections/cta/CtaSection";
 import { PricingCtaSection } from "@/components/sections/pricing-cta/PricingCtaSection";
 import { RichTextSection } from "@/components/sections/rich-text/RichTextSection";
@@ -185,6 +186,9 @@ export const sectionRegistry = {
   faq_contact_split: asSection(FaqContactSplitSection as (p: { section: never; lang: Locale }) => ReactNode),
   form_embed: asSection(FormEmbedSection as (p: { section: never; lang: Locale }) => ReactNode),
   latest_posts: asSection(LatestPostsSection as (p: { section: never; lang: Locale }) => ReactNode),
+  blog_post_overview: asSection(
+    BlogPostOverviewSection as (p: { section: never; lang: Locale }) => ReactNode
+  ),
   origin_story_split: asSection(
     OriginStorySplitSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),

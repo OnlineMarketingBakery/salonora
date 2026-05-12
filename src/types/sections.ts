@@ -543,6 +543,38 @@ export type LatestPostsSectionT = CoreSection & {
   items: { id: number; title: string; excerpt: string; href: string }[];
 };
 
+/** Resolved post row for blog overview cards (from WordPress in `enrichSections`). */
+export type BlogPostOverviewCardT = {
+  id: number;
+  title: string;
+  excerpt: string;
+  href: string;
+  dateLabel: string;
+  authorName: string;
+  authorAvatarUrl: string | null;
+  readMinutes: number;
+  image: { url: string; alt: string } | null;
+};
+
+export type BlogPostOverviewSectionT = CoreSection & {
+  type: "blog_post_overview";
+  title: string;
+  intro: string;
+  showSearch: boolean;
+  showFeatured: boolean;
+  /** When set, this post is pinned in the featured slot on page 1 (overrides “newest first”). */
+  featuredPostId: number | null;
+  postsPerPage: number;
+  readMoreLabel: string;
+  /** Path without leading slash, same segments as URL after locale (for forms and pagination). */
+  archivePath: string;
+  items: BlogPostOverviewCardT[];
+  total: number;
+  totalPages: number;
+  currentPage: number;
+  searchQuery: string;
+};
+
 export type CtaSectionT = CoreSection & {
   type: "cta";
   title: string;
@@ -720,6 +752,7 @@ export type AnySectionT =
   | FaqContactSplitSectionT
   | FormEmbedSectionT
   | LatestPostsSectionT
+  | BlogPostOverviewSectionT
   | CtaSectionT
   | PricingCtaSectionT
   | PricingDualCardsSectionT

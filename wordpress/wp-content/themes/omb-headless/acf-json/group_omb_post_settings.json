@@ -70,6 +70,64 @@
             "bidirectional_target": []
         },
         {
+            "key": "field_omb_post_lead",
+            "label": "Post lead (on-page intro)",
+            "name": "post_lead",
+            "aria-label": "",
+            "type": "wysiwyg",
+            "instructions": "Optional intro under the title. When empty, the WordPress excerpt is used as plain text. Use this when the excerpt should stay short for SEO/cards but the article needs a longer lead.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "allow_in_bindings": 1,
+            "tabs": "visual",
+            "toolbar": "basic",
+            "media_upload": 0,
+            "delay": 0
+        },
+        {
+            "key": "field_omb_breadcrumb_parent",
+            "label": "Breadcrumb parent (before Blog)",
+            "name": "breadcrumb_parent",
+            "aria-label": "",
+            "type": "link",
+            "instructions": "Optional first breadcrumb segment (e.g. “Educatie” or “Gratis tips”) before the Blog archive link.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "allow_in_bindings": 1
+        },
+        {
+            "key": "field_omb_show_toc",
+            "label": "Show table of contents",
+            "name": "show_toc",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "When off, the Inhoudsopgave block is hidden (author card still shows).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "Yes",
+            "ui_off_text": "No"
+        },
+        {
             "key": "field_omb_post_sections_tab",
             "label": "Post Sections",
             "name": "",
@@ -511,5 +569,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1778267550
+    "modified": 1779300100
 }

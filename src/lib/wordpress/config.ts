@@ -61,3 +61,9 @@ export function getCptRestBase(
     which === "service" ? "WORDPRESS_SERVICE_REST_BASE" : "WORDPRESS_TESTIMONIAL_REST_BASE"
   ] || which;
 }
+
+/** Single segment path for blog archive (breadcrumbs). Override per locale or fall back to `blog`. */
+export function getBlogPageSlug(lang: "nl" | "en"): string {
+  const key = `WORDPRESS_BLOG_PAGE_SLUG_${lang.toUpperCase()}` as const;
+  return process.env[key]?.trim() || process.env.WORDPRESS_BLOG_PAGE_SLUG?.trim() || "blog";
+}

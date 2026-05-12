@@ -17,9 +17,22 @@ export type WpImage = {
   sizes?: Record<string, string | { url: string }>;
 };
 
+export type WpEmbeddedAuthor = {
+  id?: number;
+  name?: string;
+  slug?: string;
+  url?: string;
+  description?: string;
+  avatar_urls?: Record<string, string | undefined>;
+};
+
 export type WpPageRaw = {
   id: number;
   slug: string;
+  /** ISO8601 post/page date from REST */
+  date?: string;
+  /** Category term IDs (posts) */
+  categories?: number[];
   /** Polylang: translation post IDs by language code (e.g. { en: 12, nl: 5 }) */
   translations?: Record<string, number> | null;
   link?: string;
@@ -28,7 +41,10 @@ export type WpPageRaw = {
   excerpt: { rendered: string; protected: boolean };
   acf?: Record<string, unknown>;
   yoast_head_json?: WpYoastHeadJson;
-  _embedded?: { "wp:featuredmedia"?: { source_url: string; alt_text: string }[] };
+  _embedded?: {
+    "wp:featuredmedia"?: { source_url: string; alt_text: string }[];
+    author?: WpEmbeddedAuthor[];
+  };
 };
 
 export type WpPostRaw = WpPageRaw & { type: "post" };

@@ -40,6 +40,7 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   how_it_works_steps: true,
   image_intro_split: true,
   latest_posts: true,
+  blog_post_overview: true,
   origin_story_split: true,
   partner_intro_split: true,
   pricing_cta: true,
@@ -61,6 +62,19 @@ const PAGE_SECTION_ACF_LAYOUTS = {
 
 function isKnownPageSectionLayout(value: string): value is AnySectionT["type"] {
   return Object.prototype.hasOwnProperty.call(PAGE_SECTION_ACF_LAYOUTS, value);
+}
+
+/** ACF `featured_post` post_object → REST may return `{ id }` or `{ ID }`. */
+function featuredPostIdFromAcf(row: Record<string, unknown>): number | null {
+  const v = row.featured_post;
+  if (v == null || v === false || v === "") return null;
+  if (typeof v === "number" && Number.isFinite(v) && v > 0) return v;
+  if (typeof v === "object" && v !== null) {
+    const o = v as { id?: unknown; ID?: unknown };
+    const id = Number(o.ID ?? o.id);
+    return Number.isFinite(id) && id > 0 ? id : null;
+  }
+  return null;
 }
 
 function keyOf(i: number, row: RawRow): string {
@@ -840,6 +854,24 @@ function mapKnownPageSectionLayout(
         count: Number(row.items_count) || 3,
         showExcerpt: asBool(row.show_excerpt),
         items: [],
+      };
+    case "blog_post_overview":
+      return {
+        ...base,
+        type: "blog_post_overview",
+        title: asString(row.title),
+        intro: asString(row.intro),
+        showSearch: row.show_search === undefined || row.show_search === null ? true : asBool(row.show_search),
+        showFeatured: row.show_featured === undefined || row.show_featured === null ? true : asBool(row.show_featured),
+        featuredPostId: featuredPostIdFromAcf(row),
+        postsPerPage: Math.min(50, Math.max(1, Number(row.posts_per_page) || 6)),
+        readMoreLabel: asString(row.read_more_label),
+        archivePath: "",
+        items: [],
+        total: 0,
+        totalPages: 1,
+        currentPage: 1,
+        searchQuery: "",
       };
     case "cta": {
       let ctas = mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]);

@@ -33,6 +33,14 @@
   --brand-dark: var(--palette-navy-deep);
 }
 
+/* Same-page anchors (e.g. post TOC): native smooth scroll; Next `<Link href="#…">` skips this. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 7rem;
+  }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -58,4 +66,601 @@ body {
 
 a {
   text-underline-offset: 2px;
+}
+
+/* Single post body — Figma 848:3514; n8n/HTML contract: see docs/n8n-blog-publishing.md */
+.post-article-body.post-prose {
+  --post-callout-bg: color-mix(in srgb, var(--palette-surface) 92%, var(--palette-white));
+  font-size: 1rem;
+  line-height: 1.4;
+  color: var(--palette-muted);
+}
+
+/* Copy rhythm: Figma 848:3514 — Outfit 16 / 1.4, 1rem vertical spacing between paragraphs */
+.post-article-body.post-prose p {
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.post-article-body.post-prose > *:last-child,
+.post-article-body.post-prose p:last-child {
+  margin-bottom: 0;
+}
+
+.post-article-body.post-prose .salonora-tip p,
+.post-article-body.post-prose .salonora-callout p,
+.post-article-body.post-prose .salonora-warn p {
+  margin-bottom: 0.75rem;
+}
+
+.post-article-body.post-prose .salonora-tip p:last-child,
+.post-article-body.post-prose .salonora-callout p:last-child,
+.post-article-body.post-prose .salonora-warn p:last-child {
+  margin-bottom: 0;
+}
+
+.post-article-body.post-prose figure {
+  margin: 1.5rem 0;
+}
+
+.post-article-body.post-prose figure img {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.post-article-body.post-prose blockquote {
+  margin: 1.25rem 0;
+  padding-left: 1rem;
+  border-left: 3px solid color-mix(in srgb, var(--palette-brand) 45%, transparent);
+  font-style: normal;
+  color: var(--palette-navy);
+}
+
+.post-article-body.post-prose h2[id],
+.post-article-body.post-prose h3[id] {
+  scroll-margin-top: 7rem;
+}
+
+.post-article-body.post-prose h2 {
+  position: relative;
+  margin-top: 2.125rem;
+  margin-bottom: 1rem;
+  padding-left: 3.25rem;
+  counter-increment: post-h2;
+  counter-reset: post-h3;
+  font-size: 2.125rem;
+  line-height: 1.1;
+  font-weight: 600;
+  color: var(--palette-navy);
+}
+
+.post-article-body.post-prose h2::before {
+  content: counter(post-h2);
+  position: absolute;
+  left: 0;
+  top: 0.5lh;
+  transform: translateY(-50%);
+  display: flex;
+  min-width: 2.375rem;
+  height: 2.375rem;
+  padding-inline: 0.35rem;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1.1875rem;
+  background: var(--palette-brand);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--palette-white);
+}
+
+.post-article-body.post-prose {
+  counter-reset: post-h2;
+}
+
+.post-article-body.post-prose h3 {
+  position: relative;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  padding-left: 2.75rem;
+  counter-increment: post-h3;
+  font-size: 1.5rem;
+  line-height: 1.1;
+  font-weight: 600;
+  color: var(--palette-navy);
+}
+
+.post-article-body.post-prose h3::before {
+  content: counter(post-h2) "." counter(post-h3);
+  position: absolute;
+  left: 0;
+  top: 0.5lh;
+  transform: translateY(-50%);
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--palette-brand);
+}
+
+/*
+ * Tinted / card wrappers: headings inside skip section pills; TOC skips these blocks (post-html.ts).
+ * Use `salonora-tinted` on any `<div>` with a non-white background (alone or combined with e.g. inline styles).
+ */
+.post-article-body.post-prose
+  :is(
+    .salonora-tip,
+    .salonora-callout,
+    .salonora-warn,
+    .salonora-checklist,
+    .salonora-inline-cta,
+    .salonora-cta-panel,
+    .salonora-tinted
+  )
+  h2,
+.post-article-body.post-prose h2.salonora-tip-title,
+.post-article-body.post-prose h2.salonora-callout-title,
+.post-article-body.post-prose h2.salonora-warn-title,
+/* WP: Heading block immediately before a wrapper (or before a block whose direct child is a wrapper) */
+.post-article-body.post-prose
+  h2:has(
+    + :is(
+      .salonora-tip,
+      .salonora-callout,
+      .salonora-warn,
+      .salonora-checklist,
+      .salonora-inline-cta,
+      .salonora-cta-panel,
+      .salonora-tinted
+    )
+  ),
+.post-article-body.post-prose
+  h2:has(
+    + *:has(
+      > :is(
+        .salonora-tip,
+        .salonora-callout,
+        .salonora-warn,
+        .salonora-checklist,
+        .salonora-inline-cta,
+        .salonora-cta-panel,
+        .salonora-tinted
+      )
+    )
+  ) {
+  padding-left: 0;
+  counter-increment: post-h2 0;
+  counter-reset: post-h3;
+  margin-top: 0;
+}
+
+.post-article-body.post-prose
+  :is(
+    .salonora-tip,
+    .salonora-callout,
+    .salonora-warn,
+    .salonora-checklist,
+    .salonora-inline-cta,
+    .salonora-cta-panel,
+    .salonora-tinted
+  )
+  h3,
+.post-article-body.post-prose h3.salonora-tip-title,
+.post-article-body.post-prose h3.salonora-callout-title,
+.post-article-body.post-prose h3.salonora-warn-title,
+.post-article-body.post-prose
+  h3:has(
+    + :is(
+      .salonora-tip,
+      .salonora-callout,
+      .salonora-warn,
+      .salonora-checklist,
+      .salonora-inline-cta,
+      .salonora-cta-panel,
+      .salonora-tinted
+    )
+  ),
+.post-article-body.post-prose
+  h3:has(
+    + *:has(
+      > :is(
+        .salonora-tip,
+        .salonora-callout,
+        .salonora-warn,
+        .salonora-checklist,
+        .salonora-inline-cta,
+        .salonora-cta-panel,
+        .salonora-tinted
+      )
+    )
+  ) {
+  padding-left: 0;
+  counter-increment: post-h3 0;
+  margin-top: 0;
+}
+
+.post-article-body.post-prose
+  :is(
+    .salonora-tip,
+    .salonora-callout,
+    .salonora-warn,
+    .salonora-checklist,
+    .salonora-inline-cta,
+    .salonora-cta-panel,
+    .salonora-tinted
+  )
+  h2::before,
+.post-article-body.post-prose
+  :is(
+    .salonora-tip,
+    .salonora-callout,
+    .salonora-warn,
+    .salonora-checklist,
+    .salonora-inline-cta,
+    .salonora-cta-panel,
+    .salonora-tinted
+  )
+  h3::before,
+.post-article-body.post-prose h2.salonora-tip-title::before,
+.post-article-body.post-prose h2.salonora-callout-title::before,
+.post-article-body.post-prose h2.salonora-warn-title::before,
+.post-article-body.post-prose h3.salonora-tip-title::before,
+.post-article-body.post-prose h3.salonora-callout-title::before,
+.post-article-body.post-prose h3.salonora-warn-title::before,
+.post-article-body.post-prose
+  h2:has(
+    + :is(
+      .salonora-tip,
+      .salonora-callout,
+      .salonora-warn,
+      .salonora-checklist,
+      .salonora-inline-cta,
+      .salonora-cta-panel,
+      .salonora-tinted
+    )
+  )::before,
+.post-article-body.post-prose
+  h2:has(
+    + *:has(
+      > :is(
+        .salonora-tip,
+        .salonora-callout,
+        .salonora-warn,
+        .salonora-checklist,
+        .salonora-inline-cta,
+        .salonora-cta-panel,
+        .salonora-tinted
+      )
+    )
+  )::before,
+.post-article-body.post-prose
+  h3:has(
+    + :is(
+      .salonora-tip,
+      .salonora-callout,
+      .salonora-warn,
+      .salonora-checklist,
+      .salonora-inline-cta,
+      .salonora-cta-panel,
+      .salonora-tinted
+    )
+  )::before,
+.post-article-body.post-prose
+  h3:has(
+    + *:has(
+      > :is(
+        .salonora-tip,
+        .salonora-callout,
+        .salonora-warn,
+        .salonora-checklist,
+        .salonora-inline-cta,
+        .salonora-cta-panel,
+        .salonora-tinted
+      )
+    )
+  )::before {
+  content: none !important;
+  display: none !important;
+}
+
+.post-article-body.post-prose .salonora-tip h2,
+.post-article-body.post-prose .salonora-callout h2,
+.post-article-body.post-prose .salonora-warn h2,
+.post-article-body.post-prose h2.salonora-tip-title,
+.post-article-body.post-prose h2.salonora-callout-title,
+.post-article-body.post-prose h2.salonora-warn-title,
+.post-article-body.post-prose h2:has(+ .salonora-tip),
+.post-article-body.post-prose h2:has(+ .salonora-callout),
+.post-article-body.post-prose h2:has(+ .salonora-warn),
+.post-article-body.post-prose h2:has(+ *:has(> .salonora-tip)),
+.post-article-body.post-prose h2:has(+ *:has(> .salonora-callout)),
+.post-article-body.post-prose h2:has(+ *:has(> .salonora-warn)) {
+  font-size: 1.125rem;
+  line-height: 1.35;
+  margin-bottom: 0.75rem;
+}
+
+.post-article-body.post-prose .salonora-checklist h2,
+.post-article-body.post-prose .salonora-inline-cta h2,
+.post-article-body.post-prose h2:has(+ .salonora-checklist),
+.post-article-body.post-prose h2:has(+ .salonora-inline-cta),
+.post-article-body.post-prose h2:has(+ *:has(> .salonora-checklist)),
+.post-article-body.post-prose h2:has(+ *:has(> .salonora-inline-cta)) {
+  font-size: 1.25rem;
+  line-height: 1.3;
+  margin-bottom: 0.75rem;
+}
+
+.post-article-body.post-prose .salonora-tip h3,
+.post-article-body.post-prose .salonora-callout h3,
+.post-article-body.post-prose .salonora-warn h3,
+.post-article-body.post-prose .salonora-checklist h3,
+.post-article-body.post-prose .salonora-inline-cta h3,
+.post-article-body.post-prose .salonora-cta-panel h3,
+.post-article-body.post-prose h3.salonora-tip-title,
+.post-article-body.post-prose h3.salonora-callout-title,
+.post-article-body.post-prose h3.salonora-warn-title,
+.post-article-body.post-prose h3:has(+ .salonora-tip),
+.post-article-body.post-prose h3:has(+ .salonora-callout),
+.post-article-body.post-prose h3:has(+ .salonora-warn),
+.post-article-body.post-prose h3:has(+ .salonora-checklist),
+.post-article-body.post-prose h3:has(+ .salonora-inline-cta),
+.post-article-body.post-prose h3:has(+ .salonora-cta-panel),
+.post-article-body.post-prose h3:has(+ *:has(> .salonora-tip)),
+.post-article-body.post-prose h3:has(+ *:has(> .salonora-callout)),
+.post-article-body.post-prose h3:has(+ *:has(> .salonora-warn)),
+.post-article-body.post-prose h3:has(+ *:has(> .salonora-checklist)),
+.post-article-body.post-prose h3:has(+ *:has(> .salonora-inline-cta)),
+.post-article-body.post-prose h3:has(+ *:has(> .salonora-cta-panel)) {
+  font-size: 1rem;
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+.post-article-body.post-prose h2:first-of-type {
+  margin-top: 0;
+}
+
+.post-article-body.post-prose .salonora-tip,
+.post-article-body.post-prose .salonora-callout {
+  margin: 1.5rem 0;
+  border: none;
+  border-left: 4px solid var(--palette-brand);
+  border-radius: 14px;
+  background: var(--post-callout-bg);
+  padding: 1.25rem 1.35rem 1.25rem 1.25rem;
+}
+
+/* `salonora-tinted` alone: default pale surface (skip when a more specific card class already sets layout) */
+.post-article-body.post-prose
+  .salonora-tinted:not(.salonora-tip):not(.salonora-callout):not(.salonora-warn):not(.salonora-checklist):not(
+    .salonora-inline-cta
+  ):not(.salonora-cta-panel) {
+  margin: 1.5rem 0;
+  border-radius: 14px;
+  padding: 1.25rem 1.35rem;
+  background: var(--post-callout-bg);
+}
+
+.post-article-body.post-prose .salonora-tip-title,
+.post-article-body.post-prose .salonora-callout-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--palette-navy);
+}
+
+.post-article-body.post-prose .salonora-warn {
+  margin: 1.5rem 0;
+  border-radius: 1rem;
+  border: 1px solid color-mix(in srgb, var(--palette-brand) 22%, transparent);
+  background: var(--post-callout-bg);
+  padding: 1.25rem 1.35rem;
+}
+
+.post-article-body.post-prose .salonora-warn-title {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--palette-navy-deep);
+}
+
+.post-article-body.post-prose .salonora-checklist {
+  margin: 1.5rem 0;
+  border-radius: 1rem;
+  border: 1px solid color-mix(in srgb, var(--palette-brand) 14%, transparent);
+  background: var(--palette-surface);
+  padding: 1.25rem 1.35rem 1.25rem 1.5rem;
+}
+
+.post-article-body.post-prose .salonora-checklist ul {
+  margin: 0.5rem 0 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.post-article-body.post-prose .salonora-checklist li {
+  position: relative;
+  margin: 0.4rem 0;
+  padding-left: 1.75rem;
+}
+
+.post-article-body.post-prose .salonora-checklist li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.45em;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 0.25rem;
+  background: var(--palette-brand);
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='white' d='M13.78 4.22a.75.75 0 010 1.06l-7.25 7.25a.75.75 0 01-1.06 0L2.22 9.28a.75.75 0 011.06-1.06L6 11.94l6.72-6.72a.75.75 0 011.06 0z'/%3E%3C/svg%3E")
+    center / 70% no-repeat;
+}
+
+.post-article-body.post-prose table {
+  width: 100%;
+  margin: 1.5rem 0;
+  border-collapse: collapse;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  font-size: 0.9375rem;
+}
+
+.post-article-body.post-prose thead th {
+  background: var(--palette-navy-deep);
+  color: var(--palette-white);
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+}
+
+.post-article-body.post-prose tbody tr:nth-child(odd) {
+  background: color-mix(in srgb, var(--palette-surface) 55%, var(--palette-white));
+}
+
+.post-article-body.post-prose tbody tr:nth-child(even) {
+  background: var(--palette-white);
+}
+
+.post-article-body.post-prose td {
+  padding: 0.65rem 1rem;
+  border-top: 1px solid color-mix(in srgb, var(--palette-brand) 12%, transparent);
+  color: var(--palette-navy);
+}
+
+/* Mid-article CTA strip (Figma 848:3514) — embed inside `content` HTML; see docs/n8n-blog-publishing.md */
+.post-article-body.post-prose .salonora-inline-cta {
+  margin: 1.75rem 0;
+  border-radius: 1.25rem;
+  border: 1px solid color-mix(in srgb, var(--palette-brand) 16%, transparent);
+  background: color-mix(in srgb, var(--palette-surface) 88%, var(--palette-white));
+  padding: 1.5rem 1.5rem 1.35rem;
+  box-shadow: 0 6px 20px rgba(57, 144, 240, 0.1);
+}
+
+.post-article-body.post-prose .salonora-inline-cta-title {
+  margin: 0 0 1rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--palette-navy);
+}
+
+.post-article-body.post-prose .salonora-inline-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+}
+
+.post-article-body.post-prose a.salonora-inline-cta-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  background: var(--palette-brand);
+  padding: 0.55rem 1.35rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--palette-white) !important;
+  text-decoration: none;
+  box-shadow: 0 4px 14px rgba(57, 144, 240, 0.35);
+}
+
+.post-article-body.post-prose a.salonora-inline-cta-primary:hover {
+  opacity: 0.94;
+}
+
+.post-article-body.post-prose a.salonora-inline-cta-secondary {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--palette-brand) !important;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Bottom / wide CTA card (Figma 848:3514) — numbered section h2 + body + pill row; not stripped from TOC */
+.post-article-body.post-prose .salonora-cta-panel {
+  margin: 1.75rem 0;
+  border: none;
+  border-left: 4px solid var(--palette-brand);
+  border-radius: 14px;
+  background: var(--post-callout-bg);
+  padding: 1.5rem 1.5rem 1.5rem 1.25rem;
+}
+
+.post-article-body.post-prose .salonora-cta-panel > h2:first-child {
+  margin-top: 0;
+}
+
+.post-article-body.post-prose .salonora-cta-panel > p:last-of-type {
+  margin-bottom: 0;
+}
+
+.post-article-body.post-prose .salonora-cta-panel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem 0.85rem;
+  margin-top: 1.35rem;
+}
+
+.post-article-body.post-prose a.salonora-cta-panel-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  border: 1px solid color-mix(in srgb, var(--palette-brand) 22%, transparent);
+  background: var(--palette-white);
+  padding: 0.5rem 1.2rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--palette-navy) !important;
+  text-decoration: none;
+  transition:
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.post-article-body.post-prose a.salonora-cta-panel-secondary:hover {
+  border-color: var(--palette-brand);
+  color: var(--palette-brand) !important;
+}
+
+/* Default WP/Gutenberg lists — Tailwind `prose` often hides markers; keep .salonora-checklist custom list */
+.post-article-body.post-prose ul {
+  list-style-type: disc;
+  list-style-position: outside;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding-inline-start: 1.35rem;
+}
+
+.post-article-body.post-prose ol {
+  list-style-type: decimal;
+  list-style-position: outside;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding-inline-start: 1.35rem;
+}
+
+.post-article-body.post-prose ul ul {
+  list-style-type: circle;
+  margin-top: 0.35em;
+  margin-bottom: 0.35em;
+}
+
+.post-article-body.post-prose li {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+.post-article-body.post-prose ul > li::marker,
+.post-article-body.post-prose ol > li::marker {
+  color: color-mix(in srgb, var(--palette-brand) 75%, var(--palette-navy));
 }

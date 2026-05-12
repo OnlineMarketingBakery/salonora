@@ -1,6 +1,6 @@
 # Salonora — AI project context
 
-Read this file before large edits so you do not need to re-scan the whole repo. **Cursor** loads **`.cursor/rules/salonora.mdc`** (`alwaysApply: true`). **`AGENTS.md`** is the portable pointer for other agent tools. Authoritative env list: `.env.example`. Human overview: `README.md`. WordPress setup: `docs/wordpress-connection-guide.md`.
+Read this file before large edits so you do not need to re-scan the whole repo. **Cursor** loads **`.cursor/rules/salonora.mdc`** (`alwaysApply: true`). **`AGENTS.md`** is the portable pointer for other agent tools. Authoritative env list: `.env.example`. Human overview: `README.md`. WordPress setup: `docs/wordpress-connection-guide.md`. **n8n / automated posts:** `docs/n8n-blog-publishing.md`.
 
 ## Summary
 
@@ -14,17 +14,17 @@ Salonora is a **multilingual (nl/en) Next.js 15 App Router** marketing site that
 
 ## Tech stack (versions from package.json)
 
-| Package | Version (caret) |
-|---------|-----------------|
-| next | ^15.5.18 (see `overrides.postcss` in `package.json` for GHSA-qx2v) |
-| react / react-dom | ^19.0.0 |
-| typescript | ^5 |
-| tailwindcss | ^4 |
-| @tailwindcss/postcss | ^4 |
-| gsap | ^3.15.0 |
-| @gsap/react | ^2.1.2 |
-| eslint | ^9 |
-| eslint-config-next | 15.2.3 |
+| Package              | Version (caret)                                                    |
+| -------------------- | ------------------------------------------------------------------ |
+| next                 | ^15.5.18 (see `overrides.postcss` in `package.json` for GHSA-qx2v) |
+| react / react-dom    | ^19.0.0                                                            |
+| typescript           | ^5                                                                 |
+| tailwindcss          | ^4                                                                 |
+| @tailwindcss/postcss | ^4                                                                 |
+| gsap                 | ^3.15.0                                                            |
+| @gsap/react          | ^2.1.2                                                             |
+| eslint               | ^9                                                                 |
+| eslint-config-next   | 15.2.3                                                             |
 
 Node: **20.x LTS** (match Ploi/CI). Dev server: **`npm run dev`** uses **Turbopack**.
 
@@ -63,21 +63,21 @@ public/                  # static assets (SVGs, hero-gradiant.png, etc.)
 
 ## Important files
 
-| File | Role |
-|------|------|
-| `wordpress/.../acf-import-bundle.json` | **Bulk ACF import** (JSON array) for `npm run acf:push` or manual Tools import. Lives at **theme root**, not in `acf-json/`. |
-| `wordpress/.../acf-json/group_*.json` | **ACF Local JSON** (one file per field group; [ACF docs](https://www.advancedcustomfields.com/resources/local-json/)). Regenerate: **`npm run acf:extract-local-json`** (sets **`modified`** for Sync). Recovery: **`docs/acf-field-group-recovery.md`**. |
-| `src/lib/acf/section-registry.ts` | Maps section `type` → React component |
-| `src/components/sections/SectionRenderer.tsx` | Renders section list |
-| `src/lib/wordpress/client.ts` | All REST calls |
-| `src/lib/wordpress/config.ts` | Env accessors |
-| `src/lib/acf/normalize-*-sections.ts` | Page vs service ACF → typed sections |
-| `src/lib/acf/enrich-sections.ts` | Extra loads (e.g. testimonials by ID, `design_showcase_grid` services + featured media, paginated if rows×columns exceeds REST batch size) |
-| `src/app/[lang]/page.tsx` | Home: homepage slug per lang |
-| `src/app/[lang]/[...slug]/page.tsx` | Catch-all pages |
-| `src/app/[lang]/layout.tsx` | Globals, metadata shell |
-| `src/middleware.ts` | Root redirect, pathname header |
-| `src/lib/seo/map-yoast-to-metadata.ts` | Yoast → Next Metadata |
+| File                                          | Role                                                                                                                                                                                                                                                      |
+| --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `wordpress/.../acf-import-bundle.json`        | **Bulk ACF import** (JSON array) for `npm run acf:push` or manual Tools import. Lives at **theme root**, not in `acf-json/`.                                                                                                                              |
+| `wordpress/.../acf-json/group_*.json`         | **ACF Local JSON** (one file per field group; [ACF docs](https://www.advancedcustomfields.com/resources/local-json/)). Regenerate: **`npm run acf:extract-local-json`** (sets **`modified`** for Sync). Recovery: **`docs/acf-field-group-recovery.md`**. |
+| `src/lib/acf/section-registry.ts`             | Maps section `type` → React component                                                                                                                                                                                                                     |
+| `src/components/sections/SectionRenderer.tsx` | Renders section list                                                                                                                                                                                                                                      |
+| `src/lib/wordpress/client.ts`                 | All REST calls                                                                                                                                                                                                                                            |
+| `src/lib/wordpress/config.ts`                 | Env accessors                                                                                                                                                                                                                                             |
+| `src/lib/acf/normalize-*-sections.ts`         | Page vs service ACF → typed sections                                                                                                                                                                                                                      |
+| `src/lib/acf/enrich-sections.ts`              | Extra loads (e.g. testimonials by ID, `design_showcase_grid` services + featured media, paginated if rows×columns exceeds REST batch size)                                                                                                                |
+| `src/app/[lang]/page.tsx`                     | Home: homepage slug per lang                                                                                                                                                                                                                              |
+| `src/app/[lang]/[...slug]/page.tsx`           | Catch-all pages                                                                                                                                                                                                                                           |
+| `src/app/[lang]/layout.tsx`                   | Globals, metadata shell                                                                                                                                                                                                                                   |
+| `src/middleware.ts`                           | Root redirect, pathname header                                                                                                                                                                                                                            |
+| `src/lib/seo/map-yoast-to-metadata.ts`        | Yoast → Next Metadata                                                                                                                                                                                                                                     |
 
 ## Commands
 
@@ -113,11 +113,11 @@ npm run lint     # next lint
 
 ## Env vars (names only; values in `.env.example`)
 
-`WORDPRESS_API_URL`, `WORDPRESS_BASE_URL`, `NEXT_PUBLIC_SITE_URL`, `HOMEPAGE_SLUG` / `HOMEPAGE_SLUG_NL` / `HOMEPAGE_SLUG_EN`, `WP_MENU_{PRIMARY|FOOTER|LEGAL}_{NL|EN}` (or `WORDPRESS_MENU_*`), `WORDPRESS_APPLICATION_USER`, `WORDPRESS_APPLICATION_PASSWORD`, `REVALIDATION_SECRET`, `NEXT_PUBLIC_DEFAULT_CF7_FORM_ID`, `WORDPRESS_SERVICE_REST_BASE`, `WORDPRESS_TESTIMONIAL_REST_BASE`, `DEFAULT_LOCALE`, `SUPPORTED_LOCALES`.
+`WORDPRESS_API_URL`, `WORDPRESS_BASE_URL`, `NEXT_PUBLIC_SITE_URL`, `HOMEPAGE_SLUG` / `HOMEPAGE_SLUG_NL` / `HOMEPAGE_SLUG_EN`, `WORDPRESS_BLOG_PAGE_SLUG` / `WORDPRESS_BLOG_PAGE_SLUG_NL` / `WORDPRESS_BLOG_PAGE_SLUG_EN` (blog archive slug segment for post breadcrumbs; defaults to `blog`), `WP_MENU_{PRIMARY|FOOTER|LEGAL}_{NL|EN}` (or `WORDPRESS_MENU_*`), `WORDPRESS_APPLICATION_USER`, `WORDPRESS_APPLICATION_PASSWORD`, `REVALIDATION_SECRET`, `NEXT_PUBLIC_DEFAULT_CF7_FORM_ID`, `WORDPRESS_SERVICE_REST_BASE`, `WORDPRESS_TESTIMONIAL_REST_BASE`, `DEFAULT_LOCALE`, `SUPPORTED_LOCALES`.
 
 ## Section registry keys (reference)
 
-`hero`, `cards`, `combined_strengths`, `cost_comparison`, `benefits_grid`, `pricing_packages`, `guarantee_split`, `guarantees_promise_split`, `growth_plans_split`, `story_split`, `why_we_do_this`, `partner_intro_split`, `origin_story_split`, `founder_story_split`, `founders_banner`, `who_we_are_for`, `features_checklist`, `media_text_checklist`, `image_intro_split`, `salon_value_proposition`, `why_owners_choose`, `why_salonora_different`, `why_salonora_anders`, `testimonials`, `announcement_bar`, `process_steps`, `how_it_works_steps`, `scrolling_ticker`, `design_showcase_grid`, `feature_highlight_grid`, `feature_highlight_split`, `talk_dual_cards`, `team_behind_salonora`, `faq_contact_split`, `form_embed`, `latest_posts`, `cta`, `pricing_cta`, `pricing_dual_cards`, `rich_text`, `faq` — must stay in sync with `section-registry.ts`.
+`hero`, `cards`, `combined_strengths`, `cost_comparison`, `benefits_grid`, `pricing_packages`, `guarantee_split`, `guarantees_promise_split`, `growth_plans_split`, `story_split`, `why_we_do_this`, `partner_intro_split`, `origin_story_split`, `founder_story_split`, `founders_banner`, `who_we_are_for`, `features_checklist`, `media_text_checklist`, `blog_post_overview`, `image_intro_split`, `salon_value_proposition`, `why_owners_choose`, `why_salonora_different`, `why_salonora_anders`, `testimonials`, `announcement_bar`, `process_steps`, `how_it_works_steps`, `scrolling_ticker`, `design_showcase_grid`, `feature_highlight_grid`, `feature_highlight_split`, `talk_dual_cards`, `team_behind_salonora`, `faq_contact_split`, `form_embed`, `latest_posts`, `cta`, `pricing_cta`, `pricing_dual_cards`, `rich_text`, `faq` — must stay in sync with `section-registry.ts`.
 
 - **`team_behind_salonora`** — About page “Het Team Achter Salonora”: two (or more) team member cards with social links, plus a bordered bottom tagline; optional decorative background/wordmark assets.
 
@@ -137,5 +137,9 @@ npm run lint     # next lint
 - **`features_checklist`** — Figma content **597:4037** (“Frame 2147228715”) on decorative shell **597:3568** (“Frame 2147228001”): navy grid/glow background, centered white intro, left column white checklist cards, right column image with optional link **`button`** + **`button_trailing_icon`** overlaid on the image.
 
 - **`media_text_checklist`** — Figma **597:3503** (“Frame 2147228620”): rounded card with **`media_position`** (stacked **`image_top`** at **188px** height on large screens / framed **`image_bottom`** with white inset padding) + copy (**`title`**, **`subtitle`**, WYSIWYG **`description`**, **`checklist_title`**, repeater **`checklist`** / **`item`**, optional testimonial block (**`testimonial_heading`**, WYSIWYG **`testimonial_body`**, **`testimonial_author_image`**, **`testimonial_author_name`**, **`testimonial_author_role`** — entire block hidden when all five empty), **`pricing_label`**, link **`button`**, optional **`button_trailing_icon`** for CTA graphic). **`panel_style`** `soft_surface` | `white_card` switches pale surface vs white bordered card. Checklist icons: per-row **`checklist[].icon`** overrides section **`list_default_icon`**; both empty falls back to the built-in brand check tile (same convention as `guarantees_promise_split` / `growth_plans_split`).
+
+- **`blog_post_overview`** — Figma **830:2196** (“Blog post overview”): hero **`title`** / **`intro`**, optional **`show_search`** (GET `?s=` on the same path), optional **`show_featured`**, optional **`featured_post`** (single pinned post for the featured slot on page 1; overrides newest-by-date when set), **`posts_per_page`** for WordPress pagination, optional **`read_more_label`**. Enable **“Blog archive page”** (`is_blog_archive`) on the WordPress page so **`?page=`** and **`?s=`** are applied server-side; header/footer stay from the global layout.
+
+- **Single post template** — Figma **848:3514** ([Salonora New Design](https://www.figma.com/design/FugnwTE5ugAf4YMK0g6ghT/Salonora-New-Design?node-id=848-3514)): `PostTemplate` + `src/components/templates/post/*` — optional ACF **`post_lead`** (WYSIWYG), **`breadcrumb_parent`** (link before “Blog”), **`show_toc`**; breadcrumbs, two-column layout (`lg:gap-x-10` gutter) with **TOC** (scrollable list on `lg` so **Over de auteur** stays visible) + bordered author card; meta + share; **`show_related_posts`** (ACF); body uses **`post-article-body`** in `globals.css` — **16px / line-height 1.4** copy rhythm, numbered `h2`/`h3`, **`.salonora-tip` / `.salonora-callout`**: pale fill + **4px left brand bar** + **14px** radius, `.salonora-warn`, `.salonora-checklist`, `.salonora-inline-cta` (compact strip), `.salonora-cta-panel`, `.salonora-tinted` (generic tinted band; plain `div`+non-white inline `background` is auto-tagged in `markStyleTintedDivs`), tables, lists. **`docs/n8n-blog-publishing.md`** for HTML patterns.
 
 - **`faq_contact_split`** — **`section_background`**: **`white`** (default) or **`navy`** (full-width `navy-deep` behind FAQ + contact). When **`pricing_ctas`** has rows: wide navy pills (**`ctaNavyDeep`**, **79px** tall, full width of the FAQ column) under the split accordion; each row has **`cta_text`**, **`cta_link`**, optional **`trailing_icon`**. Large screens: two columns **`items-stretch`** when pricing CTAs exist; fixed **`lg:min-h-[609px]`** on the contact card only when there are no pricing CTAs.
