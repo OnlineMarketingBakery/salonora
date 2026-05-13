@@ -10379,6 +10379,198 @@
             "min": "",
             "max": ""
           },
+          "layout_omb_problem_solution": {
+            "key": "layout_omb_problem_solution",
+            "name": "problem_solution",
+            "label": "Problem / Solution cards",
+            "display": "block",
+            "sub_fields": [
+              {
+                "key": "field_omb_problem_solution_problem_title",
+                "label": "Problem card — title",
+                "name": "problem_title",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Large white heading on the navy card (e.g. Het probleem).",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+              },
+              {
+                "key": "field_omb_problem_solution_problem_text",
+                "label": "Problem card — body",
+                "name": "problem_text",
+                "aria-label": "",
+                "type": "wysiwyg",
+                "instructions": "Intro + paragraphs (white text).",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "allow_in_bindings": 0,
+                "tabs": "all",
+                "toolbar": "basic",
+                "media_upload": 0,
+                "delay": 0
+              },
+              {
+                "key": "field_omb_problem_solution_problem_image",
+                "label": "Problem card — portrait",
+                "name": "problem_image",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "Cut-out / PNG with transparency; anchored bottom-right of the navy card.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "png,jpg,jpeg,webp",
+                "allow_in_bindings": 0,
+                "preview_size": "medium"
+              },
+              {
+                "key": "field_omb_problem_solution_solution_title",
+                "label": "Solution card — title",
+                "name": "solution_title",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Large white heading on the blue card (e.g. De oplossing).",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+              },
+              {
+                "key": "field_omb_problem_solution_solution_text",
+                "label": "Solution card — body",
+                "name": "solution_text",
+                "aria-label": "",
+                "type": "wysiwyg",
+                "instructions": "Intro + benefit paragraphs (white text) above the checklist.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "allow_in_bindings": 0,
+                "tabs": "all",
+                "toolbar": "basic",
+                "media_upload": 0,
+                "delay": 0
+              },
+              {
+                "key": "field_omb_problem_solution_solution_list",
+                "label": "Solution card — checklist",
+                "name": "solution_list",
+                "aria-label": "",
+                "type": "repeater",
+                "instructions": "Optional rows with white disc + brand check (e.g. Google / local SEO lines).",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "layout": "row",
+                "pagination": 0,
+                "min": 0,
+                "max": 12,
+                "collapsed": "field_omb_problem_solution_solution_list_item",
+                "button_label": "Add checklist line",
+                "rows_per_page": 20,
+                "sub_fields": [
+                  {
+                    "key": "field_omb_problem_solution_solution_list_item",
+                    "label": "Line",
+                    "name": "item",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_omb_problem_solution_solution_list"
+                  }
+                ]
+              },
+              {
+                "key": "field_omb_problem_solution_solution_image",
+                "label": "Solution card — portrait",
+                "name": "solution_image",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "Cut-out / PNG with transparency; anchored bottom-right of the blue card.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "png,jpg,jpeg,webp",
+                "allow_in_bindings": 0,
+                "preview_size": "medium"
+              }
+            ],
+            "min": "",
+            "max": ""
+          },
           "layout_omb_talk_dual_cards": {
             "key": "layout_omb_talk_dual_cards",
             "name": "talk_dual_cards",

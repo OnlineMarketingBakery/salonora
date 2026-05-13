@@ -1,3 +1,5 @@
+import type { GlobalSettings } from "@/types/globals";
+
 function requireEnv(name: string, fallback?: string): string {
   const v = process.env[name] ?? fallback;
   if (!v) {
@@ -41,9 +43,19 @@ export function getDefaultContactFormId(): string | undefined {
   return process.env.NEXT_PUBLIC_DEFAULT_CF7_FORM_ID;
 }
 
+/** Fallback when WordPress Reading → Homepage is unavailable (older plugin) or not a static page. */
 export function getHomepageSlug(lang: "nl" | "en"): string {
   const key = `HOMEPAGE_SLUG_${lang.toUpperCase()}` as const;
   return process.env[key] || process.env.HOMEPAGE_SLUG || "home";
+}
+
+/** Prefer WordPress Reading static homepage slug (per language via OMB + Polylang); else env / `home`. */
+export function resolveHomepageSlug(lang: "nl" | "en", globals: GlobalSettings): string {
+  const { showOnFront, homepageSlug } = globals.reading;
+  if (showOnFront === "page" && homepageSlug) {
+    return homepageSlug;
+  }
+  return getHomepageSlug(lang);
 }
 
 export function getMenuId(

@@ -1,5 +1,5 @@
 import { getWordpressApiUrl, getWordpressAuthorizationHeader } from "./config";
-import type { FooterSettings, GlobalSettings } from "@/types/globals";
+import type { FooterSettings, GlobalSettings, ReadingSettings } from "@/types/globals";
 import { asBool, asImage, asLink, asString } from "@/lib/acf/field-mappers";
 import { logger } from "@/lib/utils/logger";
 import type { Locale } from "@/lib/i18n/locales";
@@ -33,12 +33,14 @@ type OmbGlobalsRestPayload = {
   site?: Record<string, unknown>;
   integrations?: Record<string, unknown>;
   defaultSeo?: Record<string, unknown>;
+  /** WordPress Settings â†’ Reading (static front page), from omb-headless-core. */
+  reading?: Record<string, unknown>;
 };
 
 /**
  * Loads all ACF option groups in one request via OMB Headless Core. Use this when
  * WordPress does not register the `acf` REST namespace (common); native
- * `acf/v1/options/…` and `acf/v3/options/…` routes then return 404 and globals stay empty.
+ * `acf/v1/options/â€¦` and `acf/v3/options/â€¦` routes then return 404 and globals stay empty.
  */
 async function fetchGlobalsViaOmbRest(lang: Locale): Promise<OmbGlobalsRestPayload | null> {
   const base = getWordpressApiUrl();
@@ -66,6 +68,37 @@ async function fetchGlobalsViaOmbRest(lang: Locale): Promise<OmbGlobalsRestPaylo
     return body;
   } catch (e) {
     logger.warn("omb-headless globals fetch", url.toString(), e);
+    return null;
+  }
+}
+
+/** Reading settings only (no ACF). Used when globals load via per-route ACF but plugin still exposes `/reading`. */
+async function fetchReadingViaOmbRest(lang: Locale): Promise<Record<string, unknown> | null> {
+  const base = getWordpressApiUrl();
+  if (!base) return null;
+  const url = new URL(`${base}/omb-headless/v1/reading`);
+  url.searchParams.set("lang", lang);
+  const headers = new Headers();
+  const auth = getWordpressAuthorizationHeader();
+  if (auth) {
+    headers.set("Authorization", auth);
+  }
+  try {
+    const res = await fetch(url.toString(), { headers, next: { revalidate: 60 } });
+    if (res.status === 404) {
+      return null;
+    }
+    if (!res.ok) {
+      logger.warn("omb-headless reading", url.toString(), res.status);
+      return null;
+    }
+    const body = (await res.json()) as Record<string, unknown>;
+    if (!body || typeof body !== "object") {
+      return null;
+    }
+    return body;
+  } catch (e) {
+    logger.warn("omb-headless reading fetch", url.toString(), e);
     return null;
   }
 }
@@ -242,6 +275,18 @@ function fromIntegrations(o: Record<string, unknown> | null) {
   };
 }
 
+function fromReading(o: Record<string, unknown> | null | undefined): ReadingSettings {
+  if (!o || typeof o !== "object") {
+    return { showOnFront: "page", homepageSlug: null };
+  }
+  const showRaw = o.show_on_front;
+  const showOnFront = typeof showRaw === "string" && showRaw ? showRaw : "page";
+  const slugRaw = o.homepage_slug;
+  const homepageSlug =
+    typeof slugRaw === "string" && slugRaw.trim() !== "" ? slugRaw.trim() : null;
+  return { showOnFront, homepageSlug };
+}
+
 function fromDefaultSeo(o: Record<string, unknown> | null) {
   if (!o) {
     return {
@@ -271,17 +316,20 @@ export async function fetchGlobals(lang: Locale): Promise<GlobalSettings> {
       site: fromSite(siteUnwrapped),
       integrations: fromIntegrations(unwrapAcfOptionsPayload(omb.integrations ?? null)),
       defaultSeo: fromDefaultSeo(unwrapAcfOptionsPayload(omb.defaultSeo ?? null)),
+      reading: fromReading(omb.reading),
     };
   }
 
-  const [headerRaw, footerRaw, contactRaw, siteRaw, integrationsRaw, defaultSeoRaw] = await Promise.all([
-    fetchAcfOptions("omb-header-settings", lang),
-    fetchAcfOptions("omb-footer-settings", lang),
-    fetchAcfOptions("omb-contact-social", lang),
-    fetchAcfOptions("omb-site-settings", lang),
-    fetchAcfOptions("omb-integrations", lang),
-    fetchAcfOptions("omb-default-seo", lang),
-  ]);
+  const [headerRaw, footerRaw, contactRaw, siteRaw, integrationsRaw, defaultSeoRaw, readingRaw] =
+    await Promise.all([
+      fetchAcfOptions("omb-header-settings", lang),
+      fetchAcfOptions("omb-footer-settings", lang),
+      fetchAcfOptions("omb-contact-social", lang),
+      fetchAcfOptions("omb-site-settings", lang),
+      fetchAcfOptions("omb-integrations", lang),
+      fetchAcfOptions("omb-default-seo", lang),
+      fetchReadingViaOmbRest(lang),
+    ]);
 
   const siteUnwrapped = unwrapAcfOptionsPayload(siteRaw);
   const footerRawFlat = unwrapAcfOptionsPayload(footerRaw) as Record<string, unknown> | null;
@@ -293,5 +341,6 @@ export async function fetchGlobals(lang: Locale): Promise<GlobalSettings> {
     site: fromSite(siteUnwrapped),
     integrations: fromIntegrations(unwrapAcfOptionsPayload(integrationsRaw)),
     defaultSeo: fromDefaultSeo(unwrapAcfOptionsPayload(defaultSeoRaw)),
+    reading: fromReading(readingRaw),
   };
 }

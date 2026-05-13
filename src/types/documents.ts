@@ -23,6 +23,7 @@ export type ServiceDocument = {
   id: number;
   slug: string;
   title: string;
+  hidePageTitle: boolean;
   excerpt: string;
   serviceIntro: string;
   serviceHighlights: string[];

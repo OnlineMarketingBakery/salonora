@@ -117,11 +117,13 @@ npm run lint     # next lint
 
 ## Section registry keys (reference)
 
-`hero`, `cards`, `combined_strengths`, `cost_comparison`, `benefits_grid`, `pricing_packages`, `guarantee_split`, `guarantees_promise_split`, `growth_plans_split`, `story_split`, `why_we_do_this`, `partner_intro_split`, `origin_story_split`, `founder_story_split`, `founders_banner`, `who_we_are_for`, `features_checklist`, `media_text_checklist`, `blog_post_overview`, `case_study_overview`, `image_intro_split`, `salon_value_proposition`, `why_owners_choose`, `why_salonora_different`, `why_salonora_anders`, `testimonials`, `announcement_bar`, `process_steps`, `how_it_works_steps`, `scrolling_ticker`, `design_showcase_grid`, `feature_highlight_grid`, `feature_highlight_split`, `talk_dual_cards`, `team_behind_salonora`, `faq_contact_split`, `form_embed`, `latest_posts`, `cta`, `pricing_cta`, `pricing_dual_cards`, `rich_text`, `faq` — must stay in sync with `section-registry.ts`.
+`hero`, `cards`, `combined_strengths`, `cost_comparison`, `benefits_grid`, `pricing_packages`, `guarantee_split`, `guarantees_promise_split`, `growth_plans_split`, `story_split`, `why_we_do_this`, `partner_intro_split`, `origin_story_split`, `founder_story_split`, `founders_banner`, `who_we_are_for`, `features_checklist`, `media_text_checklist`, `blog_post_overview`, `case_study_overview`, `image_intro_split`, `salon_value_proposition`, `why_owners_choose`, `why_salonora_different`, `why_salonora_anders`, `testimonials`, `announcement_bar`, `process_steps`, `how_it_works_steps`, `scrolling_ticker`, `design_showcase_grid`, `feature_highlight_grid`, `feature_highlight_split`, `talk_dual_cards`, `problem_solution`, `team_behind_salonora`, `faq_contact_split`, `form_embed`, `latest_posts`, `cta`, `pricing_cta`, `pricing_dual_cards`, `rich_text`, `faq` — must stay in sync with `section-registry.ts`.
 
 - **`team_behind_salonora`** — About page “Het Team Achter Salonora”: two (or more) team member cards with social links, plus a bordered bottom tagline; optional decorative background/wordmark assets.
 
 - **`talk_dual_cards`** — Figma **597:2720** (“Frame 2147228539”): centered heading + two rounded panels (brand gradient left with optional **`left_corner_graphic`**, navy + optional **`right_overlay_graphic`**); one primary CTA vs two secondary CTAs with optional trailing icons.
+
+- **`problem_solution`** — Figma **1306:29** (“Frame 574”): two equal rounded cards (navy “problem” vs brand-blue “solution”) with TR grid wash, **`problem_image`** / **`solution_image`** cutouts bottom-right, WYSIWYG copy, optional **`solution_list`** repeater (`item`) for white-disc checklist lines under the solution body.
 
 - **`guarantees_promise_split`** — Figma **1127:55** (“Group 596”): portrait + floating badges; checklist + download CTA. Icons from CMS: **`list_default_icon`** or per-row **`points[].icon`**; **`cta_trailing_icon`** on the download pill (avoid hardcoded SVG conversions).
 
