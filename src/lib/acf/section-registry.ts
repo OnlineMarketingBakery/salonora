@@ -147,6 +147,14 @@ const WhoWeAreForSectionLazy = dynamic(
   { ssr: true }
 );
 
+const IsThisForYouSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/is-this-for-you").then((mod) => ({
+      default: mod.IsThisForYouSection,
+    })),
+  { ssr: true }
+);
+
 const MediaTextChecklistSectionLazy = dynamic(
   () =>
     import("@/components/sections/media-text-checklist").then((mod) => ({
@@ -268,6 +276,9 @@ export const sectionRegistry = {
   ),
   who_we_are_for: asSection(
     WhoWeAreForSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
+  is_this_for_you: asSection(
+    IsThisForYouSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
   media_text_checklist: asSection(
     MediaTextChecklistSectionLazy as (p: { section: never; lang: Locale }) => ReactNode

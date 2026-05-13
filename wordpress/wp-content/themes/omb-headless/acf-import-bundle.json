@@ -4231,6 +4231,247 @@
             "min": "",
             "max": ""
           },
+          "layout_omb_is_this_for_you": {
+            "key": "layout_omb_is_this_for_you",
+            "name": "is_this_for_you",
+            "label": "Is this for you (split)",
+            "display": "block",
+            "sub_fields": [
+              {
+                "key": "field_omb_is_this_for_you_title",
+                "label": "Title",
+                "name": "title",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Main heading (Figma **1325:38**).",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+              },
+              {
+                "key": "field_omb_is_this_for_you_subtitle",
+                "label": "Subtitle",
+                "name": "subtitle",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Line under the title (e.g. “Dit is voor jou als je:”).",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+              },
+              {
+                "key": "field_omb_is_this_for_you_list_default_icon",
+                "label": "Default checklist icon",
+                "name": "list_default_icon",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "Optional; rows without a per-row icon inherit this. Empty = built-in brand check.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "png,jpg,jpeg,webp,svg",
+                "allow_in_bindings": 0,
+                "preview_size": "thumbnail"
+              },
+              {
+                "key": "field_omb_is_this_for_you_checklist",
+                "label": "Checklist",
+                "name": "checklist",
+                "aria-label": "",
+                "type": "repeater",
+                "instructions": "Bullet lines with optional per-row icon.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "layout": "row",
+                "pagination": 0,
+                "min": 0,
+                "max": 0,
+                "collapsed": "",
+                "button_label": "Add row",
+                "rows_per_page": 20,
+                "sub_fields": [
+                  {
+                    "key": "field_omb_is_this_for_you_checklist_icon",
+                    "label": "Icon (optional)",
+                    "name": "icon",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "return_format": "array",
+                    "library": "all",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": "png,jpg,jpeg,webp,svg",
+                    "allow_in_bindings": 0,
+                    "preview_size": "thumbnail",
+                    "parent_repeater": "field_omb_is_this_for_you_checklist"
+                  },
+                  {
+                    "key": "field_omb_is_this_for_you_checklist_item",
+                    "label": "Line",
+                    "name": "item",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_omb_is_this_for_you_checklist"
+                  }
+                ]
+              },
+              {
+                "key": "field_omb_is_this_for_you_footer_note",
+                "label": "Footer note",
+                "name": "footer_note",
+                "aria-label": "",
+                "type": "wysiwyg",
+                "instructions": "Paragraph below the checklist (e.g. “Dit werkt ook voor…”).",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "allow_in_bindings": 0,
+                "tabs": "all",
+                "toolbar": "basic",
+                "media_upload": 0,
+                "delay": 0
+              },
+              {
+                "key": "field_omb_is_this_for_you_button",
+                "label": "CTA",
+                "name": "button",
+                "aria-label": "",
+                "type": "link",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "allow_in_bindings": 0
+              },
+              {
+                "key": "field_omb_is_this_for_you_button_trailing_icon",
+                "label": "CTA trailing icon",
+                "name": "button_trailing_icon",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "Optional graphic after the CTA label (e.g. arrow); shown inverted on the brand pill.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "png,jpg,jpeg,webp,svg",
+                "allow_in_bindings": 0,
+                "preview_size": "thumbnail"
+              },
+              {
+                "key": "field_omb_is_this_for_you_image",
+                "label": "Image",
+                "name": "image",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "Right column photo; rotated brand panel is rendered in the theme.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "",
+                "allow_in_bindings": 0,
+                "preview_size": "medium"
+              }
+            ],
+            "min": "",
+            "max": ""
+          },
           "layout_omb_features_checklist": {
             "key": "layout_omb_features_checklist",
             "name": "features_checklist",

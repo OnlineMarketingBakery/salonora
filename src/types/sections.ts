@@ -202,31 +202,32 @@ export type WhoWeAreForSectionT = CoreSection & {
   ctas: CtaItem[];
 };
 
-/** Figma **597:3503** (“Frame 2147228620”) — rounded card: copy + checklist + pricing + CTA; stacked media column for mirror variant (`media_position`). */
+/** Figma **1325:38** (“Frame 2147230004”) — split: heading + checklist + footer + CTA; framed image with rotated brand panel. */
+export type IsThisForYouChecklistRowT = {
+  text: string;
+  /** Resolved: row icon, else section `list_default_icon`. `null` falls back to the built-in brand check. */
+  icon: WpImage | null;
+};
+
+export type IsThisForYouSectionT = CoreSection & {
+  type: "is_this_for_you";
+  title: string;
+  subtitle: string;
+  list_default_icon: WpImage | null;
+  checklist: IsThisForYouChecklistRowT[];
+  footer_note: string;
+  button: WpAcfLink | null;
+  button_trailing_icon: WpImage | null;
+  image: WpImage | null;
+};
+
 export type MediaTextChecklistRowT = {
   text: string;
   /** Resolved per-row icon, else section `list_default_icon`. `null` falls back to the built-in brand check. */
   icon: WpImage | null;
 };
 
-/** Figma content **597:4037** (“Frame 2147228715”) over decorative shell **597:3568** (“Frame 2147228001”) — centered intro + white checklist rows + masked image with CTA. */
-export type FeaturesChecklistRowT = {
-  text: string;
-  /** Resolved per-row icon, else section `list_default_icon`. `null` falls back to the built-in brand check. */
-  icon: WpImage | null;
-};
-
-export type FeaturesChecklistSectionT = CoreSection & {
-  type: "features_checklist";
-  title: string;
-  description: string;
-  list_default_icon: WpImage | null;
-  checklist: FeaturesChecklistRowT[];
-  image: WpImage | null;
-  button: WpAcfLink | null;
-  button_trailing_icon: WpImage | null;
-};
-
+/** Figma **597:3503** (“Frame 2147228620”) — rounded card: copy + checklist + pricing + CTA; stacked media column for mirror variant (`media_position`). */
 export type MediaTextChecklistSectionT = CoreSection & {
   type: "media_text_checklist";
   media_position: "left" | "right";
@@ -250,6 +251,24 @@ export type MediaTextChecklistSectionT = CoreSection & {
   pricing_label: string;
   button: WpAcfLink | null;
   /** Optional trailing graphic on the primary CTA; default circled arrow when unset. */
+  button_trailing_icon: WpImage | null;
+};
+
+/** Figma content **597:4037** (“Frame 2147228715”) over decorative shell **597:3568** (“Frame 2147228001”) — centered intro + white checklist rows + masked image with CTA. */
+export type FeaturesChecklistRowT = {
+  text: string;
+  /** Resolved per-row icon, else section `list_default_icon`. `null` falls back to the built-in brand check. */
+  icon: WpImage | null;
+};
+
+export type FeaturesChecklistSectionT = CoreSection & {
+  type: "features_checklist";
+  title: string;
+  description: string;
+  list_default_icon: WpImage | null;
+  checklist: FeaturesChecklistRowT[];
+  image: WpImage | null;
+  button: WpAcfLink | null;
   button_trailing_icon: WpImage | null;
 };
 
@@ -820,6 +839,7 @@ export type AnySectionT =
   | GrowthPlansSplitSectionT
   | FoundersBannerSectionT
   | WhoWeAreForSectionT
+  | IsThisForYouSectionT
   | FeaturesChecklistSectionT
   | MediaTextChecklistSectionT
   | AudiencePromoCardSectionT

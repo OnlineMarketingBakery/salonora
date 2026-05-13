@@ -40,6 +40,7 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   hero: true,
   how_it_works_steps: true,
   image_intro_split: true,
+  is_this_for_you: true,
   latest_posts: true,
   blog_post_overview: true,
   case_study_overview: true,
@@ -381,6 +382,26 @@ function mapKnownPageSectionLayout(
           : [],
         ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
       };
+    case "is_this_for_you": {
+      const listDefaultIcon = asImage(row.list_default_icon);
+      return {
+        ...base,
+        type: "is_this_for_you",
+        title: asString(row.title),
+        subtitle: asString(row.subtitle),
+        list_default_icon: listDefaultIcon,
+        checklist: Array.isArray(row.checklist)
+          ? (row.checklist as { item?: unknown; icon?: unknown }[]).map((r) => ({
+              text: asString(r.item),
+              icon: asImage(r.icon) ?? listDefaultIcon,
+            }))
+          : [],
+        footer_note: asHtml(row.footer_note),
+        button: asLink(row.button),
+        button_trailing_icon: asImage(row.button_trailing_icon),
+        image: asImage(row.image),
+      };
+    }
     case "features_checklist": {
       const listDefaultIcon = asImage(row.list_default_icon);
       return {
