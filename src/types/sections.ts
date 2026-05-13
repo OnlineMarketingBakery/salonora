@@ -488,6 +488,24 @@ export type ScrollingTickerSectionT = CoreSection & {
   items?: ScrollingTickerItemT[];
 };
 
+/** Figma **1322:32** (“Frame 2147230002”) — brand circle + browser mockup; heading, three steps with dividers, pill CTA. */
+export type StepsWithMediaStepIconColorT = "blue" | "pink";
+
+export type StepsWithMediaStepT = {
+  number: string;
+  icon_color: StepsWithMediaStepIconColorT;
+  title: string;
+  description: string;
+};
+
+export type StepsWithMediaSectionT = CoreSection & {
+  type: "steps_with_media";
+  title: string;
+  steps: StepsWithMediaStepT[];
+  cta_link: WpAcfLink | null;
+  browser_image: WpImage | null;
+};
+
 /** Figma 909:31 — headline, intro row, service-driven cards, footer pill CTA */
 export type DesignShowcaseGridCardTint = "surface" | "blush" | "mint" | "gold";
 
@@ -821,6 +839,7 @@ export type AnySectionT =
   | ProcessStepsSectionT
   | HowItWorksStepsSectionT
   | ScrollingTickerSectionT
+  | StepsWithMediaSectionT
   | DesignShowcaseGridSectionT
   | FaqContactSplitSectionT
   | FormEmbedSectionT

@@ -171,6 +171,14 @@ const AudiencePromoCardSectionLazy = dynamic(
   { ssr: true }
 );
 
+const StepsWithMediaSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/steps-with-media").then((mod) => ({
+      default: mod.StepsWithMediaSection,
+    })),
+  { ssr: true }
+);
+
 import type { AnySectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 import type { ReactNode } from "react";
@@ -269,6 +277,9 @@ export const sectionRegistry = {
   ),
   audience_promo_card: asSection(
     AudiencePromoCardSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
+  steps_with_media: asSection(
+    StepsWithMediaSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
 } satisfies SectionRegistryShape;
 

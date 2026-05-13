@@ -53,6 +53,7 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   rich_text: true,
   salon_value_proposition: true,
   scrolling_ticker: true,
+  steps_with_media: true,
   story_split: true,
   talk_dual_cards: true,
   team_behind_salonora: true,
@@ -724,6 +725,28 @@ function mapKnownPageSectionLayout(
               text: asHtml(x.text),
             }))
           : [],
+      };
+    case "steps_with_media":
+      return {
+        ...base,
+        type: "steps_with_media",
+        title: asString(row.title),
+        steps: Array.isArray(row.steps)
+          ? (row.steps as { number?: unknown; icon_color?: unknown; title?: unknown; description?: unknown }[]).map(
+              (s) => {
+                const rawColor = asString(s.icon_color);
+                const icon_color = rawColor === "pink" ? ("pink" as const) : ("blue" as const);
+                return {
+                  number: asString(s.number),
+                  icon_color,
+                  title: asString(s.title),
+                  description: asHtml(s.description),
+                };
+              },
+            )
+          : [],
+        cta_link: asLink(row.cta_link),
+        browser_image: asImage(row.browser_image),
       };
     case "feature_highlight_grid":
       return {

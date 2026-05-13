@@ -5120,6 +5120,202 @@
             "min": "",
             "max": ""
           },
+          "layout_omb_steps_with_media": {
+            "key": "layout_omb_steps_with_media",
+            "name": "steps_with_media",
+            "label": "Steps with media",
+            "display": "block",
+            "sub_fields": [
+              {
+                "key": "field_omb_steps_with_media_title",
+                "label": "Title",
+                "name": "title",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Main heading (line breaks allowed).",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+              },
+              {
+                "key": "field_omb_steps_with_media_steps",
+                "label": "Steps",
+                "name": "steps",
+                "aria-label": "",
+                "type": "repeater",
+                "instructions": "Up to three process steps with numbered tiles.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "layout": "row",
+                "pagination": 0,
+                "min": 0,
+                "max": 0,
+                "collapsed": "",
+                "button_label": "Add step",
+                "rows_per_page": 20,
+                "sub_fields": [
+                  {
+                    "key": "field_omb_steps_with_media_step_number",
+                    "label": "Number",
+                    "name": "number",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "Shown in the square (e.g. 1, 2, 3).",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_omb_steps_with_media_steps"
+                  },
+                  {
+                    "key": "field_omb_steps_with_media_step_icon_color",
+                    "label": "Icon color",
+                    "name": "icon_color",
+                    "aria-label": "",
+                    "type": "select",
+                    "instructions": "Blue matches brand; pink alternates for the middle step in the default design.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "choices": {
+                      "blue": "Blue",
+                      "pink": "Pink / rose"
+                    },
+                    "default_value": "blue",
+                    "return_format": "value",
+                    "multiple": 0,
+                    "allow_null": 0,
+                    "ui": 1,
+                    "ajax": 0,
+                    "placeholder": "",
+                    "allow_custom": 0,
+                    "search_placeholder": "",
+                    "allow_in_bindings": 0,
+                    "create_options": 0,
+                    "save_options": 0,
+                    "parent_repeater": "field_omb_steps_with_media_steps"
+                  },
+                  {
+                    "key": "field_omb_steps_with_media_step_title",
+                    "label": "Step title",
+                    "name": "title",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_omb_steps_with_media_steps"
+                  },
+                  {
+                    "key": "field_omb_steps_with_media_step_description",
+                    "label": "Description",
+                    "name": "description",
+                    "aria-label": "",
+                    "type": "wysiwyg",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "default_value": "",
+                    "allow_in_bindings": 0,
+                    "tabs": "all",
+                    "toolbar": "basic",
+                    "media_upload": 0,
+                    "delay": 0,
+                    "parent_repeater": "field_omb_steps_with_media_steps"
+                  }
+                ]
+              },
+              {
+                "key": "field_omb_steps_with_media_cta_link",
+                "label": "CTA link",
+                "name": "cta_link",
+                "aria-label": "",
+                "type": "link",
+                "instructions": "Primary pill button under the steps.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "allow_in_bindings": 0
+              },
+              {
+                "key": "field_omb_steps_with_media_browser_image",
+                "label": "Browser screenshot",
+                "name": "browser_image",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "Shown inside the decorative browser frame (site preview).",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "",
+                "allow_in_bindings": 0,
+                "preview_size": "medium"
+              }
+            ],
+            "min": "",
+            "max": ""
+          },
           "layout_omb_story_split": {
             "key": "layout_omb_story_split",
             "name": "story_split",
@@ -11436,7 +11632,7 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1779300000
+    "modified": 1779600000
   },
   {
     "key": "group_omb_post_settings",
