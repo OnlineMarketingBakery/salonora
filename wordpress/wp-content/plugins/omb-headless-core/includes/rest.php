@@ -38,6 +38,18 @@ add_action('rest_api_init', function () {
         ],
     ]);
 
+    register_rest_route('omb-headless/v1', '/reading', [
+        'methods'             => 'GET',
+        'permission_callback' => '__return_true',
+        'callback'            => 'omb_rest_get_reading',
+        'args'                => [
+            'lang' => [
+                'required'          => false,
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
+        ],
+    ]);
+
     register_rest_route('omb-headless/v1', '/acf-sync', [
         'methods'             => 'POST',
         'permission_callback' => function (WP_REST_Request $request) {
@@ -316,6 +328,68 @@ function omb_rest_globals_collect_fields(): array {
 }
 
 /**
+ * Match Polylang language for REST callbacks (Reading, globals, etc.).
+ */
+function omb_rest_switch_polylang_lang(?string $lang): void {
+    if ($lang === null || $lang === '') {
+        return;
+    }
+    if (!function_exists('PLL')) {
+        return;
+    }
+    $pll = PLL();
+    if ($pll && is_callable([$pll, 'switch_language'])) {
+        $pll->switch_language($lang);
+    } elseif ($pll && isset($pll->model) && is_object($pll->model)) {
+        $pll_lang = $pll->model->get_language($lang);
+        if ($pll_lang) {
+            $pll->curlang = $pll_lang;
+        }
+    }
+}
+
+/**
+ * Settings → Reading: static front page slug for the active (switched) language.
+ *
+ * @return array{show_on_front: string, homepage_slug: string|null}
+ */
+function omb_rest_reading_home_payload(): array {
+    $show = (string) get_option('show_on_front');
+    if ($show !== 'page') {
+        return [
+            'show_on_front'   => $show,
+            'homepage_slug'   => null,
+        ];
+    }
+    $page_id = (int) get_option('page_on_front');
+    if ($page_id <= 0) {
+        return [
+            'show_on_front'   => $show,
+            'homepage_slug'   => null,
+        ];
+    }
+    $post = get_post($page_id);
+    if (!$post || $post->post_type !== 'page' || $post->post_status !== 'publish') {
+        return [
+            'show_on_front'   => $show,
+            'homepage_slug'   => null,
+        ];
+    }
+
+    return [
+        'show_on_front' => $show,
+        'homepage_slug' => $post->post_name,
+    ];
+}
+
+function omb_rest_get_reading(WP_REST_Request $request): WP_REST_Response {
+    $lang = (string) $request->get_param('lang');
+    omb_rest_switch_polylang_lang($lang !== '' ? $lang : null);
+
+    return new WP_REST_Response(omb_rest_reading_home_payload(), 200);
+}
+
+/**
  * Expose ACF global option groups for headless frontends when the ACF REST namespace
  * is unavailable (common). Uses get_fields() server-side so image fields include URLs.
  */
@@ -328,19 +402,10 @@ function omb_rest_get_globals(WP_REST_Request $request): WP_REST_Response {
     }
 
     $lang = (string) $request->get_param('lang');
-    if ($lang !== '' && function_exists('PLL')) {
-        $pll = PLL();
-        if ($pll && is_callable([$pll, 'switch_language'])) {
-            $pll->switch_language($lang);
-        } elseif ($pll && isset($pll->model) && is_object($pll->model)) {
-            $pll_lang = $pll->model->get_language($lang);
-            if ($pll_lang) {
-                $pll->curlang = $pll_lang;
-            }
-        }
-    }
+    omb_rest_switch_polylang_lang($lang !== '' ? $lang : null);
 
     $out = omb_rest_globals_collect_fields();
+    $out['reading'] = omb_rest_reading_home_payload();
 
     if (!empty($out['footer']) && is_array($out['footer'])) {
         omb_rest_normalize_footer_image_urls($out['footer']);

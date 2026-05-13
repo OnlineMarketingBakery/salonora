@@ -1,6 +1,6 @@
 import { cache } from "react";
 import { wpFetchOptional } from "./client";
-import { getHomepageSlug } from "./config";
+import { resolveHomepageSlug } from "./config";
 import type { WpPageRaw } from "@/types/wordpress";
 import type { Locale } from "@/lib/i18n/locales";
 import { normalizePageSections } from "@/lib/acf/normalize-page-sections";
@@ -56,6 +56,6 @@ export async function fetchHomePage(
   lang: Locale,
   gs: GlobalSettings
 ): Promise<{ doc: PageDocument; raw: WpPageRaw } | null> {
-  const slug = getHomepageSlug(lang);
+  const slug = resolveHomepageSlug(lang, gs);
   return fetchPageBySlug(lang, slug, gs);
 }

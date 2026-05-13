@@ -70,6 +70,13 @@ export type DefaultSeoSettings = {
   allowIndexingByDefault: boolean;
 };
 
+/** WordPress Settings → Reading (static front page). Filled from OMB `/globals` or `/reading`. */
+export type ReadingSettings = {
+  showOnFront: string;
+  /** Slug of the page set as “Homepage” when `showOnFront` is `page`; otherwise null. */
+  homepageSlug: string | null;
+};
+
 export type GlobalSettings = {
   header: HeaderSettings;
   footer: FooterSettings;
@@ -77,4 +84,5 @@ export type GlobalSettings = {
   site: SiteSettings;
   integrations: IntegrationsSettings;
   defaultSeo: DefaultSeoSettings;
+  reading: ReadingSettings;
 };
