@@ -45,7 +45,7 @@ export function CaseStudyRelatedGrid({
   if (items.length === 0) return null;
   const t = COPY[lang];
   return (
-    <section className="border-t border-[color-mix(in_srgb,var(--palette-brand)_12%,transparent)] bg-[var(--palette-white)] py-14 md:py-20">
+    <section className="border-t border-[color-mix(in_srgb,var(--palette-brand)_12%,transparent)] bg-[var(--palette-white)] py-16 md:py-24">
       <Container>
         <h2
           className={`text-center text-4xl font-semibold leading-[1.1] text-[var(--palette-navy)] md:text-[48px] ${REVEAL_ITEM}`}
@@ -56,9 +56,9 @@ export function CaseStudyRelatedGrid({
           {items.map((card) => (
             <li key={card.id}>
               <article
-                className={`flex h-full flex-col gap-6 overflow-hidden rounded-2xl bg-[#f0f7ff] p-6 transition hover:shadow-md md:p-8 ${REVEAL_ITEM}`}
+                className={`flex h-full flex-col gap-5 overflow-hidden rounded-[14px] bg-[var(--palette-surface)] p-6 transition hover:shadow-md ${REVEAL_ITEM}`}
               >
-                <div className="relative aspect-[369/260] w-full overflow-hidden rounded-xl bg-[var(--palette-white)]">
+                <div className="relative aspect-[369/260] w-full overflow-hidden rounded-[10px] bg-[var(--palette-white)]">
                   {card.image ? (
                     <Image
                       src={card.image.url}
@@ -69,7 +69,7 @@ export function CaseStudyRelatedGrid({
                     />
                   ) : null}
                 </div>
-                <div className="flex min-h-0 flex-1 flex-col gap-5">
+                <div className="flex min-h-0 flex-1 flex-col gap-4">
                   {card.projectLabel ? (
                     <p className="text-base font-medium leading-[1.4] text-[var(--palette-brand)]">{card.projectLabel}</p>
                   ) : null}

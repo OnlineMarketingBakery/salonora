@@ -46,7 +46,7 @@ export function PostTableOfContents({
           const isSub = item.level === 3;
           const sep =
             index > 0
-              ? "mt-0 border-t border-[color-mix(in_srgb,var(--palette-brand)_14%,transparent)] pt-[14px]"
+              ? "mt-0 border-t border-[color-mix(in_srgb,var(--palette-brand)_14%,transparent)] pt-3.5"
               : "";
           const rowIndent = isSub ? "ps-5" : "";
           const liClass = [sep, rowIndent].filter(Boolean).join(" ");

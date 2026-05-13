@@ -24,11 +24,19 @@ export type WpEmbeddedAuthor = {
   url?: string;
   description?: string;
   avatar_urls?: Record<string, string | undefined>;
+  /** Added by omb-headless-core `rest_prepare_user` */
+  omb_author_social?: {
+    facebook?: string;
+    instagram?: string;
+    linkedin?: string;
+  } | null;
 };
 
 export type WpPageRaw = {
   id: number;
   slug: string;
+  /** WordPress user ID of the post author (REST); used when `_embedded.author` is missing. */
+  author?: number;
   /** ISO8601 post/page date from REST */
   date?: string;
   /** Category term IDs (posts) */

@@ -14,23 +14,10 @@ import { formatPostMonthYear } from "@/lib/i18n/format-post-month-year";
 import { caseStudyOutcomeMetricsFromAcf } from "@/lib/wordpress/fetch-case-studies-collection";
 import { fetchRelatedCaseStudyCards } from "@/lib/wordpress/fetch-related-case-studies";
 import { htmlRoughFromCaseStudySections } from "@/lib/case-study-body";
+import { resolveAuthorFromRestEmbed } from "@/lib/wordpress/wp-embedded-author";
 
-function mapEmbeddedAuthor(p: WpCaseStudyRaw): PostAuthorT {
-  const u = p._embedded?.author?.[0];
-  const name = u?.name?.trim() || "";
-  const avatarUrl =
-    u?.avatar_urls?.["96"] || u?.avatar_urls?.["48"] || u?.avatar_urls?.["24"] || null;
-  const rawUrl = typeof u?.url === "string" && u.url.trim() ? u.url.trim() : null;
-  const linkedinUrl = rawUrl && /linkedin\.com/i.test(rawUrl) ? rawUrl : null;
-  const profileUrl = rawUrl && !linkedinUrl ? rawUrl : null;
-  const bio = toPlainText(u?.description || "");
-  return {
-    name,
-    avatarUrl,
-    bio,
-    profileUrl,
-    linkedinUrl,
-  };
+async function resolveCaseStudyAuthor(p: WpCaseStudyRaw, lang: Locale): Promise<PostAuthorT> {
+  return resolveAuthorFromRestEmbed(p._embedded?.author?.[0], p.author, lang);
 }
 
 function mapBreadcrumbParent(acf: Record<string, unknown>): PostBreadcrumbParentT | null {
@@ -60,7 +47,7 @@ function mapShowRelatedCaseStudies(acf: Record<string, unknown>): boolean {
   return asBool(v);
 }
 
-function toDoc(p: WpCaseStudyRaw, gs: GlobalSettings, lang: Locale): CaseStudyDocument {
+function toDoc(p: WpCaseStudyRaw, gs: GlobalSettings, lang: Locale, author: PostAuthorT): CaseStudyDocument {
   const acf = p.acf || {};
   const featured = p._embedded?.["wp:featuredmedia"]?.[0];
   const featuredForm = (acf as { featured_form?: { id?: number } | null }).featured_form;
@@ -91,7 +78,7 @@ function toDoc(p: WpCaseStudyRaw, gs: GlobalSettings, lang: Locale): CaseStudyDo
     publishedAt: p.date || "",
     dateLabel: formatPostMonthYear(p.date, lang),
     readMinutes,
-    author: mapEmbeddedAuthor(p),
+    author,
     showRelatedCaseStudies,
     relatedCaseStudies: [],
     caseStudyArchivePath: getCaseStudyArchiveSlug(lang),
@@ -114,7 +101,8 @@ export async function fetchCaseStudyBySlug(
   );
   if (!list?.[0]) return null;
   const raw = list[0];
-  const doc = toDoc(raw, gs, lang);
+  const author = await resolveCaseStudyAuthor(raw, lang);
+  const doc = toDoc(raw, gs, lang, author);
   if (!doc.showRelatedCaseStudies) {
     return { doc, raw };
   }

@@ -67,7 +67,7 @@
                 "layout_omb_cs_product_shot": {
                     "key": "layout_omb_cs_product_shot",
                     "name": "case_study_product_shot",
-                    "label": "Product screenshot (gradient frame)",
+                    "label": "Product screenshot",
                     "display": "block",
                     "sub_fields": [
                         {
@@ -82,13 +82,39 @@
                             "allow_in_bindings": 1
                         },
                         {
-                            "key": "field_omb_cs_shot_caption",
-                            "label": "Caption (optional)",
-                            "name": "caption",
+                            "key": "field_omb_cs_shot_title",
+                            "label": "Title (optional)",
+                            "name": "title",
                             "type": "text",
+                            "instructions": "Shown above the image, left-aligned (e.g. section headline). Leave empty for image only.",
                             "required": 0,
                             "default_value": "",
                             "allow_in_bindings": 1
+                        },
+                        {
+                            "key": "field_omb_cs_shot_description",
+                            "label": "Description (optional)",
+                            "name": "description",
+                            "type": "wysiwyg",
+                            "instructions": "Body copy below the screenshot (e.g. caption or supporting text).",
+                            "required": 0,
+                            "tabs": "visual",
+                            "toolbar": "basic",
+                            "media_upload": 0,
+                            "default_value": "",
+                            "allow_in_bindings": 1
+                        },
+                        {
+                            "key": "field_omb_cs_shot_divider",
+                            "label": "Show divider under block",
+                            "name": "show_divider_after",
+                            "type": "true_false",
+                            "instructions": "Matches Figma hairline between story sections (same as Chapter).",
+                            "default_value": 1,
+                            "ui": 1,
+                            "ui_on_text": "Yes",
+                            "ui_off_text": "No",
+                            "allow_in_bindings": 0
                         }
                     ],
                     "min": "",

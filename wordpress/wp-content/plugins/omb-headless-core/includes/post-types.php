@@ -65,7 +65,8 @@ function omb_register_post_types(): void {
 		'menu_icon'          => 'dashicons-portfolio',
 		'show_in_rest'       => true,
 		'show_in_nav_menus'  => true,
-		'supports'           => ['title', 'editor', 'excerpt', 'thumbnail', 'revisions'],
+		/** `author` enables the block editor Author control (needed for “Over de auteur” on the headless case study page). */
+		'supports'           => ['title', 'editor', 'excerpt', 'thumbnail', 'revisions', 'author'],
 		'rewrite'            => ['slug' => 'case-studies', 'with_front' => false],
 		'menu_position'      => 23,
 	]);

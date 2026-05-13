@@ -789,11 +789,16 @@ export type CaseStudyChapterSectionT = CoreSection & {
   tocAnchorId: string;
 };
 
-/** Product / UI screenshot on brand gradient pad (Figma “Hoe Salonora … helpt”). */
+/** Product / UI screenshot: optional title above; optional WYSIWYG description below; optional hairline under block. */
 export type CaseStudyProductShotSectionT = CoreSection & {
   type: "case_study_product_shot";
   image: WpImage | null;
-  caption: string;
+  /** Optional headline above the shot (ACF `title`; legacy `caption` merged in normalize). */
+  title: string;
+  /** Optional body under the image (ACF `description`). */
+  description: string;
+  /** Hairline rule under the block (ACF `show_divider_after`; same as Chapter). */
+  showDivider: boolean;
 };
 
 /** Client quote + optional video (Figma “Klantenrecensie”). */
@@ -806,6 +811,8 @@ export type CaseStudyClientReviewSectionT = CoreSection & {
   personName: string;
   personRole: string;
   personPhoto: WpImage | null;
+  /** Stable anchor for Inhoudsopgave (from ACF row `_key`). */
+  tocAnchorId: string;
 };
 
 /** Mid-page conversion band (Figma navy rounded CTA). */

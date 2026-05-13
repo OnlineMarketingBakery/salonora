@@ -6,7 +6,7 @@ export function CaseStudyChapterSection({ section, lang }: { section: CaseStudyC
   void lang;
   const h = section.heading.trim();
   return (
-    <section className={section.showDivider ? "border-b border-[color-mix(in_srgb,var(--palette-navy)_12%,transparent)] pb-[34px]" : ""}>
+    <section className={section.showDivider ? "border-b border-[color-mix(in_srgb,var(--palette-navy)_12%,transparent)] pb-8" : ""}>
       {h ? (
         <h2
           id={section.tocAnchorId}

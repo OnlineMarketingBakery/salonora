@@ -42,10 +42,15 @@ export function CaseStudyClientReviewSection({
   const poster = section.videoPoster?.url;
 
   return (
-    <section className="border-b border-[color-mix(in_srgb,var(--palette-navy)_12%,transparent)] pb-[34px]">
-      <h2 className="text-[34px] font-semibold leading-[1.1] text-[var(--palette-navy)]">{heading}</h2>
+    <section className="border-b border-[color-mix(in_srgb,var(--palette-navy)_12%,transparent)] pb-8">
+      <h2
+        id={section.tocAnchorId}
+        className="scroll-mt-28 text-[34px] font-semibold leading-[1.1] text-[var(--palette-navy)]"
+      >
+        {heading}
+      </h2>
       {hasVideo ? (
-        <div className="relative mt-6 aspect-video w-full overflow-hidden rounded-[14px] bg-[color-mix(in_srgb,var(--palette-navy)_18%,transparent)]">
+        <div className="relative mt-8 aspect-video w-full overflow-hidden rounded-[14px] bg-[color-mix(in_srgb,var(--palette-navy)_18%,transparent)]">
           {poster ? (
             <Image src={poster} alt="" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 864px" />
           ) : null}
@@ -80,7 +85,7 @@ export function CaseStudyClientReviewSection({
               className="size-[46px] shrink-0 rounded-full object-cover"
             />
           ) : null}
-          <div className="min-w-0">
+          <div className="flex min-w-0 flex-col gap-2.5">
             {section.personName ? (
               <p className="text-base font-semibold leading-[1.6] text-[var(--palette-navy)]">{section.personName}</p>
             ) : null}

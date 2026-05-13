@@ -11,6 +11,7 @@ This Next.js app expects a headless WordPress site with the OMB ACF field groups
 - Custom post types: `service`, `testimonial`, `case_study` (exposed in REST; register via `omb-headless-core` and flush permalinks after deploy). **Do not** register duplicate slugs (`service`, `testimonial`, `case_study`) with another plugin (e.g. CPT UI); that will conflict with the plugin.
 - ACF `show_in_rest` on options and field groups where needed
 - Option pages filled: header, footer, site, contact & social, integrations, default SEO
+- **Author card (blog + case study):** REST user objects include **`omb_author_social`** (`facebook`, `instagram`, `linkedin`), built from the first non-empty user meta among common keys: **`omb_author_facebook`**, **`facebook_profile_url`**, **`facebook_url`**, **`facebook`** (same pattern for Instagram / LinkedIn with `omb_author_instagram`, `*_profile_url`, `*_url`, short name). WordPress core **Website** (`url`) still maps to LinkedIn when it contains `linkedin.com`, otherwise to the **website** (globe) icon—unless a dedicated LinkedIn meta value is set (then meta wins for the LinkedIn icon).
 
 ## Environment on the Next app
 

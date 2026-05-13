@@ -39,6 +39,10 @@ export type PostAuthorT = {
   /** Author website or primary URL from WordPress */
   profileUrl: string | null;
   linkedinUrl: string | null;
+  /** Optional; user meta `omb_author_facebook` (REST `omb_author_social`) */
+  facebookUrl: string | null;
+  /** Optional; user meta `omb_author_instagram` */
+  instagramUrl: string | null;
 };
 
 export type PostBreadcrumbParentT = {

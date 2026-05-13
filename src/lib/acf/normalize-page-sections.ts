@@ -1153,7 +1153,10 @@ function mapKnownPageSectionLayout(
         ...base,
         type: "case_study_product_shot",
         image: asImage(row.image),
-        caption: asString(row.caption),
+        title: asString(row.title || row.caption),
+        description: asHtml(row.description),
+        showDivider:
+          row.show_divider_after === undefined || row.show_divider_after === null ? true : asBool(row.show_divider_after),
       };
     case "case_study_client_review":
       return {
@@ -1166,6 +1169,7 @@ function mapKnownPageSectionLayout(
         personName: asString(row.person_name),
         personRole: asString(row.person_role),
         personPhoto: asImage(row.person_photo),
+        tocAnchorId: caseStudyChapterAnchorFromAcfKey(base._key),
       };
     case "case_study_conversion_cta":
       return {

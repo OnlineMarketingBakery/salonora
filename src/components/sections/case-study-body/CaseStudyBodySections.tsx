@@ -11,7 +11,7 @@ export function CaseStudyBodySections({ sections, lang }: { sections: AnySection
   const rows = sections.filter(isCaseStudyMainBodySection);
   if (rows.length === 0) return null;
   return (
-    <div className="mt-[34px] flex flex-col gap-[34px] lg:mt-[34px]">
+    <div className="mt-8 flex flex-col gap-8">
       {rows.map((s) => {
         switch (s.type) {
           case "case_study_chapter":

@@ -18,6 +18,7 @@ define('OMB_HEADLESS_CORE_URL', plugin_dir_url(__FILE__));
 require_once OMB_HEADLESS_CORE_PATH . 'includes/post-types.php';
 require_once OMB_HEADLESS_CORE_PATH . 'includes/taxonomies.php';
 require_once OMB_HEADLESS_CORE_PATH . 'includes/options-pages.php';
+require_once OMB_HEADLESS_CORE_PATH . 'includes/languages.php';
 require_once OMB_HEADLESS_CORE_PATH . 'includes/polylang.php';
 require_once OMB_HEADLESS_CORE_PATH . 'includes/rest.php';
 require_once OMB_HEADLESS_CORE_PATH . 'includes/contact-form-7.php';
