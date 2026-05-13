@@ -1,6 +1,4 @@
-import { getImageUrl } from "@/lib/utils/media";
 import { getWordpressApiUrl, getWordpressAuthorizationHeader } from "./config";
-import { wpFetchOptional } from "./client";
 import type { FooterSettings, GlobalSettings } from "@/types/globals";
 import { asBool, asImage, asLink, asString } from "@/lib/acf/field-mappers";
 import { logger } from "@/lib/utils/logger";
@@ -131,9 +129,6 @@ function fromFooter(o: Record<string, unknown> | null) {
       footerTitle: "",
       footerText: "",
       footerLogo: null,
-      footerBackgroundImage: null,
-      footerBackgroundColor: "",
-      footerBackgroundGradient: "",
       footerCopyright: "",
       showFooterLanguageSwitcher: true,
       footerCtaFootnote: "",
@@ -145,14 +140,6 @@ function fromFooter(o: Record<string, unknown> | null) {
     footerTitle: asString(o.footer_title),
     footerText: asString(o.footer_text),
     footerLogo: asImage(o.footer_logo),
-    /** Same lookup pattern as `footer_logo`: direct keys first, then camel/snake picks + legacy field. */
-    footerBackgroundImage:
-      asImage(o.footer_background_image) ??
-      asImage(o.footerBackgroundImage) ??
-      asImage(acfPick(o, "footer_background_image", "footerBackgroundImage")) ??
-      asImage(acfPick(o, "footer_top_shape_image", "footerTopShapeImage")),
-    footerBackgroundColor: asString(acfPick(o, "footer_background_color", "footerBackgroundColor")),
-    footerBackgroundGradient: asString(acfPick(o, "footer_background_gradient", "footerBackgroundGradient")),
     footerCopyright: asString(o.footer_copyright),
     showFooterLanguageSwitcher: asBool(o.show_footer_language_switcher),
     footerCtaFootnote: asString(acfPick(o, "footer_cta_text", "footerCtaText")),
@@ -178,80 +165,12 @@ function mergeFooterCtaMigrations(
   };
 }
 
-/** ACF REST often returns `{ ID }` / `{ id }` with no `url`; resolve via `wp/v2/media`. */
-function attachmentLikeId(raw: unknown): number | null {
-  if (raw == null) return null;
-  if (typeof raw === "number" && raw > 0) return Math.floor(raw);
-  if (typeof raw === "string") {
-    const t = raw.trim();
-    if (/^\d+$/.test(t)) return parseInt(t, 10);
-  }
-  if (typeof raw !== "object") return null;
-  const o = raw as Record<string, unknown>;
-  const idKeys = ["ID", "id", "attachment_id", "attachmentId"] as const;
-  for (const k of idKeys) {
-    const v = o[k];
-    if (typeof v === "number" && v > 0) return Math.floor(v);
-    if (typeof v === "string" && /^\d+$/.test(v.trim())) return parseInt(v.trim(), 10);
-  }
-  return null;
-}
-
-/** When ACF stores only an attachment ID, resolve URL via WP REST. */
-/**
- * OMB `/globals` can omit newer `footer_*` keys until the plugin allowlist is deployed.
- * When the footer background URL is still missing, merge direct ACF options (same path as the non-OMB fallback).
- */
-async function fetchFooterViaOmbWithAcfFallback(
-  lang: Locale,
+function footerFromOmbPayload(
   ombFooter: Record<string, unknown> | null,
   siteUnwrapped: Record<string, unknown> | null
-): Promise<FooterSettings> {
-  let raw = unwrapAcfOptionsPayload(ombFooter) as Record<string, unknown> | null;
-  let merged = mergeFooterCtaMigrations(fromFooter(raw), siteUnwrapped);
-  let footer = await resolveFooterBackgroundFromAttachmentId(lang, raw, merged);
-
-  if (!getImageUrl(footer.footerBackgroundImage)?.trim()) {
-    const direct = await fetchAcfOptions("omb-footer-settings", lang);
-    const extra = unwrapAcfOptionsPayload(direct);
-    if (extra && Object.keys(extra).length > 0) {
-      raw = { ...(raw ?? {}), ...extra };
-      merged = mergeFooterCtaMigrations(fromFooter(raw), siteUnwrapped);
-      footer = await resolveFooterBackgroundFromAttachmentId(lang, raw, merged);
-    }
-  }
-  return footer;
-}
-
-async function resolveFooterBackgroundFromAttachmentId(
-  lang: Locale,
-  raw: Record<string, unknown> | null,
-  footer: FooterSettings
-): Promise<FooterSettings> {
-  const bg = footer.footerBackgroundImage;
-  if (getImageUrl(bg)?.trim()) return footer;
-
-  let id: number | null =
-    bg && typeof bg.id === "number" && bg.id > 0 ? Math.floor(bg.id) : null;
-
-  if (!id && raw) {
-    const candidates = [
-      acfPick(raw, "footer_background_image", "footerBackgroundImage"),
-      acfPick(raw, "footer_top_shape_image", "footerTopShapeImage"),
-    ];
-    for (const v of candidates) {
-      id = attachmentLikeId(v);
-      if (id) break;
-    }
-  }
-  if (!id) return footer;
-  const media = await wpFetchOptional<Record<string, unknown>>(`/wp/v2/media/${id}`, {
-    lang,
-    revalidate: 60,
-  });
-  const img = asImage(media);
-  if (!img) return footer;
-  return { ...footer, footerBackgroundImage: img };
+): FooterSettings {
+  const raw = unwrapAcfOptionsPayload(ombFooter) as Record<string, unknown> | null;
+  return mergeFooterCtaMigrations(fromFooter(raw), siteUnwrapped);
 }
 
 function fromContact(o: Record<string, unknown> | null) {
@@ -344,7 +263,7 @@ export async function fetchGlobals(lang: Locale): Promise<GlobalSettings> {
   const omb = await fetchGlobalsViaOmbRest(lang);
   if (omb != null) {
     const siteUnwrapped = unwrapAcfOptionsPayload(omb.site ?? null);
-    const footer = await fetchFooterViaOmbWithAcfFallback(lang, omb.footer ?? null, siteUnwrapped);
+    const footer = footerFromOmbPayload(omb.footer ?? null, siteUnwrapped);
     return {
       header: fromHeader(unwrapAcfOptionsPayload(omb.header ?? null)),
       footer,
@@ -366,8 +285,7 @@ export async function fetchGlobals(lang: Locale): Promise<GlobalSettings> {
 
   const siteUnwrapped = unwrapAcfOptionsPayload(siteRaw);
   const footerRawFlat = unwrapAcfOptionsPayload(footerRaw) as Record<string, unknown> | null;
-  const footerMerged = mergeFooterCtaMigrations(fromFooter(footerRawFlat), siteUnwrapped);
-  const footer = await resolveFooterBackgroundFromAttachmentId(lang, footerRawFlat, footerMerged);
+  const footer = mergeFooterCtaMigrations(fromFooter(footerRawFlat), siteUnwrapped);
   return {
     header: fromHeader(unwrapAcfOptionsPayload(headerRaw)),
     footer,
