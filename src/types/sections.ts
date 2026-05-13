@@ -670,6 +670,22 @@ export type PricingDualCardsSectionT = CoreSection & {
   cards?: PricingDualCardsCardItemT[];
 };
 
+/** Figma **1306:29** (“Frame 574”) — two tall rounded cards: navy “problem” vs brand-blue “solution”, TR grid wash, bottom-right cutout portraits; solution card adds checklist rows. */
+export type ProblemSolutionListItemT = {
+  text: string;
+};
+
+export type ProblemSolutionSectionT = CoreSection & {
+  type: "problem_solution";
+  problem_title: string;
+  problem_text: string;
+  problem_image: WpImage | null;
+  solution_title: string;
+  solution_text: string;
+  solution_list: ProblemSolutionListItemT[];
+  solution_image: WpImage | null;
+};
+
 /** Figma **597:2720** (“Frame 2147228539”) — centered headline + two rounded panels (brand gradient vs navy + overlay); primary path CTA + alternate path with demo + download. */
 export type TalkDualCardsSectionT = CoreSection & {
   type: "talk_dual_cards";
@@ -797,6 +813,7 @@ export type AnySectionT =
   | CtaSectionT
   | PricingCtaSectionT
   | PricingDualCardsSectionT
+  | ProblemSolutionSectionT
   | TalkDualCardsSectionT
   | RichTextSectionT
   | FaqSectionT

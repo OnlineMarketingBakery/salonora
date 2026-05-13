@@ -47,6 +47,7 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   pricing_cta: true,
   pricing_dual_cards: true,
   pricing_packages: true,
+  problem_solution: true,
   process_steps: true,
   rich_text: true,
   salon_value_proposition: true,
@@ -996,6 +997,22 @@ function mapKnownPageSectionLayout(
               };
             })
           : [],
+      };
+    case "problem_solution":
+      return {
+        ...base,
+        type: "problem_solution",
+        problem_title: asString(row.problem_title),
+        problem_text: asHtml(row.problem_text),
+        problem_image: asImage(row.problem_image),
+        solution_title: asString(row.solution_title),
+        solution_text: asHtml(row.solution_text),
+        solution_list: Array.isArray(row.solution_list)
+          ? (row.solution_list as { item?: unknown }[])
+              .map((r) => ({ text: asString(r.item) }))
+              .filter((r) => r.text.trim() !== "")
+          : [],
+        solution_image: asImage(row.solution_image),
       };
     case "talk_dual_cards":
       return {

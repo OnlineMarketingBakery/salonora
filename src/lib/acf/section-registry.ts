@@ -91,6 +91,14 @@ const PricingDualCardsSectionLazy = dynamic(
   { ssr: true }
 );
 
+const ProblemSolutionSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/problem-solution").then((mod) => ({
+      default: mod.ProblemSolutionSection,
+    })),
+  { ssr: true }
+);
+
 const TalkDualCardsSectionLazy = dynamic(
   () =>
     import("@/components/sections/talk-dual-cards").then((mod) => ({
@@ -223,6 +231,9 @@ export const sectionRegistry = {
   ),
   pricing_dual_cards: asSection(
     PricingDualCardsSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
+  problem_solution: asSection(
+    ProblemSolutionSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
   talk_dual_cards: asSection(
     TalkDualCardsSectionLazy as (p: { section: never; lang: Locale }) => ReactNode

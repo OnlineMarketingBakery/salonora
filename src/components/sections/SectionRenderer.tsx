@@ -105,6 +105,10 @@ export function SectionRenderer({ sections, lang }: { sections: AnySectionT[]; l
             return (
               <sectionRegistry.pricing_dual_cards key={section.id} section={section} lang={lang} />
             );
+          case "problem_solution":
+            return (
+              <sectionRegistry.problem_solution key={section.id} section={section} lang={lang} />
+            );
           case "talk_dual_cards":
             return (
               <sectionRegistry.talk_dual_cards key={section.id} section={section} lang={lang} />
