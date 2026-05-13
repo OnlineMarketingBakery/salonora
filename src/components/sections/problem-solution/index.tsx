@@ -6,10 +6,10 @@ import type { Locale } from "@/lib/i18n/locales";
 import type { ProblemSolutionSectionT } from "@/types/sections";
 import type { CSSProperties } from "react";
 
-/** Figma **1306:29** left card — deep navy stack + cool TR highlight (tokens only). */
+/** Figma **1306:29** left card — deep navy stack + soft TR highlight. */
 const PROBLEM_CARD_BG: CSSProperties = {
   backgroundImage: [
-    "radial-gradient(ellipse 95% 85% at 100% 0%, color-mix(in srgb, var(--palette-brand) 22%, transparent) 0%, transparent 52%)",
+    "radial-gradient(ellipse 95% 85% at 100% 0%, color-mix(in srgb, var(--palette-brand) 16%, transparent) 0%, transparent 52%)",
     "linear-gradient(180deg, var(--palette-navy) 0%, var(--palette-navy-deep) 100%)",
   ].join(", "),
 };
@@ -17,7 +17,7 @@ const PROBLEM_CARD_BG: CSSProperties = {
 /** Figma **1306:29** right card — brand blues + soft TR highlight. */
 const SOLUTION_CARD_BG: CSSProperties = {
   backgroundImage: [
-    "radial-gradient(ellipse 95% 85% at 100% 0%, color-mix(in srgb, var(--palette-white) 18%, transparent) 0%, transparent 50%)",
+    "radial-gradient(ellipse 95% 85% at 100% 0%, color-mix(in srgb, var(--palette-white) 14%, transparent) 0%, transparent 50%)",
     "linear-gradient(152deg, var(--palette-brand-soft) 0%, var(--palette-brand) 40%, var(--palette-brand-strong) 100%)",
   ].join(", "),
 };
@@ -25,20 +25,49 @@ const SOLUTION_CARD_BG: CSSProperties = {
 const CARD_PROSE =
   "text-left max-w-none [&_p:not(:first-child)]:mt-3.5 !prose-p:mb-0 !prose-p:mt-0 !prose-p:text-[14px] !prose-p:leading-[1.6] !prose-p:text-[var(--palette-white)] !prose-strong:font-semibold !prose-strong:text-[var(--palette-white)] !prose-li:text-[var(--palette-white)] !prose-a:text-[var(--palette-white)] prose-a:underline [&_*]:text-[var(--palette-white)]";
 
+/** Invisible float: `shape-outside` nudges only the last lines around the bottom-right portrait (paired with absolute `Media`). */
+function BottomRightWrapRail({
+  wPx,
+  hPx,
+  shapeOutside,
+  pullUpClass,
+}: {
+  wPx: number;
+  hPx: number;
+  shapeOutside: string;
+  pullUpClass: string;
+}) {
+  return (
+    <div
+      aria-hidden
+      className={`invisible float-right clear-both hidden shrink-0 lg:block ${pullUpClass}`}
+      style={{
+        width: wPx,
+        height: hPx,
+        shapeOutside,
+        shapeMargin: "0.625rem",
+      }}
+    />
+  );
+}
+
+/** `public/grid.svg` — clipped to the **top half** of the card only. */
 function CardGridWash() {
   return (
     <div
-      className="pointer-events-none absolute right-0 top-0 z-[1] h-[46%] w-[42%] opacity-[0.14]"
-      style={{
-        backgroundImage: [
-          "repeating-linear-gradient(90deg, transparent 0px, transparent 10px, var(--palette-white) 10px, var(--palette-white) 11px)",
-          "repeating-linear-gradient(0deg, transparent 0px, transparent 10px, var(--palette-white) 10px, var(--palette-white) 11px)",
-        ].join(","),
-        maskImage: "linear-gradient(135deg, black 0%, transparent 72%)",
-        WebkitMaskImage: "linear-gradient(135deg, black 0%, transparent 72%)",
-      }}
+      className="pointer-events-none absolute left-0 top-0 z-0 h-1/2 w-full overflow-hidden rounded-t-[24px]"
       aria-hidden
-    />
+    >
+      <div
+        className="absolute right-0 top-0 h-full w-[min(100%,52%)] opacity-[0.38]"
+        style={{
+          backgroundImage: "url(/grid.svg)",
+          backgroundPosition: "100% 0",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "auto min(100%, 320px)",
+        }}
+      />
+    </div>
   );
 }
 
@@ -70,6 +99,10 @@ function SolutionCheckRow({ text }: { text: string }) {
   );
 }
 
+/** Figma **1306:29** — portrait box (logical px). */
+const PROBLEM_FIGURE = { w: 235, h: 353 };
+const SOLUTION_FIGURE = { w: 288, h: 363 };
+
 export function ProblemSolutionSection({
   section,
   lang,
@@ -87,26 +120,39 @@ export function ProblemSolutionSection({
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-6">
           <article className={`${REVEAL_ITEM} ${cardShell}`} style={PROBLEM_CARD_BG}>
             <CardGridWash />
-            <div className="relative z-[2] flex min-h-0 w-full max-w-[30.25rem] flex-col gap-[22px] pb-[min(42vw,220px)] lg:pb-8">
+            <div className="relative z-[1] flex min-h-0 w-full min-w-0 flex-1 flex-col gap-[22px] self-stretch [overflow-wrap:anywhere]">
               {section.problem_title ? (
-                <h2 className="font-sans text-[clamp(1.5rem,3.5vw,2.125rem)] font-semibold leading-[0.98] tracking-[-0.02em] text-[var(--palette-white)]">
+                <h2 className="w-full font-sans text-[clamp(1.5rem,3.5vw,2.125rem)] font-semibold leading-[0.98] tracking-[-0.02em] text-[var(--palette-white)]">
                   {section.problem_title}
                 </h2>
               ) : null}
-              {section.problem_text ? (
-                <RichText html={section.problem_text} className={CARD_PROSE} />
-              ) : null}
+              <div className="relative min-h-0 w-full min-w-0 flex-1 self-stretch lg:block lg:flow-root lg:min-h-0">
+                {section.problem_text ? (
+                  <RichText
+                    html={section.problem_text}
+                    className={`relative z-[2] max-w-[30.1875rem] lg:max-w-none ${CARD_PROSE}`}
+                  />
+                ) : null}
+                {section.problem_image ? (
+                  <BottomRightWrapRail
+                    wPx={PROBLEM_FIGURE.w + 12}
+                    hPx={PROBLEM_FIGURE.h}
+                    shapeOutside="ellipse(78% 68% at 88% 100%)"
+                    pullUpClass="-mt-[min(300px,42vw)]"
+                  />
+                ) : null}
+              </div>
             </div>
             {section.problem_image ? (
               <div
-                className="pointer-events-none absolute bottom-0 right-0 z-[1] flex max-h-[min(52%,353px)] w-[min(48%,280px)] max-w-[90vw] items-end justify-end sm:w-[min(42%,320px)] lg:max-h-[353px] lg:w-[235px]"
+                className="pointer-events-none relative z-[1] mt-8 flex w-full justify-center lg:absolute lg:bottom-0 lg:right-0 lg:mt-0 lg:flex lg:h-[353px] lg:w-[235px] lg:items-end lg:justify-end"
                 aria-hidden
               >
                 <Media
                   image={section.problem_image}
                   width={470}
                   height={706}
-                  className="h-auto w-full max-w-none object-contain object-bottom"
+                  className="h-auto max-h-[min(340px,56vw)] w-full max-w-[235px] object-contain object-bottom lg:max-h-full lg:max-w-none"
                   sizes="(max-width: 1024px) 45vw, 235px"
                   preferLargestSource
                 />
@@ -116,33 +162,46 @@ export function ProblemSolutionSection({
 
           <article className={`${REVEAL_ITEM} ${cardShell}`} style={SOLUTION_CARD_BG}>
             <CardGridWash />
-            <div className="relative z-[2] flex min-h-0 w-full max-w-[33.5rem] flex-col gap-[22px] pb-[min(48vw,240px)] lg:max-w-none lg:pb-10">
+            <div className="relative z-[1] flex min-h-0 w-full min-w-0 flex-1 flex-col gap-[22px] self-stretch [overflow-wrap:anywhere]">
               {section.solution_title ? (
-                <h2 className="font-sans text-[clamp(1.5rem,3.5vw,2.125rem)] font-semibold leading-[0.98] tracking-[-0.02em] text-[var(--palette-white)]">
+                <h2 className="w-full font-sans text-[clamp(1.5rem,3.5vw,2.125rem)] font-semibold leading-[0.98] tracking-[-0.02em] text-[var(--palette-white)]">
                   {section.solution_title}
                 </h2>
               ) : null}
-              {section.solution_text ? (
-                <RichText html={section.solution_text} className={CARD_PROSE} />
-              ) : null}
-              {section.solution_list.length > 0 ? (
-                <ul className="mt-1 flex max-w-[22.3125rem] flex-col gap-3">
-                  {section.solution_list.map((row, i) => (
-                    <SolutionCheckRow key={`${row.text}-${i}`} text={row.text} />
-                  ))}
-                </ul>
-              ) : null}
+              <div className="relative min-h-0 w-full min-w-0 flex-1 self-stretch lg:block lg:flow-root lg:min-h-0">
+                {section.solution_text ? (
+                  <RichText
+                    html={section.solution_text}
+                    className={`relative z-[2] max-w-[33.5rem] lg:max-w-none ${CARD_PROSE}`}
+                  />
+                ) : null}
+                {section.solution_list.length > 0 ? (
+                  <ul className="relative z-[2] mt-1 flex max-w-[22.3125rem] flex-col gap-3 lg:max-w-none">
+                    {section.solution_list.map((row, i) => (
+                      <SolutionCheckRow key={`${row.text}-${i}`} text={row.text} />
+                    ))}
+                  </ul>
+                ) : null}
+                {section.solution_image ? (
+                  <BottomRightWrapRail
+                    wPx={SOLUTION_FIGURE.w + 14}
+                    hPx={SOLUTION_FIGURE.h}
+                    shapeOutside="ellipse(80% 70% at 86% 100%)"
+                    pullUpClass="-mt-[min(320px,44vw)]"
+                  />
+                ) : null}
+              </div>
             </div>
             {section.solution_image ? (
               <div
-                className="pointer-events-none absolute bottom-0 right-0 z-[1] flex max-h-[min(54%,363px)] w-[min(52%,300px)] max-w-[92vw] items-end justify-end sm:w-[min(46%,340px)] lg:max-h-[363px] lg:w-[288px]"
+                className="pointer-events-none relative z-[1] mt-8 flex w-full justify-center lg:absolute lg:bottom-0 lg:right-0 lg:mt-0 lg:flex lg:h-[363px] lg:w-[288px] lg:items-end lg:justify-end"
                 aria-hidden
               >
                 <Media
                   image={section.solution_image}
                   width={576}
                   height={726}
-                  className="h-auto w-full max-w-none object-contain object-bottom"
+                  className="h-auto max-h-[min(360px,58vw)] w-full max-w-[288px] object-contain object-bottom lg:max-h-full lg:max-w-none"
                   sizes="(max-width: 1024px) 50vw, 288px"
                   preferLargestSource
                 />

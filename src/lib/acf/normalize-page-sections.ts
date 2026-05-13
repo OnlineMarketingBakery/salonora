@@ -17,6 +17,7 @@ type RawRow = Record<string, unknown> & { acf_fc_layout: string };
 /** Known page flexible-layout names → normalized section types (must stay aligned with `mapKnownPageSectionLayout`). */
 const PAGE_SECTION_ACF_LAYOUTS = {
   announcement_bar: true,
+  audience_promo_card: true,
   benefits_grid: true,
   cards: true,
   combined_strengths: true,
@@ -39,10 +40,12 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   hero: true,
   how_it_works_steps: true,
   image_intro_split: true,
+  is_this_for_you: true,
   latest_posts: true,
   blog_post_overview: true,
   case_study_overview: true,
   origin_story_split: true,
+  our_promises: true,
   partner_intro_split: true,
   pricing_cta: true,
   pricing_dual_cards: true,
@@ -56,6 +59,7 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   case_study_conversion_cta: true,
   salon_value_proposition: true,
   scrolling_ticker: true,
+  steps_with_media: true,
   story_split: true,
   talk_dual_cards: true,
   team_behind_salonora: true,
@@ -392,6 +396,51 @@ function mapKnownPageSectionLayout(
           : [],
         ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
       };
+    case "our_promises":
+      return {
+        ...base,
+        type: "our_promises",
+        title: asString(row.title),
+        items: Array.isArray(row.items)
+          ? (
+              row.items as {
+                icon?: unknown;
+                title?: unknown;
+                description?: unknown;
+                icon_accent?: unknown;
+              }[]
+            ).map((item) => {
+              const a = asString(item.icon_accent);
+              const icon_accent = a === "rose" ? ("rose" as const) : ("brand" as const);
+              return {
+                icon: asImage(item.icon),
+                title: asString(item.title),
+                description: asHtml(item.description),
+                icon_accent,
+              };
+            })
+          : [],
+      };
+    case "is_this_for_you": {
+      const listDefaultIcon = asImage(row.list_default_icon);
+      return {
+        ...base,
+        type: "is_this_for_you",
+        title: asString(row.title),
+        subtitle: asString(row.subtitle),
+        list_default_icon: listDefaultIcon,
+        checklist: Array.isArray(row.checklist)
+          ? (row.checklist as { item?: unknown; icon?: unknown }[]).map((r) => ({
+              text: asString(r.item),
+              icon: asImage(r.icon) ?? listDefaultIcon,
+            }))
+          : [],
+        footer_note: asHtml(row.footer_note),
+        button: asLink(row.button),
+        button_trailing_icon: asImage(row.button_trailing_icon),
+        image: asImage(row.image),
+      };
+    }
     case "features_checklist": {
       const listDefaultIcon = asImage(row.list_default_icon);
       return {
@@ -445,6 +494,22 @@ function mapKnownPageSectionLayout(
         button_trailing_icon: asImage(row.button_trailing_icon),
       };
     }
+    case "audience_promo_card":
+      return {
+        ...base,
+        type: "audience_promo_card",
+        badge_text: asString(row.badge_text),
+        title: asString(row.title),
+        description: asHtml(row.description),
+        features: Array.isArray(row.features)
+          ? (row.features as { item?: unknown }[]).map((r) => ({
+              text: asString(r.item),
+            }))
+          : [],
+        image: asImage(row.image),
+        button: asLink(row.button),
+        button_trailing_icon: asImage(row.button_trailing_icon),
+      };
     case "guarantees_promise_split":
       return (() => {
         const listDefaultIcon = asImage(row.list_default_icon);
@@ -720,6 +785,28 @@ function mapKnownPageSectionLayout(
               text: asHtml(x.text),
             }))
           : [],
+      };
+    case "steps_with_media":
+      return {
+        ...base,
+        type: "steps_with_media",
+        title: asString(row.title),
+        steps: Array.isArray(row.steps)
+          ? (row.steps as { number?: unknown; icon_color?: unknown; title?: unknown; description?: unknown }[]).map(
+              (s) => {
+                const rawColor = asString(s.icon_color);
+                const icon_color = rawColor === "pink" ? ("pink" as const) : ("blue" as const);
+                return {
+                  number: asString(s.number),
+                  icon_color,
+                  title: asString(s.title),
+                  description: asHtml(s.description),
+                };
+              },
+            )
+          : [],
+        cta_link: asLink(row.cta_link),
+        browser_image: asImage(row.browser_image),
       };
     case "feature_highlight_grid":
       return {

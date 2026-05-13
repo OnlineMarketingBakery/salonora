@@ -63,6 +63,14 @@ const OriginStorySplitSectionLazy = dynamic(
   { ssr: true }
 );
 
+const OurPromisesSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/our-promises").then((mod) => ({
+      default: mod.OurPromisesSection,
+    })),
+  { ssr: true }
+);
+
 const PartnerIntroSplitSectionLazy = dynamic(
   () =>
     import("@/components/sections/partner-intro-split").then((mod) => ({
@@ -151,6 +159,14 @@ const WhoWeAreForSectionLazy = dynamic(
   { ssr: true }
 );
 
+const IsThisForYouSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/is-this-for-you").then((mod) => ({
+      default: mod.IsThisForYouSection,
+    })),
+  { ssr: true }
+);
+
 const MediaTextChecklistSectionLazy = dynamic(
   () =>
     import("@/components/sections/media-text-checklist").then((mod) => ({
@@ -163,6 +179,22 @@ const FeaturesChecklistSectionLazy = dynamic(
   () =>
     import("@/components/sections/features-checklist").then((mod) => ({
       default: mod.FeaturesChecklistSection,
+    })),
+  { ssr: true }
+);
+
+const AudiencePromoCardSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/audience-promo-card").then((mod) => ({
+      default: mod.AudiencePromoCardSection,
+    })),
+  { ssr: true }
+);
+
+const StepsWithMediaSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/steps-with-media").then((mod) => ({
+      default: mod.StepsWithMediaSection,
     })),
   { ssr: true }
 );
@@ -207,6 +239,9 @@ export const sectionRegistry = {
   ),
   origin_story_split: asSection(
     OriginStorySplitSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
+  our_promises: asSection(
+    OurPromisesSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
   partner_intro_split: asSection(
     PartnerIntroSplitSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
@@ -261,11 +296,20 @@ export const sectionRegistry = {
   who_we_are_for: asSection(
     WhoWeAreForSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
+  is_this_for_you: asSection(
+    IsThisForYouSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
   media_text_checklist: asSection(
     MediaTextChecklistSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
   features_checklist: asSection(
     FeaturesChecklistSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
+  audience_promo_card: asSection(
+    AudiencePromoCardSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
+  steps_with_media: asSection(
+    StepsWithMediaSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
 } satisfies SectionRegistryShape;
 
