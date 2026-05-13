@@ -1,4 +1,4 @@
-import type { AnySectionT, BlogPostOverviewCardT } from "./sections";
+import type { AnySectionT, BlogPostOverviewCardT, CaseStudyOverviewCardT, CaseStudyOverviewMetricT } from "./sections";
 import type { SeoPayload } from "./seo";
 
 export type PageDocument = {
@@ -82,12 +82,30 @@ export type CaseStudyDocument = {
   id: number;
   slug: string;
   title: string;
+  /** Body HTML with stable heading `id`s for TOC anchors */
   content: string;
   excerpt: string;
+  /** Optional ACF WYSIWYG intro; when null, template falls back to excerpt plain text */
+  caseStudyLeadHtml: string | null;
   featuredImage: string | null;
   featuredImageAlt: string;
+  featuredFormId: number | null;
   sections: AnySectionT[];
   seo: SeoPayload;
+  publishedAt: string;
+  dateLabel: string;
+  readMinutes: number;
+  author: PostAuthorT;
+  showRelatedCaseStudies: boolean;
+  relatedCaseStudies: CaseStudyOverviewCardT[];
+  /** Slug path to case study archive (breadcrumb), e.g. `case-studies` */
+  caseStudyArchivePath: string;
+  breadcrumbParent: PostBreadcrumbParentT | null;
+  showToc: boolean;
+  /** e.g. “Project: …” above the title */
+  projectLabel: string;
+  /** Full metrics set for the single-page bar (overview cards still cap at three) */
+  outcomeMetrics: CaseStudyOverviewMetricT[];
 };
 
 export type ContentDocument = PageDocument | ServiceDocument | PostDocument | CaseStudyDocument;

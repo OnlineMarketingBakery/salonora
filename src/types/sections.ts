@@ -600,6 +600,11 @@ export type CaseStudyOverviewSectionT = CoreSection & {
   heroStats: CaseStudyOverviewMetricT[];
   showFeatured: boolean;
   featuredCaseStudyId: number | null;
+  /** Hero KPI stat row only (1–4); case study card list stays 3 columns at `lg` for now. */
+  gridColumns: 1 | 2 | 3 | 4;
+  /** Rows of case studies per page; with a fixed 3-column list, `postsPerPage` = `min(50, 3 × gridRows)`. */
+  gridRows: number;
+  /** Derived from fixed list columns (3) × `gridRows` (used for REST pagination). */
   postsPerPage: number;
   readMoreLabel: string;
   archivePath: string;

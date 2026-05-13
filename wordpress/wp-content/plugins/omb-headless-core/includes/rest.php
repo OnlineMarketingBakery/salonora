@@ -369,7 +369,7 @@ function omb_rest_resolve_route(WP_REST_Request $request): WP_REST_Response {
 
     $query = new WP_Query([
         'name'              => basename($raw_path),
-        'post_type'         => ['page', 'post', 'service'],
+        'post_type'         => ['page', 'post', 'service', 'case_study'],
         'post_status'       => 'publish',
         'posts_per_page'    => 1,
         'no_found_rows'     => true,

@@ -15,11 +15,11 @@ export type FooterSettings = {
   footerText: string;
   footerLogo: WpImage | null;
   /**
-   * Footer main block background. Precedence: image → gradient (CSS) → solid color → default navy (`bg-navy-deep`).
+   * Footer main block background. Precedence: image → gradient (CSS) → solid color → stock white (`bg-white`) + navy type.
    * Legacy ACF `footer_top_shape_image` is merged into `footerBackgroundImage` in `fetch-globals`.
    */
   footerBackgroundImage: WpImage | null;
-  /** Hex or any valid CSS color (e.g. `#002752`). Empty uses default when image/gradient unset. */
+  /** Hex or any valid CSS color (e.g. `#002752`). Empty uses stock footer (white surface + navy type) when image/gradient unset. */
   footerBackgroundColor: string;
   /** Full CSS `background-image` value, e.g. `linear-gradient(180deg, #002752, #001a38)`. Empty when unused. */
   footerBackgroundGradient: string;

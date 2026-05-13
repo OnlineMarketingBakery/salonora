@@ -8,7 +8,7 @@ This Next.js app expects a headless WordPress site with the OMB ACF field groups
 - Polylang (or compatible) for `nl` and `en`, with translated content and menus
 - Yoast SEO
 - Contact Form 7 (5.4+ with REST API for forms and feedback)
-- Custom post types: `service`, `testimonial`, `case_study` (exposed in REST; register via `omb-headless-core` and flush permalinks after deploy)
+- Custom post types: `service`, `testimonial`, `case_study` (exposed in REST; register via `omb-headless-core` and flush permalinks after deploy). **Do not** register duplicate slugs (`service`, `testimonial`, `case_study`) with another plugin (e.g. CPT UI); that will conflict with the plugin.
 - ACF `show_in_rest` on options and field groups where needed
 - Option pages filled: header, footer, site, contact & social, integrations, default SEO
 
@@ -18,7 +18,7 @@ This Next.js app expects a headless WordPress site with the OMB ACF field groups
 2. Set `WORDPRESS_BASE_URL` to the public site root (no `/wp-json`) for media and CF7.
 3. Set `NEXT_PUBLIC_SITE_URL` to the public Next.js URL (e.g. Ploi app URL or production domain).
 4. Set `HOMEPAGE_SLUG` / per-locale slugs to the page that should render at `/{lang}/`.
-5. Set `WP_MENU_*` env vars to the numeric menu IDs for each language and location (primary, footer, legal), if the REST `menu-items` route is used.
+5. Set `WP_MENU_*` env vars to the numeric menu IDs for each language and location (primary, footer, legal), if the REST `menu-items` route is used. Optional: `WORDPRESS_BLOG_PAGE_SLUG*` (default `blog`) and `WORDPRESS_CASE_STUDY_PAGE_SLUG*` (default `case-studies`) so single post / single case study breadcrumbs match your archive URL segments.
 
 ## Setup steps
 
