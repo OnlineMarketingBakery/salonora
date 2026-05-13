@@ -131,7 +131,7 @@ export type GuaranteesPromiseSplitFloatingBadgeT = {
   position: "left" | "right";
 };
 
-/** Figma: 1127:55 (“Group 596”) — portrait with floating badges + guarantee checklist + download CTA button*/
+/** Figma: 1127:55 (“Group 596”) — portrait with floating badges + guarantee checklist + download CTA*/
 export type GuaranteesPromiseSplitPointT = {
   text: string;
   /** Resolved: row image, else optional section `list_default_icon`. */
