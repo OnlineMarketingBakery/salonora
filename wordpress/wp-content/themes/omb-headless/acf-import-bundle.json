@@ -13910,5 +13910,249 @@
     "allow_ai_access": false,
     "ai_description": "",
     "modified": 1779500000
+  },
+  {
+    "key": "group_omb_case_study_builder",
+    "title": "OMB Case study builder",
+    "fields": [
+      {
+        "key": "field_omb_case_study_sections",
+        "label": "Case study sections",
+        "name": "case_study_sections",
+        "aria-label": "",
+        "type": "flexible_content",
+        "instructions": "Build the case study body here. When you add at least one of these layouts, the single template uses **sections** instead of the WordPress **Content** field (classic body stays available as a fallback when this list is empty). Use **Chapter** for each major block (Probleem, Oplossing, …); headings appear in the table of contents.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "layouts": {
+          "layout_omb_cs_chapter": {
+            "key": "layout_omb_cs_chapter",
+            "name": "case_study_chapter",
+            "label": "Chapter (heading + text)",
+            "display": "block",
+            "sub_fields": [
+              {
+                "key": "field_omb_cs_chapter_heading",
+                "label": "Heading",
+                "name": "heading",
+                "type": "text",
+                "instructions": "Shown as H2 and in the Inhoudsopgave (e.g. Probleem, Resultaat).",
+                "required": 1,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 1
+              },
+              {
+                "key": "field_omb_cs_chapter_body",
+                "label": "Body",
+                "name": "body",
+                "type": "wysiwyg",
+                "instructions": "Paragraphs under the heading.",
+                "required": 0,
+                "tabs": "all",
+                "toolbar": "basic",
+                "media_upload": 1,
+                "delay": 0,
+                "allow_in_bindings": 1
+              },
+              {
+                "key": "field_omb_cs_chapter_divider",
+                "label": "Show divider under block",
+                "name": "show_divider_after",
+                "type": "true_false",
+                "instructions": "Matches Figma hairline between story sections.",
+                "default_value": 1,
+                "ui": 1,
+                "ui_on_text": "Yes",
+                "ui_off_text": "No",
+                "allow_in_bindings": 0
+              }
+            ],
+            "min": "",
+            "max": ""
+          },
+          "layout_omb_cs_product_shot": {
+            "key": "layout_omb_cs_product_shot",
+            "name": "case_study_product_shot",
+            "label": "Product screenshot (gradient frame)",
+            "display": "block",
+            "sub_fields": [
+              {
+                "key": "field_omb_cs_shot_image",
+                "label": "Image",
+                "name": "image",
+                "type": "image",
+                "return_format": "array",
+                "preview_size": "medium",
+                "library": "all",
+                "required": 1,
+                "allow_in_bindings": 1
+              },
+              {
+                "key": "field_omb_cs_shot_caption",
+                "label": "Caption (optional)",
+                "name": "caption",
+                "type": "text",
+                "required": 0,
+                "default_value": "",
+                "allow_in_bindings": 1
+              }
+            ],
+            "min": "",
+            "max": ""
+          },
+          "layout_omb_cs_client_review": {
+            "key": "layout_omb_cs_client_review",
+            "name": "case_study_client_review",
+            "label": "Client review (video + quote)",
+            "display": "block",
+            "sub_fields": [
+              {
+                "key": "field_omb_cs_rev_heading",
+                "label": "Section heading",
+                "name": "section_heading",
+                "type": "text",
+                "instructions": "Leave empty to use the default (“Klantenrecensie” / “Client review”).",
+                "required": 0,
+                "default_value": "",
+                "allow_in_bindings": 1
+              },
+              {
+                "key": "field_omb_cs_rev_video_url",
+                "label": "Video URL",
+                "name": "video_url",
+                "type": "url",
+                "instructions": "YouTube or direct link; opens in a new tab with the poster as thumbnail.",
+                "required": 0,
+                "default_value": "",
+                "allow_in_bindings": 1
+              },
+              {
+                "key": "field_omb_cs_rev_video_poster",
+                "label": "Video poster",
+                "name": "video_poster",
+                "type": "image",
+                "return_format": "array",
+                "preview_size": "medium",
+                "library": "all",
+                "required": 0,
+                "allow_in_bindings": 1
+              },
+              {
+                "key": "field_omb_cs_rev_quote",
+                "label": "Quote",
+                "name": "quote",
+                "type": "wysiwyg",
+                "tabs": "visual",
+                "toolbar": "basic",
+                "media_upload": 0,
+                "required": 0,
+                "allow_in_bindings": 1
+              },
+              {
+                "key": "field_omb_cs_rev_person_name",
+                "label": "Person name",
+                "name": "person_name",
+                "type": "text",
+                "required": 0,
+                "allow_in_bindings": 1
+              },
+              {
+                "key": "field_omb_cs_rev_person_role",
+                "label": "Person title / company",
+                "name": "person_role",
+                "type": "text",
+                "required": 0,
+                "allow_in_bindings": 1
+              },
+              {
+                "key": "field_omb_cs_rev_person_photo",
+                "label": "Person photo",
+                "name": "person_photo",
+                "type": "image",
+                "return_format": "array",
+                "preview_size": "thumbnail",
+                "library": "all",
+                "required": 0,
+                "allow_in_bindings": 1
+              }
+            ],
+            "min": "",
+            "max": ""
+          },
+          "layout_omb_cs_conversion_cta": {
+            "key": "layout_omb_cs_conversion_cta",
+            "name": "case_study_conversion_cta",
+            "label": "Conversion CTA band",
+            "display": "block",
+            "sub_fields": [
+              {
+                "key": "field_omb_cs_cta_title",
+                "label": "Title",
+                "name": "title",
+                "type": "text",
+                "required": 0,
+                "allow_in_bindings": 1
+              },
+              {
+                "key": "field_omb_cs_cta_subtitle",
+                "label": "Subtitle",
+                "name": "subtitle",
+                "type": "wysiwyg",
+                "tabs": "visual",
+                "toolbar": "basic",
+                "media_upload": 0,
+                "required": 0,
+                "allow_in_bindings": 1
+              },
+              {
+                "key": "field_omb_cs_cta_link",
+                "label": "Button",
+                "name": "cta",
+                "type": "link",
+                "return_format": "array",
+                "required": 0,
+                "allow_in_bindings": 1
+              }
+            ],
+            "min": "",
+            "max": ""
+          }
+        },
+        "min": 0,
+        "max": 0,
+        "button_label": "Add section"
+      }
+    ],
+    "location": [
+      [
+        {
+          "param": "post_type",
+          "operator": "==",
+          "value": "case_study"
+        }
+      ]
+    ],
+    "menu_order": 2,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 1,
+    "display_title": "",
+    "modified": 1715610000
   }
 ]
