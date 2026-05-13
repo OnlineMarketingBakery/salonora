@@ -711,6 +711,44 @@ export type RichTextSectionT = CoreSection & {
   contentWidth: "default" | "narrow" | "wide";
 };
 
+/** Single case study — narrative block (Figma 879:27 “Probleem”, “Resultaat”, etc.). */
+export type CaseStudyChapterSectionT = CoreSection & {
+  type: "case_study_chapter";
+  heading: string;
+  body: string;
+  /** Hairline rule under the block (Figma section separators). */
+  showDivider: boolean;
+  /** Stable anchor for Inhoudsopgave (from ACF row key). */
+  tocAnchorId: string;
+};
+
+/** Product / UI screenshot on brand gradient pad (Figma “Hoe Salonora … helpt”). */
+export type CaseStudyProductShotSectionT = CoreSection & {
+  type: "case_study_product_shot";
+  image: WpImage | null;
+  caption: string;
+};
+
+/** Client quote + optional video (Figma “Klantenrecensie”). */
+export type CaseStudyClientReviewSectionT = CoreSection & {
+  type: "case_study_client_review";
+  sectionHeading: string;
+  quote: string;
+  videoUrl: string;
+  videoPoster: WpImage | null;
+  personName: string;
+  personRole: string;
+  personPhoto: WpImage | null;
+};
+
+/** Mid-page conversion band (Figma navy rounded CTA). */
+export type CaseStudyConversionCtaSectionT = CoreSection & {
+  type: "case_study_conversion_cta";
+  title: string;
+  subtitle: string;
+  cta: WpAcfLink | null;
+};
+
 export type FaqSectionT = CoreSection & {
   type: "faq";
   title: string;
@@ -816,6 +854,10 @@ export type AnySectionT =
   | ProblemSolutionSectionT
   | TalkDualCardsSectionT
   | RichTextSectionT
+  | CaseStudyChapterSectionT
+  | CaseStudyProductShotSectionT
+  | CaseStudyClientReviewSectionT
+  | CaseStudyConversionCtaSectionT
   | FaqSectionT
   | FeatureHighlightGridSectionT
   | FeatureHighlightSplitSectionT

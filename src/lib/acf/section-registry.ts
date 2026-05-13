@@ -23,6 +23,10 @@ import { CaseStudyOverviewSection } from "@/components/sections/case-study-overv
 import { CtaSection } from "@/components/sections/cta/CtaSection";
 import { PricingCtaSection } from "@/components/sections/pricing-cta/PricingCtaSection";
 import { RichTextSection } from "@/components/sections/rich-text/RichTextSection";
+import { CaseStudyChapterSection } from "@/components/sections/case-study-body/CaseStudyChapterSection";
+import { CaseStudyProductShotSection } from "@/components/sections/case-study-body/CaseStudyProductShotSection";
+import { CaseStudyClientReviewSection } from "@/components/sections/case-study-body/CaseStudyClientReviewSection";
+import { CaseStudyConversionCtaSection } from "@/components/sections/case-study-body/CaseStudyConversionCtaSection";
 import { FaqSection } from "@/components/sections/faq/FaqSection";
 import { HowItWorksStepsSectionShell } from "@/components/sections/how-it-works-steps/shell";
 import { ScrollingTickerSectionShell } from "@/components/sections/scrolling-ticker/shell";
@@ -216,6 +220,10 @@ export const sectionRegistry = {
   cta: asSection(CtaSection as (p: { section: never; lang: Locale }) => ReactNode),
   pricing_cta: asSection(PricingCtaSection as (p: { section: never; lang: Locale }) => ReactNode),
   rich_text: asSection(RichTextSection as (p: { section: never; lang: Locale }) => ReactNode),
+  case_study_chapter: asSection(CaseStudyChapterSection as (p: { section: never; lang: Locale }) => ReactNode),
+  case_study_product_shot: asSection(CaseStudyProductShotSection as (p: { section: never; lang: Locale }) => ReactNode),
+  case_study_client_review: asSection(CaseStudyClientReviewSection as (p: { section: never; lang: Locale }) => ReactNode),
+  case_study_conversion_cta: asSection(CaseStudyConversionCtaSection as (p: { section: never; lang: Locale }) => ReactNode),
   faq: asSection(FaqSection as (p: { section: never; lang: Locale }) => ReactNode),
   scrolling_ticker: asSection(
     ScrollingTickerSectionShell as (p: { section: never; lang: Locale }) => ReactNode

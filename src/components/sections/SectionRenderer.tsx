@@ -115,6 +115,14 @@ export function SectionRenderer({ sections, lang }: { sections: AnySectionT[]; l
             );
           case "rich_text":
             return <sectionRegistry.rich_text key={section.id} section={section} lang={lang} />;
+          case "case_study_chapter":
+            return <sectionRegistry.case_study_chapter key={section.id} section={section} lang={lang} />;
+          case "case_study_product_shot":
+            return <sectionRegistry.case_study_product_shot key={section.id} section={section} lang={lang} />;
+          case "case_study_client_review":
+            return <sectionRegistry.case_study_client_review key={section.id} section={section} lang={lang} />;
+          case "case_study_conversion_cta":
+            return <sectionRegistry.case_study_conversion_cta key={section.id} section={section} lang={lang} />;
           case "faq":
             return <sectionRegistry.faq key={section.id} section={section} lang={lang} />;
           case "scrolling_ticker":

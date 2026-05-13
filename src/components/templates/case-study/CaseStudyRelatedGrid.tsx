@@ -6,8 +6,8 @@ import type { CaseStudyOverviewCardT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 
 const COPY = {
-  nl: { title: "Meer casestudies", readFallback: "Lees de casestudy" },
-  en: { title: "More case studies", readFallback: "Read the case study" },
+  nl: { title: "Meer casestudies van Salonora", readFallback: "Lees de casestudy" },
+  en: { title: "More case studies from Salonora", readFallback: "Read the case study" },
 } as const;
 
 function ArrowRightIcon({ className }: { className?: string }) {

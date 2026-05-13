@@ -15,11 +15,30 @@ function LinkedInIcon({ className }: { className?: string }) {
   );
 }
 
-export function PostAuthorCard({ author, lang }: { author: PostAuthorT; lang: Locale }) {
+export function PostAuthorCard({
+  author,
+  lang,
+  variant = "post",
+}: {
+  author: PostAuthorT;
+  lang: Locale;
+  /** Case study single (Figma 879:27): soft card + greeting line. */
+  variant?: "post" | "case_study";
+}) {
   const t = COPY[lang];
   if (!author.name && !author.bio) return null;
+  const greeting =
+    variant === "case_study" && author.name
+      ? lang === "nl"
+        ? `Hallo, ik ben ${author.name}.`
+        : `Hi, I'm ${author.name}.`
+      : null;
+  const sectionClass =
+    variant === "case_study"
+      ? "rounded-[14px] bg-[var(--palette-surface)] px-[30px] py-[30px]"
+      : "rounded-[14px] border border-[color-mix(in_srgb,var(--palette-brand)_16%,transparent)] bg-[var(--palette-surface)] px-[30px] py-[30px]";
   return (
-    <section className="rounded-[14px] border border-[color-mix(in_srgb,var(--palette-brand)_16%,transparent)] bg-[var(--palette-surface)] px-[30px] py-[30px]">
+    <section className={sectionClass}>
       <h2 className="text-2xl font-semibold leading-[1.1] text-[var(--palette-navy)]">{t.title}</h2>
       <div className="mt-4 flex gap-4">
         {author.avatarUrl ? (
@@ -35,10 +54,16 @@ export function PostAuthorCard({ author, lang }: { author: PostAuthorT; lang: Lo
           <span className="size-[5.5625rem] shrink-0 rounded-full bg-[var(--palette-white)] ring-1 ring-[color-mix(in_srgb,var(--palette-brand)_12%,transparent)]" aria-hidden />
         )}
         <div className="min-w-0 flex-1">
-          {author.name ? (
+          {greeting ? (
+            <p className="text-2xl font-semibold leading-[1.1] text-[var(--palette-navy)]">{greeting}</p>
+          ) : author.name ? (
             <p className="text-2xl font-semibold leading-[1.1] text-[var(--palette-navy)]">{author.name}</p>
           ) : null}
-          {author.bio ? <p className="mt-[14px] text-base font-normal leading-[1.4] text-[var(--palette-muted)]">{author.bio}</p> : null}
+          {author.bio ? (
+            <p className={`text-base font-normal leading-[1.4] text-[var(--palette-muted)] ${greeting || author.name ? "mt-[14px]" : ""}`}>
+              {author.bio}
+            </p>
+          ) : null}
           {(author.linkedinUrl || author.profileUrl) && (
             <div className="mt-5 flex flex-wrap gap-1.5">
               {author.linkedinUrl ? (

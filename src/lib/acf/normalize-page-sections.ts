@@ -50,6 +50,10 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   problem_solution: true,
   process_steps: true,
   rich_text: true,
+  case_study_chapter: true,
+  case_study_product_shot: true,
+  case_study_client_review: true,
+  case_study_conversion_cta: true,
   salon_value_proposition: true,
   scrolling_ticker: true,
   story_split: true,
@@ -105,6 +109,15 @@ function featuredPostIdFromAcf(row: Record<string, unknown>): number | null {
 
 function keyOf(i: number, row: RawRow): string {
   return asString(row._key) || `row-${i}`;
+}
+
+/** Stable DOM id for case study chapter headings (TOC anchors). */
+function caseStudyChapterAnchorFromAcfKey(_key: string): string {
+  const safe = asString(_key)
+    .replace(/[^a-zA-Z0-9_-]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+  return safe ? `cs-${safe}` : "cs-section";
 }
 
 export function normalizePageSections(raw: unknown): AnySectionT[] {
@@ -1037,6 +1050,43 @@ function mapKnownPageSectionLayout(
         title: asString(row.title),
         body: asHtml(row.body),
         contentWidth: (asString(row.content_width) as "default" | "narrow" | "wide") || "default",
+      };
+    case "case_study_chapter":
+      return {
+        ...base,
+        type: "case_study_chapter",
+        heading: asString(row.heading),
+        body: asHtml(row.body),
+        showDivider:
+          row.show_divider_after === undefined || row.show_divider_after === null ? true : asBool(row.show_divider_after),
+        tocAnchorId: caseStudyChapterAnchorFromAcfKey(base._key),
+      };
+    case "case_study_product_shot":
+      return {
+        ...base,
+        type: "case_study_product_shot",
+        image: asImage(row.image),
+        caption: asString(row.caption),
+      };
+    case "case_study_client_review":
+      return {
+        ...base,
+        type: "case_study_client_review",
+        sectionHeading: asString(row.section_heading),
+        quote: asHtml(row.quote),
+        videoUrl: asString(row.video_url).trim(),
+        videoPoster: asImage(row.video_poster),
+        personName: asString(row.person_name),
+        personRole: asString(row.person_role),
+        personPhoto: asImage(row.person_photo),
+      };
+    case "case_study_conversion_cta":
+      return {
+        ...base,
+        type: "case_study_conversion_cta",
+        title: asString(row.title),
+        subtitle: asHtml(row.subtitle),
+        cta: asLink(row.cta),
       };
     case "faq":
       return {

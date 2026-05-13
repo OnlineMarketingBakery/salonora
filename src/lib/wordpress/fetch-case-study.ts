@@ -13,6 +13,7 @@ import { stripTags, toPlainText } from "@/lib/utils/strings";
 import { formatPostMonthYear } from "@/lib/i18n/format-post-month-year";
 import { caseStudyOutcomeMetricsFromAcf } from "@/lib/wordpress/fetch-case-studies-collection";
 import { fetchRelatedCaseStudyCards } from "@/lib/wordpress/fetch-related-case-studies";
+import { htmlRoughFromCaseStudySections } from "@/lib/case-study-body";
 
 function mapEmbeddedAuthor(p: WpCaseStudyRaw): PostAuthorT {
   const u = p._embedded?.author?.[0];
@@ -67,6 +68,13 @@ function toDoc(p: WpCaseStudyRaw, gs: GlobalSettings, lang: Locale): CaseStudyDo
   const content = injectHeadingIds(markStyleTintedDivs(rawHtml));
   const projectLabel = stripTags(String(acf.case_study_project_label ?? "")).trim();
   const showRelatedCaseStudies = mapShowRelatedCaseStudies(acf);
+  const flexibleRaw =
+    (acf as { case_study_sections?: unknown }).case_study_sections ??
+    (acf as { page_sections?: unknown }).page_sections;
+  const sections = normalizePageSections(flexibleRaw);
+  const leadHtml = mapCaseStudyLeadHtml(acf) || "";
+  const readSource = [rawHtml, leadHtml, htmlRoughFromCaseStudySections(sections)].filter(Boolean).join(" ");
+  const readMinutes = estimateReadMinutes(readSource);
   return {
     kind: "case_study",
     id: p.id,
@@ -78,11 +86,11 @@ function toDoc(p: WpCaseStudyRaw, gs: GlobalSettings, lang: Locale): CaseStudyDo
     featuredImage: featured?.source_url || null,
     featuredImageAlt: featured?.alt_text || "",
     featuredFormId: featuredForm && typeof featuredForm === "object" ? featuredForm.id || null : null,
-    sections: normalizePageSections((acf as { page_sections?: unknown }).page_sections),
+    sections,
     seo: mapYoastToSeo(p, gs, { fallbackTitle: p.title?.rendered || "Case study" }),
     publishedAt: p.date || "",
     dateLabel: formatPostMonthYear(p.date, lang),
-    readMinutes: estimateReadMinutes(rawHtml),
+    readMinutes,
     author: mapEmbeddedAuthor(p),
     showRelatedCaseStudies,
     relatedCaseStudies: [],
