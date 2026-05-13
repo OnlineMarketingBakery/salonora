@@ -202,6 +202,20 @@ export type WhoWeAreForSectionT = CoreSection & {
   ctas: CtaItem[];
 };
 
+/** Figma **693:395** (“Frame 2147229263”) — centered heading + grid of promises: circular icon (brand/rose), title, body. */
+export type OurPromisesItemT = {
+  icon: WpImage | null;
+  title: string;
+  description: string;
+  icon_accent: WhoWeAreForItemAccentT;
+};
+
+export type OurPromisesSectionT = CoreSection & {
+  type: "our_promises";
+  title: string;
+  items: OurPromisesItemT[];
+};
+
 /** Figma **1325:38** (“Frame 2147230004”) — split: heading + checklist + footer + CTA; framed image with rotated brand panel. */
 export type IsThisForYouChecklistRowT = {
   text: string;
@@ -839,6 +853,7 @@ export type AnySectionT =
   | GrowthPlansSplitSectionT
   | FoundersBannerSectionT
   | WhoWeAreForSectionT
+  | OurPromisesSectionT
   | IsThisForYouSectionT
   | FeaturesChecklistSectionT
   | MediaTextChecklistSectionT

@@ -59,6 +59,14 @@ const OriginStorySplitSectionLazy = dynamic(
   { ssr: true }
 );
 
+const OurPromisesSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/our-promises").then((mod) => ({
+      default: mod.OurPromisesSection,
+    })),
+  { ssr: true }
+);
+
 const PartnerIntroSplitSectionLazy = dynamic(
   () =>
     import("@/components/sections/partner-intro-split").then((mod) => ({
@@ -227,6 +235,9 @@ export const sectionRegistry = {
   ),
   origin_story_split: asSection(
     OriginStorySplitSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
+  our_promises: asSection(
+    OurPromisesSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
   partner_intro_split: asSection(
     PartnerIntroSplitSectionLazy as (p: { section: never; lang: Locale }) => ReactNode

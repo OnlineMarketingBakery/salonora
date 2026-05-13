@@ -61,6 +61,10 @@ export function SectionRenderer({ sections, lang }: { sections: AnySectionT[]; l
             return (
               <sectionRegistry.origin_story_split key={section.id} section={section} lang={lang} />
             );
+          case "our_promises":
+            return (
+              <sectionRegistry.our_promises key={section.id} section={section} lang={lang} />
+            );
           case "partner_intro_split":
             return (
               <sectionRegistry.partner_intro_split key={section.id} section={section} lang={lang} />

@@ -45,6 +45,7 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   blog_post_overview: true,
   case_study_overview: true,
   origin_story_split: true,
+  our_promises: true,
   partner_intro_split: true,
   pricing_cta: true,
   pricing_dual_cards: true,
@@ -381,6 +382,31 @@ function mapKnownPageSectionLayout(
             })
           : [],
         ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
+      };
+    case "our_promises":
+      return {
+        ...base,
+        type: "our_promises",
+        title: asString(row.title),
+        items: Array.isArray(row.items)
+          ? (
+              row.items as {
+                icon?: unknown;
+                title?: unknown;
+                description?: unknown;
+                icon_accent?: unknown;
+              }[]
+            ).map((item) => {
+              const a = asString(item.icon_accent);
+              const icon_accent = a === "rose" ? ("rose" as const) : ("brand" as const);
+              return {
+                icon: asImage(item.icon),
+                title: asString(item.title),
+                description: asHtml(item.description),
+                icon_accent,
+              };
+            })
+          : [],
       };
     case "is_this_for_you": {
       const listDefaultIcon = asImage(row.list_default_icon);

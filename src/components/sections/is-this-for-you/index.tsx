@@ -97,7 +97,7 @@ export function IsThisForYouSection({
               className="h-px w-full max-w-[33.875rem] bg-[color-mix(in_srgb,var(--palette-brand)_35%,transparent)]"
               aria-hidden
             />
-            <ul className="flex max-w-[27.375rem] list-none flex-col gap-2.5 p-0">
+            <ul className="flex max-w-[27.375rem] list-none flex-col gap-1 p-0">
               {section.checklist.map((row, i) => {
                 const line = row.text.trim();
                 if (!line) return null;
