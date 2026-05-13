@@ -1,8 +1,8 @@
-import { getWordpressApiUrl, getWordpressAuthorizationHeader } from "./config";
-import type { FooterSettings, GlobalSettings, ReadingSettings } from "@/types/globals";
 import { asBool, asImage, asLink, asString } from "@/lib/acf/field-mappers";
-import { logger } from "@/lib/utils/logger";
 import type { Locale } from "@/lib/i18n/locales";
+import { logger } from "@/lib/utils/logger";
+import type { FooterSettings, GlobalSettings, ReadingSettings } from "@/types/globals";
+import { getWordpressApiUrl, getWordpressAuthorizationHeader } from "./config";
 
 /** OMB REST / some stacks expose ACF keys as camelCase; WP REST uses snake_case. */
 function acfPick(o: Record<string, unknown>, snake: string, camel: string): unknown {
@@ -33,14 +33,14 @@ type OmbGlobalsRestPayload = {
   site?: Record<string, unknown>;
   integrations?: Record<string, unknown>;
   defaultSeo?: Record<string, unknown>;
-  /** WordPress Settings â†’ Reading (static front page), from omb-headless-core. */
+  /** WordPress Settings → Reading (static front page), from omb-headless-core. */
   reading?: Record<string, unknown>;
 };
 
 /**
  * Loads all ACF option groups in one request via OMB Headless Core. Use this when
  * WordPress does not register the `acf` REST namespace (common); native
- * `acf/v1/options/â€¦` and `acf/v3/options/â€¦` routes then return 404 and globals stay empty.
+ * `acf/v1/options/…` and `acf/v3/options/…` routes then return 404 and globals stay empty.
  */
 async function fetchGlobalsViaOmbRest(lang: Locale): Promise<OmbGlobalsRestPayload | null> {
   const base = getWordpressApiUrl();
