@@ -3,6 +3,8 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+require_once __DIR__ . '/languages.php';
+
 add_action('rest_api_init', function () {
     register_rest_route('omb-headless/v1', '/site', [
         'methods'             => 'GET',
@@ -30,6 +32,18 @@ add_action('rest_api_init', function () {
         'methods'             => 'GET',
         'permission_callback' => '__return_true',
         'callback'            => 'omb_rest_get_globals',
+        'args'                => [
+            'lang' => [
+                'required'          => false,
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
+        ],
+    ]);
+
+    register_rest_route('omb-headless/v1', '/reading', [
+        'methods'             => 'GET',
+        'permission_callback' => '__return_true',
+        'callback'            => 'omb_rest_get_reading',
         'args'                => [
             'lang' => [
                 'required'          => false,
@@ -255,6 +269,10 @@ function omb_rest_globals_resolve_acf_post_id(string $menu_slug): string {
  * @return array<string, mixed>|false
  */
 function omb_rest_globals_get_fields_for_post_id(string $post_id) {
+    if (!function_exists('get_fields')) {
+        return false;
+    }
+
     return get_fields($post_id);
 }
 
@@ -316,6 +334,68 @@ function omb_rest_globals_collect_fields(): array {
 }
 
 /**
+ * Match Polylang language for REST callbacks (Reading, globals, etc.).
+ */
+function omb_rest_switch_polylang_lang(?string $lang): void {
+    if ($lang === null || $lang === '') {
+        return;
+    }
+    if (!function_exists('PLL')) {
+        return;
+    }
+    $pll = PLL();
+    if ($pll && is_callable([$pll, 'switch_language'])) {
+        $pll->switch_language($lang);
+    } elseif ($pll && isset($pll->model) && is_object($pll->model)) {
+        $pll_lang = $pll->model->get_language($lang);
+        if ($pll_lang) {
+            $pll->curlang = $pll_lang;
+        }
+    }
+}
+
+/**
+ * Settings → Reading: static front page slug for the active (switched) language.
+ *
+ * @return array{show_on_front: string, homepage_slug: string|null}
+ */
+function omb_rest_reading_home_payload(): array {
+    $show = (string) get_option('show_on_front');
+    if ($show !== 'page') {
+        return [
+            'show_on_front'   => $show,
+            'homepage_slug'   => null,
+        ];
+    }
+    $page_id = (int) get_option('page_on_front');
+    if ($page_id <= 0) {
+        return [
+            'show_on_front'   => $show,
+            'homepage_slug'   => null,
+        ];
+    }
+    $post = get_post($page_id);
+    if (!$post || $post->post_type !== 'page' || $post->post_status !== 'publish') {
+        return [
+            'show_on_front'   => $show,
+            'homepage_slug'   => null,
+        ];
+    }
+
+    return [
+        'show_on_front' => $show,
+        'homepage_slug' => $post->post_name,
+    ];
+}
+
+function omb_rest_get_reading(WP_REST_Request $request): WP_REST_Response {
+    $lang = (string) $request->get_param('lang');
+    omb_rest_switch_polylang_lang($lang !== '' ? $lang : null);
+
+    return new WP_REST_Response(omb_rest_reading_home_payload(), 200);
+}
+
+/**
  * Expose ACF global option groups for headless frontends when the ACF REST namespace
  * is unavailable (common). Uses get_fields() server-side so image fields include URLs.
  */
@@ -328,19 +408,10 @@ function omb_rest_get_globals(WP_REST_Request $request): WP_REST_Response {
     }
 
     $lang = (string) $request->get_param('lang');
-    if ($lang !== '' && function_exists('PLL')) {
-        $pll = PLL();
-        if ($pll && is_callable([$pll, 'switch_language'])) {
-            $pll->switch_language($lang);
-        } elseif ($pll && isset($pll->model) && is_object($pll->model)) {
-            $pll_lang = $pll->model->get_language($lang);
-            if ($pll_lang) {
-                $pll->curlang = $pll_lang;
-            }
-        }
-    }
+    omb_rest_switch_polylang_lang($lang !== '' ? $lang : null);
 
     $out = omb_rest_globals_collect_fields();
+    $out['reading'] = omb_rest_reading_home_payload();
 
     if (!empty($out['footer']) && is_array($out['footer'])) {
         omb_rest_normalize_footer_image_urls($out['footer']);
@@ -369,7 +440,7 @@ function omb_rest_resolve_route(WP_REST_Request $request): WP_REST_Response {
 
     $query = new WP_Query([
         'name'              => basename($raw_path),
-        'post_type'         => ['page', 'post', 'service'],
+        'post_type'         => ['page', 'post', 'service', 'case_study'],
         'post_status'       => 'publish',
         'posts_per_page'    => 1,
         'no_found_rows'     => true,
@@ -430,3 +501,159 @@ function omb_rest_acf_sync(WP_REST_Request $request): WP_REST_Response {
 
     return new WP_REST_Response(['success' => true, 'imported' => $imported], 200);
 }
+
+/**
+ * Polylang (and similar) often stores translated “Biographical Info” in separate user-meta keys while
+ * default `description` stays empty for another locale. Headless requests use `?lang=`; expose the
+ * matching HTML in REST `description` so Next.js can render the author card.
+ */
+function omb_rest_user_plain_bio(string $html): string {
+    return trim(wp_strip_all_tags($html));
+}
+
+/** Sanitize optional author social URL for REST JSON. */
+function omb_rest_author_social_url(string $raw): string {
+    $t = trim($raw);
+    if ($t === '') {
+        return '';
+    }
+    $u = esc_url_raw($t);
+    if (is_string($u) && $u !== '') {
+        return $u;
+    }
+    // esc_url_raw() drops fragment-only values (e.g. “#” placeholders in dev); keep them for headless UI stubs.
+    if ($t === '#') {
+        return '#';
+    }
+
+    return '';
+}
+
+/**
+ * First non-empty user meta string among common keys (ACF / profile field names vary).
+ *
+ * @param list<string> $keys
+ */
+function omb_rest_user_meta_first_string(int $user_id, array $keys): string {
+    foreach ($keys as $key) {
+        if (!is_string($key) || $key === '') {
+            continue;
+        }
+        $v = get_user_meta($user_id, $key, true);
+        if (is_string($v)) {
+            $t = trim($v);
+            if ($t !== '') {
+                return $t;
+            }
+        }
+    }
+
+    return '';
+}
+
+/**
+ * @return string HTML or plain bio (same shape as `description` in REST)
+ */
+function omb_rest_user_description_for_lang(int $user_id, string $lang_slug): string {
+    $slug = sanitize_key($lang_slug);
+    if ($slug === '') {
+        return '';
+    }
+
+    omb_rest_switch_polylang_lang($slug);
+
+    $read = static function (int $uid, string $meta_key): string {
+        $v = get_user_meta($uid, $meta_key, true);
+        return is_string($v) ? $v : '';
+    };
+
+    $suffixes = [$slug];
+    if (function_exists('PLL') && isset(PLL()->model)) {
+        $lang_obj = PLL()->model->get_language($slug);
+        if ($lang_obj && !empty($lang_obj->locale)) {
+            $loc = (string) $lang_obj->locale;
+            $suffixes[] = strtolower(str_replace('-', '_', $loc));
+            $suffixes[] = $loc;
+        }
+    }
+    $suffixes = array_values(array_unique(array_filter($suffixes)));
+
+    // Prefer locale-specific keys first: default `description` often holds English while Polylang
+    // stores Nederlands in `description_nl` / `description_nl_nl` — so `?lang=nl` must not stop at English.
+    foreach ($suffixes as $suffix) {
+        foreach (['description_' . $suffix, 'description-' . $suffix, 'pll_description_' . $suffix] as $key) {
+            $raw = $read($user_id, $key);
+            if ($raw !== '' && omb_rest_user_plain_bio($raw) !== '') {
+                return $raw;
+            }
+        }
+    }
+
+    $fallback = $read($user_id, 'description');
+    if ($fallback !== '' && omb_rest_user_plain_bio($fallback) !== '') {
+        return $fallback;
+    }
+
+    return '';
+}
+
+/**
+ * @param WP_REST_Response $response
+ */
+function omb_rest_prepare_user_i18n_description($response, WP_User $user, WP_REST_Request $request) {
+    $data = $response->get_data();
+    if (!is_array($data)) {
+        return $response;
+    }
+
+    $uid = (int) $user->ID;
+    $data['omb_author_social'] = [
+        'facebook' => omb_rest_author_social_url(
+            omb_rest_user_meta_first_string(
+                $uid,
+                [
+                    'omb_author_facebook',
+                    'facebook_profile_url',
+                    'facebook_url',
+                    'facebook',
+                ]
+            )
+        ),
+        'instagram' => omb_rest_author_social_url(
+            omb_rest_user_meta_first_string(
+                $uid,
+                [
+                    'omb_author_instagram',
+                    'instagram_profile_url',
+                    'instagram_url',
+                    'instagram',
+                ]
+            )
+        ),
+        'linkedin' => omb_rest_author_social_url(
+            omb_rest_user_meta_first_string(
+                $uid,
+                [
+                    'omb_author_linkedin',
+                    'linkedin_profile_url',
+                    'linkedin_url',
+                    'linkedin',
+                ]
+            )
+        ),
+    ];
+
+    $lang = $request->get_param('lang');
+    if (is_string($lang) && $lang !== '') {
+        $bio = omb_rest_user_description_for_lang($uid, $lang);
+        if ($bio !== '') {
+            $data['description'] = $bio;
+        }
+    }
+
+    $response->set_data($data);
+
+    return $response;
+}
+
+add_filter('rest_prepare_user', 'omb_rest_prepare_user_i18n_description', 20, 3);

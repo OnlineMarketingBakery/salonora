@@ -1,10 +1,8 @@
-import { getImageUrl } from "@/lib/utils/media";
-import { getWordpressApiUrl, getWordpressAuthorizationHeader } from "./config";
-import { wpFetchOptional } from "./client";
-import type { FooterSettings, GlobalSettings } from "@/types/globals";
 import { asBool, asImage, asLink, asString } from "@/lib/acf/field-mappers";
-import { logger } from "@/lib/utils/logger";
 import type { Locale } from "@/lib/i18n/locales";
+import { logger } from "@/lib/utils/logger";
+import type { FooterSettings, GlobalSettings, ReadingSettings } from "@/types/globals";
+import { getWordpressApiUrl, getWordpressAuthorizationHeader } from "./config";
 
 /** OMB REST / some stacks expose ACF keys as camelCase; WP REST uses snake_case. */
 function acfPick(o: Record<string, unknown>, snake: string, camel: string): unknown {
@@ -35,6 +33,8 @@ type OmbGlobalsRestPayload = {
   site?: Record<string, unknown>;
   integrations?: Record<string, unknown>;
   defaultSeo?: Record<string, unknown>;
+  /** WordPress Settings → Reading (static front page), from omb-headless-core. */
+  reading?: Record<string, unknown>;
 };
 
 /**
@@ -68,6 +68,37 @@ async function fetchGlobalsViaOmbRest(lang: Locale): Promise<OmbGlobalsRestPaylo
     return body;
   } catch (e) {
     logger.warn("omb-headless globals fetch", url.toString(), e);
+    return null;
+  }
+}
+
+/** Reading settings only (no ACF). Used when globals load via per-route ACF but plugin still exposes `/reading`. */
+async function fetchReadingViaOmbRest(lang: Locale): Promise<Record<string, unknown> | null> {
+  const base = getWordpressApiUrl();
+  if (!base) return null;
+  const url = new URL(`${base}/omb-headless/v1/reading`);
+  url.searchParams.set("lang", lang);
+  const headers = new Headers();
+  const auth = getWordpressAuthorizationHeader();
+  if (auth) {
+    headers.set("Authorization", auth);
+  }
+  try {
+    const res = await fetch(url.toString(), { headers, next: { revalidate: 60 } });
+    if (res.status === 404) {
+      return null;
+    }
+    if (!res.ok) {
+      logger.warn("omb-headless reading", url.toString(), res.status);
+      return null;
+    }
+    const body = (await res.json()) as Record<string, unknown>;
+    if (!body || typeof body !== "object") {
+      return null;
+    }
+    return body;
+  } catch (e) {
+    logger.warn("omb-headless reading fetch", url.toString(), e);
     return null;
   }
 }
@@ -131,9 +162,6 @@ function fromFooter(o: Record<string, unknown> | null) {
       footerTitle: "",
       footerText: "",
       footerLogo: null,
-      footerBackgroundImage: null,
-      footerBackgroundColor: "",
-      footerBackgroundGradient: "",
       footerCopyright: "",
       showFooterLanguageSwitcher: true,
       footerCtaFootnote: "",
@@ -145,14 +173,6 @@ function fromFooter(o: Record<string, unknown> | null) {
     footerTitle: asString(o.footer_title),
     footerText: asString(o.footer_text),
     footerLogo: asImage(o.footer_logo),
-    /** Same lookup pattern as `footer_logo`: direct keys first, then camel/snake picks + legacy field. */
-    footerBackgroundImage:
-      asImage(o.footer_background_image) ??
-      asImage(o.footerBackgroundImage) ??
-      asImage(acfPick(o, "footer_background_image", "footerBackgroundImage")) ??
-      asImage(acfPick(o, "footer_top_shape_image", "footerTopShapeImage")),
-    footerBackgroundColor: asString(acfPick(o, "footer_background_color", "footerBackgroundColor")),
-    footerBackgroundGradient: asString(acfPick(o, "footer_background_gradient", "footerBackgroundGradient")),
     footerCopyright: asString(o.footer_copyright),
     showFooterLanguageSwitcher: asBool(o.show_footer_language_switcher),
     footerCtaFootnote: asString(acfPick(o, "footer_cta_text", "footerCtaText")),
@@ -178,80 +198,12 @@ function mergeFooterCtaMigrations(
   };
 }
 
-/** ACF REST often returns `{ ID }` / `{ id }` with no `url`; resolve via `wp/v2/media`. */
-function attachmentLikeId(raw: unknown): number | null {
-  if (raw == null) return null;
-  if (typeof raw === "number" && raw > 0) return Math.floor(raw);
-  if (typeof raw === "string") {
-    const t = raw.trim();
-    if (/^\d+$/.test(t)) return parseInt(t, 10);
-  }
-  if (typeof raw !== "object") return null;
-  const o = raw as Record<string, unknown>;
-  const idKeys = ["ID", "id", "attachment_id", "attachmentId"] as const;
-  for (const k of idKeys) {
-    const v = o[k];
-    if (typeof v === "number" && v > 0) return Math.floor(v);
-    if (typeof v === "string" && /^\d+$/.test(v.trim())) return parseInt(v.trim(), 10);
-  }
-  return null;
-}
-
-/** When ACF stores only an attachment ID, resolve URL via WP REST. */
-/**
- * OMB `/globals` can omit newer `footer_*` keys until the plugin allowlist is deployed.
- * When the footer background URL is still missing, merge direct ACF options (same path as the non-OMB fallback).
- */
-async function fetchFooterViaOmbWithAcfFallback(
-  lang: Locale,
+function footerFromOmbPayload(
   ombFooter: Record<string, unknown> | null,
   siteUnwrapped: Record<string, unknown> | null
-): Promise<FooterSettings> {
-  let raw = unwrapAcfOptionsPayload(ombFooter) as Record<string, unknown> | null;
-  let merged = mergeFooterCtaMigrations(fromFooter(raw), siteUnwrapped);
-  let footer = await resolveFooterBackgroundFromAttachmentId(lang, raw, merged);
-
-  if (!getImageUrl(footer.footerBackgroundImage)?.trim()) {
-    const direct = await fetchAcfOptions("omb-footer-settings", lang);
-    const extra = unwrapAcfOptionsPayload(direct);
-    if (extra && Object.keys(extra).length > 0) {
-      raw = { ...(raw ?? {}), ...extra };
-      merged = mergeFooterCtaMigrations(fromFooter(raw), siteUnwrapped);
-      footer = await resolveFooterBackgroundFromAttachmentId(lang, raw, merged);
-    }
-  }
-  return footer;
-}
-
-async function resolveFooterBackgroundFromAttachmentId(
-  lang: Locale,
-  raw: Record<string, unknown> | null,
-  footer: FooterSettings
-): Promise<FooterSettings> {
-  const bg = footer.footerBackgroundImage;
-  if (getImageUrl(bg)?.trim()) return footer;
-
-  let id: number | null =
-    bg && typeof bg.id === "number" && bg.id > 0 ? Math.floor(bg.id) : null;
-
-  if (!id && raw) {
-    const candidates = [
-      acfPick(raw, "footer_background_image", "footerBackgroundImage"),
-      acfPick(raw, "footer_top_shape_image", "footerTopShapeImage"),
-    ];
-    for (const v of candidates) {
-      id = attachmentLikeId(v);
-      if (id) break;
-    }
-  }
-  if (!id) return footer;
-  const media = await wpFetchOptional<Record<string, unknown>>(`/wp/v2/media/${id}`, {
-    lang,
-    revalidate: 60,
-  });
-  const img = asImage(media);
-  if (!img) return footer;
-  return { ...footer, footerBackgroundImage: img };
+): FooterSettings {
+  const raw = unwrapAcfOptionsPayload(ombFooter) as Record<string, unknown> | null;
+  return mergeFooterCtaMigrations(fromFooter(raw), siteUnwrapped);
 }
 
 function fromContact(o: Record<string, unknown> | null) {
@@ -323,6 +275,18 @@ function fromIntegrations(o: Record<string, unknown> | null) {
   };
 }
 
+function fromReading(o: Record<string, unknown> | null | undefined): ReadingSettings {
+  if (!o || typeof o !== "object") {
+    return { showOnFront: "page", homepageSlug: null };
+  }
+  const showRaw = o.show_on_front;
+  const showOnFront = typeof showRaw === "string" && showRaw ? showRaw : "page";
+  const slugRaw = o.homepage_slug;
+  const homepageSlug =
+    typeof slugRaw === "string" && slugRaw.trim() !== "" ? slugRaw.trim() : null;
+  return { showOnFront, homepageSlug };
+}
+
 function fromDefaultSeo(o: Record<string, unknown> | null) {
   if (!o) {
     return {
@@ -344,7 +308,7 @@ export async function fetchGlobals(lang: Locale): Promise<GlobalSettings> {
   const omb = await fetchGlobalsViaOmbRest(lang);
   if (omb != null) {
     const siteUnwrapped = unwrapAcfOptionsPayload(omb.site ?? null);
-    const footer = await fetchFooterViaOmbWithAcfFallback(lang, omb.footer ?? null, siteUnwrapped);
+    const footer = footerFromOmbPayload(omb.footer ?? null, siteUnwrapped);
     return {
       header: fromHeader(unwrapAcfOptionsPayload(omb.header ?? null)),
       footer,
@@ -352,22 +316,24 @@ export async function fetchGlobals(lang: Locale): Promise<GlobalSettings> {
       site: fromSite(siteUnwrapped),
       integrations: fromIntegrations(unwrapAcfOptionsPayload(omb.integrations ?? null)),
       defaultSeo: fromDefaultSeo(unwrapAcfOptionsPayload(omb.defaultSeo ?? null)),
+      reading: fromReading(omb.reading),
     };
   }
 
-  const [headerRaw, footerRaw, contactRaw, siteRaw, integrationsRaw, defaultSeoRaw] = await Promise.all([
-    fetchAcfOptions("omb-header-settings", lang),
-    fetchAcfOptions("omb-footer-settings", lang),
-    fetchAcfOptions("omb-contact-social", lang),
-    fetchAcfOptions("omb-site-settings", lang),
-    fetchAcfOptions("omb-integrations", lang),
-    fetchAcfOptions("omb-default-seo", lang),
-  ]);
+  const [headerRaw, footerRaw, contactRaw, siteRaw, integrationsRaw, defaultSeoRaw, readingRaw] =
+    await Promise.all([
+      fetchAcfOptions("omb-header-settings", lang),
+      fetchAcfOptions("omb-footer-settings", lang),
+      fetchAcfOptions("omb-contact-social", lang),
+      fetchAcfOptions("omb-site-settings", lang),
+      fetchAcfOptions("omb-integrations", lang),
+      fetchAcfOptions("omb-default-seo", lang),
+      fetchReadingViaOmbRest(lang),
+    ]);
 
   const siteUnwrapped = unwrapAcfOptionsPayload(siteRaw);
   const footerRawFlat = unwrapAcfOptionsPayload(footerRaw) as Record<string, unknown> | null;
-  const footerMerged = mergeFooterCtaMigrations(fromFooter(footerRawFlat), siteUnwrapped);
-  const footer = await resolveFooterBackgroundFromAttachmentId(lang, footerRawFlat, footerMerged);
+  const footer = mergeFooterCtaMigrations(fromFooter(footerRawFlat), siteUnwrapped);
   return {
     header: fromHeader(unwrapAcfOptionsPayload(headerRaw)),
     footer,
@@ -375,5 +341,6 @@ export async function fetchGlobals(lang: Locale): Promise<GlobalSettings> {
     site: fromSite(siteUnwrapped),
     integrations: fromIntegrations(unwrapAcfOptionsPayload(integrationsRaw)),
     defaultSeo: fromDefaultSeo(unwrapAcfOptionsPayload(defaultSeoRaw)),
+    reading: fromReading(readingRaw),
   };
 }

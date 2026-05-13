@@ -91,7 +91,7 @@ const standardBase =
   "inline-flex items-center justify-center rounded-full px-6 py-3 transition-all duration-400 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand";
 
 const ctaLabelClass =
-  "min-w-0 break-words text-balance sm:whitespace-nowrap [text-align:left]";
+  "min-w-0 break-words whitespace-normal [text-align:left]";
 
 const ctaBaseShared =
   "group inline-flex shrink-0 items-center font-sans font-normal transition-all duration-400 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand";

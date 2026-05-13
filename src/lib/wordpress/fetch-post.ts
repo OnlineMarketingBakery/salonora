@@ -12,23 +12,10 @@ import { toPlainText } from "@/lib/utils/strings";
 import { fetchRelatedPostCards } from "./fetch-related-posts";
 import { getBlogPageSlug } from "./config";
 import { formatPostMonthYear } from "@/lib/i18n/format-post-month-year";
+import { resolveAuthorFromRestEmbed } from "@/lib/wordpress/wp-embedded-author";
 
-function mapEmbeddedAuthor(p: WpPostRaw): PostAuthorT {
-  const u = p._embedded?.author?.[0];
-  const name = u?.name?.trim() || "";
-  const avatarUrl =
-    u?.avatar_urls?.["96"] || u?.avatar_urls?.["48"] || u?.avatar_urls?.["24"] || null;
-  const rawUrl = typeof u?.url === "string" && u.url.trim() ? u.url.trim() : null;
-  const linkedinUrl = rawUrl && /linkedin\.com/i.test(rawUrl) ? rawUrl : null;
-  const profileUrl = rawUrl && !linkedinUrl ? rawUrl : null;
-  const bio = toPlainText(u?.description || "");
-  return {
-    name,
-    avatarUrl,
-    bio,
-    profileUrl,
-    linkedinUrl,
-  };
+async function resolvePostAuthor(p: WpPostRaw, lang: Locale): Promise<PostAuthorT> {
+  return resolveAuthorFromRestEmbed(p._embedded?.author?.[0], p.author, lang);
 }
 
 function mapBreadcrumbParent(acf: Record<string, unknown>): PostBreadcrumbParentT | null {
@@ -52,7 +39,7 @@ function mapShowToc(acf: Record<string, unknown>): boolean {
   return asBool(v);
 }
 
-function toDoc(p: WpPostRaw, gs: GlobalSettings, lang: Locale): PostDocument {
+function toDoc(p: WpPostRaw, gs: GlobalSettings, lang: Locale, author: PostAuthorT): PostDocument {
   const acf = p.acf || {};
   const featured = p._embedded?.["wp:featuredmedia"]?.[0];
   const featuredForm = (acf as { featured_form?: { id?: number } | null }).featured_form;
@@ -75,7 +62,7 @@ function toDoc(p: WpPostRaw, gs: GlobalSettings, lang: Locale): PostDocument {
     publishedAt: p.date || "",
     dateLabel: formatPostMonthYear(p.date, lang),
     readMinutes: estimateReadMinutes(rawHtml),
-    author: mapEmbeddedAuthor(p),
+    author,
     showRelatedPosts,
     relatedPosts: [],
     blogArchivePath: getBlogPageSlug(lang),
@@ -95,7 +82,8 @@ export async function fetchPostBySlug(
   );
   if (!list?.[0]) return null;
   const raw = list[0];
-  const doc = toDoc(raw, gs, lang);
+  const author = await resolvePostAuthor(raw, lang);
+  const doc = toDoc(raw, gs, lang, author);
   if (doc.showRelatedPosts) {
     const cats = Array.isArray(raw.categories) ? raw.categories : [];
     const relatedPosts = await fetchRelatedPostCards(lang, doc.id, cats, 3);

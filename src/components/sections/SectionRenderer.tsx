@@ -37,6 +37,10 @@ export function SectionRenderer({ sections, lang }: { sections: AnySectionT[]; l
             return (
               <sectionRegistry.who_we_are_for key={section.id} section={section} lang={lang} />
             );
+          case "is_this_for_you":
+            return (
+              <sectionRegistry.is_this_for_you key={section.id} section={section} lang={lang} />
+            );
           case "media_text_checklist":
             return (
               <sectionRegistry.media_text_checklist key={section.id} section={section} lang={lang} />
@@ -45,6 +49,10 @@ export function SectionRenderer({ sections, lang }: { sections: AnySectionT[]; l
             return (
               <sectionRegistry.features_checklist key={section.id} section={section} lang={lang} />
             );
+          case "audience_promo_card":
+            return (
+              <sectionRegistry.audience_promo_card key={section.id} section={section} lang={lang} />
+            );
           case "story_split":
             return <sectionRegistry.story_split key={section.id} section={section} lang={lang} />;
           case "why_we_do_this":
@@ -52,6 +60,10 @@ export function SectionRenderer({ sections, lang }: { sections: AnySectionT[]; l
           case "origin_story_split":
             return (
               <sectionRegistry.origin_story_split key={section.id} section={section} lang={lang} />
+            );
+          case "our_promises":
+            return (
+              <sectionRegistry.our_promises key={section.id} section={section} lang={lang} />
             );
           case "partner_intro_split":
             return (
@@ -93,6 +105,10 @@ export function SectionRenderer({ sections, lang }: { sections: AnySectionT[]; l
             return (
               <sectionRegistry.blog_post_overview key={section.id} section={section} lang={lang} />
             );
+          case "case_study_overview":
+            return (
+              <sectionRegistry.case_study_overview key={section.id} section={section} lang={lang} />
+            );
           case "cta":
             return <sectionRegistry.cta key={section.id} section={section} lang={lang} />;
           case "pricing_cta":
@@ -101,16 +117,32 @@ export function SectionRenderer({ sections, lang }: { sections: AnySectionT[]; l
             return (
               <sectionRegistry.pricing_dual_cards key={section.id} section={section} lang={lang} />
             );
+          case "problem_solution":
+            return (
+              <sectionRegistry.problem_solution key={section.id} section={section} lang={lang} />
+            );
           case "talk_dual_cards":
             return (
               <sectionRegistry.talk_dual_cards key={section.id} section={section} lang={lang} />
             );
           case "rich_text":
             return <sectionRegistry.rich_text key={section.id} section={section} lang={lang} />;
+          case "case_study_chapter":
+            return <sectionRegistry.case_study_chapter key={section.id} section={section} lang={lang} />;
+          case "case_study_product_shot":
+            return <sectionRegistry.case_study_product_shot key={section.id} section={section} lang={lang} />;
+          case "case_study_client_review":
+            return <sectionRegistry.case_study_client_review key={section.id} section={section} lang={lang} />;
+          case "case_study_conversion_cta":
+            return <sectionRegistry.case_study_conversion_cta key={section.id} section={section} lang={lang} />;
           case "faq":
             return <sectionRegistry.faq key={section.id} section={section} lang={lang} />;
           case "scrolling_ticker":
             return <sectionRegistry.scrolling_ticker key={section.id} section={section} lang={lang} />;
+          case "steps_with_media":
+            return (
+              <sectionRegistry.steps_with_media key={section.id} section={section} lang={lang} />
+            );
           case "design_showcase_grid":
             return (
               <sectionRegistry.design_showcase_grid key={section.id} section={section} lang={lang} />

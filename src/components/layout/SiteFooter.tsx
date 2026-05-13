@@ -4,18 +4,58 @@ import { RichText } from "@/components/ui/RichText";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
-import { getImageUrl, getLargestImageUrl, resolveAbsoluteMediaUrl } from "@/lib/utils/media";
 import type { GlobalSettings } from "@/types/globals";
 import type { MenuItem } from "@/types/menu";
 import Link from "next/link";
-import type { CSSProperties } from "react";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 
-const gridStyle = {
+/**
+ * Mobile notch curve (Figma `Subtract` 807:4502 — Rectangle 479 minus Ellipse 2000).
+ *
+ * Path coords are shifted so the bowl begins at x=0 (rather than x=114 inside the original
+ * 412-wide viewBox). The SVG is rendered at a FIXED 188.712×65 px size centered horizontally,
+ * so the curve never distorts when the viewport changes — flat navy shoulders simply grow or
+ * shrink either side. This is the cleanest way to keep the bezier shoulders truly pixel-perfect
+ * with Figma; `preserveAspectRatio="none"` was scaling the X dimension and visibly stretching
+ * the smooth shoulders into long S-curves at narrow viewports.
+ */
+const MOBILE_NOTCH_WIDTH = 188.712;
+const MOBILE_NOTCH_HEIGHT = 65;
+const MOBILE_NOTCH_PATH =
+  "M0 0 H188.712 C179.985 0 172.895 6.73265 170.005 14.9668 C159.862 43.8638 129.828 64.8135 94.355 64.8135 C58.883 64.8134 28.85 43.8637 18.707 14.9668 C15.816 6.73264 8.727 0 0 0 Z";
+
+/**
+ * Desktop notch (Figma 1285:35). Same bezier as `MOBILE_NOTCH_PATH` scaled by the LOGO ratio
+ * 180/138 = 1.30435 (not the previous width-only 218/188.712 = 1.155).
+ *
+ * Why: the 180 px logo with its centre at navy_top − 14 reaches 76 px below the navy top edge.
+ * A 75-deep bowl is therefore 1 px shallower than the logo's intrusion → the navy curve sits
+ * *on top of* the logo and the Figma white halo around the badge disappears. Scaling by the
+ * logo ratio gives 246.13 × 84.78 ≈ a 9 px centre clearance + ~34 px shoulder clearance, which
+ * preserves the visible gap from the mobile design (188.712 × 65 has the same proportional
+ * clearance against the 138 px mobile logo).
+ */
+const DESKTOP_NOTCH_WIDTH = 246.13;
+const DESKTOP_NOTCH_HEIGHT = 84.78;
+const DESKTOP_NOTCH_PATH =
+  "M0 0 H246.13 C234.764 0 225.514 8.781 221.745 19.522 C208.493 57.215 169.341 84.547 123.065 84.547 C76.794 84.547 37.642 57.214 24.391 19.522 C20.621 8.780 11.381 0 0 0 Z";
+
+/**
+ * Subtle grid on dark footer (Figma reference PNG 597:6103). Cells are ~48px square and the
+ * lattice fades out below the top quarter so the grid mainly decorates the upper corners while
+ * the middle/bottom of the panel reads as a flat deep navy. White line opacity is set just
+ * higher than before so the pattern is detectable against `#002752` without dominating the
+ * panel.
+ */
+const gridStyleDark = {
   backgroundImage: `
-    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)`,
-  backgroundSize: "24px 24px",
+    linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px)`,
+  backgroundSize: "48px 48px",
+  WebkitMaskImage:
+    "linear-gradient(to bottom, #000 0%, #000 22%, rgba(0,0,0,0.55) 38%, transparent 60%)",
+  maskImage:
+    "linear-gradient(to bottom, #000 0%, #000 22%, rgba(0,0,0,0.55) 38%, transparent 60%)",
 } as const;
 
 const socials = (g: GlobalSettings) =>
@@ -116,113 +156,110 @@ export function SiteFooter({
   const hasFollow = sList.length > 0;
   const showMidDivider = hasNav && hasFollow;
 
-  /** Prefer a plain `<img>` with an absolutized URL so uploads never depend on `next/image` remotePatterns alone. */
-  const bgImageUrl = resolveAbsoluteMediaUrl(
-    getLargestImageUrl(g.footer.footerBackgroundImage) ?? getImageUrl(g.footer.footerBackgroundImage),
-  );
-  const showFooterBgImg = Boolean(bgImageUrl?.trim());
-  const hasFooterBgAttachment = g.footer.footerBackgroundImage != null;
-  const bgGradient = g.footer.footerBackgroundGradient.trim();
-  const bgColor = g.footer.footerBackgroundColor.trim();
-  const hasBgImage = showFooterBgImg || hasFooterBgAttachment;
-  const hasBgGradient = bgGradient.length > 0;
-  const hasBgColor = bgColor.length > 0;
-  const useDefaultNavy = !hasBgImage && !hasBgGradient && !hasBgColor;
+  /** Figma stock footer: white type on navy; backgrounds are pure CSS (no CMS image/gradient/color). */
+  const fg = "text-white";
+  /** Figma 597:6137 — short blue gradient accent under "Quick Links". */
+  const ruleGradient =
+    "mt-[17px] h-[3px] w-full max-w-[131px] shrink-0 bg-[linear-gradient(90deg,transparent_6%,rgba(57,144,240,0.95)_50%,transparent_94%)]";
+  /** Figma 597:6148 — slightly narrower accent under "Follow us". */
+  const ruleGradientFollow =
+    "mt-[17px] h-[3px] w-full max-w-[111px] shrink-0 bg-[linear-gradient(90deg,transparent_6%,rgba(57,144,240,0.95)_50%,transparent_94%)]";
+  /** Vertical separator Quick Links | Follow us — blue tint on dark footer (Figma). */
+  const colHairline = "bg-[rgba(57,144,240,0.5)]";
+  const showLegalMobile =
+    legalMenu.length > 0 || g.footer.showFooterLanguageSwitcher;
 
-  const footerMainStyle: CSSProperties = {};
-  if (hasBgGradient) {
-    footerMainStyle.backgroundImage = bgGradient;
-    footerMainStyle.backgroundSize = "cover";
-    footerMainStyle.backgroundPosition = "center top";
-  } else if (hasBgColor) {
-    footerMainStyle.backgroundColor = bgColor;
-  }
-
-  /** Upload row exists in CMS even if URL resolution fails — still disable the stock notch. */
-  const anyCustomFooterBg = hasBgImage || hasBgGradient || hasBgColor;
-
-  /** Built-in circular notch only when the footer uses stock navy + logo and no custom bg fields at all. */
-  const useNotchMask = Boolean(g.footer.footerLogo) && !anyCustomFooterBg;
-  const showRadialGlow = useDefaultNavy;
-  const showGridOverlay = !hasBgImage;
+  /** Carve the Figma notch when a footer logo is present (SVG mobile, radial mask desktop). */
+  const useNotchMask = Boolean(g.footer.footerLogo);
 
   return (
-    <footer className="relative z-0 mt-auto overflow-x-clip overflow-y-visible pt-20 text-white sm:pt-24 md:pt-28">
+    <footer
+      className={`relative z-0 mt-auto overflow-x-clip overflow-y-visible ${
+        useNotchMask ? "pt-[80px] md:pt-[114px]" : "pt-20 sm:pt-24 md:pt-28"
+      } ${fg}`}
+    >
+      {/*
+        Notch is now painted exclusively by the inline SVG overlays below — the radial-gradient
+        mask was producing a rough hard-edged circle on tablet/desktop (no Figma shoulders) and is
+        gone. Mobile SVG (`< md`) and desktop SVG (`md+`) share the same bezier path family so the
+        shoulder shape is consistent at every breakpoint.
+      */}
+
       <div className="relative">
+        {/*
+          Figma 597:6103 — panel is solid `--palette-navy-deep` (#002752) with a subtle grid
+          decorating the upper corners. Top corner radius scales from 17px on mobile to 40px on
+          tablet/desktop to match the Figma curve. The previous bottom blue radial-glow has been
+          removed because the Figma reference is flat navy — the glow was making our render
+          look noticeably different from Figma's bottom half.
+        */}
         <div
-          className={`relative rounded-t-3xl sm:rounded-t-[1.5rem] md:rounded-t-[50px] ${useDefaultNavy ? "bg-navy-deep" : ""}`}
-          style={{
-            ...footerMainStyle,
-            ...(useNotchMask
-              ? ({
-                  WebkitMaskImage:
-                    "radial-gradient(circle 109px at 50% 0px, transparent 0 108.5px, rgba(0,0,0,0.9) 109.5px, black 110px)",
-                  maskImage:
-                    "radial-gradient(circle 109px at 50% 0px, transparent 0 108.5px, rgba(0,0,0,0.9) 109.5px, black 110px)",
-                  WebkitMaskRepeat: "no-repeat",
-                  maskRepeat: "no-repeat",
-                  WebkitMaskSize: "100% 100%",
-                  maskSize: "100% 100%",
-                } as const)
-              : {}),
-          }}
+          className={`footer-notch relative z-2 overflow-hidden bg-navy-deep ${
+            useNotchMask
+              ? "rounded-t-[17px] md:rounded-t-[40px]"
+              : "sm:rounded-t-[17px] md:rounded-t-[40px]"
+          }`}
         >
-          {showFooterBgImg && bgImageUrl ? (
-            <div className="pointer-events-none absolute inset-0 z-[1] overflow-hidden rounded-t-[inherit]">
-              <img
-                src={bgImageUrl}
-                alt=""
-                className="absolute inset-0 h-full w-full object-cover object-top"
-                decoding="async"
-                fetchPriority="low"
-              />
-            </div>
-          ) : hasFooterBgAttachment ? (
-            <div className="pointer-events-none absolute inset-0 z-[1] overflow-hidden rounded-t-[inherit]">
-              <Media
-                image={g.footer.footerBackgroundImage}
-                fill
-                preferLargestSource
-                quality={92}
-                sizes="100vw"
-                className="object-cover object-top"
-              />
-            </div>
-          ) : null}
-          {showRadialGlow && (
-            <div
-              className="pointer-events-none absolute inset-0 rounded-t-[inherit]"
-              style={{
-                background:
-                  "radial-gradient(ellipse 50% 80% at 50% 0%, rgba(57,144,240,0.1) 0%, transparent 55%)",
-              }}
+          <div
+            className="pointer-events-none absolute inset-0 z-2 rounded-t-[inherit] opacity-60"
+            style={gridStyleDark}
+            aria-hidden
+          />
+
+          {/*
+            Mobile notch (Figma 1285:34). Inline SVG paints the page bg colour into the carved-out
+            dip, replicating Figma's bezier shoulders 1:1. Rendered at a FIXED 188.712×65 px size
+            (Figma's exact ellipse subtract width) centred horizontally; this guarantees the curve
+            never distorts. Desktop uses the same overlay approach below.
+          */}
+          {useNotchMask && (
+            <svg
               aria-hidden
-            />
+              className="pointer-events-none absolute left-1/2 top-0 z-3 block -translate-x-1/2 md:hidden"
+              width={MOBILE_NOTCH_WIDTH}
+              height={MOBILE_NOTCH_HEIGHT}
+              viewBox={`0 0 ${MOBILE_NOTCH_WIDTH} ${MOBILE_NOTCH_HEIGHT}`}
+            >
+              <path d={MOBILE_NOTCH_PATH} fill="#ffffff" />
+            </svg>
           )}
-          {showGridOverlay && (
-            <div
-              className="pointer-events-none absolute inset-0 rounded-t-[inherit] opacity-30"
-              style={gridStyle}
+          {useNotchMask && (
+            <svg
               aria-hidden
-            />
+              className="pointer-events-none absolute left-1/2 top-0 z-3 hidden -translate-x-1/2 md:block"
+              width={DESKTOP_NOTCH_WIDTH}
+              height={DESKTOP_NOTCH_HEIGHT}
+              viewBox={`0 0 ${DESKTOP_NOTCH_WIDTH} ${DESKTOP_NOTCH_HEIGHT}`}
+            >
+              <path d={DESKTOP_NOTCH_PATH} fill="#ffffff" />
+            </svg>
           )}
 
           <div
             className={[
-              "relative z-10 mx-auto w-full max-w-[1300px] px-4 sm:px-6 md:px-8",
+              "relative z-10 mx-auto w-full max-w-[1276px] px-6 lg:px-0",
               g.footer.footerLogo
-                ? "pt-28 sm:pt-32 md:pt-36"
+                ? useNotchMask
+                  ? "pt-[115px] md:pt-[147px]"
+                  : "sm:pt-32 md:pt-36"
                 : "pt-14 sm:pt-16",
             ]
               .filter(Boolean)
               .join(" ")}
           >
-            <div className="mb-4 flex flex-col gap-10 lg:flex-row lg:items-stretch lg:gap-10 lg:pl-0 xl:gap-14 2xl:gap-20 2xl:pl-2 2xl:pr-0 sm:mb-10">
+            {/*
+              At `lg` (1024–1279) the left block flexes to fill the row so longer Dutch CTAs can
+              stay side-by-side; at `xl+` we lock to the Figma-exact 625px width with the 183px
+              gap, which is the design's intended desktop spec (1440 frame).
+            */}
+            <div className="mb-0 flex flex-col gap-y-6 lg:flex-row lg:items-start lg:gap-y-0 lg:justify-between lg:gap-x-[40px] xl:justify-start xl:gap-x-[183px]">
               <div
-                className={`${REVEAL_ITEM} w-full min-w-0 max-w-[712px] text-left`}
+                className={`${REVEAL_ITEM} w-full min-w-0 max-w-[625px] text-left lg:flex-1 lg:max-w-none xl:w-[625px] xl:flex-none xl:max-w-[625px]`}
               >
                 {heading && (
-                  <h2 className="text-[2rem] font-semibold leading-none tracking-[-0.04em] text-white sm:text-[2.5rem] lg:text-[3rem] xl:text-[48px]">
+                  <h2
+                    className={`max-w-[308px] text-[34px] font-semibold leading-[1.34] sm:max-w-none lg:max-w-[586px] lg:text-[40px] ${fg}`}
+                  >
                     {heading}
                   </h2>
                 )}
@@ -235,12 +272,14 @@ export function SiteFooter({
                   </div>
                 )}
                 {!g.footer.footerText && g.site.defaultTagline && (
-                  <p className="mt-6 text-base font-normal leading-[1.6] text-white">
+                  <p
+                    className={`mt-6 text-base font-normal leading-[1.6] ${fg}`}
+                  >
                     {g.site.defaultTagline}
                   </p>
                 )}
 
-                <div className="mt-6 flex w-full min-w-0 max-w-3xl flex-col flex-wrap gap-2.5 sm:flex-row sm:items-center">
+                <div className="mt-6 flex w-full min-w-0 max-w-[625px] flex-col flex-wrap items-start gap-[22px] lg:max-w-none lg:flex-row lg:flex-nowrap lg:items-center lg:gap-[10px]">
                   {primaryCta && (
                     <Button
                       href={primaryCta.href}
@@ -248,8 +287,9 @@ export function SiteFooter({
                       variant="ctaBrand"
                       ctaJustify="between"
                       ctaElevation="none"
+                      ctaFullWidth={false}
                       arrowClassName="h-5 w-5 shrink-0"
-                      className="w-full min-w-0 gap-[15px] pl-[18px] pr-3.5 leading-[normal] sm:w-auto sm:max-w-none"
+                      className="max-w-full gap-[15px] pl-[18px] pr-3.5 leading-[normal] [&_[data-cta-label]]:whitespace-normal lg:[&_[data-cta-label]]:whitespace-nowrap"
                     >
                       {g.footer.footerCtaPrimaryLink?.title || primaryCta.label}
                     </Button>
@@ -261,8 +301,9 @@ export function SiteFooter({
                       variant="ctaWhite"
                       ctaJustify="between"
                       ctaElevation="footerSecondary"
+                      ctaFullWidth={false}
                       arrowClassName="h-5 w-5 shrink-0"
-                      className="w-full min-w-0 text-navy-deep gap-[17px] px-4 leading-[normal] sm:w-auto sm:max-w-[368px]"
+                      className="text-navy-deep max-w-full gap-[17px] px-4 leading-[normal] [&_[data-cta-label]]:whitespace-normal lg:[&_[data-cta-label]]:whitespace-nowrap"
                     >
                       {g.footer.footerCtaSecondaryLink?.title ||
                         secondaryCta.label}
@@ -280,30 +321,59 @@ export function SiteFooter({
                 )}
               </div>
 
-              <div className="flex w-full min-w-0 flex-1 flex-col justify-start gap-10 min-[500px]:flex-row min-[500px]:items-stretch min-[500px]:gap-8 min-[500px]:pl-0 sm:pl-0 lg:max-w-2xl lg:gap-6 xl:max-w-none 2xl:pl-0">
+              {showLegalMobile && (
+                <div className="flex w-full max-w-full flex-wrap items-center justify-start gap-x-[33px] gap-y-2 lg:hidden">
+                  {legalMenu.map((m) => (
+                    <Link
+                      key={m.id}
+                      href={m.href}
+                      className={`text-base font-normal leading-normal transition hover:underline ${fg} hover:text-white/80`}
+                      target={m.target}
+                    >
+                      {m.label}
+                    </Link>
+                  ))}
+                  {g.footer.showFooterLanguageSwitcher && (
+                    <LanguageSwitcher
+                      lang={lang}
+                      className={`text-base ${fg}`}
+                      serverPathname={languageSwitcherPathname}
+                      serverLocaleHrefs={languageSwitcherHrefs}
+                    />
+                  )}
+                </div>
+              )}
+
+              <div
+                className={
+                  showMidDivider
+                    ? "mt-2 flex w-full min-w-0 flex-1 items-start justify-center gap-6 sm:mt-0 sm:justify-start sm:gap-8 lg:mt-0 lg:w-auto lg:flex-none lg:gap-[38px]"
+                    : "mt-2 flex w-full min-w-0 flex-1 flex-col justify-start gap-10 sm:mt-0 min-[500px]:flex-row min-[500px]:items-start min-[500px]:gap-8 min-[500px]:pl-0 sm:pl-0 lg:mt-0 lg:w-auto lg:flex-none lg:gap-[38px]"
+                }
+              >
+                {/* Leading divider — visible at lg+ to match Figma right block (3 verticals total). */}
                 {(hasNav || hasFollow) && (
                   <div
-                    className="hidden w-px min-h-[268px] shrink-0 self-stretch bg-white/15 lg:block"
+                    className={`hidden w-px shrink-0 self-stretch lg:block lg:min-h-[268.5px] ${colHairline}`}
                     aria-hidden
                   />
                 )}
                 {hasNav && (
                   <div
-                    className={`${REVEAL_ITEM} w-full min-w-0 min-[500px]:max-w-[8.2rem] sm:min-w-[6.5rem] sm:pl-0 md:pl-0 lg:min-w-[7.2rem]`}
+                    className={`${REVEAL_ITEM} w-auto min-w-0 sm:w-full sm:max-w-[8.2rem] sm:min-w-[6.5rem] sm:pl-0 md:pl-0 lg:w-[131px] lg:max-w-[131px] lg:min-w-0 lg:shrink-0`}
                   >
-                    <h3 className="text-2xl font-semibold leading-none text-white">
+                    <h3
+                      className={`text-2xl font-semibold leading-none lg:text-[24px] ${fg}`}
+                    >
                       Quick Links
                     </h3>
-                    <div
-                      className="mt-[17px] h-0.5 w-32 max-w-full bg-white/50"
-                      aria-hidden
-                    />
-                    <ul className="mt-4 space-y-2.5" role="list">
+                    <div className={ruleGradient} aria-hidden />
+                    <ul className="mt-[17px] space-y-2.5" role="list">
                       {footerMenu.map((m) => (
                         <li key={m.id}>
                           <Link
                             href={m.href}
-                            className="text-base font-medium leading-[normal] text-white transition hover:text-white/80"
+                            className={`text-base font-medium leading-[normal] transition ${fg} hover:text-white/80`}
                             target={m.target}
                           >
                             {m.label}
@@ -314,26 +384,26 @@ export function SiteFooter({
                   </div>
                 )}
 
+                {/* Middle divider — visible whenever both columns are present. */}
                 {showMidDivider && (
                   <div
-                    className="hidden w-px min-h-[200px] shrink-0 self-stretch bg-white/15 min-[500px]:block"
+                    className={`block w-px shrink-0 self-stretch min-h-[268px] sm:min-h-[200px] lg:min-h-[268.5px] ${colHairline}`}
                     aria-hidden
                   />
                 )}
 
                 {hasFollow && (
                   <div
-                    className={`${REVEAL_ITEM} w-full min-w-0 min-[500px]:w-auto`}
+                    className={`${REVEAL_ITEM} w-auto min-w-0 sm:w-full sm:max-w-[8.2rem] sm:min-w-[6.5rem] lg:w-[130px] lg:max-w-[130px] lg:min-w-0 lg:shrink-0`}
                   >
-                    <h3 className="text-2xl font-semibold leading-none text-white">
+                    <h3
+                      className={`text-2xl font-semibold leading-none lg:text-[24px] ${fg}`}
+                    >
                       Follow us
                     </h3>
-                    <div
-                      className="mt-[17px] h-0.5 w-32 max-w-full bg-white/50"
-                      aria-hidden
-                    />
+                    <div className={ruleGradientFollow} aria-hidden />
                     <ul
-                      className="mt-4 space-y-2.5"
+                      className="mt-[17px] space-y-2.5"
                       aria-label="Social"
                       role="list"
                     >
@@ -343,12 +413,12 @@ export function SiteFooter({
                           <li key={s.label}>
                             <a
                               href={s.href}
-                              className="group inline-flex min-h-0 items-center gap-1.5 text-base font-normal leading-[normal] text-white transition hover:text-white/80"
+                              className={`group inline-flex min-h-0 items-center gap-1.5 text-base font-normal leading-[normal] transition ${fg} hover:text-white/80`}
                               rel="noreferrer"
                               target="_blank"
                             >
                               {icon && (
-                                <span className="inline-flex h-[23px] w-[23px] flex-shrink-0 items-center justify-center rounded-[11.5px] bg-white p-1 text-brand">
+                                <span className="inline-flex h-[23px] w-[23px] shrink-0 items-center justify-center rounded-[11.5px] bg-white p-1 text-brand">
                                   {icon}
                                 </span>
                               )}
@@ -360,8 +430,41 @@ export function SiteFooter({
                     </ul>
                   </div>
                 )}
+
+                {/* Trailing divider — visible at lg+ to match Figma (third vertical line after Follow us). */}
+                {(hasNav || hasFollow) && (
+                  <div
+                    className={`hidden w-px shrink-0 self-stretch lg:block lg:min-h-[268.5px] ${colHairline}`}
+                    aria-hidden
+                  />
+                )}
               </div>
             </div>
+
+            {showLegalMobile && (
+              // Figma 698:4618 — legal links sit in the navy area, left-aligned, ~50px below the
+              // main row, well ABOVE the bottom copyright band. `text-[16px]` `gap-[33px]`.
+              <div className="mt-[50px] hidden flex-wrap items-center justify-start gap-x-[33px] gap-y-2 lg:flex">
+                {legalMenu.map((m) => (
+                  <Link
+                    key={m.id}
+                    href={m.href}
+                    className={`text-[16px] font-normal leading-normal transition hover:underline ${fg} hover:text-white/80`}
+                    target={m.target}
+                  >
+                    {m.label}
+                  </Link>
+                ))}
+                {g.footer.showFooterLanguageSwitcher && (
+                  <LanguageSwitcher
+                    lang={lang}
+                    className={`text-[16px] ${fg}`}
+                    serverPathname={languageSwitcherPathname}
+                    serverLocaleHrefs={languageSwitcherHrefs}
+                  />
+                )}
+              </div>
+            )}
           </div>
 
           <div className="w-full">
@@ -376,49 +479,34 @@ export function SiteFooter({
                 decoding="async"
               />
             </div>
-            <div className={` bg-navy-deep relative z-10`}>
-              <div className="mx-auto flex w-full max-w-[1300px] flex-col items-center justify-center px-4 pb-5 sm:px-6 md:px-8">
-                <p className="mt-2 text-center text-sm font-light text-white/90 sm:-mt-6">
+            {/*
+              Figma 597:6115 — copyright is a single centred line on a slightly darker navy band.
+              Legal links have already been rendered ABOVE this band (see block above), so the bar
+              contains only the centred copyright at every breakpoint.
+            */}
+            <div className="relative z-10 bg-[color-mix(in_srgb,var(--palette-navy-deep)_72%,black)]">
+              <div className="mx-auto flex w-full max-w-[1300px] items-center justify-center px-4 py-4 sm:px-6 sm:py-5 md:px-8">
+                <p
+                  className={`text-center text-[16px] font-normal leading-[1.5] ${fg}`}
+                >
                   {g.footer.footerCopyright ||
                     `Copyright ©${new Date().getFullYear()} Salonora all right reserved`}
                 </p>
-
-                {(legalMenu.length > 0 ||
-                  g.footer.showFooterLanguageSwitcher) && (
-                  <div className="mt-2 flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
-                    {legalMenu.map((m) => (
-                      <Link
-                        key={m.id}
-                        href={m.href}
-                        className="text-sm font-medium text-white/80 transition hover:text-white hover:underline"
-                        target={m.target}
-                      >
-                        {m.label}
-                      </Link>
-                    ))}
-                    {g.footer.showFooterLanguageSwitcher && (
-                      <LanguageSwitcher
-                        lang={lang}
-                        className="text-sm text-white/80"
-                        serverPathname={languageSwitcherPathname}
-                        serverLocaleHrefs={languageSwitcherHrefs}
-                      />
-                    )}
-                  </div>
-                )}
               </div>
             </div>
           </div>
         </div>
 
         {g.footer.footerLogo && (
-          <div className="absolute left-1/2 top-0 z-30 -translate-x-1/2 translate-y-[-40%] sm:translate-y-[-45%] md:translate-y-[calc(-50%+6px)]">
-            <div className="flex h-[100px] w-[100px] items-center justify-center rounded-full border border-[#3990F0] bg-white p-2 shadow-[0px_23px_17px_rgba(67,87,128,0.34)] sm:h-[140px] sm:w-[140px] sm:p-2.5 md:h-[180px] md:w-[180px] md:pb-[39px] md:pl-[55px] md:pr-[54px] md:pt-[38px]">
+          // Figma 807:4507 places the 138px logo with its top at 80px above the navy top edge
+          // (i.e. logo center sits 11px ABOVE the navy top). Desktop equivalent is 14px above.
+          <div className="absolute left-1/2 top-[-11px] z-30 -translate-x-1/2 -translate-y-1/2 md:top-[-14px]">
+            <div className="flex h-[138px] w-[138px] items-center justify-center rounded-full border border-[#3990F0] bg-white p-2.5 shadow-[0px_23px_17px_rgba(67,87,128,0.34)] sm:h-[140px] sm:w-[140px] md:h-[180px] md:w-[180px] md:pb-[39px] md:pl-[55px] md:pr-[54px] md:pt-[38px]">
               <Media
                 image={g.footer.footerLogo}
-                width={120}
-                height={64}
-                className="h-10 w-auto sm:h-18"
+                width={79}
+                height={97}
+                className="h-[69px] w-[57px] md:h-[97px] md:w-[79px]"
               />
             </div>
           </div>

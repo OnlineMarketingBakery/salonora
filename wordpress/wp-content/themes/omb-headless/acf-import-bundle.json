@@ -1209,6 +1209,26 @@
         "ui_off_text": "No"
       },
       {
+        "key": "field_omb_is_case_study_archive",
+        "label": "Case study archive page",
+        "name": "is_case_study_archive",
+        "aria-label": "",
+        "type": "true_false",
+        "instructions": "When enabled, URL query parameters ?page= (pagination) and ?s= (search) apply to the Case study overview section on this page.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "message": "",
+        "default_value": 0,
+        "ui": 1,
+        "ui_on_text": "Yes",
+        "ui_off_text": "No"
+      },
+      {
         "key": "field_omb_sections_tab",
         "label": "Flexible Sections",
         "name": "",
@@ -4211,6 +4231,247 @@
             "min": "",
             "max": ""
           },
+          "layout_omb_is_this_for_you": {
+            "key": "layout_omb_is_this_for_you",
+            "name": "is_this_for_you",
+            "label": "Is this for you (split)",
+            "display": "block",
+            "sub_fields": [
+              {
+                "key": "field_omb_is_this_for_you_title",
+                "label": "Title",
+                "name": "title",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Main heading (Figma **1325:38**).",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+              },
+              {
+                "key": "field_omb_is_this_for_you_subtitle",
+                "label": "Subtitle",
+                "name": "subtitle",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Line under the title (e.g. “Dit is voor jou als je:”).",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+              },
+              {
+                "key": "field_omb_is_this_for_you_list_default_icon",
+                "label": "Default checklist icon",
+                "name": "list_default_icon",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "Optional; rows without a per-row icon inherit this. Empty = built-in brand check.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "png,jpg,jpeg,webp,svg",
+                "allow_in_bindings": 0,
+                "preview_size": "thumbnail"
+              },
+              {
+                "key": "field_omb_is_this_for_you_checklist",
+                "label": "Checklist",
+                "name": "checklist",
+                "aria-label": "",
+                "type": "repeater",
+                "instructions": "Bullet lines with optional per-row icon.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "layout": "row",
+                "pagination": 0,
+                "min": 0,
+                "max": 0,
+                "collapsed": "",
+                "button_label": "Add row",
+                "rows_per_page": 20,
+                "sub_fields": [
+                  {
+                    "key": "field_omb_is_this_for_you_checklist_icon",
+                    "label": "Icon (optional)",
+                    "name": "icon",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "return_format": "array",
+                    "library": "all",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": "png,jpg,jpeg,webp,svg",
+                    "allow_in_bindings": 0,
+                    "preview_size": "thumbnail",
+                    "parent_repeater": "field_omb_is_this_for_you_checklist"
+                  },
+                  {
+                    "key": "field_omb_is_this_for_you_checklist_item",
+                    "label": "Line",
+                    "name": "item",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_omb_is_this_for_you_checklist"
+                  }
+                ]
+              },
+              {
+                "key": "field_omb_is_this_for_you_footer_note",
+                "label": "Footer note",
+                "name": "footer_note",
+                "aria-label": "",
+                "type": "wysiwyg",
+                "instructions": "Paragraph below the checklist (e.g. “Dit werkt ook voor…”).",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "allow_in_bindings": 0,
+                "tabs": "all",
+                "toolbar": "basic",
+                "media_upload": 0,
+                "delay": 0
+              },
+              {
+                "key": "field_omb_is_this_for_you_button",
+                "label": "CTA",
+                "name": "button",
+                "aria-label": "",
+                "type": "link",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "allow_in_bindings": 0
+              },
+              {
+                "key": "field_omb_is_this_for_you_button_trailing_icon",
+                "label": "CTA trailing icon",
+                "name": "button_trailing_icon",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "Optional graphic after the CTA label (e.g. arrow); shown inverted on the brand pill.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "png,jpg,jpeg,webp,svg",
+                "allow_in_bindings": 0,
+                "preview_size": "thumbnail"
+              },
+              {
+                "key": "field_omb_is_this_for_you_image",
+                "label": "Image",
+                "name": "image",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "Right column photo; rotated brand panel is rendered in the theme.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "",
+                "allow_in_bindings": 0,
+                "preview_size": "medium"
+              }
+            ],
+            "min": "",
+            "max": ""
+          },
           "layout_omb_features_checklist": {
             "key": "layout_omb_features_checklist",
             "name": "features_checklist",
@@ -4912,6 +5173,390 @@
             "min": "",
             "max": ""
           },
+          "layout_omb_audience_promo_card": {
+            "key": "layout_omb_audience_promo_card",
+            "name": "audience_promo_card",
+            "label": "Audience promo card",
+            "display": "block",
+            "sub_fields": [
+              {
+                "key": "field_omb_audience_promo_card_badge_text",
+                "label": "Badge text",
+                "name": "badge_text",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Optional pill above the headline (e.g. audience segment).",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+              },
+              {
+                "key": "field_omb_audience_promo_card_title",
+                "label": "Title",
+                "name": "title",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Use line breaks for multi-line headings.",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+              },
+              {
+                "key": "field_omb_audience_promo_card_description",
+                "label": "Description",
+                "name": "description",
+                "aria-label": "",
+                "type": "wysiwyg",
+                "instructions": "Intro paragraph under the title.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "allow_in_bindings": 0,
+                "tabs": "all",
+                "toolbar": "basic",
+                "media_upload": 0,
+                "delay": 0
+              },
+              {
+                "key": "field_omb_audience_promo_card_features",
+                "label": "Feature lines",
+                "name": "features",
+                "aria-label": "",
+                "type": "repeater",
+                "instructions": "Checklist rows (brand check icon is built in).",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "layout": "row",
+                "pagination": 0,
+                "min": 0,
+                "max": 0,
+                "collapsed": "",
+                "button_label": "Add row",
+                "rows_per_page": 20,
+                "sub_fields": [
+                  {
+                    "key": "field_omb_audience_promo_card_feature_item",
+                    "label": "Line",
+                    "name": "item",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_omb_audience_promo_card_features"
+                  }
+                ]
+              },
+              {
+                "key": "field_omb_audience_promo_card_image",
+                "label": "Image",
+                "name": "image",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "Main photo (rounded); optional tilted brand panel renders behind when set.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "",
+                "allow_in_bindings": 0,
+                "preview_size": "medium"
+              },
+              {
+                "key": "field_omb_audience_promo_card_button",
+                "label": "Primary button",
+                "name": "button",
+                "aria-label": "",
+                "type": "link",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "allow_in_bindings": 0
+              },
+              {
+                "key": "field_omb_audience_promo_card_button_trailing_icon",
+                "label": "CTA trailing icon",
+                "name": "button_trailing_icon",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "Optional; replaces the default circled arrow.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "png,jpg,jpeg,webp,svg",
+                "allow_in_bindings": 0,
+                "preview_size": "thumbnail"
+              }
+            ],
+            "min": "",
+            "max": ""
+          },
+          "layout_omb_steps_with_media": {
+            "key": "layout_omb_steps_with_media",
+            "name": "steps_with_media",
+            "label": "Steps with media",
+            "display": "block",
+            "sub_fields": [
+              {
+                "key": "field_omb_steps_with_media_title",
+                "label": "Title",
+                "name": "title",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Main heading (line breaks allowed).",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+              },
+              {
+                "key": "field_omb_steps_with_media_steps",
+                "label": "Steps",
+                "name": "steps",
+                "aria-label": "",
+                "type": "repeater",
+                "instructions": "Up to three process steps with numbered tiles.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "layout": "row",
+                "pagination": 0,
+                "min": 0,
+                "max": 0,
+                "collapsed": "",
+                "button_label": "Add step",
+                "rows_per_page": 20,
+                "sub_fields": [
+                  {
+                    "key": "field_omb_steps_with_media_step_number",
+                    "label": "Number",
+                    "name": "number",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "Shown in the square (e.g. 1, 2, 3).",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_omb_steps_with_media_steps"
+                  },
+                  {
+                    "key": "field_omb_steps_with_media_step_icon_color",
+                    "label": "Icon color",
+                    "name": "icon_color",
+                    "aria-label": "",
+                    "type": "select",
+                    "instructions": "Blue matches brand; pink alternates for the middle step in the default design.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "choices": {
+                      "blue": "Blue",
+                      "pink": "Pink / rose"
+                    },
+                    "default_value": "blue",
+                    "return_format": "value",
+                    "multiple": 0,
+                    "allow_null": 0,
+                    "ui": 1,
+                    "ajax": 0,
+                    "placeholder": "",
+                    "allow_custom": 0,
+                    "search_placeholder": "",
+                    "allow_in_bindings": 0,
+                    "create_options": 0,
+                    "save_options": 0,
+                    "parent_repeater": "field_omb_steps_with_media_steps"
+                  },
+                  {
+                    "key": "field_omb_steps_with_media_step_title",
+                    "label": "Step title",
+                    "name": "title",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_omb_steps_with_media_steps"
+                  },
+                  {
+                    "key": "field_omb_steps_with_media_step_description",
+                    "label": "Description",
+                    "name": "description",
+                    "aria-label": "",
+                    "type": "wysiwyg",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "default_value": "",
+                    "allow_in_bindings": 0,
+                    "tabs": "all",
+                    "toolbar": "basic",
+                    "media_upload": 0,
+                    "delay": 0,
+                    "parent_repeater": "field_omb_steps_with_media_steps"
+                  }
+                ]
+              },
+              {
+                "key": "field_omb_steps_with_media_cta_link",
+                "label": "CTA link",
+                "name": "cta_link",
+                "aria-label": "",
+                "type": "link",
+                "instructions": "Primary pill button under the steps.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "allow_in_bindings": 0
+              },
+              {
+                "key": "field_omb_steps_with_media_browser_image",
+                "label": "Browser screenshot",
+                "name": "browser_image",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "Shown inside the decorative browser frame (site preview).",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "",
+                "allow_in_bindings": 0,
+                "preview_size": "medium"
+              }
+            ],
+            "min": "",
+            "max": ""
+          },
           "layout_omb_story_split": {
             "key": "layout_omb_story_split",
             "name": "story_split",
@@ -5356,6 +6001,164 @@
                     "return_format": "array",
                     "allow_in_bindings": 0,
                     "parent_repeater": "field_omb_origin_story_split_ctas"
+                  }
+                ]
+              }
+            ],
+            "min": "",
+            "max": ""
+          },
+          "layout_omb_our_promises": {
+            "key": "layout_omb_our_promises",
+            "name": "our_promises",
+            "label": "Our promises",
+            "display": "block",
+            "sub_fields": [
+              {
+                "key": "field_omb_our_promises_title",
+                "label": "Title",
+                "name": "title",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Centered section heading (line breaks allowed). Figma: “Onze Beloftes aan Jou!”.",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+              },
+              {
+                "key": "field_omb_our_promises_items",
+                "label": "Promises",
+                "name": "items",
+                "aria-label": "",
+                "type": "repeater",
+                "instructions": "Typically four columns: icon in a brand (blue) or rose circle, title, and short description.",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "layout": "row",
+                "pagination": 0,
+                "min": 1,
+                "max": 0,
+                "collapsed": "",
+                "button_label": "Add promise",
+                "rows_per_page": 20,
+                "sub_fields": [
+                  {
+                    "key": "field_omb_our_promises_item_icon",
+                    "label": "Icon",
+                    "name": "icon",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "White or light artwork on transparency works best on the colored circle.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "return_format": "array",
+                    "library": "all",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": "png,jpg,jpeg,webp,svg",
+                    "allow_in_bindings": 0,
+                    "preview_size": "thumbnail",
+                    "parent_repeater": "field_omb_our_promises_items"
+                  },
+                  {
+                    "key": "field_omb_our_promises_item_icon_accent",
+                    "label": "Icon circle color",
+                    "name": "icon_accent",
+                    "aria-label": "",
+                    "type": "select",
+                    "instructions": "Brand = blue circle; Rose = pink circle (alternate per column in the design).",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "choices": {
+                      "brand": "Brand (blue)",
+                      "rose": "Rose (pink)"
+                    },
+                    "default_value": "brand",
+                    "return_format": "value",
+                    "multiple": 0,
+                    "allow_null": 0,
+                    "ui": 1,
+                    "ajax": 0,
+                    "placeholder": "",
+                    "allow_custom": 0,
+                    "search_placeholder": "",
+                    "allow_in_bindings": 0,
+                    "create_options": 0,
+                    "save_options": 0,
+                    "parent_repeater": "field_omb_our_promises_items"
+                  },
+                  {
+                    "key": "field_omb_our_promises_item_title",
+                    "label": "Title",
+                    "name": "title",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "Bold line under the icon.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_omb_our_promises_items"
+                  },
+                  {
+                    "key": "field_omb_our_promises_item_description",
+                    "label": "Description",
+                    "name": "description",
+                    "aria-label": "",
+                    "type": "wysiwyg",
+                    "instructions": "Supporting copy under the title.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "default_value": "",
+                    "allow_in_bindings": 0,
+                    "tabs": "all",
+                    "toolbar": "basic",
+                    "media_upload": 0,
+                    "delay": 0,
+                    "parent_repeater": "field_omb_our_promises_items"
                   }
                 ]
               }
@@ -9384,6 +10187,252 @@
             "min": "",
             "max": ""
           },
+          "layout_omb_case_study_overview": {
+            "key": "layout_omb_case_study_overview",
+            "name": "case_study_overview",
+            "label": "Case study overview",
+            "display": "block",
+            "sub_fields": [
+              {
+                "key": "field_cs_overview_title",
+                "label": "Title",
+                "name": "title",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+              },
+              {
+                "key": "field_cs_overview_intro",
+                "label": "Intro",
+                "name": "intro",
+                "aria-label": "",
+                "type": "textarea",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "rows": 3,
+                "placeholder": "",
+                "new_lines": "br"
+              },
+              {
+                "key": "field_cs_overview_hero_stats",
+                "label": "Hero stats",
+                "name": "hero_stats",
+                "aria-label": "",
+                "type": "repeater",
+                "instructions": "Optional row of stat cards below the intro (e.g. four KPIs).",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "layout": "row",
+                "pagination": 0,
+                "min": 0,
+                "max": 6,
+                "collapsed": "",
+                "button_label": "Add stat",
+                "rows_per_page": 20,
+                "sub_fields": [
+                  {
+                    "key": "field_cs_hero_stat_label",
+                    "label": "Label",
+                    "name": "stat_label",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_cs_overview_hero_stats"
+                  },
+                  {
+                    "key": "field_cs_hero_stat_value",
+                    "label": "Value",
+                    "name": "stat_value",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_cs_overview_hero_stats"
+                  }
+                ]
+              },
+              {
+                "key": "field_cs_overview_show_featured",
+                "label": "Show featured case study",
+                "name": "show_featured",
+                "aria-label": "",
+                "type": "true_false",
+                "instructions": "On page 1, a large featured block appears above the grid. If “Featured case study” is set, that entry is shown; otherwise the newest case study is featured.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "message": "",
+                "default_value": 1,
+                "ui": 1,
+                "ui_on_text": "Yes",
+                "ui_off_text": "No"
+              },
+              {
+                "key": "field_cs_overview_featured_case_study",
+                "label": "Featured case study",
+                "name": "featured_case_study",
+                "aria-label": "",
+                "type": "post_object",
+                "instructions": "Optional. Pin one case study in the featured slot (page 1, no search). Leave empty to use the newest automatically.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "post_type": [
+                  "case_study"
+                ],
+                "post_status": [
+                  "publish"
+                ],
+                "taxonomy": "",
+                "return_format": "object",
+                "multiple": 0,
+                "allow_null": 1,
+                "allow_in_bindings": 1,
+                "bidirectional": 0,
+                "ui": 1,
+                "bidirectional_target": []
+              },
+              {
+                "key": "field_cs_overview_grid_columns",
+                "label": "Hero KPI columns (large screens)",
+                "name": "grid_columns",
+                "aria-label": "",
+                "type": "select",
+                "instructions": "How many hero stat cards per row below the intro. Smaller breakpoints step up gradually. Does not change the case study card grid further down the page.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "choices": {
+                  "1": "1 column",
+                  "2": "2 columns",
+                  "3": "3 columns",
+                  "4": "4 columns"
+                },
+                "default_value": "3",
+                "return_format": "value",
+                "multiple": 0,
+                "allow_null": 0,
+                "ui": 1,
+                "ajax": 0,
+                "placeholder": "",
+                "allow_custom": 0,
+                "search_placeholder": "",
+                "allow_in_bindings": 0,
+                "create_options": 0,
+                "save_options": 0
+              },
+              {
+                "key": "field_cs_overview_grid_rows",
+                "label": "Case study list rows (per page)",
+                "name": "grid_rows",
+                "aria-label": "",
+                "type": "number",
+                "instructions": "How many rows of case studies to load per page. The card list uses three columns on large screens, so items per page = 3 × this value (maximum 50). The featured slot still uses one of the fetched items on page 1 when enabled.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": 2,
+                "min": 1,
+                "max": 12,
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": "",
+                "step": ""
+              },
+              {
+                "key": "field_cs_overview_read_more_label",
+                "label": "Read more link label (optional)",
+                "name": "read_more_label",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Leave empty to use the default label per site language.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+              }
+            ],
+            "min": "",
+            "max": ""
+          },
           "layout_omb_cta": {
             "key": "layout_omb_cta",
             "name": "cta",
@@ -10113,6 +11162,198 @@
             "min": "",
             "max": ""
           },
+          "layout_omb_problem_solution": {
+            "key": "layout_omb_problem_solution",
+            "name": "problem_solution",
+            "label": "Problem / Solution cards",
+            "display": "block",
+            "sub_fields": [
+              {
+                "key": "field_omb_problem_solution_problem_title",
+                "label": "Problem card — title",
+                "name": "problem_title",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Large white heading on the navy card (e.g. Het probleem).",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+              },
+              {
+                "key": "field_omb_problem_solution_problem_text",
+                "label": "Problem card — body",
+                "name": "problem_text",
+                "aria-label": "",
+                "type": "wysiwyg",
+                "instructions": "Intro + paragraphs (white text).",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "allow_in_bindings": 0,
+                "tabs": "all",
+                "toolbar": "basic",
+                "media_upload": 0,
+                "delay": 0
+              },
+              {
+                "key": "field_omb_problem_solution_problem_image",
+                "label": "Problem card — portrait",
+                "name": "problem_image",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "Cut-out / PNG with transparency; anchored bottom-right of the navy card.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "png,jpg,jpeg,webp",
+                "allow_in_bindings": 0,
+                "preview_size": "medium"
+              },
+              {
+                "key": "field_omb_problem_solution_solution_title",
+                "label": "Solution card — title",
+                "name": "solution_title",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Large white heading on the blue card (e.g. De oplossing).",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+              },
+              {
+                "key": "field_omb_problem_solution_solution_text",
+                "label": "Solution card — body",
+                "name": "solution_text",
+                "aria-label": "",
+                "type": "wysiwyg",
+                "instructions": "Intro + benefit paragraphs (white text) above the checklist.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "allow_in_bindings": 0,
+                "tabs": "all",
+                "toolbar": "basic",
+                "media_upload": 0,
+                "delay": 0
+              },
+              {
+                "key": "field_omb_problem_solution_solution_list",
+                "label": "Solution card — checklist",
+                "name": "solution_list",
+                "aria-label": "",
+                "type": "repeater",
+                "instructions": "Optional rows with white disc + brand check (e.g. Google / local SEO lines).",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "layout": "row",
+                "pagination": 0,
+                "min": 0,
+                "max": 12,
+                "collapsed": "field_omb_problem_solution_solution_list_item",
+                "button_label": "Add checklist line",
+                "rows_per_page": 20,
+                "sub_fields": [
+                  {
+                    "key": "field_omb_problem_solution_solution_list_item",
+                    "label": "Line",
+                    "name": "item",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_omb_problem_solution_solution_list"
+                  }
+                ]
+              },
+              {
+                "key": "field_omb_problem_solution_solution_image",
+                "label": "Solution card — portrait",
+                "name": "solution_image",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "Cut-out / PNG with transparency; anchored bottom-right of the blue card.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "png,jpg,jpeg,webp",
+                "allow_in_bindings": 0,
+                "preview_size": "medium"
+              }
+            ],
+            "min": "",
+            "max": ""
+          },
           "layout_omb_talk_dual_cards": {
             "key": "layout_omb_talk_dual_cards",
             "name": "talk_dual_cards",
@@ -10790,7 +12031,7 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1779300000
+    "modified": 1779600000
   },
   {
     "key": "group_omb_post_settings",
@@ -12445,5 +13686,499 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": ""
+  },
+  {
+    "key": "group_omb_case_study_settings",
+    "title": "OMB Case Study",
+    "fields": [
+      {
+        "key": "field_omb_case_study_project_label",
+        "label": "Project label",
+        "name": "case_study_project_label",
+        "aria-label": "",
+        "type": "text",
+        "instructions": "Shown above the title on overview cards and on the single template (e.g. “Project: Voetzorg Roermond”).",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "allow_in_bindings": 0,
+        "placeholder": "",
+        "prepend": "",
+        "append": ""
+      },
+      {
+        "key": "field_omb_case_study_outcome_metrics",
+        "label": "Outcome metrics",
+        "name": "case_study_outcome_metrics",
+        "aria-label": "",
+        "type": "repeater",
+        "instructions": "Metrics for the overview featured block (first three used there) and for the **single case study** metrics bar (all rows, typically four).",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "layout": "row",
+        "pagination": 0,
+        "min": 0,
+        "max": 8,
+        "collapsed": "",
+        "button_label": "Add metric",
+        "rows_per_page": 20,
+        "sub_fields": [
+          {
+            "key": "field_omb_case_study_metric_label",
+            "label": "Label",
+            "name": "metric_label",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+              "width": "",
+              "class": "",
+              "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "parent_repeater": "field_omb_case_study_outcome_metrics"
+          },
+          {
+            "key": "field_omb_case_study_metric_value",
+            "label": "Value",
+            "name": "metric_value",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+              "width": "",
+              "class": "",
+              "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "parent_repeater": "field_omb_case_study_outcome_metrics"
+          }
+        ]
+      },
+      {
+        "key": "field_omb_case_study_lead",
+        "label": "Case study lead (on-page intro)",
+        "name": "case_study_lead",
+        "aria-label": "",
+        "type": "wysiwyg",
+        "instructions": "Optional intro under the title. When empty, the WordPress excerpt is shown as plain text (same idea as blog **Post lead**).",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "allow_in_bindings": 1,
+        "tabs": "visual",
+        "toolbar": "basic",
+        "media_upload": 0,
+        "delay": 0
+      },
+      {
+        "key": "field_omb_case_study_show_toc",
+        "label": "Show table of contents",
+        "name": "show_toc",
+        "aria-label": "",
+        "type": "true_false",
+        "instructions": "When off, the Inhoudsopgave block is hidden (author card still shows).",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "message": "",
+        "default_value": 1,
+        "ui": 1,
+        "ui_on_text": "Yes",
+        "ui_off_text": "No"
+      },
+      {
+        "key": "field_omb_case_study_breadcrumb_parent",
+        "label": "Breadcrumb parent (before case studies)",
+        "name": "breadcrumb_parent",
+        "aria-label": "",
+        "type": "link",
+        "instructions": "Optional first breadcrumb segment before the case studies archive link.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "return_format": "array",
+        "allow_in_bindings": 1
+      },
+      {
+        "key": "field_omb_case_study_show_related",
+        "label": "Show related case studies",
+        "name": "show_related_case_studies",
+        "aria-label": "",
+        "type": "true_false",
+        "instructions": "When on, three other case studies load at the bottom of the single template.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "message": "",
+        "default_value": 1,
+        "ui": 1,
+        "ui_on_text": "Yes",
+        "ui_off_text": "No"
+      },
+      {
+        "key": "field_omb_case_study_featured_form",
+        "label": "Featured form",
+        "name": "featured_form",
+        "aria-label": "",
+        "type": "post_object",
+        "instructions": "Optional Contact Form 7 form embedded after the article body (same pattern as blog posts).",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "post_type": [
+          "wpcf7_contact_form"
+        ],
+        "post_status": [
+          "publish"
+        ],
+        "taxonomy": "",
+        "return_format": "object",
+        "multiple": 0,
+        "allow_null": 1,
+        "allow_in_bindings": 0,
+        "bidirectional": 0,
+        "ui": 1,
+        "bidirectional_target": []
+      }
+    ],
+    "location": [
+      [
+        {
+          "param": "post_type",
+          "operator": "==",
+          "value": "case_study"
+        }
+      ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 1,
+    "display_title": "",
+    "allow_ai_access": false,
+    "ai_description": "",
+    "modified": 1779500000
+  },
+  {
+    "key": "group_omb_case_study_builder",
+    "title": "OMB Case study builder",
+    "fields": [
+      {
+        "key": "field_omb_case_study_sections",
+        "label": "Case study sections",
+        "name": "case_study_sections",
+        "aria-label": "",
+        "type": "flexible_content",
+        "instructions": "Build the case study body here. When you add at least one of these layouts, the single template uses **sections** instead of the WordPress **Content** field (classic body stays available as a fallback when this list is empty). Use **Chapter** for each major block (Probleem, Oplossing, …); headings appear in the table of contents.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "layouts": {
+          "layout_omb_cs_chapter": {
+            "key": "layout_omb_cs_chapter",
+            "name": "case_study_chapter",
+            "label": "Chapter (heading + text)",
+            "display": "block",
+            "sub_fields": [
+              {
+                "key": "field_omb_cs_chapter_heading",
+                "label": "Heading",
+                "name": "heading",
+                "type": "text",
+                "instructions": "Shown as H2 and in the Inhoudsopgave (e.g. Probleem, Resultaat).",
+                "required": 1,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 1
+              },
+              {
+                "key": "field_omb_cs_chapter_body",
+                "label": "Body",
+                "name": "body",
+                "type": "wysiwyg",
+                "instructions": "Paragraphs under the heading.",
+                "required": 0,
+                "tabs": "all",
+                "toolbar": "basic",
+                "media_upload": 1,
+                "delay": 0,
+                "allow_in_bindings": 1
+              },
+              {
+                "key": "field_omb_cs_chapter_divider",
+                "label": "Show divider under block",
+                "name": "show_divider_after",
+                "type": "true_false",
+                "instructions": "Matches Figma hairline between story sections.",
+                "default_value": 1,
+                "ui": 1,
+                "ui_on_text": "Yes",
+                "ui_off_text": "No",
+                "allow_in_bindings": 0
+              }
+            ],
+            "min": "",
+            "max": ""
+          },
+          "layout_omb_cs_product_shot": {
+            "key": "layout_omb_cs_product_shot",
+            "name": "case_study_product_shot",
+            "label": "Product screenshot",
+            "display": "block",
+            "sub_fields": [
+              {
+                "key": "field_omb_cs_shot_image",
+                "label": "Image",
+                "name": "image",
+                "type": "image",
+                "return_format": "array",
+                "preview_size": "medium",
+                "library": "all",
+                "required": 1,
+                "allow_in_bindings": 1
+              },
+              {
+                "key": "field_omb_cs_shot_title",
+                "label": "Title (optional)",
+                "name": "title",
+                "type": "text",
+                "instructions": "Shown above the image, left-aligned (e.g. section headline). Leave empty for image only.",
+                "required": 0,
+                "default_value": "",
+                "allow_in_bindings": 1
+              },
+              {
+                "key": "field_omb_cs_shot_description",
+                "label": "Description (optional)",
+                "name": "description",
+                "type": "wysiwyg",
+                "instructions": "Body copy below the screenshot (e.g. caption or supporting text).",
+                "required": 0,
+                "tabs": "visual",
+                "toolbar": "basic",
+                "media_upload": 0,
+                "default_value": "",
+                "allow_in_bindings": 1
+              },
+              {
+                "key": "field_omb_cs_shot_divider",
+                "label": "Show divider under block",
+                "name": "show_divider_after",
+                "type": "true_false",
+                "instructions": "Matches Figma hairline between story sections (same as Chapter).",
+                "default_value": 1,
+                "ui": 1,
+                "ui_on_text": "Yes",
+                "ui_off_text": "No",
+                "allow_in_bindings": 0
+              }
+            ],
+            "min": "",
+            "max": ""
+          },
+          "layout_omb_cs_client_review": {
+            "key": "layout_omb_cs_client_review",
+            "name": "case_study_client_review",
+            "label": "Client review (video + quote)",
+            "display": "block",
+            "sub_fields": [
+              {
+                "key": "field_omb_cs_rev_heading",
+                "label": "Section heading",
+                "name": "section_heading",
+                "type": "text",
+                "instructions": "Leave empty to use the default (“Klantenrecensie” / “Client review”).",
+                "required": 0,
+                "default_value": "",
+                "allow_in_bindings": 1
+              },
+              {
+                "key": "field_omb_cs_rev_video_url",
+                "label": "Video URL",
+                "name": "video_url",
+                "type": "url",
+                "instructions": "YouTube or direct link; opens in a new tab with the poster as thumbnail.",
+                "required": 0,
+                "default_value": "",
+                "allow_in_bindings": 1
+              },
+              {
+                "key": "field_omb_cs_rev_video_poster",
+                "label": "Video poster",
+                "name": "video_poster",
+                "type": "image",
+                "return_format": "array",
+                "preview_size": "medium",
+                "library": "all",
+                "required": 0,
+                "allow_in_bindings": 1
+              },
+              {
+                "key": "field_omb_cs_rev_quote",
+                "label": "Quote",
+                "name": "quote",
+                "type": "wysiwyg",
+                "tabs": "visual",
+                "toolbar": "basic",
+                "media_upload": 0,
+                "required": 0,
+                "allow_in_bindings": 1
+              },
+              {
+                "key": "field_omb_cs_rev_person_name",
+                "label": "Person name",
+                "name": "person_name",
+                "type": "text",
+                "required": 0,
+                "allow_in_bindings": 1
+              },
+              {
+                "key": "field_omb_cs_rev_person_role",
+                "label": "Person title / company",
+                "name": "person_role",
+                "type": "text",
+                "required": 0,
+                "allow_in_bindings": 1
+              },
+              {
+                "key": "field_omb_cs_rev_person_photo",
+                "label": "Person photo",
+                "name": "person_photo",
+                "type": "image",
+                "return_format": "array",
+                "preview_size": "thumbnail",
+                "library": "all",
+                "required": 0,
+                "allow_in_bindings": 1
+              }
+            ],
+            "min": "",
+            "max": ""
+          },
+          "layout_omb_cs_conversion_cta": {
+            "key": "layout_omb_cs_conversion_cta",
+            "name": "case_study_conversion_cta",
+            "label": "Conversion CTA band",
+            "display": "block",
+            "sub_fields": [
+              {
+                "key": "field_omb_cs_cta_title",
+                "label": "Title",
+                "name": "title",
+                "type": "text",
+                "required": 0,
+                "allow_in_bindings": 1
+              },
+              {
+                "key": "field_omb_cs_cta_subtitle",
+                "label": "Subtitle",
+                "name": "subtitle",
+                "type": "wysiwyg",
+                "tabs": "visual",
+                "toolbar": "basic",
+                "media_upload": 0,
+                "required": 0,
+                "allow_in_bindings": 1
+              },
+              {
+                "key": "field_omb_cs_cta_link",
+                "label": "Button",
+                "name": "cta",
+                "type": "link",
+                "return_format": "array",
+                "required": 0,
+                "allow_in_bindings": 1
+              }
+            ],
+            "min": "",
+            "max": ""
+          }
+        },
+        "min": 0,
+        "max": 0,
+        "button_label": "Add section"
+      }
+    ],
+    "location": [
+      [
+        {
+          "param": "post_type",
+          "operator": "==",
+          "value": "case_study"
+        }
+      ]
+    ],
+    "menu_order": 2,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 1,
+    "display_title": "",
+    "modified": 1715610000
   }
 ]

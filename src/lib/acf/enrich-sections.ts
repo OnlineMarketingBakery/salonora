@@ -2,9 +2,11 @@ import { fetchTestimonialsByIds } from "@/lib/wordpress/fetch-testimonials";
 import { fetchCf7Form } from "@/lib/wordpress/fetch-cf7-form";
 import { wpFetchOptional } from "@/lib/wordpress/client";
 import { getCptRestBase } from "@/lib/wordpress/config";
+import type { ArchiveUrlQuery } from "@/lib/wordpress/archive-search-params";
 import type {
   AnySectionT,
   BlogPostOverviewSectionT,
+  CaseStudyOverviewSectionT,
   DesignShowcaseGridSectionT,
   LatestPostsSectionT,
   TestimonialsSectionT,
@@ -14,7 +16,7 @@ import type { Locale } from "@/lib/i18n/locales";
 import { toPlainText, stripTags } from "@/lib/utils/strings";
 import type { GlobalSettings } from "@/types/globals";
 import { fetchBlogPostsCollection, fetchBlogOverviewPostCardById } from "@/lib/wordpress/fetch-blog-posts-collection";
-
+import { fetchCaseStudiesCollection, fetchCaseStudyOverviewCardById } from "@/lib/wordpress/fetch-case-studies-collection";
 type WpCptList = {
   id: number;
   slug: string;
@@ -34,10 +36,8 @@ function escapePlainForHtml(text: string): string {
     .replace(/"/g, "&quot;");
 }
 
-export type BlogArchiveQuery = {
-  page: number;
-  search: string;
-};
+/** @deprecated Use ArchiveUrlQuery */
+export type BlogArchiveQuery = ArchiveUrlQuery;
 
 export type EnrichContext = {
   lang: Locale;
@@ -45,7 +45,9 @@ export type EnrichContext = {
   /** Slug path after locale (e.g. `blog`) for blog overview forms and pagination. */
   pageSlugPath?: string;
   /** When set, blog archive pages apply these query params to the blog overview section. */
-  blogArchive?: BlogArchiveQuery;
+  blogArchive?: BlogArchiveQuery | null;
+  /** When set, case study archive pages apply these query params to the case study overview section. */
+  caseStudyArchive?: BlogArchiveQuery | null;
 };
 
 /**
@@ -70,6 +72,8 @@ export async function enrichSections(
       out.push(await enrichLatest(s as LatestPostsSectionT, ctx));
     } else if (s.type === "blog_post_overview") {
       out.push(await enrichBlogPostOverview(s as BlogPostOverviewSectionT, ctx));
+    } else if (s.type === "case_study_overview") {
+      out.push(await enrichCaseStudyOverview(s as CaseStudyOverviewSectionT, ctx));
     } else if (s.type === "design_showcase_grid") {
       out.push(await enrichDesignShowcaseGrid(s as DesignShowcaseGridSectionT, ctx));
     } else if (s.type === "form_embed") {
@@ -205,6 +209,82 @@ async function enrichBlogPostOverview(
     if (pinned) {
       const rest = items.filter((i) => i.id !== pinned.id).slice(0, Math.max(0, perPage - 1));
       items = [pinned, ...rest];
+    }
+  }
+
+  return {
+    ...s,
+    archivePath,
+    items,
+    total: fetched.total,
+    totalPages: fetched.totalPages,
+    currentPage,
+    searchQuery,
+  };
+}
+
+async function enrichCaseStudyOverview(
+  s: CaseStudyOverviewSectionT,
+  ctx: EnrichContext
+): Promise<CaseStudyOverviewSectionT> {
+  const archivePath = ctx.pageSlugPath ?? "";
+  const archive = ctx.caseStudyArchive;
+  const currentPage = archive?.page ?? 1;
+  const searchQuery = archive?.search ?? "";
+  const perPage = Math.min(50, Math.max(1, s.postsPerPage));
+
+  const fetched = await fetchCaseStudiesCollection({
+    lang: ctx.lang,
+    page: currentPage,
+    perPage,
+    search: searchQuery,
+  });
+
+  if (!fetched) {
+    return {
+      ...s,
+      archivePath,
+      items: [],
+      total: 0,
+      totalPages: 1,
+      currentPage,
+      searchQuery,
+    };
+  }
+
+  let items = fetched.items;
+  const pinId = s.featuredCaseStudyId;
+  if (
+    currentPage === 1 &&
+    !searchQuery.trim() &&
+    s.showFeatured &&
+    pinId != null &&
+    pinId > 0
+  ) {
+    const pinned = await fetchCaseStudyOverviewCardById(ctx.lang, pinId);
+    if (pinned) {
+      const rest = items.filter((i) => i.id !== pinned.id).slice(0, Math.max(0, perPage - 1));
+      items = [pinned, ...rest];
+    }
+  }
+
+  // Collection `GET …/case_study` often omits repeater ACF; single `GET …/case_study/{id}` includes it.
+  if (currentPage === 1 && !searchQuery.trim() && s.showFeatured && items.length > 0) {
+    const featuredId = items[0].id;
+    const hydrated = await fetchCaseStudyOverviewCardById(ctx.lang, featuredId);
+    if (hydrated && hydrated.id === featuredId) {
+      items = [
+        {
+          ...items[0],
+          metrics: hydrated.metrics.length > 0 ? hydrated.metrics : items[0].metrics,
+          projectLabel: hydrated.projectLabel || items[0].projectLabel,
+          excerpt: hydrated.excerpt || items[0].excerpt,
+          image: hydrated.image ?? items[0].image,
+          title: hydrated.title || items[0].title,
+          href: hydrated.href || items[0].href,
+        },
+        ...items.slice(1),
+      ];
     }
   }
 

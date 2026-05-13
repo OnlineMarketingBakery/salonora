@@ -15,14 +15,24 @@ const TOC_SCROLL =
   "[&::-webkit-scrollbar-thumb]:bg-[color-mix(in_srgb,var(--palette-brand)_40%,transparent)] " +
   "hover:[&::-webkit-scrollbar-thumb]:bg-[color-mix(in_srgb,var(--palette-brand)_62%,transparent)]";
 
-export function PostTableOfContents({ items, lang }: { items: PostTocItem[]; lang: Locale }) {
+export function PostTableOfContents({
+  items,
+  lang,
+  variant = "post",
+}: {
+  items: PostTocItem[];
+  lang: Locale;
+  /** Case study single (Figma 879:27): surface card without outline. */
+  variant?: "post" | "case_study";
+}) {
   if (items.length === 0) return null;
   const t = COPY[lang];
+  const shell =
+    variant === "case_study"
+      ? "flex max-h-none flex-col overflow-hidden rounded-[14px] bg-[var(--palette-surface)] lg:max-h-[min(44svh,25.5rem)]"
+      : "flex max-h-none flex-col overflow-hidden rounded-[14px] border border-[color-mix(in_srgb,var(--palette-brand)_16%,transparent)] bg-[var(--palette-surface)] lg:max-h-[min(44svh,25.5rem)]";
   return (
-    <nav
-      aria-labelledby="post-toc-heading"
-      className="flex max-h-none flex-col overflow-hidden rounded-[14px] border border-[color-mix(in_srgb,var(--palette-brand)_16%,transparent)] bg-[var(--palette-surface)] lg:max-h-[min(44svh,25.5rem)]"
-    >
+    <nav aria-labelledby="post-toc-heading" className={shell}>
       <h2
         id="post-toc-heading"
         className="shrink-0 px-[30px] pt-[30px] text-2xl font-semibold leading-[1.1] text-[var(--palette-navy)]"
@@ -36,7 +46,7 @@ export function PostTableOfContents({ items, lang }: { items: PostTocItem[]; lan
           const isSub = item.level === 3;
           const sep =
             index > 0
-              ? "mt-0 border-t border-[color-mix(in_srgb,var(--palette-brand)_14%,transparent)] pt-[14px]"
+              ? "mt-0 border-t border-[color-mix(in_srgb,var(--palette-brand)_14%,transparent)] pt-3.5"
               : "";
           const rowIndent = isSub ? "ps-5" : "";
           const liClass = [sep, rowIndent].filter(Boolean).join(" ");

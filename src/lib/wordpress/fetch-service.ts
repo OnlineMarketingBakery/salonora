@@ -3,14 +3,17 @@ import { getCptRestBase } from "./config";
 import type { WpServiceRaw } from "@/types/wordpress";
 import type { Locale } from "@/lib/i18n/locales";
 import { normalizeServiceSections } from "@/lib/acf/normalize-service-sections";
-import { asString } from "@/lib/acf/field-mappers";
+import { asBool, asString } from "@/lib/acf/field-mappers";
 import { mapYoastToSeo } from "@/lib/seo/map-yoast-to-metadata";
 import type { GlobalSettings } from "@/types/globals";
 import type { ServiceDocument } from "@/types/documents";
 
 function toDoc(p: WpServiceRaw, gs: GlobalSettings): { doc: ServiceDocument; raw: WpServiceRaw } {
   const acf = p.acf || {};
-  const sections = normalizeServiceSections((acf as { service_sections?: unknown }).service_sections);
+  /** OMB Page Builder (`page_sections`) and Service Settings > Extra Sections (`service_sections`) share the same flexible layouts; prefer the page builder when it has rows so services match pages. */
+  const fromPageBuilder = normalizeServiceSections((acf as { page_sections?: unknown }).page_sections);
+  const fromServiceSettings = normalizeServiceSections((acf as { service_sections?: unknown }).service_sections);
+  const sections = fromPageBuilder.length > 0 ? fromPageBuilder : fromServiceSettings;
   const highlights = Array.isArray((acf as { service_highlights?: { text?: string }[] }).service_highlights)
     ? (acf as { service_highlights: { text: string }[] }).service_highlights
         .map((h) => h.text)
@@ -21,6 +24,7 @@ function toDoc(p: WpServiceRaw, gs: GlobalSettings): { doc: ServiceDocument; raw
     id: p.id,
     slug: p.slug,
     title: p.title?.rendered || "",
+    hidePageTitle: asBool((acf as { hide_page_title?: unknown }).hide_page_title),
     excerpt: p.excerpt?.rendered || "",
     serviceIntro: asString((acf as { service_intro?: string }).service_intro),
     serviceHighlights: highlights,

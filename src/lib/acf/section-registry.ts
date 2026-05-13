@@ -19,9 +19,14 @@ import { FaqContactSplitSection } from "@/components/sections/faq-contact-split/
 import { FormEmbedSection } from "@/components/sections/form-embed/FormEmbedSection";
 import { LatestPostsSection } from "@/components/sections/latest-posts/LatestPostsSection";
 import { BlogPostOverviewSection } from "@/components/sections/blog-post-overview/BlogPostOverviewSection";
+import { CaseStudyOverviewSection } from "@/components/sections/case-study-overview/CaseStudyOverviewSection";
 import { CtaSection } from "@/components/sections/cta/CtaSection";
 import { PricingCtaSection } from "@/components/sections/pricing-cta/PricingCtaSection";
 import { RichTextSection } from "@/components/sections/rich-text/RichTextSection";
+import { CaseStudyChapterSection } from "@/components/sections/case-study-body/CaseStudyChapterSection";
+import { CaseStudyProductShotSection } from "@/components/sections/case-study-body/CaseStudyProductShotSection";
+import { CaseStudyClientReviewSection } from "@/components/sections/case-study-body/CaseStudyClientReviewSection";
+import { CaseStudyConversionCtaSection } from "@/components/sections/case-study-body/CaseStudyConversionCtaSection";
 import { FaqSection } from "@/components/sections/faq/FaqSection";
 import { HowItWorksStepsSectionShell } from "@/components/sections/how-it-works-steps/shell";
 import { ScrollingTickerSectionShell } from "@/components/sections/scrolling-ticker/shell";
@@ -58,6 +63,14 @@ const OriginStorySplitSectionLazy = dynamic(
   { ssr: true }
 );
 
+const OurPromisesSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/our-promises").then((mod) => ({
+      default: mod.OurPromisesSection,
+    })),
+  { ssr: true }
+);
+
 const PartnerIntroSplitSectionLazy = dynamic(
   () =>
     import("@/components/sections/partner-intro-split").then((mod) => ({
@@ -86,6 +99,14 @@ const PricingDualCardsSectionLazy = dynamic(
   () =>
     import("@/components/sections/pricing-dual-cards").then((mod) => ({
       default: mod.PricingDualCardsSection,
+    })),
+  { ssr: true }
+);
+
+const ProblemSolutionSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/problem-solution").then((mod) => ({
+      default: mod.ProblemSolutionSection,
     })),
   { ssr: true }
 );
@@ -138,6 +159,14 @@ const WhoWeAreForSectionLazy = dynamic(
   { ssr: true }
 );
 
+const IsThisForYouSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/is-this-for-you").then((mod) => ({
+      default: mod.IsThisForYouSection,
+    })),
+  { ssr: true }
+);
+
 const MediaTextChecklistSectionLazy = dynamic(
   () =>
     import("@/components/sections/media-text-checklist").then((mod) => ({
@@ -150,6 +179,22 @@ const FeaturesChecklistSectionLazy = dynamic(
   () =>
     import("@/components/sections/features-checklist").then((mod) => ({
       default: mod.FeaturesChecklistSection,
+    })),
+  { ssr: true }
+);
+
+const AudiencePromoCardSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/audience-promo-card").then((mod) => ({
+      default: mod.AudiencePromoCardSection,
+    })),
+  { ssr: true }
+);
+
+const StepsWithMediaSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/steps-with-media").then((mod) => ({
+      default: mod.StepsWithMediaSection,
     })),
   { ssr: true }
 );
@@ -189,8 +234,14 @@ export const sectionRegistry = {
   blog_post_overview: asSection(
     BlogPostOverviewSection as (p: { section: never; lang: Locale }) => ReactNode
   ),
+  case_study_overview: asSection(
+    CaseStudyOverviewSection as (p: { section: never; lang: Locale }) => ReactNode
+  ),
   origin_story_split: asSection(
     OriginStorySplitSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
+  our_promises: asSection(
+    OurPromisesSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
   partner_intro_split: asSection(
     PartnerIntroSplitSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
@@ -204,6 +255,10 @@ export const sectionRegistry = {
   cta: asSection(CtaSection as (p: { section: never; lang: Locale }) => ReactNode),
   pricing_cta: asSection(PricingCtaSection as (p: { section: never; lang: Locale }) => ReactNode),
   rich_text: asSection(RichTextSection as (p: { section: never; lang: Locale }) => ReactNode),
+  case_study_chapter: asSection(CaseStudyChapterSection as (p: { section: never; lang: Locale }) => ReactNode),
+  case_study_product_shot: asSection(CaseStudyProductShotSection as (p: { section: never; lang: Locale }) => ReactNode),
+  case_study_client_review: asSection(CaseStudyClientReviewSection as (p: { section: never; lang: Locale }) => ReactNode),
+  case_study_conversion_cta: asSection(CaseStudyConversionCtaSection as (p: { section: never; lang: Locale }) => ReactNode),
   faq: asSection(FaqSection as (p: { section: never; lang: Locale }) => ReactNode),
   scrolling_ticker: asSection(
     ScrollingTickerSectionShell as (p: { section: never; lang: Locale }) => ReactNode
@@ -219,6 +274,9 @@ export const sectionRegistry = {
   ),
   pricing_dual_cards: asSection(
     PricingDualCardsSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
+  problem_solution: asSection(
+    ProblemSolutionSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
   talk_dual_cards: asSection(
     TalkDualCardsSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
@@ -238,11 +296,20 @@ export const sectionRegistry = {
   who_we_are_for: asSection(
     WhoWeAreForSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
+  is_this_for_you: asSection(
+    IsThisForYouSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
   media_text_checklist: asSection(
     MediaTextChecklistSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
   features_checklist: asSection(
     FeaturesChecklistSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
+  audience_promo_card: asSection(
+    AudiencePromoCardSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
+  steps_with_media: asSection(
+    StepsWithMediaSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
 } satisfies SectionRegistryShape;
 

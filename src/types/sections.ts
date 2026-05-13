@@ -131,7 +131,7 @@ export type GuaranteesPromiseSplitFloatingBadgeT = {
   position: "left" | "right";
 };
 
-/** Figma: 1127:55 (“Group 596”) — portrait with floating badges + guarantee checklist + download CTA */
+/** Figma: 1127:55 (“Group 596”) — portrait with floating badges + guarantee checklist + download CTA*/
 export type GuaranteesPromiseSplitPointT = {
   text: string;
   /** Resolved: row image, else optional section `list_default_icon`. */
@@ -202,31 +202,46 @@ export type WhoWeAreForSectionT = CoreSection & {
   ctas: CtaItem[];
 };
 
-/** Figma **597:3503** (“Frame 2147228620”) — rounded card: copy + checklist + pricing + CTA; stacked media column for mirror variant (`media_position`). */
+/** Figma **693:395** (“Frame 2147229263”) — centered heading + grid of promises: circular icon (brand/rose), title, body. */
+export type OurPromisesItemT = {
+  icon: WpImage | null;
+  title: string;
+  description: string;
+  icon_accent: WhoWeAreForItemAccentT;
+};
+
+export type OurPromisesSectionT = CoreSection & {
+  type: "our_promises";
+  title: string;
+  items: OurPromisesItemT[];
+};
+
+/** Figma **1325:38** (“Frame 2147230004”) — split: heading + checklist + footer + CTA; framed image with rotated brand panel. */
+export type IsThisForYouChecklistRowT = {
+  text: string;
+  /** Resolved: row icon, else section `list_default_icon`. `null` falls back to the built-in brand check. */
+  icon: WpImage | null;
+};
+
+export type IsThisForYouSectionT = CoreSection & {
+  type: "is_this_for_you";
+  title: string;
+  subtitle: string;
+  list_default_icon: WpImage | null;
+  checklist: IsThisForYouChecklistRowT[];
+  footer_note: string;
+  button: WpAcfLink | null;
+  button_trailing_icon: WpImage | null;
+  image: WpImage | null;
+};
+
 export type MediaTextChecklistRowT = {
   text: string;
   /** Resolved per-row icon, else section `list_default_icon`. `null` falls back to the built-in brand check. */
   icon: WpImage | null;
 };
 
-/** Figma content **597:4037** (“Frame 2147228715”) over decorative shell **597:3568** (“Frame 2147228001”) — centered intro + white checklist rows + masked image with CTA. */
-export type FeaturesChecklistRowT = {
-  text: string;
-  /** Resolved per-row icon, else section `list_default_icon`. `null` falls back to the built-in brand check. */
-  icon: WpImage | null;
-};
-
-export type FeaturesChecklistSectionT = CoreSection & {
-  type: "features_checklist";
-  title: string;
-  description: string;
-  list_default_icon: WpImage | null;
-  checklist: FeaturesChecklistRowT[];
-  image: WpImage | null;
-  button: WpAcfLink | null;
-  button_trailing_icon: WpImage | null;
-};
-
+/** Figma **597:3503** (“Frame 2147228620”) — rounded card: copy + checklist + pricing + CTA; stacked media column for mirror variant (`media_position`). */
 export type MediaTextChecklistSectionT = CoreSection & {
   type: "media_text_checklist";
   media_position: "left" | "right";
@@ -250,6 +265,40 @@ export type MediaTextChecklistSectionT = CoreSection & {
   pricing_label: string;
   button: WpAcfLink | null;
   /** Optional trailing graphic on the primary CTA; default circled arrow when unset. */
+  button_trailing_icon: WpImage | null;
+};
+
+/** Figma content **597:4037** (“Frame 2147228715”) over decorative shell **597:3568** (“Frame 2147228001”) — centered intro + white checklist rows + masked image with CTA. */
+export type FeaturesChecklistRowT = {
+  text: string;
+  /** Resolved per-row icon, else section `list_default_icon`. `null` falls back to the built-in brand check. */
+  icon: WpImage | null;
+};
+
+export type FeaturesChecklistSectionT = CoreSection & {
+  type: "features_checklist";
+  title: string;
+  description: string;
+  list_default_icon: WpImage | null;
+  checklist: FeaturesChecklistRowT[];
+  image: WpImage | null;
+  button: WpAcfLink | null;
+  button_trailing_icon: WpImage | null;
+};
+
+/** Figma **692:196** (“Frame 2147229635”) — white rounded promo card: tilted brand panel + photo, badge, headline, intro, checklist rows, primary CTA with optional trailing icon. */
+export type AudiencePromoCardFeatureRowT = {
+  text: string;
+};
+
+export type AudiencePromoCardSectionT = CoreSection & {
+  type: "audience_promo_card";
+  badge_text: string;
+  title: string;
+  description: string;
+  features: AudiencePromoCardFeatureRowT[];
+  image: WpImage | null;
+  button: WpAcfLink | null;
   button_trailing_icon: WpImage | null;
 };
 
@@ -472,6 +521,24 @@ export type ScrollingTickerSectionT = CoreSection & {
   items?: ScrollingTickerItemT[];
 };
 
+/** Figma **1322:32** (“Frame 2147230002”) — brand circle + browser mockup; heading, three steps with dividers, pill CTA. */
+export type StepsWithMediaStepIconColorT = "blue" | "pink";
+
+export type StepsWithMediaStepT = {
+  number: string;
+  icon_color: StepsWithMediaStepIconColorT;
+  title: string;
+  description: string;
+};
+
+export type StepsWithMediaSectionT = CoreSection & {
+  type: "steps_with_media";
+  title: string;
+  steps: StepsWithMediaStepT[];
+  cta_link: WpAcfLink | null;
+  browser_image: WpImage | null;
+};
+
 /** Figma 909:31 — headline, intro row, service-driven cards, footer pill CTA */
 export type DesignShowcaseGridCardTint = "surface" | "blush" | "mint" | "gold";
 
@@ -575,6 +642,46 @@ export type BlogPostOverviewSectionT = CoreSection & {
   searchQuery: string;
 };
 
+export type CaseStudyOverviewMetricT = {
+  label: string;
+  value: string;
+};
+
+export type CaseStudyOverviewCardT = {
+  id: number;
+  title: string;
+  excerpt: string;
+  href: string;
+  image: { url: string; alt: string } | null;
+  /** Shown as the brand line above the card title (e.g. “Project: …”). */
+  projectLabel: string;
+  /** Outcome metrics for the featured block (from CPT ACF); empty on grid cards if unused. */
+  metrics: CaseStudyOverviewMetricT[];
+};
+
+export type CaseStudyOverviewSectionT = CoreSection & {
+  type: "case_study_overview";
+  title: string;
+  intro: string;
+  /** Optional KPI row below the intro (Figma 866:4217). */
+  heroStats: CaseStudyOverviewMetricT[];
+  showFeatured: boolean;
+  featuredCaseStudyId: number | null;
+  /** Hero KPI stat row only (1–4); case study card list stays 3 columns at `lg` for now. */
+  gridColumns: 1 | 2 | 3 | 4;
+  /** Rows of case studies per page; with a fixed 3-column list, `postsPerPage` = `min(50, 3 × gridRows)`. */
+  gridRows: number;
+  /** Derived from fixed list columns (3) × `gridRows` (used for REST pagination). */
+  postsPerPage: number;
+  readMoreLabel: string;
+  archivePath: string;
+  items: CaseStudyOverviewCardT[];
+  total: number;
+  totalPages: number;
+  currentPage: number;
+  searchQuery: string;
+};
+
 export type CtaSectionT = CoreSection & {
   type: "cta";
   title: string;
@@ -630,6 +737,22 @@ export type PricingDualCardsSectionT = CoreSection & {
   cards?: PricingDualCardsCardItemT[];
 };
 
+/** Figma **1306:29** (“Frame 574”) — two tall rounded cards: navy “problem” vs brand-blue “solution”, TR grid wash, bottom-right cutout portraits; solution card adds checklist rows. */
+export type ProblemSolutionListItemT = {
+  text: string;
+};
+
+export type ProblemSolutionSectionT = CoreSection & {
+  type: "problem_solution";
+  problem_title: string;
+  problem_text: string;
+  problem_image: WpImage | null;
+  solution_title: string;
+  solution_text: string;
+  solution_list: ProblemSolutionListItemT[];
+  solution_image: WpImage | null;
+};
+
 /** Figma **597:2720** (“Frame 2147228539”) — centered headline + two rounded panels (brand gradient vs navy + overlay); primary path CTA + alternate path with demo + download. */
 export type TalkDualCardsSectionT = CoreSection & {
   type: "talk_dual_cards";
@@ -653,6 +776,51 @@ export type RichTextSectionT = CoreSection & {
   title: string;
   body: string;
   contentWidth: "default" | "narrow" | "wide";
+};
+
+/** Single case study — narrative block (Figma 879:27 “Probleem”, “Resultaat”, etc.). */
+export type CaseStudyChapterSectionT = CoreSection & {
+  type: "case_study_chapter";
+  heading: string;
+  body: string;
+  /** Hairline rule under the block (Figma section separators). */
+  showDivider: boolean;
+  /** Stable anchor for Inhoudsopgave (from ACF row key). */
+  tocAnchorId: string;
+};
+
+/** Product / UI screenshot: optional title above; optional WYSIWYG description below; optional hairline under block. */
+export type CaseStudyProductShotSectionT = CoreSection & {
+  type: "case_study_product_shot";
+  image: WpImage | null;
+  /** Optional headline above the shot (ACF `title`; legacy `caption` merged in normalize). */
+  title: string;
+  /** Optional body under the image (ACF `description`). */
+  description: string;
+  /** Hairline rule under the block (ACF `show_divider_after`; same as Chapter). */
+  showDivider: boolean;
+};
+
+/** Client quote + optional video (Figma “Klantenrecensie”). */
+export type CaseStudyClientReviewSectionT = CoreSection & {
+  type: "case_study_client_review";
+  sectionHeading: string;
+  quote: string;
+  videoUrl: string;
+  videoPoster: WpImage | null;
+  personName: string;
+  personRole: string;
+  personPhoto: WpImage | null;
+  /** Stable anchor for Inhoudsopgave (from ACF row `_key`). */
+  tocAnchorId: string;
+};
+
+/** Mid-page conversion band (Figma navy rounded CTA). */
+export type CaseStudyConversionCtaSectionT = CoreSection & {
+  type: "case_study_conversion_cta";
+  title: string;
+  subtitle: string;
+  cta: WpAcfLink | null;
 };
 
 export type FaqSectionT = CoreSection & {
@@ -730,8 +898,11 @@ export type AnySectionT =
   | GrowthPlansSplitSectionT
   | FoundersBannerSectionT
   | WhoWeAreForSectionT
+  | OurPromisesSectionT
+  | IsThisForYouSectionT
   | FeaturesChecklistSectionT
   | MediaTextChecklistSectionT
+  | AudiencePromoCardSectionT
   | StorySplitSectionT
   | WhyWeDoThisSectionT
   | CombinedStrengthsSectionT
@@ -748,16 +919,23 @@ export type AnySectionT =
   | ProcessStepsSectionT
   | HowItWorksStepsSectionT
   | ScrollingTickerSectionT
+  | StepsWithMediaSectionT
   | DesignShowcaseGridSectionT
   | FaqContactSplitSectionT
   | FormEmbedSectionT
   | LatestPostsSectionT
   | BlogPostOverviewSectionT
+  | CaseStudyOverviewSectionT
   | CtaSectionT
   | PricingCtaSectionT
   | PricingDualCardsSectionT
+  | ProblemSolutionSectionT
   | TalkDualCardsSectionT
   | RichTextSectionT
+  | CaseStudyChapterSectionT
+  | CaseStudyProductShotSectionT
+  | CaseStudyClientReviewSectionT
+  | CaseStudyConversionCtaSectionT
   | FaqSectionT
   | FeatureHighlightGridSectionT
   | FeatureHighlightSplitSectionT

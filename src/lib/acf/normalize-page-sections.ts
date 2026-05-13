@@ -17,6 +17,7 @@ type RawRow = Record<string, unknown> & { acf_fc_layout: string };
 /** Known page flexible-layout names → normalized section types (must stay aligned with `mapKnownPageSectionLayout`). */
 const PAGE_SECTION_ACF_LAYOUTS = {
   announcement_bar: true,
+  audience_promo_card: true,
   benefits_grid: true,
   cards: true,
   combined_strengths: true,
@@ -39,17 +40,26 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   hero: true,
   how_it_works_steps: true,
   image_intro_split: true,
+  is_this_for_you: true,
   latest_posts: true,
   blog_post_overview: true,
+  case_study_overview: true,
   origin_story_split: true,
+  our_promises: true,
   partner_intro_split: true,
   pricing_cta: true,
   pricing_dual_cards: true,
   pricing_packages: true,
+  problem_solution: true,
   process_steps: true,
   rich_text: true,
+  case_study_chapter: true,
+  case_study_product_shot: true,
+  case_study_client_review: true,
+  case_study_conversion_cta: true,
   salon_value_proposition: true,
   scrolling_ticker: true,
+  steps_with_media: true,
   story_split: true,
   talk_dual_cards: true,
   team_behind_salonora: true,
@@ -62,6 +72,30 @@ const PAGE_SECTION_ACF_LAYOUTS = {
 
 function isKnownPageSectionLayout(value: string): value is AnySectionT["type"] {
   return Object.prototype.hasOwnProperty.call(PAGE_SECTION_ACF_LAYOUTS, value);
+}
+
+/** ACF `featured_case_study` post_object → REST may return `{ id }` or `{ ID }`. */
+function featuredCaseStudyIdFromAcf(row: Record<string, unknown>): number | null {
+  const v = row.featured_case_study;
+  if (v == null || v === false || v === "") return null;
+  if (typeof v === "number" && Number.isFinite(v) && v > 0) return v;
+  if (typeof v === "object" && v !== null) {
+    const o = v as { id?: unknown; ID?: unknown };
+    const id = Number(o.ID ?? o.id);
+    return Number.isFinite(id) && id > 0 ? id : null;
+  }
+  return null;
+}
+
+function heroStatsFromAcf(row: Record<string, unknown>): { label: string; value: string }[] {
+  const raw = row.hero_stats;
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .map((item) => {
+      const r = item as Record<string, unknown>;
+      return { label: asString(r.stat_label), value: asString(r.stat_value) };
+    })
+    .filter((x) => x.label.trim() !== "" || x.value.trim() !== "");
 }
 
 /** ACF `featured_post` post_object → REST may return `{ id }` or `{ ID }`. */
@@ -79,6 +113,15 @@ function featuredPostIdFromAcf(row: Record<string, unknown>): number | null {
 
 function keyOf(i: number, row: RawRow): string {
   return asString(row._key) || `row-${i}`;
+}
+
+/** Stable DOM id for case study chapter headings (TOC anchors). */
+function caseStudyChapterAnchorFromAcfKey(_key: string): string {
+  const safe = asString(_key)
+    .replace(/[^a-zA-Z0-9_-]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+  return safe ? `cs-${safe}` : "cs-section";
 }
 
 export function normalizePageSections(raw: unknown): AnySectionT[] {
@@ -353,6 +396,51 @@ function mapKnownPageSectionLayout(
           : [],
         ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
       };
+    case "our_promises":
+      return {
+        ...base,
+        type: "our_promises",
+        title: asString(row.title),
+        items: Array.isArray(row.items)
+          ? (
+              row.items as {
+                icon?: unknown;
+                title?: unknown;
+                description?: unknown;
+                icon_accent?: unknown;
+              }[]
+            ).map((item) => {
+              const a = asString(item.icon_accent);
+              const icon_accent = a === "rose" ? ("rose" as const) : ("brand" as const);
+              return {
+                icon: asImage(item.icon),
+                title: asString(item.title),
+                description: asHtml(item.description),
+                icon_accent,
+              };
+            })
+          : [],
+      };
+    case "is_this_for_you": {
+      const listDefaultIcon = asImage(row.list_default_icon);
+      return {
+        ...base,
+        type: "is_this_for_you",
+        title: asString(row.title),
+        subtitle: asString(row.subtitle),
+        list_default_icon: listDefaultIcon,
+        checklist: Array.isArray(row.checklist)
+          ? (row.checklist as { item?: unknown; icon?: unknown }[]).map((r) => ({
+              text: asString(r.item),
+              icon: asImage(r.icon) ?? listDefaultIcon,
+            }))
+          : [],
+        footer_note: asHtml(row.footer_note),
+        button: asLink(row.button),
+        button_trailing_icon: asImage(row.button_trailing_icon),
+        image: asImage(row.image),
+      };
+    }
     case "features_checklist": {
       const listDefaultIcon = asImage(row.list_default_icon);
       return {
@@ -406,6 +494,22 @@ function mapKnownPageSectionLayout(
         button_trailing_icon: asImage(row.button_trailing_icon),
       };
     }
+    case "audience_promo_card":
+      return {
+        ...base,
+        type: "audience_promo_card",
+        badge_text: asString(row.badge_text),
+        title: asString(row.title),
+        description: asHtml(row.description),
+        features: Array.isArray(row.features)
+          ? (row.features as { item?: unknown }[]).map((r) => ({
+              text: asString(r.item),
+            }))
+          : [],
+        image: asImage(row.image),
+        button: asLink(row.button),
+        button_trailing_icon: asImage(row.button_trailing_icon),
+      };
     case "guarantees_promise_split":
       return (() => {
         const listDefaultIcon = asImage(row.list_default_icon);
@@ -682,6 +786,28 @@ function mapKnownPageSectionLayout(
             }))
           : [],
       };
+    case "steps_with_media":
+      return {
+        ...base,
+        type: "steps_with_media",
+        title: asString(row.title),
+        steps: Array.isArray(row.steps)
+          ? (row.steps as { number?: unknown; icon_color?: unknown; title?: unknown; description?: unknown }[]).map(
+              (s) => {
+                const rawColor = asString(s.icon_color);
+                const icon_color = rawColor === "pink" ? ("pink" as const) : ("blue" as const);
+                return {
+                  number: asString(s.number),
+                  icon_color,
+                  title: asString(s.title),
+                  description: asHtml(s.description),
+                };
+              },
+            )
+          : [],
+        cta_link: asLink(row.cta_link),
+        browser_image: asImage(row.browser_image),
+      };
     case "feature_highlight_grid":
       return {
         ...base,
@@ -873,6 +999,37 @@ function mapKnownPageSectionLayout(
         currentPage: 1,
         searchQuery: "",
       };
+    case "case_study_overview": {
+      const colsRaw = asString(row.grid_columns);
+      const gridColumns =
+        colsRaw === "1" || colsRaw === "2" || colsRaw === "3" || colsRaw === "4"
+          ? (Number(colsRaw) as 1 | 2 | 3 | 4)
+          : 3;
+      const parsedRows = parseInt(asString(row.grid_rows), 10);
+      const gridRows =
+        Number.isFinite(parsedRows) && parsedRows >= 1 ? Math.min(12, parsedRows) : 2;
+      /** List grid is fixed at 3 columns on large screens; rows field drives pagination only. */
+      const postsPerPage = Math.min(50, Math.max(1, 3 * gridRows));
+      return {
+        ...base,
+        type: "case_study_overview",
+        title: asString(row.title),
+        intro: asString(row.intro),
+        heroStats: heroStatsFromAcf(row),
+        showFeatured: row.show_featured === undefined || row.show_featured === null ? true : asBool(row.show_featured),
+        featuredCaseStudyId: featuredCaseStudyIdFromAcf(row),
+        gridColumns,
+        gridRows,
+        postsPerPage,
+        readMoreLabel: asString(row.read_more_label),
+        archivePath: "",
+        items: [],
+        total: 0,
+        totalPages: 1,
+        currentPage: 1,
+        searchQuery: "",
+      };
+    }
     case "cta": {
       let ctas = mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]);
       const single = asLink(row.link);
@@ -941,6 +1098,22 @@ function mapKnownPageSectionLayout(
             })
           : [],
       };
+    case "problem_solution":
+      return {
+        ...base,
+        type: "problem_solution",
+        problem_title: asString(row.problem_title),
+        problem_text: asHtml(row.problem_text),
+        problem_image: asImage(row.problem_image),
+        solution_title: asString(row.solution_title),
+        solution_text: asHtml(row.solution_text),
+        solution_list: Array.isArray(row.solution_list)
+          ? (row.solution_list as { item?: unknown }[])
+              .map((r) => ({ text: asString(r.item) }))
+              .filter((r) => r.text.trim() !== "")
+          : [],
+        solution_image: asImage(row.solution_image),
+      };
     case "talk_dual_cards":
       return {
         ...base,
@@ -964,6 +1137,47 @@ function mapKnownPageSectionLayout(
         title: asString(row.title),
         body: asHtml(row.body),
         contentWidth: (asString(row.content_width) as "default" | "narrow" | "wide") || "default",
+      };
+    case "case_study_chapter":
+      return {
+        ...base,
+        type: "case_study_chapter",
+        heading: asString(row.heading),
+        body: asHtml(row.body),
+        showDivider:
+          row.show_divider_after === undefined || row.show_divider_after === null ? true : asBool(row.show_divider_after),
+        tocAnchorId: caseStudyChapterAnchorFromAcfKey(base._key),
+      };
+    case "case_study_product_shot":
+      return {
+        ...base,
+        type: "case_study_product_shot",
+        image: asImage(row.image),
+        title: asString(row.title || row.caption),
+        description: asHtml(row.description),
+        showDivider:
+          row.show_divider_after === undefined || row.show_divider_after === null ? true : asBool(row.show_divider_after),
+      };
+    case "case_study_client_review":
+      return {
+        ...base,
+        type: "case_study_client_review",
+        sectionHeading: asString(row.section_heading),
+        quote: asHtml(row.quote),
+        videoUrl: asString(row.video_url).trim(),
+        videoPoster: asImage(row.video_poster),
+        personName: asString(row.person_name),
+        personRole: asString(row.person_role),
+        personPhoto: asImage(row.person_photo),
+        tocAnchorId: caseStudyChapterAnchorFromAcfKey(base._key),
+      };
+    case "case_study_conversion_cta":
+      return {
+        ...base,
+        type: "case_study_conversion_cta",
+        title: asString(row.title),
+        subtitle: asHtml(row.subtitle),
+        cta: asLink(row.cta),
       };
     case "faq":
       return {

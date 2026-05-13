@@ -21,24 +21,28 @@ function iconTileClass(accent: SalonValueCardAccentT) {
 function ValueCard({
   card,
   centeredVariant,
+  accentPlacement = "top",
 }: {
   card: SalonValuePropositionSectionT["cards"][number];
   centeredVariant?: boolean;
+  /** Service-style centered layout: colored bar along bottom edge (Figma). Split / homepage: top. */
+  accentPlacement?: "top" | "bottom";
 }) {
-  return (
-    <article
-      className={`${REVEAL_ITEM} flex min-h-[min(262px,100%)] min-w-0 flex-col overflow-hidden rounded-[14px] bg-white ${centeredVariant ? CARD_SHADOW_CENTERED : CARD_SHADOW}`}
+  const accentStrip = (
+    <div
+      className={`h-2.5 shrink-0 ${accentPlacement === "bottom" ? "rounded-b-[14px]" : "rounded-t-[14px]"} ${accentBarClass(card.accent)}`}
+      aria-hidden
+    />
+  );
+
+  const body = (
+    <div
+      className={
+        centeredVariant
+          ? "flex min-h-[min(306px,100%)] flex-1 flex-col gap-6 px-[34px] py-[34px] sm:gap-6"
+          : "flex flex-1 flex-col gap-7 px-7 py-8 sm:gap-[34px] sm:px-[34px] sm:pb-[34px] sm:pt-8"
+      }
     >
-      {!centeredVariant ? (
-        <div className={`h-2.5 shrink-0 rounded-t-[14px] ${accentBarClass(card.accent)}`} aria-hidden />
-      ) : null}
-      <div
-        className={
-          centeredVariant
-            ? "flex flex-col gap-6 px-[34px] py-[34px] sm:gap-6 min-h-[min(306px,100%)]"
-            : "flex flex-col gap-7 px-7 py-8 sm:gap-[34px] sm:px-[34px] sm:pb-[34px] sm:pt-8"
-        }
-      >
         {card.icon ? (
           <div
             className={`flex size-12 shrink-0 items-center justify-center rounded-[10px] p-2.5 ${iconTileClass(card.accent)}`}
@@ -70,7 +74,16 @@ function ValueCard({
             />
           ) : null}
         </div>
-      </div>
+    </div>
+  );
+
+  return (
+    <article
+      className={`${REVEAL_ITEM} flex min-h-[min(262px,100%)] min-w-0 flex-col overflow-hidden rounded-[14px] bg-white ${centeredVariant ? CARD_SHADOW_CENTERED : CARD_SHADOW}`}
+    >
+      {accentPlacement === "top" ? accentStrip : null}
+      {body}
+      {accentPlacement === "bottom" ? accentStrip : null}
     </article>
   );
 }
@@ -188,7 +201,7 @@ function CenteredFooterLayout({
       {cards.length > 0 ? (
         <div className="grid w-full grid-cols-1 gap-6 lg:grid-cols-3 lg:gap-6">
           {cards.map((card, i) => (
-            <ValueCard key={`${section.id}-card-${i}`} card={card} centeredVariant />
+            <ValueCard key={`${section.id}-card-${i}`} card={card} centeredVariant accentPlacement="bottom" />
           ))}
         </div>
       ) : null}
@@ -205,28 +218,11 @@ function CenteredFooterLayout({
               href={footerHref}
               target={footerResolved?.target}
               variant="ctaBrand"
-              showArrow={false}
-              ctaElevation="none"
-              ctaJustify="center"
-              ctaSize="compact"
-              ctaFullWidth={false}
-              className="h-[81px]! min-h-0! gap-4 rounded-[54.5px]! border-0! px-5! shadow-[0px_6px_20px_rgba(57,144,240,0.54)] bg-[linear-gradient(180deg,var(--palette-brand)_0%,var(--palette-brand-strong)_100%)]!"
+              ctaSize="promo"
+              ctaJustify="between"
+              ctaFullWidth
             >
-              <span className="flex min-w-0 items-center gap-4 text-balance font-sans text-xl font-medium leading-[1.1] tracking-tight text-white md:text-2xl">
-                {section.footerCtaIcon ? (
-                  <span className="relative size-[61px] shrink-0 overflow-hidden rounded-full bg-white p-0.5 shadow-sm">
-                    <Media
-                      image={section.footerCtaIcon}
-                      width={122}
-                      height={122}
-                      className="size-full rounded-full object-cover"
-                      sizes="61px"
-                      preferLargestSource
-                    />
-                  </span>
-                ) : null}
-                <span className="min-w-0 text-left">{footerLabel}</span>
-              </span>
+              {footerLabel}
             </Button>
           ) : null}
         </div>

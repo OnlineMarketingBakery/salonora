@@ -14,15 +14,6 @@ export type FooterSettings = {
   footerTitle: string;
   footerText: string;
   footerLogo: WpImage | null;
-  /**
-   * Footer main block background. Precedence: image → gradient (CSS) → solid color → default navy (`bg-navy-deep`).
-   * Legacy ACF `footer_top_shape_image` is merged into `footerBackgroundImage` in `fetch-globals`.
-   */
-  footerBackgroundImage: WpImage | null;
-  /** Hex or any valid CSS color (e.g. `#002752`). Empty uses default when image/gradient unset. */
-  footerBackgroundColor: string;
-  /** Full CSS `background-image` value, e.g. `linear-gradient(180deg, #002752, #001a38)`. Empty when unused. */
-  footerBackgroundGradient: string;
   footerCopyright: string;
   showFooterLanguageSwitcher: boolean;
   /**
@@ -70,6 +61,13 @@ export type DefaultSeoSettings = {
   allowIndexingByDefault: boolean;
 };
 
+/** WordPress Settings → Reading (static front page). Filled from OMB `/globals` or `/reading`. */
+export type ReadingSettings = {
+  showOnFront: string;
+  /** Slug of the page set as “Homepage” when `showOnFront` is `page`; otherwise null. */
+  homepageSlug: string | null;
+};
+
 export type GlobalSettings = {
   header: HeaderSettings;
   footer: FooterSettings;
@@ -77,4 +75,5 @@ export type GlobalSettings = {
   site: SiteSettings;
   integrations: IntegrationsSettings;
   defaultSeo: DefaultSeoSettings;
+  reading: ReadingSettings;
 };
