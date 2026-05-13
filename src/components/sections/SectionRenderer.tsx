@@ -45,6 +45,10 @@ export function SectionRenderer({ sections, lang }: { sections: AnySectionT[]; l
             return (
               <sectionRegistry.features_checklist key={section.id} section={section} lang={lang} />
             );
+          case "audience_promo_card":
+            return (
+              <sectionRegistry.audience_promo_card key={section.id} section={section} lang={lang} />
+            );
           case "story_split":
             return <sectionRegistry.story_split key={section.id} section={section} lang={lang} />;
           case "why_we_do_this":

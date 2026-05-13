@@ -253,6 +253,22 @@ export type MediaTextChecklistSectionT = CoreSection & {
   button_trailing_icon: WpImage | null;
 };
 
+/** Figma **692:196** (“Frame 2147229635”) — white rounded promo card: tilted brand panel + photo, badge, headline, intro, checklist rows, primary CTA with optional trailing icon. */
+export type AudiencePromoCardFeatureRowT = {
+  text: string;
+};
+
+export type AudiencePromoCardSectionT = CoreSection & {
+  type: "audience_promo_card";
+  badge_text: string;
+  title: string;
+  description: string;
+  features: AudiencePromoCardFeatureRowT[];
+  image: WpImage | null;
+  button: WpAcfLink | null;
+  button_trailing_icon: WpImage | null;
+};
+
 export type StorySplitSectionT = CoreSection & {
   type: "story_split";
   image: WpImage | null;
@@ -788,6 +804,7 @@ export type AnySectionT =
   | WhoWeAreForSectionT
   | FeaturesChecklistSectionT
   | MediaTextChecklistSectionT
+  | AudiencePromoCardSectionT
   | StorySplitSectionT
   | WhyWeDoThisSectionT
   | CombinedStrengthsSectionT

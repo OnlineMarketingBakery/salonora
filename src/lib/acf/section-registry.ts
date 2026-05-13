@@ -163,6 +163,14 @@ const FeaturesChecklistSectionLazy = dynamic(
   { ssr: true }
 );
 
+const AudiencePromoCardSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/audience-promo-card").then((mod) => ({
+      default: mod.AudiencePromoCardSection,
+    })),
+  { ssr: true }
+);
+
 import type { AnySectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 import type { ReactNode } from "react";
@@ -258,6 +266,9 @@ export const sectionRegistry = {
   ),
   features_checklist: asSection(
     FeaturesChecklistSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
+  audience_promo_card: asSection(
+    AudiencePromoCardSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
 } satisfies SectionRegistryShape;
 

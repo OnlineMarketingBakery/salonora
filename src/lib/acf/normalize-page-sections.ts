@@ -17,6 +17,7 @@ type RawRow = Record<string, unknown> & { acf_fc_layout: string };
 /** Known page flexible-layout names → normalized section types (must stay aligned with `mapKnownPageSectionLayout`). */
 const PAGE_SECTION_ACF_LAYOUTS = {
   announcement_bar: true,
+  audience_promo_card: true,
   benefits_grid: true,
   cards: true,
   combined_strengths: true,
@@ -432,6 +433,22 @@ function mapKnownPageSectionLayout(
         button_trailing_icon: asImage(row.button_trailing_icon),
       };
     }
+    case "audience_promo_card":
+      return {
+        ...base,
+        type: "audience_promo_card",
+        badge_text: asString(row.badge_text),
+        title: asString(row.title),
+        description: asHtml(row.description),
+        features: Array.isArray(row.features)
+          ? (row.features as { item?: unknown }[]).map((r) => ({
+              text: asString(r.item),
+            }))
+          : [],
+        image: asImage(row.image),
+        button: asLink(row.button),
+        button_trailing_icon: asImage(row.button_trailing_icon),
+      };
     case "guarantees_promise_split":
       return (() => {
         const listDefaultIcon = asImage(row.list_default_icon);
