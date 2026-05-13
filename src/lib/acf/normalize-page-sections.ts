@@ -898,7 +898,17 @@ function mapKnownPageSectionLayout(
         currentPage: 1,
         searchQuery: "",
       };
-    case "case_study_overview":
+    case "case_study_overview": {
+      const colsRaw = asString(row.grid_columns);
+      const gridColumns =
+        colsRaw === "1" || colsRaw === "2" || colsRaw === "3" || colsRaw === "4"
+          ? (Number(colsRaw) as 1 | 2 | 3 | 4)
+          : 3;
+      const parsedRows = parseInt(asString(row.grid_rows), 10);
+      const gridRows =
+        Number.isFinite(parsedRows) && parsedRows >= 1 ? Math.min(12, parsedRows) : 2;
+      /** List grid is fixed at 3 columns on large screens; rows field drives pagination only. */
+      const postsPerPage = Math.min(50, Math.max(1, 3 * gridRows));
       return {
         ...base,
         type: "case_study_overview",
@@ -907,7 +917,9 @@ function mapKnownPageSectionLayout(
         heroStats: heroStatsFromAcf(row),
         showFeatured: row.show_featured === undefined || row.show_featured === null ? true : asBool(row.show_featured),
         featuredCaseStudyId: featuredCaseStudyIdFromAcf(row),
-        postsPerPage: Math.min(50, Math.max(1, Number(row.posts_per_page) || 6)),
+        gridColumns,
+        gridRows,
+        postsPerPage,
         readMoreLabel: asString(row.read_more_label),
         archivePath: "",
         items: [],
@@ -916,6 +928,7 @@ function mapKnownPageSectionLayout(
         currentPage: 1,
         searchQuery: "",
       };
+    }
     case "cta": {
       let ctas = mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]);
       const single = asLink(row.link);

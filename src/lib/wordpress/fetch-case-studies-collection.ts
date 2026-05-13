@@ -5,7 +5,7 @@ import type { Locale } from "@/lib/i18n/locales";
 import type { CaseStudyOverviewCardT, CaseStudyOverviewMetricT } from "@/types/sections";
 import { stripTags, toPlainText } from "@/lib/utils/strings";
 
-type WpCaseStudyListRow = {
+export type WpCaseStudyListRow = {
   id: number;
   slug: string;
   title: { rendered: string };
@@ -14,18 +14,44 @@ type WpCaseStudyListRow = {
   _embedded?: {
     "wp:featuredmedia"?: { source_url?: string; alt_text?: string }[];
   };
-};
+} & Record<string, unknown>;
 
-function outcomeMetricsFromAcf(acf: Record<string, unknown> | undefined): CaseStudyOverviewMetricT[] {
-  const raw = acf?.case_study_outcome_metrics;
+/** `acf` object plus case-study fields sometimes hoisted on the REST root by ACF / plugins. */
+function acfFromCaseStudyRestRow(p: WpCaseStudyListRow): Record<string, unknown> {
+  const base =
+    p.acf && typeof p.acf === "object" && !Array.isArray(p.acf)
+      ? { ...(p.acf as Record<string, unknown>) }
+      : ({} as Record<string, unknown>);
+  for (const k of ["case_study_outcome_metrics", "case_study_project_label", "case_study_lead"] as const) {
+    if (base[k] === undefined && p[k] !== undefined) {
+      base[k] = p[k] as unknown;
+    }
+  }
+  return base;
+}
+
+function metricLabelValueFromRow(r: Record<string, unknown>): { label: string; value: string } {
+  const labelRaw = r.metric_label ?? r.field_omb_case_study_metric_label ?? r.label;
+  const valueRaw = r.metric_value ?? r.field_omb_case_study_metric_value ?? r.value;
+  return {
+    label: stripTags(String(labelRaw ?? "")),
+    value: stripTags(String(valueRaw ?? "")),
+  };
+}
+
+export function caseStudyOutcomeMetricsFromAcf(
+  acf: Record<string, unknown> | undefined,
+  max?: number
+): CaseStudyOverviewMetricT[] {
+  let raw = acf?.case_study_outcome_metrics;
+  if (raw && typeof raw === "object" && !Array.isArray(raw)) {
+    raw = Object.values(raw as Record<string, unknown>).filter((v) => v != null && typeof v === "object");
+  }
   if (!Array.isArray(raw)) return [];
-  return raw
-    .map((item) => {
-      const r = item as Record<string, unknown>;
-      return { label: stripTags(String(r.metric_label ?? "")), value: stripTags(String(r.metric_value ?? "")) };
-    })
-    .filter((m) => m.label.trim() !== "" || m.value.trim() !== "")
-    .slice(0, 3);
+  const rows = raw
+    .map((item) => metricLabelValueFromRow(item as Record<string, unknown>))
+    .filter((m) => m.label.trim() !== "" || m.value.trim() !== "");
+  return max === undefined ? rows : rows.slice(0, max);
 }
 
 export function mapWpCaseStudyRowToOverviewCard(p: WpCaseStudyListRow, lang: Locale): CaseStudyOverviewCardT {
@@ -35,7 +61,7 @@ export function mapWpCaseStudyRowToOverviewCard(p: WpCaseStudyListRow, lang: Loc
     featured?.source_url && featured.source_url !== ""
       ? { url: featured.source_url, alt: featured.alt_text || titlePlain }
       : null;
-  const acf = p.acf || {};
+  const acf = acfFromCaseStudyRestRow(p);
   const projectLabel = stripTags(String(acf.case_study_project_label ?? "")).trim();
   return {
     id: p.id,
@@ -44,8 +70,41 @@ export function mapWpCaseStudyRowToOverviewCard(p: WpCaseStudyListRow, lang: Loc
     href: buildLocalePath(lang, p.slug),
     image,
     projectLabel,
-    metrics: outcomeMetricsFromAcf(acf),
+    metrics: caseStudyOutcomeMetricsFromAcf(acf, 3),
   };
+}
+
+function metricsAndProjectFromAcfRestPayload(payload: Record<string, unknown>): {
+  metrics: CaseStudyOverviewMetricT[];
+  projectLabel: string;
+} {
+  const nested = payload.acf;
+  const acfRecord =
+    nested && typeof nested === "object" && !Array.isArray(nested) ? (nested as Record<string, unknown>) : payload;
+  return {
+    metrics: caseStudyOutcomeMetricsFromAcf(acfRecord, 3),
+    projectLabel: stripTags(String(acfRecord.case_study_project_label ?? "")).trim(),
+  };
+}
+
+/**
+ * When `wp/v2` omits repeater ACF, ACF’s own REST routes often still return full field data.
+ */
+async function tryAcfRestCaseStudyFields(
+  lang: Locale,
+  restBase: string,
+  postId: number
+): Promise<{ metrics: CaseStudyOverviewMetricT[]; projectLabel: string }> {
+  for (const prefix of ["/acf/v3/", "/acf/v1/"] as const) {
+    const payload = await wpFetchOptional<Record<string, unknown>>(`${prefix}${restBase}/${postId}`, {
+      lang,
+      revalidate: 30,
+    });
+    if (!payload || typeof payload !== "object") continue;
+    const parsed = metricsAndProjectFromAcfRestPayload(payload);
+    if (parsed.metrics.length > 0 || parsed.projectLabel) return parsed;
+  }
+  return { metrics: [], projectLabel: "" };
 }
 
 export async function fetchCaseStudiesCollection(options: {
@@ -86,5 +145,16 @@ export async function fetchCaseStudyOverviewCardById(
     revalidate: 30,
   });
   if (!row?.id) return null;
-  return mapWpCaseStudyRowToOverviewCard(row, lang);
+  let card = mapWpCaseStudyRowToOverviewCard(row, lang);
+  if (card.metrics.length === 0) {
+    const extra = await tryAcfRestCaseStudyFields(lang, rest, postId);
+    if (extra.metrics.length > 0 || extra.projectLabel) {
+      card = {
+        ...card,
+        metrics: extra.metrics.length > 0 ? extra.metrics : card.metrics,
+        projectLabel: card.projectLabel || extra.projectLabel,
+      };
+    }
+  }
+  return card;
 }

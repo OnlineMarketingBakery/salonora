@@ -71,3 +71,9 @@ export function getBlogPageSlug(lang: "nl" | "en"): string {
   const key = `WORDPRESS_BLOG_PAGE_SLUG_${lang.toUpperCase()}` as const;
   return process.env[key]?.trim() || process.env.WORDPRESS_BLOG_PAGE_SLUG?.trim() || "blog";
 }
+
+/** Single segment path for case study archive (breadcrumbs). Override per locale or fall back to `case-studies` (CPT rewrite slug). */
+export function getCaseStudyArchiveSlug(lang: "nl" | "en"): string {
+  const key = `WORDPRESS_CASE_STUDY_PAGE_SLUG_${lang.toUpperCase()}` as const;
+  return process.env[key]?.trim() || process.env.WORDPRESS_CASE_STUDY_PAGE_SLUG?.trim() || "case-studies";
+}

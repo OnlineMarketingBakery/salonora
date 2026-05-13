@@ -8,6 +8,7 @@ if (!defined('ABSPATH')) {
  */
 add_filter('pll_get_post_types', function ($post_types, $is_settings) {
     $post_types['service'] = 'service';
+    $post_types['case_study'] = 'case_study';
     return $post_types;
 }, 10, 2);
 

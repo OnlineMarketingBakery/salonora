@@ -268,6 +268,26 @@ async function enrichCaseStudyOverview(
     }
   }
 
+  // Collection `GET …/case_study` often omits repeater ACF; single `GET …/case_study/{id}` includes it.
+  if (currentPage === 1 && !searchQuery.trim() && s.showFeatured && items.length > 0) {
+    const featuredId = items[0].id;
+    const hydrated = await fetchCaseStudyOverviewCardById(ctx.lang, featuredId);
+    if (hydrated && hydrated.id === featuredId) {
+      items = [
+        {
+          ...items[0],
+          metrics: hydrated.metrics.length > 0 ? hydrated.metrics : items[0].metrics,
+          projectLabel: hydrated.projectLabel || items[0].projectLabel,
+          excerpt: hydrated.excerpt || items[0].excerpt,
+          image: hydrated.image ?? items[0].image,
+          title: hydrated.title || items[0].title,
+          href: hydrated.href || items[0].href,
+        },
+        ...items.slice(1),
+      ];
+    }
+  }
+
   return {
     ...s,
     archivePath,

@@ -66,7 +66,7 @@ salonora/
 
 ## Prerequisites
 
-- **WordPress** with the stack described in [`docs/wordpress-connection-guide.md`](docs/wordpress-connection-guide.md) (ACF Pro, Polylang `nl`/`en`, Yoast, CF7, custom post types `service` & `testimonial`, option pages, menus).
+- **WordPress** with the stack described in [`docs/wordpress-connection-guide.md`](docs/wordpress-connection-guide.md) (ACF Pro, Polylang `nl`/`en`, Yoast, CF7, custom post types `service`, `testimonial`, and `case_study`, option pages, menus).
 - ACF: theme-root `wordpress/wp-content/themes/omb-headless/acf-import-bundle.json` for `npm run acf:push` / import; `acf-json/group_*.json` is generated with **`npm run acf:extract-local-json`** (one file per group, per ACF Local JSON). Layouts must match `src/lib/acf/` and `src/components/sections/`.
 
 ## Setup & installation
@@ -103,6 +103,8 @@ All keys are documented in **`.env.example`** at the repo root. Summary:
 | `WORDPRESS_BASE_URL` | Recommended | Public WP origin (no `/wp-json`) — media URLs, CF7 |
 | `NEXT_PUBLIC_SITE_URL` | Yes | Public URL of this Next app (canonical, sitemap, links) |
 | `HOMEPAGE_SLUG` / `HOMEPAGE_SLUG_NL` / `HOMEPAGE_SLUG_EN` | Optional | Page slug for `/{lang}/` |
+| `WORDPRESS_BLOG_PAGE_SLUG` / `*_NL` / `*_EN` | Optional | Blog archive segment for post breadcrumbs (default `blog`) |
+| `WORDPRESS_CASE_STUDY_PAGE_SLUG` / `*_NL` / `*_EN` | Optional | Case study archive segment for single-case-study breadcrumbs (default `case-studies`) |
 | `WP_MENU_*` / `WORDPRESS_MENU_*` | If using REST menus | Numeric menu IDs per location (`primary`, `footer`, `legal`) and locale |
 | `WORDPRESS_APPLICATION_USER` / `WORDPRESS_APPLICATION_PASSWORD` | If WP returns 401 | Application Password basic auth for server fetches |
 | `REVALIDATION_SECRET` | Production ISR webhooks | Secret for `POST /api/revalidate` |
@@ -125,7 +127,7 @@ If `WORDPRESS_BASE_URL` / `WORDPRESS_API_URL` are unset, **Next Image** runs in 
 
 - **Localized routing:** `src/app/[lang]/` with `[...slug]` for inner pages; middleware sends `/` to the default locale.
 - **Flexible sections:** WordPress ACF layouts are normalized in `src/lib/acf/` and rendered via `SectionRenderer` + `src/components/sections/*`.
-- **Services & posts:** Dedicated fetchers and templates (`PageTemplate`, `PostTemplate`).
+- **Services, posts & case studies:** Dedicated fetchers and templates (`PageTemplate`, `PostTemplate`, `CaseStudyTemplate`).
 - **Testimonials:** Loaded by relationship IDs from section data.
 - **Forms:** CF7 via REST + server proxy (`submit-cf7-form`); embed sections use `FormEmbedSection` / `CF7Form`.
 - **SEO:** Yoast fields mapped in `src/lib/seo/map-yoast-to-metadata.ts`.

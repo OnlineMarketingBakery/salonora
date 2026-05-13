@@ -9570,12 +9570,12 @@
                 "bidirectional_target": []
               },
               {
-                "key": "field_cs_overview_posts_per_page",
-                "label": "Case studies per page",
-                "name": "posts_per_page",
+                "key": "field_cs_overview_grid_columns",
+                "label": "Hero KPI columns (large screens)",
+                "name": "grid_columns",
                 "aria-label": "",
-                "type": "number",
-                "instructions": "Maximum items returned from WordPress for each page (including the featured slot when enabled).",
+                "type": "select",
+                "instructions": "How many hero stat cards per row below the intro. Smaller breakpoints step up gradually. Does not change the case study card grid further down the page.",
                 "required": 0,
                 "conditional_logic": 0,
                 "wrapper": {
@@ -9583,9 +9583,42 @@
                   "class": "",
                   "id": ""
                 },
-                "default_value": 6,
+                "choices": {
+                  "1": "1 column",
+                  "2": "2 columns",
+                  "3": "3 columns",
+                  "4": "4 columns"
+                },
+                "default_value": "3",
+                "return_format": "value",
+                "multiple": 0,
+                "allow_null": 0,
+                "ui": 1,
+                "ajax": 0,
+                "placeholder": "",
+                "allow_custom": 0,
+                "search_placeholder": "",
+                "allow_in_bindings": 0,
+                "create_options": 0,
+                "save_options": 0
+              },
+              {
+                "key": "field_cs_overview_grid_rows",
+                "label": "Case study list rows (per page)",
+                "name": "grid_rows",
+                "aria-label": "",
+                "type": "number",
+                "instructions": "How many rows of case studies to load per page. The card list uses three columns on large screens, so items per page = 3 × this value (maximum 50). The featured slot still uses one of the fetched items on page 1 when enabled.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": 2,
                 "min": 1,
-                "max": 50,
+                "max": 12,
                 "allow_in_bindings": 0,
                 "placeholder": "",
                 "prepend": "",
@@ -12689,7 +12722,7 @@
         "name": "case_study_project_label",
         "aria-label": "",
         "type": "text",
-        "instructions": "Shown above the title on overview cards (e.g. “Project: Voetzorg Roermond”).",
+        "instructions": "Shown above the title on overview cards and on the single template (e.g. “Project: Voetzorg Roermond”).",
         "required": 0,
         "conditional_logic": 0,
         "wrapper": {
@@ -12706,11 +12739,11 @@
       },
       {
         "key": "field_omb_case_study_outcome_metrics",
-        "label": "Outcome metrics (featured)",
+        "label": "Outcome metrics",
         "name": "case_study_outcome_metrics",
         "aria-label": "",
         "type": "repeater",
-        "instructions": "Up to three metrics shown on the large featured case study block (e.g. cost saving, payback time, ROI).",
+        "instructions": "Metrics for the overview featured block (first three used there) and for the **single case study** metrics bar (all rows, typically four).",
         "required": 0,
         "conditional_logic": 0,
         "wrapper": {
@@ -12721,7 +12754,7 @@
         "layout": "row",
         "pagination": 0,
         "min": 0,
-        "max": 3,
+        "max": 8,
         "collapsed": "",
         "button_label": "Add metric",
         "rows_per_page": 20,
@@ -12771,6 +12804,113 @@
             "parent_repeater": "field_omb_case_study_outcome_metrics"
           }
         ]
+      },
+      {
+        "key": "field_omb_case_study_lead",
+        "label": "Case study lead (on-page intro)",
+        "name": "case_study_lead",
+        "aria-label": "",
+        "type": "wysiwyg",
+        "instructions": "Optional intro under the title. When empty, the WordPress excerpt is shown as plain text (same idea as blog **Post lead**).",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "allow_in_bindings": 1,
+        "tabs": "visual",
+        "toolbar": "basic",
+        "media_upload": 0,
+        "delay": 0
+      },
+      {
+        "key": "field_omb_case_study_show_toc",
+        "label": "Show table of contents",
+        "name": "show_toc",
+        "aria-label": "",
+        "type": "true_false",
+        "instructions": "When off, the Inhoudsopgave block is hidden (author card still shows).",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "message": "",
+        "default_value": 1,
+        "ui": 1,
+        "ui_on_text": "Yes",
+        "ui_off_text": "No"
+      },
+      {
+        "key": "field_omb_case_study_breadcrumb_parent",
+        "label": "Breadcrumb parent (before case studies)",
+        "name": "breadcrumb_parent",
+        "aria-label": "",
+        "type": "link",
+        "instructions": "Optional first breadcrumb segment before the case studies archive link.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "return_format": "array",
+        "allow_in_bindings": 1
+      },
+      {
+        "key": "field_omb_case_study_show_related",
+        "label": "Show related case studies",
+        "name": "show_related_case_studies",
+        "aria-label": "",
+        "type": "true_false",
+        "instructions": "When on, three other case studies load at the bottom of the single template.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "message": "",
+        "default_value": 1,
+        "ui": 1,
+        "ui_on_text": "Yes",
+        "ui_off_text": "No"
+      },
+      {
+        "key": "field_omb_case_study_featured_form",
+        "label": "Featured form",
+        "name": "featured_form",
+        "aria-label": "",
+        "type": "post_object",
+        "instructions": "Optional Contact Form 7 form embedded after the article body (same pattern as blog posts).",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "post_type": [
+          "wpcf7_contact_form"
+        ],
+        "post_status": [
+          "publish"
+        ],
+        "taxonomy": "",
+        "return_format": "object",
+        "multiple": 0,
+        "allow_null": 1,
+        "allow_in_bindings": 0,
+        "bidirectional": 0,
+        "ui": 1,
+        "bidirectional_target": []
       }
     ],
     "location": [
@@ -12794,6 +12934,6 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1779400000
+    "modified": 1779500000
   }
 ]

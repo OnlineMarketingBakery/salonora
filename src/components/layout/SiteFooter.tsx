@@ -4,17 +4,29 @@ import { RichText } from "@/components/ui/RichText";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
-import { getImageUrl, getLargestImageUrl, resolveAbsoluteMediaUrl } from "@/lib/utils/media";
+import {
+  getImageUrl,
+  getLargestImageUrl,
+  resolveAbsoluteMediaUrl,
+} from "@/lib/utils/media";
 import type { GlobalSettings } from "@/types/globals";
 import type { MenuItem } from "@/types/menu";
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 
-const gridStyle = {
+/** Subtle grid on dark stock footer (custom image/gradient uses image only, no grid). */
+const gridStyleDark = {
   backgroundImage: `
     linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)`,
+  backgroundSize: "24px 24px",
+} as const;
+
+const gridStyleLight = {
+  backgroundImage: `
+    linear-gradient(rgba(29,43,79,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(29,43,79,0.06) 1px, transparent 1px)`,
   backgroundSize: "24px 24px",
 } as const;
 
@@ -118,7 +130,8 @@ export function SiteFooter({
 
   /** Prefer a plain `<img>` with an absolutized URL so uploads never depend on `next/image` remotePatterns alone. */
   const bgImageUrl = resolveAbsoluteMediaUrl(
-    getLargestImageUrl(g.footer.footerBackgroundImage) ?? getImageUrl(g.footer.footerBackgroundImage),
+    getLargestImageUrl(g.footer.footerBackgroundImage) ??
+      getImageUrl(g.footer.footerBackgroundImage),
   );
   const showFooterBgImg = Boolean(bgImageUrl?.trim());
   const hasFooterBgAttachment = g.footer.footerBackgroundImage != null;
@@ -127,7 +140,14 @@ export function SiteFooter({
   const hasBgImage = showFooterBgImg || hasFooterBgAttachment;
   const hasBgGradient = bgGradient.length > 0;
   const hasBgColor = bgColor.length > 0;
+  /** No CMS footer bg → stock footer (white surface + navy type; custom bg keeps light-on-dark treatment). */
   const useDefaultNavy = !hasBgImage && !hasBgGradient && !hasBgColor;
+  const isLightStockFooter = useDefaultNavy;
+  const fg = isLightStockFooter ? "text-navy-deep" : "text-white";
+  const fgMuted = isLightStockFooter ? "text-navy-deep/80" : "text-white/90";
+  const fgSubtle = isLightStockFooter ? "text-navy-deep/70" : "text-white/80";
+  const hairline = isLightStockFooter ? "bg-navy-deep/12" : "bg-white/15";
+  const rule = isLightStockFooter ? "bg-navy-deep/25" : "bg-white/50";
 
   const footerMainStyle: CSSProperties = {};
   if (hasBgGradient) {
@@ -143,28 +163,57 @@ export function SiteFooter({
 
   /** Built-in circular notch only when the footer uses stock navy + logo and no custom bg fields at all. */
   const useNotchMask = Boolean(g.footer.footerLogo) && !anyCustomFooterBg;
-  const showRadialGlow = useDefaultNavy;
   const showGridOverlay = !hasBgImage;
 
+  /**
+   * NOTCH GEOMETRY (matched to Figma):
+   * Logo diameters: 100px (mobile), 140px (sm), 180px (md+)
+   * Logo is positioned at top:0 with -translate-y-1/2 → its center sits
+   * EXACTLY on the footer top edge. Bottom half (50% of logo) sits inside.
+   *
+   * Mask radius is the logo radius + ~10px of breathing room, so the curve
+   * hugs the logo with a thin white ring of the page background visible.
+   *
+   *   mobile (logo 100, r=50) → mask r=60
+   *   sm     (logo 140, r=70) → mask r=82
+   *   md+    (logo 180, r=90) → mask r=100
+   *
+   * Two-stop gradient (transparent → black, no soft middle stop) gives a
+   * crisp curve with no halo. CSS var lets us swap radius per breakpoint.
+   */
+  const notchMaskStyle: CSSProperties = useNotchMask
+    ? ({
+        WebkitMaskImage:
+          "radial-gradient(circle var(--notch-r, 100px) at 50% 0px, transparent 0 calc(var(--notch-r, 100px) - 1px), black var(--notch-r, 100px))",
+        maskImage:
+          "radial-gradient(circle var(--notch-r, 100px) at 50% 0px, transparent 0 calc(var(--notch-r, 100px) - 1px), black var(--notch-r, 100px))",
+        WebkitMaskRepeat: "no-repeat",
+        maskRepeat: "no-repeat",
+        WebkitMaskSize: "100% 100%",
+        maskSize: "100% 100%",
+      } as CSSProperties)
+    : {};
+
   return (
-    <footer className="relative z-0 mt-auto overflow-x-clip overflow-y-visible pt-20 text-white sm:pt-24 md:pt-28">
+    <footer
+      className={`relative z-0 mt-auto overflow-x-clip overflow-y-visible pt-20 sm:pt-24 md:pt-28 ${fg}`}
+    >
+      {/* Per-breakpoint notch radius — keeps the mask snug around each logo size. */}
+      {useNotchMask && (
+        <style>{`
+          .footer-notch { --notch-r: 60px; }
+          @media (min-width: 640px) { .footer-notch { --notch-r: 82px; } }
+          @media (min-width: 768px) { .footer-notch { --notch-r: 100px; } }
+        `}</style>
+      )}
+
       <div className="relative">
+        {/* No backdrop disc — the notch mask cuts a hole and the page background shows through cleanly. */}
         <div
-          className={`relative rounded-t-3xl sm:rounded-t-[1.5rem] md:rounded-t-[50px] ${useDefaultNavy ? "bg-navy-deep" : ""}`}
+          className={`footer-notch relative z-[2] rounded-t-3xl sm:rounded-t-[1.5rem] md:rounded-t-[50px] ${useDefaultNavy ? "bg-white" : ""}`}
           style={{
             ...footerMainStyle,
-            ...(useNotchMask
-              ? ({
-                  WebkitMaskImage:
-                    "radial-gradient(circle 109px at 50% 0px, transparent 0 108.5px, rgba(0,0,0,0.9) 109.5px, black 110px)",
-                  maskImage:
-                    "radial-gradient(circle 109px at 50% 0px, transparent 0 108.5px, rgba(0,0,0,0.9) 109.5px, black 110px)",
-                  WebkitMaskRepeat: "no-repeat",
-                  maskRepeat: "no-repeat",
-                  WebkitMaskSize: "100% 100%",
-                  maskSize: "100% 100%",
-                } as const)
-              : {}),
+            ...notchMaskStyle,
           }}
         >
           {showFooterBgImg && bgImageUrl ? (
@@ -189,20 +238,10 @@ export function SiteFooter({
               />
             </div>
           ) : null}
-          {showRadialGlow && (
-            <div
-              className="pointer-events-none absolute inset-0 rounded-t-[inherit]"
-              style={{
-                background:
-                  "radial-gradient(ellipse 50% 80% at 50% 0%, rgba(57,144,240,0.1) 0%, transparent 55%)",
-              }}
-              aria-hidden
-            />
-          )}
           {showGridOverlay && (
             <div
               className="pointer-events-none absolute inset-0 rounded-t-[inherit] opacity-30"
-              style={gridStyle}
+              style={isLightStockFooter ? gridStyleLight : gridStyleDark}
               aria-hidden
             />
           )}
@@ -222,7 +261,9 @@ export function SiteFooter({
                 className={`${REVEAL_ITEM} w-full min-w-0 max-w-[712px] text-left`}
               >
                 {heading && (
-                  <h2 className="text-[2rem] font-semibold leading-none tracking-[-0.04em] text-white sm:text-[2.5rem] lg:text-[3rem] xl:text-[48px]">
+                  <h2
+                    className={`text-[2rem] font-semibold leading-none tracking-[-0.04em] sm:text-[2.5rem] lg:text-[3rem] xl:text-[48px] ${fg}`}
+                  >
                     {heading}
                   </h2>
                 )}
@@ -230,12 +271,18 @@ export function SiteFooter({
                   <div className={heading ? "mt-6" : ""}>
                     <RichText
                       html={g.footer.footerText}
-                      className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-full !prose-p:text-left !prose-p:font-sans !prose-p:text-base !prose-p:font-normal !prose-p:leading-[1.6] !prose-p:text-white [&>p+_p]:!mt-4 [&_a]:!text-white/90 [&_p]:!text-inherit"
+                      className={
+                        isLightStockFooter
+                          ? "!prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-full !prose-p:text-left !prose-p:font-sans !prose-p:text-base !prose-p:font-normal !prose-p:leading-[1.6] !prose-p:text-navy-deep [&>p+_p]:!mt-4 [&_a]:!text-[var(--palette-brand)] [&_p]:!text-inherit"
+                          : "!prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-full !prose-p:text-left !prose-p:font-sans !prose-p:text-base !prose-p:font-normal !prose-p:leading-[1.6] !prose-p:text-white [&>p+_p]:!mt-4 [&_a]:!text-white/90 [&_p]:!text-inherit"
+                      }
                     />
                   </div>
                 )}
                 {!g.footer.footerText && g.site.defaultTagline && (
-                  <p className="mt-6 text-base font-normal leading-[1.6] text-white">
+                  <p
+                    className={`mt-6 text-base font-normal leading-[1.6] ${fg}`}
+                  >
                     {g.site.defaultTagline}
                   </p>
                 )}
@@ -274,7 +321,11 @@ export function SiteFooter({
                   <div className="mt-6">
                     <RichText
                       html={footnoteUnderCtas}
-                      className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-full !prose-p:text-left !prose-p:font-sans !prose-p:text-base !prose-p:font-normal !prose-p:leading-[1.6] !prose-p:text-white/90 [&>p+_p]:!mt-2 [&_a]:!text-white/90"
+                      className={
+                        isLightStockFooter
+                          ? "!prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-full !prose-p:text-left !prose-p:font-sans !prose-p:text-base !prose-p:font-normal !prose-p:leading-[1.6] !prose-p:text-navy-deep/85 [&>p+_p]:!mt-2 [&_a]:!text-[var(--palette-brand)]"
+                          : "!prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-full !prose-p:text-left !prose-p:font-sans !prose-p:text-base !prose-p:font-normal !prose-p:leading-[1.6] !prose-p:text-white/90 [&>p+_p]:!mt-2 [&_a]:!text-white/90"
+                      }
                     />
                   </div>
                 )}
@@ -283,7 +334,7 @@ export function SiteFooter({
               <div className="flex w-full min-w-0 flex-1 flex-col justify-start gap-10 min-[500px]:flex-row min-[500px]:items-stretch min-[500px]:gap-8 min-[500px]:pl-0 sm:pl-0 lg:max-w-2xl lg:gap-6 xl:max-w-none 2xl:pl-0">
                 {(hasNav || hasFollow) && (
                   <div
-                    className="hidden w-px min-h-[268px] shrink-0 self-stretch bg-white/15 lg:block"
+                    className={`hidden w-px min-h-[268px] shrink-0 self-stretch lg:block ${hairline}`}
                     aria-hidden
                   />
                 )}
@@ -291,11 +342,11 @@ export function SiteFooter({
                   <div
                     className={`${REVEAL_ITEM} w-full min-w-0 min-[500px]:max-w-[8.2rem] sm:min-w-[6.5rem] sm:pl-0 md:pl-0 lg:min-w-[7.2rem]`}
                   >
-                    <h3 className="text-2xl font-semibold leading-none text-white">
+                    <h3 className={`text-2xl font-semibold leading-none ${fg}`}>
                       Quick Links
                     </h3>
                     <div
-                      className="mt-[17px] h-0.5 w-32 max-w-full bg-white/50"
+                      className={`mt-[17px] h-0.5 w-32 max-w-full ${rule}`}
                       aria-hidden
                     />
                     <ul className="mt-4 space-y-2.5" role="list">
@@ -303,7 +354,11 @@ export function SiteFooter({
                         <li key={m.id}>
                           <Link
                             href={m.href}
-                            className="text-base font-medium leading-[normal] text-white transition hover:text-white/80"
+                            className={`text-base font-medium leading-[normal] transition ${fg} ${
+                              isLightStockFooter
+                                ? "hover:text-[var(--palette-brand)]"
+                                : "hover:text-white/80"
+                            }`}
                             target={m.target}
                           >
                             {m.label}
@@ -316,7 +371,7 @@ export function SiteFooter({
 
                 {showMidDivider && (
                   <div
-                    className="hidden w-px min-h-[200px] shrink-0 self-stretch bg-white/15 min-[500px]:block"
+                    className={`hidden w-px min-h-[200px] shrink-0 self-stretch min-[500px]:block ${hairline}`}
                     aria-hidden
                   />
                 )}
@@ -325,11 +380,11 @@ export function SiteFooter({
                   <div
                     className={`${REVEAL_ITEM} w-full min-w-0 min-[500px]:w-auto`}
                   >
-                    <h3 className="text-2xl font-semibold leading-none text-white">
+                    <h3 className={`text-2xl font-semibold leading-none ${fg}`}>
                       Follow us
                     </h3>
                     <div
-                      className="mt-[17px] h-0.5 w-32 max-w-full bg-white/50"
+                      className={`mt-[17px] h-0.5 w-32 max-w-full ${rule}`}
                       aria-hidden
                     />
                     <ul
@@ -343,7 +398,11 @@ export function SiteFooter({
                           <li key={s.label}>
                             <a
                               href={s.href}
-                              className="group inline-flex min-h-0 items-center gap-1.5 text-base font-normal leading-[normal] text-white transition hover:text-white/80"
+                              className={`group inline-flex min-h-0 items-center gap-1.5 text-base font-normal leading-[normal] transition ${fg} ${
+                                isLightStockFooter
+                                  ? "hover:text-[var(--palette-brand)]"
+                                  : "hover:text-white/80"
+                              }`}
                               rel="noreferrer"
                               target="_blank"
                             >
@@ -367,7 +426,11 @@ export function SiteFooter({
           <div className="w-full">
             <div className="mx-auto w-full max-w-[1300px] pointer-events-none relative [filter:drop-shadow(0_-6px_24px_rgba(57,144,240,0.55))_drop-shadow(0_-16px_48px_rgba(57,144,240,0.4))_drop-shadow(0_-28px_72px_rgba(57,144,240,0.28))_drop-shadow(0_-40px_104px_rgba(57,144,240,0.16))_drop-shadow(0_-52px_140px_rgba(57,144,240,0.08))_drop-shadow(0_-64px_180px_rgba(57,144,240,0.04))]">
               <img
-                src="/footer-shape-top.svg"
+                src={
+                  isLightStockFooter
+                    ? "/footer-shape-top-light.svg"
+                    : "/footer-shape-top.svg"
+                }
                 width={1283}
                 height={54}
                 alt=""
@@ -376,9 +439,13 @@ export function SiteFooter({
                 decoding="async"
               />
             </div>
-            <div className={` bg-navy-deep relative z-10`}>
+            <div
+              className={`relative z-10 ${isLightStockFooter ? "bg-white" : "bg-navy-deep"}`}
+            >
               <div className="mx-auto flex w-full max-w-[1300px] flex-col items-center justify-center px-4 pb-5 sm:px-6 md:px-8">
-                <p className="mt-2 text-center text-sm font-light text-white/90 sm:-mt-6">
+                <p
+                  className={`mt-2 text-center text-sm font-light sm:-mt-6 ${fgMuted}`}
+                >
                   {g.footer.footerCopyright ||
                     `Copyright ©${new Date().getFullYear()} Salonora all right reserved`}
                 </p>
@@ -390,7 +457,9 @@ export function SiteFooter({
                       <Link
                         key={m.id}
                         href={m.href}
-                        className="text-sm font-medium text-white/80 transition hover:text-white hover:underline"
+                        className={`text-sm font-medium transition hover:underline ${fgSubtle} ${
+                          isLightStockFooter ? "hover:text-navy-deep" : "hover:text-white"
+                        }`}
                         target={m.target}
                       >
                         {m.label}
@@ -399,7 +468,7 @@ export function SiteFooter({
                     {g.footer.showFooterLanguageSwitcher && (
                       <LanguageSwitcher
                         lang={lang}
-                        className="text-sm text-white/80"
+                        className={`text-sm ${fgSubtle}`}
                         serverPathname={languageSwitcherPathname}
                         serverLocaleHrefs={languageSwitcherHrefs}
                       />
@@ -412,7 +481,7 @@ export function SiteFooter({
         </div>
 
         {g.footer.footerLogo && (
-          <div className="absolute left-1/2 top-0 z-30 -translate-x-1/2 translate-y-[-40%] sm:translate-y-[-45%] md:translate-y-[calc(-50%+6px)]">
+          <div className="absolute left-1/2 top-0 z-30 -translate-x-1/2 -translate-y-1/2">
             <div className="flex h-[100px] w-[100px] items-center justify-center rounded-full border border-[#3990F0] bg-white p-2 shadow-[0px_23px_17px_rgba(67,87,128,0.34)] sm:h-[140px] sm:w-[140px] sm:p-2.5 md:h-[180px] md:w-[180px] md:pb-[39px] md:pl-[55px] md:pr-[54px] md:pt-[38px]">
               <Media
                 image={g.footer.footerLogo}
