@@ -10,7 +10,10 @@ import type { ServiceDocument } from "@/types/documents";
 
 function toDoc(p: WpServiceRaw, gs: GlobalSettings): { doc: ServiceDocument; raw: WpServiceRaw } {
   const acf = p.acf || {};
-  const sections = normalizeServiceSections((acf as { service_sections?: unknown }).service_sections);
+  /** OMB Page Builder (`page_sections`) and Service Settings > Extra Sections (`service_sections`) share the same flexible layouts; prefer the page builder when it has rows so services match pages. */
+  const fromPageBuilder = normalizeServiceSections((acf as { page_sections?: unknown }).page_sections);
+  const fromServiceSettings = normalizeServiceSections((acf as { service_sections?: unknown }).service_sections);
+  const sections = fromPageBuilder.length > 0 ? fromPageBuilder : fromServiceSettings;
   const highlights = Array.isArray((acf as { service_highlights?: { text?: string }[] }).service_highlights)
     ? (acf as { service_highlights: { text: string }[] }).service_highlights
         .map((h) => h.text)
