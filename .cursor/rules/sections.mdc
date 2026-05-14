@@ -94,13 +94,13 @@ Sections registered as **`next/dynamic` lazy** (`ssr: true`): most newer section
 4. Add dynamic import + registry entry in `section-registry.ts`.
 5. Add `case "layout_key":` to `SectionRenderer.tsx` switch.
 6. Create `src/components/sections/<kebab-layout-name>/index.tsx`.
-7. Add layout to `acf-import-bundle.json` (under `group_omb_page_builder`) with field keys `field_omb_<layout>_*`.
+7. Add layout to **repo-root** `acf-import-bundle.json` (under `group_omb_page_builder`) with field keys `field_omb_<layout>_*`, then run `npm run acf:sync-bundle` or `npm run acf:push` so the theme mirror stays in sync.
 8. Update `ai-context.md` section registry key list.
 9. Run `npm run build` to catch assertNever compile errors.
 
 ---
 
-## All 53 section keys
+## All 54 section keys
 
 Keys are listed alphabetically. Keys with ✦ have extended Figma/implementation notes below.
 
@@ -112,7 +112,7 @@ combined_strengths ✦      cost_comparison          cta
 demo_preview_split ✦      design_showcase_grid ✦    faq
 faq_contact_split ✦       feature_highlight_grid    feature_highlight_split
 features_checklist ✦      form_embed                founder_story_split ✦
-founders_banner ✦         growth_plans_split ✦      guarantee_split
+founders_banner ✦         free_demo_form ✦          growth_plans_split ✦     guarantee_split
 guarantees_promise_split ✦ hero                      how_it_works_steps
 image_intro_split         is_demo_for_you ✦        latest_posts              media_text_checklist ✦
 origin_story_split ✦      our_promises ✦            partner_intro_split ✦
@@ -130,6 +130,9 @@ why_salonora_anders       why_salonora_different   why_we_do_this
 
 ### `demo_preview_split`
 Figma **1397:31** ("Group 605"): rounded navy panel (diagonal gradient base + brand washes + corner grids + star mist); pill `badge`, multi-line `title`, WYSIWYG **`body`** (all paragraphs; use **bold** for lead phrases). Right column **`mockup_image`** (laptop shot, aspect ~2391:1411). **Container** uses `!max-w-[85rem]` to align with `split_copy_framed` / audience promo. Legacy REST rows may still send repeater `items`; the normalizer merges those into `body` when `body` is empty.
+
+### `free_demo_form`
+Figma **1417:36** ("Group 606"): outer `bg-surface` rounded shell; centered `title` + `subtitle` (HTML); white elevated card with CF7 form (`form` post object). Fields render in a responsive two-column grid (full row for `select`, `textarea`, `url`, grouped `radio`). **`footer_note`** sits under the gradient submit. Client bridge hides URL-like text/url fields when a detected “has website” radio group is answered with an explicit **no** (`no` / `nee` / `0` / `false`). `success_mode`, `redirect_link`, `tracking_context` match `form_embed`. CF7 field list is parsed from the form template HTML (`fetch-cf7-form`) so `select` / `radio` / `tel` / `url` map correctly.
 
 ### `is_demo_for_you`
 Figma **696:4046**: centered `title`; left column = two `bg-surface` cards (`for_you_heading` + optional **`for_you_list_icon`** used for every `for_you_list` / `item` row, else built-in check; `not_for_you_heading` + optional **`not_for_you_list_icon`** for all `not_for_you_list` rows, else built-in X); right column = brand gradient + optional `panel_overlay` + **`portrait_image`** (`object-contain` + generous top padding so heads are not clipped); footer band = **gradient** base (`footer_message` + **`cta_link`** + optional **`cta_trailing_icon`**).

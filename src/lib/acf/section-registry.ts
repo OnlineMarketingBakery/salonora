@@ -207,6 +207,14 @@ const IsDemoForYouSectionLazy = dynamic(
   { ssr: true }
 );
 
+const FreeDemoFormSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/free-demo-form").then((mod) => ({
+      default: mod.FreeDemoFormSection,
+    })),
+  { ssr: true }
+);
+
 import type { AnySectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 import type { ReactNode } from "react";
@@ -241,6 +249,9 @@ export const sectionRegistry = {
   how_it_works_steps: asSection(HowItWorksStepsSectionShell as (p: { section: never; lang: Locale }) => ReactNode),
   faq_contact_split: asSection(FaqContactSplitSection as (p: { section: never; lang: Locale }) => ReactNode),
   form_embed: asSection(FormEmbedSection as (p: { section: never; lang: Locale }) => ReactNode),
+  free_demo_form: asSection(
+    FreeDemoFormSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
   latest_posts: asSection(LatestPostsSection as (p: { section: never; lang: Locale }) => ReactNode),
   blog_post_overview: asSection(
     BlogPostOverviewSection as (p: { section: never; lang: Locale }) => ReactNode

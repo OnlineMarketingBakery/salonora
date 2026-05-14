@@ -8718,7 +8718,11 @@
                 "instructions": "Pill label above the headline (e.g. Wat je ziet in de demo).",
                 "required": 0,
                 "conditional_logic": 0,
-                "wrapper": { "width": "", "class": "", "id": "" },
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
                 "default_value": "",
                 "maxlength": "",
                 "allow_in_bindings": 0,
@@ -8735,7 +8739,11 @@
                 "instructions": "Main heading (line breaks allowed).",
                 "required": 0,
                 "conditional_logic": 0,
-                "wrapper": { "width": "", "class": "", "id": "" },
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
                 "default_value": "",
                 "maxlength": "",
                 "allow_in_bindings": 0,
@@ -8773,7 +8781,11 @@
                 "instructions": "Laptop or product screenshot (right column).",
                 "required": 0,
                 "conditional_logic": 0,
-                "wrapper": { "width": "", "class": "", "id": "" },
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
                 "return_format": "array",
                 "library": "all",
                 "min_width": "",
@@ -10042,7 +10054,11 @@
                 "instructions": "Centered headline (Figma 696:4046).",
                 "required": 0,
                 "conditional_logic": 0,
-                "wrapper": { "width": "", "class": "", "id": "" },
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
                 "default_value": "",
                 "maxlength": "",
                 "allow_in_bindings": 0,
@@ -10059,7 +10075,11 @@
                 "instructions": "Heading above the checklist with brand check icons.",
                 "required": 0,
                 "conditional_logic": 0,
-                "wrapper": { "width": "", "class": "", "id": "" },
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
                 "default_value": "",
                 "maxlength": "",
                 "allow_in_bindings": 0,
@@ -10076,7 +10096,11 @@
                 "instructions": "One icon for all rows in this card (optional; default check glyph).",
                 "required": 0,
                 "conditional_logic": 0,
-                "wrapper": { "width": "", "class": "", "id": "" },
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
                 "return_format": "array",
                 "library": "all",
                 "min_width": "",
@@ -10098,7 +10122,11 @@
                 "instructions": "Each row shows a brand check icon in the front end.",
                 "required": 0,
                 "conditional_logic": 0,
-                "wrapper": { "width": "", "class": "", "id": "" },
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
                 "layout": "row",
                 "pagination": 0,
                 "min": 0,
@@ -10116,7 +10144,11 @@
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
-                    "wrapper": { "width": "", "class": "", "id": "" },
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
                     "default_value": "",
                     "maxlength": "",
                     "allow_in_bindings": 0,
@@ -10136,7 +10168,11 @@
                 "instructions": "Heading above the list with rose X icons.",
                 "required": 0,
                 "conditional_logic": 0,
-                "wrapper": { "width": "", "class": "", "id": "" },
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
                 "default_value": "",
                 "maxlength": "",
                 "allow_in_bindings": 0,
@@ -10153,7 +10189,11 @@
                 "instructions": "One icon for all rows in this card (optional; default X glyph).",
                 "required": 0,
                 "conditional_logic": 0,
-                "wrapper": { "width": "", "class": "", "id": "" },
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
                 "return_format": "array",
                 "library": "all",
                 "min_width": "",
@@ -10175,7 +10215,11 @@
                 "instructions": "Each row shows a rose X icon in the front end.",
                 "required": 0,
                 "conditional_logic": 0,
-                "wrapper": { "width": "", "class": "", "id": "" },
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
                 "layout": "row",
                 "pagination": 0,
                 "min": 0,
@@ -10193,7 +10237,11 @@
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
-                    "wrapper": { "width": "", "class": "", "id": "" },
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
                     "default_value": "",
                     "maxlength": "",
                     "allow_in_bindings": 0,
@@ -10213,7 +10261,11 @@
                 "instructions": "Right column photo over the brand gradient.",
                 "required": 0,
                 "conditional_logic": 0,
-                "wrapper": { "width": "", "class": "", "id": "" },
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
                 "return_format": "array",
                 "library": "all",
                 "min_width": "",
@@ -10235,7 +10287,11 @@
                 "instructions": "Optional texture or rings over the gradient (e.g. Figma decorative layer).",
                 "required": 0,
                 "conditional_logic": 0,
-                "wrapper": { "width": "", "class": "", "id": "" },
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
                 "return_format": "array",
                 "library": "all",
                 "min_width": "",
@@ -10257,7 +10313,11 @@
                 "instructions": "Left copy in the navy footer band.",
                 "required": 0,
                 "conditional_logic": 0,
-                "wrapper": { "width": "", "class": "", "id": "" },
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
                 "default_value": "",
                 "allow_in_bindings": 0,
                 "tabs": "all",
@@ -10274,7 +10334,11 @@
                 "instructions": "White pill button (use link title for the label).",
                 "required": 0,
                 "conditional_logic": 0,
-                "wrapper": { "width": "", "class": "", "id": "" },
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
                 "return_format": "array",
                 "allow_in_bindings": 0
               },
@@ -10287,7 +10351,11 @@
                 "instructions": "Optional; defaults to circled arrow when empty.",
                 "required": 0,
                 "conditional_logic": 0,
-                "wrapper": { "width": "", "class": "", "id": "" },
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
                 "return_format": "array",
                 "library": "all",
                 "min_width": "",
@@ -12381,6 +12449,185 @@
             ],
             "min": "",
             "max": ""
+          },
+          "layout_omb_free_demo_form": {
+            "key": "layout_omb_free_demo_form",
+            "name": "free_demo_form",
+            "label": "Free demo form",
+            "display": "block",
+            "min": "",
+            "max": "",
+            "sub_fields": [
+              {
+                "key": "field_omb_free_demo_form_title",
+                "label": "Title",
+                "name": "title",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+              },
+              {
+                "key": "field_omb_free_demo_form_subtitle",
+                "label": "Subtitle",
+                "name": "subtitle",
+                "aria-label": "",
+                "type": "textarea",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "rows": 3,
+                "placeholder": "",
+                "new_lines": "br",
+                "allow_in_bindings": 0
+              },
+              {
+                "key": "field_omb_free_demo_form_footer_note",
+                "label": "Footer note",
+                "name": "footer_note",
+                "aria-label": "",
+                "type": "textarea",
+                "instructions": "Shown under the submit button (e.g. privacy reassurance).",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "rows": 3,
+                "placeholder": "",
+                "new_lines": "br",
+                "allow_in_bindings": 0
+              },
+              {
+                "key": "field_omb_free_demo_form_form",
+                "label": "Contact Form 7 Form",
+                "name": "form",
+                "aria-label": "",
+                "type": "post_object",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "post_type": [
+                  "wpcf7_contact_form"
+                ],
+                "post_status": [
+                  "publish"
+                ],
+                "taxonomy": "",
+                "return_format": "object",
+                "multiple": 0,
+                "allow_null": 0,
+                "allow_in_bindings": 0,
+                "bidirectional": 0,
+                "ui": 1,
+                "bidirectional_target": []
+              },
+              {
+                "key": "field_omb_free_demo_form_success_mode",
+                "label": "Success Mode",
+                "name": "success_mode",
+                "aria-label": "",
+                "type": "select",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "choices": {
+                  "inline": "Inline Message",
+                  "redirect": "Redirect to Thank You Page"
+                },
+                "default_value": "inline",
+                "return_format": "value",
+                "multiple": 0,
+                "allow_null": 0,
+                "ui": 1,
+                "ajax": 0,
+                "placeholder": "",
+                "allow_custom": 0,
+                "search_placeholder": "",
+                "allow_in_bindings": 0,
+                "create_options": 0,
+                "save_options": 0
+              },
+              {
+                "key": "field_omb_free_demo_form_redirect_link",
+                "label": "Thank You Page Link",
+                "name": "redirect_link",
+                "aria-label": "",
+                "type": "link",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": [
+                  [
+                    {
+                      "field": "field_omb_free_demo_form_success_mode",
+                      "operator": "==",
+                      "value": "redirect"
+                    }
+                  ]
+                ],
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "allow_in_bindings": 0
+              },
+              {
+                "key": "field_omb_free_demo_form_tracking_context",
+                "label": "Tracking Context",
+                "name": "tracking_context",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+              }
+            ]
           }
         },
         "min": "",
@@ -12872,7 +13119,11 @@
                 "instructions": "Centered headline (Figma 696:4046).",
                 "required": 0,
                 "conditional_logic": 0,
-                "wrapper": { "width": "", "class": "", "id": "" },
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
                 "default_value": "",
                 "maxlength": "",
                 "allow_in_bindings": 0,
@@ -12889,7 +13140,11 @@
                 "instructions": "Heading above the checklist with brand check icons.",
                 "required": 0,
                 "conditional_logic": 0,
-                "wrapper": { "width": "", "class": "", "id": "" },
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
                 "default_value": "",
                 "maxlength": "",
                 "allow_in_bindings": 0,
@@ -12906,7 +13161,11 @@
                 "instructions": "One icon for all rows in this card (optional; default check glyph).",
                 "required": 0,
                 "conditional_logic": 0,
-                "wrapper": { "width": "", "class": "", "id": "" },
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
                 "return_format": "array",
                 "library": "all",
                 "min_width": "",
@@ -12928,7 +13187,11 @@
                 "instructions": "Each row shows a brand check icon in the front end.",
                 "required": 0,
                 "conditional_logic": 0,
-                "wrapper": { "width": "", "class": "", "id": "" },
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
                 "layout": "row",
                 "pagination": 0,
                 "min": 0,
@@ -12946,7 +13209,11 @@
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
-                    "wrapper": { "width": "", "class": "", "id": "" },
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
                     "default_value": "",
                     "maxlength": "",
                     "allow_in_bindings": 0,
@@ -12966,7 +13233,11 @@
                 "instructions": "Heading above the list with rose X icons.",
                 "required": 0,
                 "conditional_logic": 0,
-                "wrapper": { "width": "", "class": "", "id": "" },
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
                 "default_value": "",
                 "maxlength": "",
                 "allow_in_bindings": 0,
@@ -12983,7 +13254,11 @@
                 "instructions": "One icon for all rows in this card (optional; default X glyph).",
                 "required": 0,
                 "conditional_logic": 0,
-                "wrapper": { "width": "", "class": "", "id": "" },
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
                 "return_format": "array",
                 "library": "all",
                 "min_width": "",
@@ -13005,7 +13280,11 @@
                 "instructions": "Each row shows a rose X icon in the front end.",
                 "required": 0,
                 "conditional_logic": 0,
-                "wrapper": { "width": "", "class": "", "id": "" },
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
                 "layout": "row",
                 "pagination": 0,
                 "min": 0,
@@ -13023,7 +13302,11 @@
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
-                    "wrapper": { "width": "", "class": "", "id": "" },
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
                     "default_value": "",
                     "maxlength": "",
                     "allow_in_bindings": 0,
@@ -13043,7 +13326,11 @@
                 "instructions": "Right column photo over the brand gradient.",
                 "required": 0,
                 "conditional_logic": 0,
-                "wrapper": { "width": "", "class": "", "id": "" },
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
                 "return_format": "array",
                 "library": "all",
                 "min_width": "",
@@ -13065,7 +13352,11 @@
                 "instructions": "Optional texture or rings over the gradient (e.g. Figma decorative layer).",
                 "required": 0,
                 "conditional_logic": 0,
-                "wrapper": { "width": "", "class": "", "id": "" },
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
                 "return_format": "array",
                 "library": "all",
                 "min_width": "",
@@ -13087,7 +13378,11 @@
                 "instructions": "Left copy in the navy footer band.",
                 "required": 0,
                 "conditional_logic": 0,
-                "wrapper": { "width": "", "class": "", "id": "" },
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
                 "default_value": "",
                 "allow_in_bindings": 0,
                 "tabs": "all",
@@ -13104,7 +13399,11 @@
                 "instructions": "White pill button (use link title for the label).",
                 "required": 0,
                 "conditional_logic": 0,
-                "wrapper": { "width": "", "class": "", "id": "" },
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
                 "return_format": "array",
                 "allow_in_bindings": 0
               },
@@ -13117,7 +13416,11 @@
                 "instructions": "Optional; defaults to circled arrow when empty.",
                 "required": 0,
                 "conditional_logic": 0,
-                "wrapper": { "width": "", "class": "", "id": "" },
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
                 "return_format": "array",
                 "library": "all",
                 "min_width": "",

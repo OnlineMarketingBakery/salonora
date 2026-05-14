@@ -173,7 +173,8 @@ npm run dev      # next dev --turbopack
 npm run build    # production build
 npm run start    # next start (NODE_ENV=production)
 npm run lint     # next lint
-npm run acf:push # push acf-import-bundle.json to WordPress via REST
+npm run acf:sync-bundle # copy repo-root acf-import-bundle.json → theme mirror (also runs inside acf:push)
+npm run acf:push # sync bundle mirror, then push canonical acf-import-bundle.json to WordPress via REST
 npm run acf:extract-local-json   # regenerate acf-json/group_*.json from WP
 npm run acf:extract-page-builder # extract page builder group only
 ```

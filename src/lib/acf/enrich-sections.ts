@@ -79,6 +79,9 @@ export async function enrichSections(
     } else if (s.type === "form_embed") {
       const def = s.formId ? await fetchCf7Form(s.formId, lang) : null;
       out.push({ ...s, formDefinition: def });
+    } else if (s.type === "free_demo_form") {
+      const def = s.formId ? await fetchCf7Form(s.formId, lang) : null;
+      out.push({ ...s, formDefinition: def });
     } else if (s.type === "faq_contact_split" && s.useForm) {
       const fid = s.customForm?.id || globals.integrations.defaultContactForm || 0;
       out.push({ ...s, formDefinition: fid ? await fetchCf7Form(Number(fid), lang) : null, defaultFormId: Number(fid) });

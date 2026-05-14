@@ -158,6 +158,7 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   faq_contact_split: true,
   features_checklist: true,
   form_embed: true,
+  free_demo_form: true,
   founders_banner: true,
   who_we_are_for: true,
   media_text_checklist: true,
@@ -1122,6 +1123,19 @@ function mapKnownPageSectionLayout(
         type: "form_embed",
         title: asString(row.title),
         intro: asHtml(row.intro),
+        formId: (row.form as { id?: number } | null)?.id || 0,
+        formDefinition: null,
+        successMode: (asString(row.success_mode) as "inline" | "redirect") || "inline",
+        redirectLink: asLink(row.redirect_link),
+        trackingContext: asString(row.tracking_context),
+      };
+    case "free_demo_form":
+      return {
+        ...base,
+        type: "free_demo_form",
+        title: asString(row.title),
+        subtitle: asHtml(row.subtitle),
+        footer_note: asHtml(row.footer_note),
         formId: (row.form as { id?: number } | null)?.id || 0,
         formDefinition: null,
         successMode: (asString(row.success_mode) as "inline" | "redirect") || "inline",

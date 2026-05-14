@@ -149,17 +149,21 @@ Unique keys prevent collisions across layouts. Never reuse a key from another la
 ## ACF JSON structure
 
 ### Import bundle
-`wordpress/wp-content/themes/omb-headless/acf-import-bundle.json` — bulk import array. Push via `npm run acf:push`. This is the **authoritative source** for field group definitions.
+**Canonical file:** `acf-import-bundle.json` at the **repository root** (this is what agents and PRs should edit).
+
+**Theme mirror:** `wordpress/wp-content/themes/omb-headless/acf-import-bundle.json` — kept identical to the root file. Run **`npm run acf:sync-bundle`** to copy root → theme without pushing; **`npm run acf:push`** runs that sync first, then POSTs the canonical JSON to `POST /omb-headless/v1/acf-sync`. The mirror exists so the WordPress tree always carries the same bundle as the repo.
+
+`npm run validate:sections` fails if root and theme JSON differ (normalized), so CI catches drift early.
 
 ### Local JSON
 `wordpress/wp-content/themes/omb-headless/acf-json/group_*.json` — one file per field group, used by ACF Local JSON sync. Regenerate with `npm run acf:extract-local-json`.
 
 ### Page builder group
 All flexible layout sections live inside the `group_omb_page_builder` field group, under the `page_builder` flexible content field. When adding a new layout:
-1. Add a new `layout` object to the `layouts` array of `page_builder` in `acf-import-bundle.json`.
+1. Add a new `layout` object to the `layouts` array of `page_builder` in **`acf-import-bundle.json` at the repo root** (canonical).
 2. Set `"name": "my_new_section"` (must match `acf_fc_layout` everywhere).
 3. Add all sub-fields with keys following `field_omb_my_new_section_*`.
-4. Run `npm run acf:push` to sync to WordPress.
+4. Run **`npm run acf:sync-bundle`** (updates the theme mirror) and **`npm run acf:push`** to sync to WordPress (push runs sync automatically).
 
 ---
 
@@ -177,6 +181,6 @@ const enriched = await enrichSections(sections, {
 });
 ```
 
-Enrichment is **selective by section type**: only `testimonials`, `latest_posts`, `blog_post_overview`, `case_study_overview`, `design_showcase_grid`, `form_embed`, and `faq_contact_split` (when `useForm`) receive async data. All other sections pass through unchanged.
+Enrichment is **selective by section type**: only `testimonials`, `latest_posts`, `blog_post_overview`, `case_study_overview`, `design_showcase_grid`, `form_embed`, `free_demo_form`, and `faq_contact_split` (when `useForm`) receive async data. All other sections pass through unchanged.
 
 Do not add synchronous logic to enrich-sections — it is intentionally async-only.

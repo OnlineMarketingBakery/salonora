@@ -607,6 +607,19 @@ export type FormEmbedSectionT = CoreSection & {
   trackingContext: string;
 };
 
+/** Figma **1417:36** — pale blue rounded shell, centered title + subtitle, white card, CF7 lead form (surface inputs, gradient submit). */
+export type FreeDemoFormSectionT = CoreSection & {
+  type: "free_demo_form";
+  title: string;
+  subtitle: string;
+  footer_note: string;
+  formId: number;
+  formDefinition: CF7FormDefinition | null;
+  successMode: "inline" | "redirect";
+  redirectLink: WpAcfLink | null;
+  trackingContext: string;
+};
+
 /** Figma **696:4046** — “Is deze demo voor jou?”: two qualification cards, gradient portrait column, navy footer CTA band. */
 export type IsDemoForYouListRowT = {
   text: string;
@@ -954,6 +967,7 @@ export type AnySectionT =
   | DemoPreviewSplitSectionT
   | FaqContactSplitSectionT
   | FormEmbedSectionT
+  | FreeDemoFormSectionT
   | LatestPostsSectionT
   | BlogPostOverviewSectionT
   | CaseStudyOverviewSectionT

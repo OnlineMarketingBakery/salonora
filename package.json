@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "acf:sync-bundle": "node scripts/sync-acf-import-bundle.mjs",
     "acf:push": "node scripts/push-acf-rest.mjs",
     "acf:extract-local-json": "node scripts/extract-all-acf-local-json.mjs",
     "acf:extract-page-builder": "node scripts/extract-acf-page-builder.mjs",

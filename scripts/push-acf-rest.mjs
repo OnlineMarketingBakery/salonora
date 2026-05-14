@@ -2,6 +2,7 @@ import { readFileSync, existsSync } from 'node:fs'
 import { resolve, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { config } from 'dotenv'
+import { syncAcfImportBundle } from './sync-acf-import-bundle.mjs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const envLocal = resolve(__dirname, '../.env.local')
@@ -51,8 +52,8 @@ config({ path: envFallback, quiet: true })
 mergeEnvFromFile(envLocal)
 mergeEnvFromFile(envFallback)
 
-/** Bulk array import for POST …/acf-sync — kept OUTSIDE `acf-json/` so ACF Local JSON does not try to load it as a single field group file. */
-const JSON_PATH = resolve(__dirname, '../wordpress/wp-content/themes/omb-headless/acf-import-bundle.json')
+/** Canonical bulk array at repo root. Theme mirror updated by syncAcfImportBundle before POST. */
+const JSON_PATH = resolve(__dirname, '../acf-import-bundle.json')
 const WP_URL = process.env.WORDPRESS_API_URL?.trim()
 const SECRET = process.env.REVALIDATION_SECRET?.trim()
 
@@ -80,6 +81,8 @@ if (!WP_BASE.toLowerCase().endsWith('/wp-json')) {
   console.error(`   Got: ${WP_URL}`)
   process.exit(1)
 }
+
+syncAcfImportBundle({ quiet: true })
 
 const body = readFileSync(JSON_PATH, 'utf8')
 const syncUrl = `${WP_BASE}/omb-headless/v1/acf-sync`

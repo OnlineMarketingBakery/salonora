@@ -67,7 +67,7 @@ salonora/
 ## Prerequisites
 
 - **WordPress** with the stack described in [`docs/wordpress-connection-guide.md`](docs/wordpress-connection-guide.md) (ACF Pro, Polylang `nl`/`en`, Yoast, CF7, custom post types `service`, `testimonial`, and `case_study`, option pages, menus).
-- ACF: theme-root `wordpress/wp-content/themes/omb-headless/acf-import-bundle.json` for `npm run acf:push` / import; `acf-json/group_*.json` is generated with **`npm run acf:extract-local-json`** (one file per group, per ACF Local JSON). Layouts must match `src/lib/acf/` and `src/components/sections/`.
+- ACF: **`acf-import-bundle.json` at the repo root** is the canonical bulk-import file (edit this when adding flexible layouts). **`npm run acf:sync-bundle`** copies it to `wordpress/wp-content/themes/omb-headless/acf-import-bundle.json`; **`npm run acf:push`** runs that sync automatically, then POSTs to WordPress. `acf-json/group_*.json` is generated with **`npm run acf:extract-local-json`** (one file per group, per ACF Local JSON). Layouts must match `src/lib/acf/` and `src/components/sections/`.
 
 ## Setup & installation
 

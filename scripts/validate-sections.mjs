@@ -3,7 +3,7 @@
 // types (AnySectionT), normalizer (PAGE_SECTION_ACF_LAYOUTS), registry (sectionRegistry), renderer (SectionRenderer switch)
 // Also checks that every registry key has a corresponding folder in src/components/sections/
 
-import { readFileSync, readdirSync, statSync } from "fs";
+import { readFileSync, readdirSync, statSync, existsSync } from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 
@@ -174,6 +174,31 @@ if (exceptionCovered.length > 0) {
     keys.forEach((k) => console.log(`    • ${k}`));
   }
   console.log();
+}
+
+// ACF bulk-import JSON: repo root (canonical) must match theme mirror (see scripts/sync-acf-import-bundle.mjs)
+const acfCanon = join(ROOT, "acf-import-bundle.json");
+const acfTheme = join(ROOT, "wordpress/wp-content/themes/omb-headless/acf-import-bundle.json");
+function acfBundleNormalized(absPath) {
+  return JSON.stringify(JSON.parse(readFileSync(absPath, "utf8")));
+}
+if (existsSync(acfCanon) && existsSync(acfTheme)) {
+  try {
+    if (acfBundleNormalized(acfCanon) !== acfBundleNormalized(acfTheme)) {
+      pass = false;
+      issues.push(
+        "  ACF bundle drift: root acf-import-bundle.json differs from wordpress/wp-content/themes/omb-headless/acf-import-bundle.json. Run: npm run acf:sync-bundle",
+      );
+    }
+  } catch (e) {
+    pass = false;
+    issues.push(`  ACF bundle JSON compare failed: ${e?.message || e}`);
+  }
+} else if (existsSync(acfCanon) && !existsSync(acfTheme)) {
+  pass = false;
+  issues.push(
+    "  Missing theme mirror acf-import-bundle.json. Run: npm run acf:sync-bundle",
+  );
 }
 
 if (issues.length > 0) {
