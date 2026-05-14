@@ -28,8 +28,8 @@ All shared types live in `src/types/`:
 export type AnySectionT =
   | HeroSectionT           // type: "hero"
   | CardsSectionT          // type: "cards"
-  | AudiencePromoCardSectionT  // type: "audience_promo_card"
-  // ... 49 more
+  | SplitCopyFramedSectionT // type: "split_copy_framed"
+  // ... more
   | TeamBehindSalonoraSectionT; // type: "team_behind_salonora"
 ```
 
@@ -71,9 +71,9 @@ export type MySectionT = CoreSection & {
 
 | Thing                 | Convention                    | Example                        |
 | --------------------- | ----------------------------- | ------------------------------ |
-| Section type          | PascalCase + `SectionT`       | `AudiencePromoCardSectionT`    |
-| Section type literal  | snake_case                    | `"audience_promo_card"`        |
-| Sub-item type         | PascalCase + descriptive name | `AudiencePromoCardFeatureRowT` |
+| Section type          | PascalCase + `SectionT`       | `SplitCopyFramedSectionT`    |
+| Section type literal  | snake_case                    | `"split_copy_framed"`        |
+| Sub-item type         | PascalCase + descriptive name | `SplitCopyFramedListRowT` |
 | Enum-style literal    | PascalCase + `T`              | `WhoWeAreForItemAccentT`       |
 | WordPress REST shapes | PascalCase starting with `Wp` | `WpImage`, `WpAcfLink`         |
 

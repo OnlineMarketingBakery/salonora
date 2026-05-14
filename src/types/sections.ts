@@ -216,19 +216,32 @@ export type OurPromisesSectionT = CoreSection & {
   items: OurPromisesItemT[];
 };
 
-/** Figma **1325:38** (“Frame 2147230004”) — split: heading + checklist + footer + CTA; framed image with rotated brand panel. */
-export type IsThisForYouChecklistRowT = {
+export type SplitCopyFramedListRowT = {
   text: string;
-  /** Resolved: row icon, else section `list_default_icon`. `null` falls back to the built-in brand check. */
+  /** Resolved per-row icon, else section `list_default_icon`. `null` uses built-in glyph for the active `list_style`. */
   icon: WpImage | null;
 };
 
-export type IsThisForYouSectionT = CoreSection & {
-  type: "is_this_for_you";
+/** Unified split: framed photo + copy (replaces legacy `audience_promo_card` + `is_this_for_you` ACF layouts). */
+export type SplitCopyFramedSectionT = CoreSection & {
+  type: "split_copy_framed";
+  /** `card_grid` = padded rounded surface; `flush_flex` = full-width row (legacy is-this). */
+  layout_mode: "card_grid" | "flush_flex";
+  /** `filled_disc` = promo checklist; `outlined_tile` = editorial checklist. */
+  list_style: "filled_disc" | "outlined_tile";
+  visual_position: "left" | "right";
+  /** Only applies when `layout_mode` is `card_grid`. */
+  show_card_shadow: boolean;
+  /** Hairline rules above/below the list (legacy is-this). */
+  show_list_dividers: boolean;
+  /** Legacy is-this inverts the CTA trailing icon for contrast on brand button. */
+  cta_trailing_icon_invert: boolean;
+  badge_text: string;
   title: string;
   subtitle: string;
+  description: string;
   list_default_icon: WpImage | null;
-  checklist: IsThisForYouChecklistRowT[];
+  list: SplitCopyFramedListRowT[];
   footer_note: string;
   button: WpAcfLink | null;
   button_trailing_icon: WpImage | null;
@@ -281,22 +294,6 @@ export type FeaturesChecklistSectionT = CoreSection & {
   description: string;
   list_default_icon: WpImage | null;
   checklist: FeaturesChecklistRowT[];
-  image: WpImage | null;
-  button: WpAcfLink | null;
-  button_trailing_icon: WpImage | null;
-};
-
-/** Figma **692:196** (“Frame 2147229635”) — white rounded promo card: tilted brand panel + photo, badge, headline, intro, checklist rows, primary CTA with optional trailing icon. */
-export type AudiencePromoCardFeatureRowT = {
-  text: string;
-};
-
-export type AudiencePromoCardSectionT = CoreSection & {
-  type: "audience_promo_card";
-  badge_text: string;
-  title: string;
-  description: string;
-  features: AudiencePromoCardFeatureRowT[];
   image: WpImage | null;
   button: WpAcfLink | null;
   button_trailing_icon: WpImage | null;
@@ -539,6 +536,15 @@ export type StepsWithMediaSectionT = CoreSection & {
   browser_image: WpImage | null;
 };
 
+/** Figma **1397:31** (“Group 605”) — navy rounded panel: pill badge, headline, WYSIWYG body, laptop mockup. */
+export type DemoPreviewSplitSectionT = CoreSection & {
+  type: "demo_preview_split";
+  badge: string;
+  title: string;
+  body: string;
+  mockup_image: WpImage | null;
+};
+
 /** Figma 909:31 — headline, intro row, service-driven cards, footer pill CTA */
 export type DesignShowcaseGridCardTint = "surface" | "blush" | "mint" | "gold";
 
@@ -599,6 +605,30 @@ export type FormEmbedSectionT = CoreSection & {
   successMode: "inline" | "redirect";
   redirectLink: WpAcfLink | null;
   trackingContext: string;
+};
+
+/** Figma **696:4046** — “Is deze demo voor jou?”: two qualification cards, gradient portrait column, navy footer CTA band. */
+export type IsDemoForYouListRowT = {
+  text: string;
+};
+
+export type IsDemoForYouSectionT = CoreSection & {
+  type: "is_demo_for_you";
+  title: string;
+  for_you_heading: string;
+  /** Optional: one icon for every row in the “for you” card; built-in check when unset. */
+  for_you_list_icon: WpImage | null;
+  for_you_list: IsDemoForYouListRowT[];
+  not_for_you_heading: string;
+  /** Optional: one icon for every row in the “not for you” card; built-in X when unset. */
+  not_for_you_list_icon: WpImage | null;
+  not_for_you_list: IsDemoForYouListRowT[];
+  portrait_image: WpImage | null;
+  /** Optional rings / texture over the brand gradient panel. */
+  panel_overlay: WpImage | null;
+  footer_message: string;
+  cta_link: WpAcfLink | null;
+  cta_trailing_icon: WpImage | null;
 };
 
 export type LatestPostsSectionT = CoreSection & {
@@ -899,10 +929,8 @@ export type AnySectionT =
   | FoundersBannerSectionT
   | WhoWeAreForSectionT
   | OurPromisesSectionT
-  | IsThisForYouSectionT
   | FeaturesChecklistSectionT
   | MediaTextChecklistSectionT
-  | AudiencePromoCardSectionT
   | StorySplitSectionT
   | WhyWeDoThisSectionT
   | CombinedStrengthsSectionT
@@ -910,6 +938,7 @@ export type AnySectionT =
   | OriginStorySplitSectionT
   | FounderStorySplitSectionT
   | ImageIntroSplitSectionT
+  | IsDemoForYouSectionT
   | SalonValuePropositionSectionT
   | WhyOwnersChooseSectionT
   | WhySalonoraDifferentSectionT
@@ -919,8 +948,10 @@ export type AnySectionT =
   | ProcessStepsSectionT
   | HowItWorksStepsSectionT
   | ScrollingTickerSectionT
+  | SplitCopyFramedSectionT
   | StepsWithMediaSectionT
   | DesignShowcaseGridSectionT
+  | DemoPreviewSplitSectionT
   | FaqContactSplitSectionT
   | FormEmbedSectionT
   | LatestPostsSectionT

@@ -1,5 +1,5 @@
 ---
-description: Salonora — section pipeline, all 52 section keys, per-section Figma notes, and component rules.
+description: Salonora — section pipeline, all 53 section keys, per-section Figma notes, and component rules.
 globs: ["src/components/sections/**", "src/types/sections.ts"]
 alwaysApply: false
 ---
@@ -8,11 +8,11 @@ alwaysApply: false
 
 ```
 WordPress ACF REST
-  └─ acf_fc_layout: "audience_promo_card"         ← snake_case string from WP
-       │
+  └─ acf_fc_layout: "split_copy_framed" | legacy "audience_promo_card" | "is_this_for_you"
+       │   (legacy keys are canonicalized in normalize-page-sections → type "split_copy_framed")
        ▼
 src/lib/acf/normalize-page-sections.ts
-  └─ PAGE_SECTION_ACF_LAYOUTS whitelist (must contain the key)
+  └─ PAGE_SECTION_ACF_LAYOUTS whitelist (must contain the normalized `type` key)
   └─ isKnownPageSectionLayout() type guard
   └─ mapKnownPageSectionLayout() switch → typed AnySectionT
   └─ field-mappers: asString, asHtml, asImage, asLink, mapCtaRepeater, etc.
@@ -24,20 +24,20 @@ src/lib/acf/enrich-sections.ts  (async second pass, server-side)
        │
        ▼
 src/lib/acf/section-registry.ts
-  └─ sectionRegistry["audience_promo_card"] → AudiencePromoCardSectionLazy
+  └─ sectionRegistry["split_copy_framed"] → SplitCopyFramedSectionLazy
   └─ getSectionKey(type) type guard: `type in sectionRegistry`
        │
        ▼
 src/components/sections/SectionRenderer.tsx
   └─ switch(section.type) — exhaustive, assertNever(section) at default
-  └─ <sectionRegistry.audience_promo_card section={section} lang={lang} />
+  └─ <sectionRegistry.split_copy_framed section={section} lang={lang} />
        │
        ▼
-src/components/sections/audience-promo-card/index.tsx
-  └─ Props: { section: AudiencePromoCardSectionT; lang: Locale }
+src/components/sections/split-copy-framed/index.tsx
+  └─ Props: { section: SplitCopyFramedSectionT; lang: Locale }
 ```
 
-**Every layer must use the identical layout key.** A mismatch at any step silently drops the section.
+**Every layer must use the identical `type` key** (`split_copy_framed`). Legacy WP rows keep their original `acf_fc_layout` string; the normalizer maps them to this type. A mismatch at any step silently drops the section.
 
 ---
 
@@ -54,7 +54,7 @@ src/components/sections/audience-promo-card/index.tsx
 | TypeScript type              | `PascalCase` + `SectionT` suffix   |
 | Component export name        | `PascalCase` + `Section` suffix    |
 
-Example: `audience_promo_card` → folder `audience-promo-card/` → type `AudiencePromoCardSectionT` → export `AudiencePromoCardSection`.
+Example: `split_copy_framed` → folder `split-copy-framed/` → type `SplitCopyFramedSectionT` → export `SplitCopyFramedSection`.
 
 ---
 
@@ -72,6 +72,8 @@ Example: `audience_promo_card` → folder `audience-promo-card/` → type `Audie
 ### File convention
 
 New sections: create `src/components/sections/<kebab-layout-name>/index.tsx`.
+
+**Shared split promo shell:** `split-copy-framed-visual-layout.tsx` — `SplitCopyFramedVisualLayout` + `SplitChecklistRows` used by `split-copy-framed/index.tsx`.
 
 Older sections use a named file (e.g. `BenefitsGridSection.tsx`) — do not refactor those; new sections always use `index.tsx`.
 
@@ -98,46 +100,52 @@ Sections registered as **`next/dynamic` lazy** (`ssr: true`): most newer section
 
 ---
 
-## All 52 section keys
+## All 53 section keys
 
 Keys are listed alphabetically. Keys with ✦ have extended Figma/implementation notes below.
 
 ```
-announcement_bar          audience_promo_card ✦    benefits_grid
-blog_post_overview ✦      cards                    case_study_chapter ✦
-case_study_client_review ✦ case_study_conversion_cta ✦ case_study_overview ✦
-case_study_product_shot ✦  combined_strengths ✦     cost_comparison
-cta                       design_showcase_grid ✦   faq
-faq_contact_split ✦        feature_highlight_grid   feature_highlight_split
-features_checklist ✦       form_embed               founder_story_split ✦
-founders_banner ✦           growth_plans_split ✦    guarantee_split
-guarantees_promise_split ✦  hero                    how_it_works_steps
-image_intro_split          is_this_for_you ✦        latest_posts
-media_text_checklist ✦      origin_story_split ✦    our_promises ✦
-partner_intro_split ✦       pricing_cta              pricing_dual_cards
-pricing_packages            problem_solution ✦       process_steps
-rich_text                  salon_value_proposition  scrolling_ticker
-steps_with_media ✦          story_split              talk_dual_cards ✦
-team_behind_salonora ✦      testimonials             who_we_are_for ✦
-why_owners_choose           why_salonora_anders      why_salonora_different
-why_we_do_this
+announcement_bar          benefits_grid            blog_post_overview ✦
+cards                     case_study_chapter ✦     case_study_client_review ✦
+case_study_conversion_cta ✦ case_study_overview ✦ case_study_product_shot ✦
+combined_strengths ✦      cost_comparison          cta
+demo_preview_split ✦      design_showcase_grid ✦    faq
+faq_contact_split ✦       feature_highlight_grid    feature_highlight_split
+features_checklist ✦      form_embed                founder_story_split ✦
+founders_banner ✦         growth_plans_split ✦      guarantee_split
+guarantees_promise_split ✦ hero                      how_it_works_steps
+image_intro_split         is_demo_for_you ✦        latest_posts              media_text_checklist ✦
+origin_story_split ✦      our_promises ✦            partner_intro_split ✦
+pricing_dual_cards        pricing_packages         problem_solution ✦
+process_steps             rich_text                salon_value_proposition
+scrolling_ticker          split_copy_framed ✦      steps_with_media ✦
+story_split               talk_dual_cards ✦        team_behind_salonora ✦
+testimonials              who_we_are_for ✦         why_owners_choose
+why_salonora_anders       why_salonora_different   why_we_do_this
 ```
 
 ---
 
 ## Per-section extended notes
 
+### `demo_preview_split`
+Figma **1397:31** ("Group 605"): rounded navy panel (diagonal gradient base + brand washes + corner grids + star mist); pill `badge`, multi-line `title`, WYSIWYG **`body`** (all paragraphs; use **bold** for lead phrases). Right column **`mockup_image`** (laptop shot, aspect ~2391:1411). **Container** uses `!max-w-[85rem]` to align with `split_copy_framed` / audience promo. Legacy REST rows may still send repeater `items`; the normalizer merges those into `body` when `body` is empty.
+
+### `is_demo_for_you`
+Figma **696:4046**: centered `title`; left column = two `bg-surface` cards (`for_you_heading` + optional **`for_you_list_icon`** used for every `for_you_list` / `item` row, else built-in check; `not_for_you_heading` + optional **`not_for_you_list_icon`** for all `not_for_you_list` rows, else built-in X); right column = brand gradient + optional `panel_overlay` + **`portrait_image`** (`object-contain` + generous top padding so heads are not clipped); footer band = **gradient** base (`footer_message` + **`cta_link`** + optional **`cta_trailing_icon`**).
+
 ### `our_promises`
 Figma **693:395** ("Frame 2147229263"): white section, centered `title`, repeater `items` (`icon`, select `icon_accent` `brand` | `rose`, `title`, WYSIWYG `description`) in a responsive four-column grid with circular icon discs.
 
-### `is_this_for_you`
-Figma **1325:38** ("Frame 2147230004"): white section, left column = `title`, `subtitle`, repeater `checklist` (`item`, optional `icon`; section `list_default_icon` fallback), WYSIWYG `footer_note`, link `button` + optional `button_trailing_icon`; right = `image` with rotated brand backing panel.
+### `split_copy_framed`
+Unified split: framed photo + tilted brand panel + copy. **Normalized `type` is always `split_copy_framed`.** WordPress may still send legacy **`acf_fc_layout`** values `audience_promo_card` or `is_this_for_you`; the normalizer canonicalizes them (see `canonicalizeAcfPageLayout` + `normalizeSplitCopyFramedSection`).
+
+- **Promo card (legacy `audience_promo_card`):** `layout_mode` `card_grid`, `list_style` `filled_disc`, optional `badge_text`, multi-line `title`, WYSIWYG `description`, repeater `features` → `list`, **`show_card_shadow`** (ACF true/false: white panel drop shadow), `visual_position`, CTA.
+- **Editorial flush (legacy `is_this_for_you`):** `layout_mode` `flush_flex`, `list_style` `outlined_tile`, `title`, `subtitle`, `checklist` → `list`, hairline `show_list_dividers`, `footer_note`, `cta_trailing_icon_invert`, `visual_position`, CTA.
+- **Native layout key `split_copy_framed`:** explicit `layout_mode`, `list_style`, `list` repeater (`item` / `icon`), `show_list_dividers`, `cta_trailing_icon_invert`, plus shared fields (see `SplitCopyFramedSectionT`).
 
 ### `steps_with_media`
 Figma **1322:32** ("Frame 2147230002"): brand disc + browser chrome mockup with `browser_image`; `title`; repeater `steps` (`number`, select `icon_color` `blue` | `pink`, `title`, WYSIWYG `description`); link `cta_link` for pill CTA.
-
-### `audience_promo_card`
-Figma **692:196** ("Frame 2147229635"): white rounded card with shadow; left column = tilted `--palette-brand` panel + masked photo; right = optional `badge_text`, multi-line `title`, WYSIWYG `description`, repeater `features` / `item`, link `button`, optional `button_trailing_icon`.
 
 ### `team_behind_salonora`
 About page "Het Team Achter Salonora": two (or more) team member cards with social links (`facebook`, `instagram`, `linkedin`), plus bordered bottom `bottomText`; optional decorative `backgroundWordmark`, `backgroundOverlay`, corner assets.

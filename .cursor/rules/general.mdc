@@ -74,13 +74,13 @@ scripts/                 # push-acf-rest.mjs, extract-all-acf-local-json.mjs
 
 | Thing                | Convention    | Example                          |
 | -------------------- | ------------- | -------------------------------- |
-| ACF layout key       | snake_case    | `audience_promo_card`            |
-| Section type literal | snake_case    | `type: "audience_promo_card"`    |
-| Section TS type      | PascalCase + SectionT | `AudiencePromoCardSectionT` |
-| Component folder     | kebab-case    | `audience-promo-card/`           |
-| Component export     | PascalCase    | `AudiencePromoCardSection`       |
+| ACF layout key       | snake_case    | `split_copy_framed`            |
+| Section type literal | snake_case    | `type: "split_copy_framed"`    |
+| Section TS type      | PascalCase + SectionT | `SplitCopyFramedSectionT` |
+| Component folder     | kebab-case    | `split-copy-framed/`           |
+| Component export     | PascalCase    | `SplitCopyFramedSection`       |
 | Field mapper keys    | snake_case    | `row.badge_text`                 |
-| ACF JSON field keys  | `field_omb_[layout]_*` | `field_omb_audience_promo_card_title` |
+| ACF JSON field keys  | `field_omb_[layout]_*` | `field_omb_split_copy_framed_title` |
 
 ---
 

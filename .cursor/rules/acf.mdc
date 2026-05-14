@@ -136,9 +136,11 @@ field_omb_<layout_name>_<field_name>
 ```
 
 Examples:
-- `field_omb_audience_promo_card_title`
-- `field_omb_audience_promo_card_items`
-- `field_omb_audience_promo_card_items_0_item`  ← sub-field of repeater
+- `field_omb_split_copy_framed_title`
+- `field_omb_split_copy_framed_list`
+- `field_omb_split_copy_framed_list_0_item`  ← sub-field of repeater
+
+Legacy WordPress layouts **`audience_promo_card`** and **`is_this_for_you`** may still use their original `field_omb_<layout>_*` keys until migrated in ACF; the Next normalizer maps both to `type: "split_copy_framed"`.
 
 Unique keys prevent collisions across layouts. Never reuse a key from another layout.
 

@@ -39,6 +39,14 @@ const DesignShowcaseGridSectionLazy = dynamic(
   { ssr: true }
 );
 
+const DemoPreviewSplitSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/demo-preview-split").then((mod) => ({
+      default: mod.DemoPreviewSplitSection,
+    })),
+  { ssr: true }
+);
+
 const FeatureHighlightGridSectionLazy = dynamic(
   () =>
     import("@/components/sections/feature-highlight-grid").then((mod) => ({
@@ -159,14 +167,6 @@ const WhoWeAreForSectionLazy = dynamic(
   { ssr: true }
 );
 
-const IsThisForYouSectionLazy = dynamic(
-  () =>
-    import("@/components/sections/is-this-for-you").then((mod) => ({
-      default: mod.IsThisForYouSection,
-    })),
-  { ssr: true }
-);
-
 const MediaTextChecklistSectionLazy = dynamic(
   () =>
     import("@/components/sections/media-text-checklist").then((mod) => ({
@@ -183,10 +183,10 @@ const FeaturesChecklistSectionLazy = dynamic(
   { ssr: true }
 );
 
-const AudiencePromoCardSectionLazy = dynamic(
+const SplitCopyFramedSectionLazy = dynamic(
   () =>
-    import("@/components/sections/audience-promo-card").then((mod) => ({
-      default: mod.AudiencePromoCardSection,
+    import("@/components/sections/split-copy-framed").then((mod) => ({
+      default: mod.SplitCopyFramedSection,
     })),
   { ssr: true }
 );
@@ -195,6 +195,14 @@ const StepsWithMediaSectionLazy = dynamic(
   () =>
     import("@/components/sections/steps-with-media").then((mod) => ({
       default: mod.StepsWithMediaSection,
+    })),
+  { ssr: true }
+);
+
+const IsDemoForYouSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/is-demo-for-you").then((mod) => ({
+      default: mod.IsDemoForYouSection,
     })),
   { ssr: true }
 );
@@ -220,6 +228,9 @@ export const sectionRegistry = {
   story_split: asSection(StorySplitSection as (p: { section: never; lang: Locale }) => ReactNode),
   why_we_do_this: asSection(WhyWeDoThisSection as (p: { section: never; lang: Locale }) => ReactNode),
   image_intro_split: asSection(ImageIntroSplitSection as (p: { section: never; lang: Locale }) => ReactNode),
+  is_demo_for_you: asSection(
+    IsDemoForYouSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
   salon_value_proposition: asSection(SalonValuePropositionSection as (p: { section: never; lang: Locale }) => ReactNode),
   why_owners_choose: asSection(WhyOwnersChooseSection as (p: { section: never; lang: Locale }) => ReactNode),
   why_salonora_different: asSection(WhySalonoraDifferentSection as (p: { section: never; lang: Locale }) => ReactNode),
@@ -266,6 +277,9 @@ export const sectionRegistry = {
   design_showcase_grid: asSection(
     DesignShowcaseGridSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
+  demo_preview_split: asSection(
+    DemoPreviewSplitSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
   feature_highlight_grid: asSection(
     FeatureHighlightGridSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
@@ -296,17 +310,14 @@ export const sectionRegistry = {
   who_we_are_for: asSection(
     WhoWeAreForSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
-  is_this_for_you: asSection(
-    IsThisForYouSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
-  ),
   media_text_checklist: asSection(
     MediaTextChecklistSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
   features_checklist: asSection(
     FeaturesChecklistSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
-  audience_promo_card: asSection(
-    AudiencePromoCardSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  split_copy_framed: asSection(
+    SplitCopyFramedSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
   steps_with_media: asSection(
     StepsWithMediaSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
