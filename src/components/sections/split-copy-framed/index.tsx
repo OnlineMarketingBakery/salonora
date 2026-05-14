@@ -51,7 +51,7 @@ export function SplitCopyFramedSection({
       <>
         {section.show_list_dividers ? (
           <div
-            className="h-px w-full max-w-[33.875rem] bg-[color-mix(in_srgb,var(--palette-brand)_35%,transparent)]"
+            className="h-px w-full bg-[color-mix(in_srgb,var(--palette-brand)_35%,transparent)]"
             aria-hidden
           />
         ) : null}
@@ -61,7 +61,7 @@ export function SplitCopyFramedSection({
           variant={section.list_style}
           ulClassName={
             section.list_style === "outlined_tile"
-              ? "flex max-w-[27.375rem] list-none flex-col gap-1 p-0"
+              ? "flex w-full min-w-0 list-none flex-col gap-1 p-0"
               : undefined
           }
           rowTextClassName={
@@ -72,7 +72,7 @@ export function SplitCopyFramedSection({
         />
         {section.show_list_dividers ? (
           <div
-            className="h-px w-full max-w-[33.875rem] bg-[color-mix(in_srgb,var(--palette-brand)_35%,transparent)]"
+            className="h-px w-full bg-[color-mix(in_srgb,var(--palette-brand)_35%,transparent)]"
             aria-hidden
           />
         ) : null}
@@ -151,7 +151,7 @@ export function SplitCopyFramedSection({
       </div>
     </div>
   ) : (
-    <div className="flex min-w-0 w-full max-w-[34.125rem] flex-col gap-6">
+    <div className="flex min-w-0 w-full max-w-[34.125rem] flex-col gap-6 self-start">
       <div className={`${REVEAL_ITEM} flex min-w-0 flex-col gap-6`}>
         {(section.title.trim() || section.subtitle.trim()) && (
           <div className="flex max-w-[20.875rem] flex-col gap-2.5">

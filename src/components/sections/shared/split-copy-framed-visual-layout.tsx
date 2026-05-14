@@ -201,6 +201,11 @@ export function SplitCopyFramedVisualLayout({
   const visualOrderLg = visualPosition === "left" ? "lg:order-1" : "lg:order-2";
   const copyOrderLg = visualPosition === "left" ? "lg:order-2" : "lg:order-1";
 
+  const copyWrapperClass =
+    layoutMode === "flush_flex"
+      ? `${copyOrderMobile} ${copyOrderLg} min-w-0 w-full max-w-full lg:w-auto lg:min-w-0`
+      : `${copyOrderMobile} ${copyOrderLg} min-w-0 w-full lg:min-w-0`;
+
   const visualNode = framedImage ? (
     <FramedTiltedVisual image={framedImage} />
   ) : null;
@@ -217,7 +222,7 @@ export function SplitCopyFramedVisualLayout({
         ].join(" ")
       : isFlatCardGrid
         ? "grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-x-12 lg:gap-y-10 xl:gap-x-14"
-        : "flex flex-col items-center gap-10 lg:flex-row lg:items-center lg:justify-center lg:gap-14";
+        : "flex w-full flex-col items-stretch gap-10 lg:flex-row lg:items-center lg:justify-center lg:gap-x-8 xl:gap-x-10";
 
   return (
     <section
@@ -233,9 +238,7 @@ export function SplitCopyFramedVisualLayout({
               >
                 {visualNode}
               </div>
-              <div
-                className={`${copyOrderMobile} ${copyOrderLg} min-w-0 lg:w-[28rem] lg:shrink-0`}
-              >
+              <div className={copyWrapperClass.trim()}>
                 {copy}
               </div>
             </>
