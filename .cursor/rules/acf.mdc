@@ -1,0 +1,180 @@
+---
+description: Salonora — ACF normalizer rules, field mappers, registry conventions, and ACF JSON structure.
+globs: ["src/lib/acf/**", "acf-import-bundle.json"]
+alwaysApply: false
+---
+
+## File overview
+
+| File                              | Purpose                                                                                     |
+| --------------------------------- | ------------------------------------------------------------------------------------------- |
+| `normalize-page-sections.ts`      | Primary normalizer: raw ACF REST → typed `AnySectionT[]`. All pages, posts, and services use this. |
+| `normalize-post-sections.ts`      | Re-export alias of `normalizePageSections` (no separate logic).                             |
+| `normalize-service-sections.ts`   | Re-export alias of `normalizePageSections` (no separate logic).                             |
+| `field-mappers.ts`                | Pure helper functions for safely extracting typed values from `unknown` ACF REST shapes.    |
+| `section-registry.ts`             | Maps section `type` → React component. One entry per section type.                          |
+| `enrich-sections.ts`              | Async second pass: resolves relationship fields (testimonials, services, posts, case studies) and CF7 form definitions. Runs server-side after normalization. |
+
+---
+
+## Field mappers (`field-mappers.ts`)
+
+Always use these — never access `row.*` directly with type assertions in the normalizer.
+
+| Function                | Input           | Output            | Use for                                           |
+| ----------------------- | --------------- | ----------------- | ------------------------------------------------- |
+| `asString(v)`           | `unknown`       | `string`          | Plain text fields, select values                  |
+| `asHtml(v)`             | `unknown`       | `string`          | WYSIWYG / rich text fields (alias of asString)    |
+| `asBool(v)`             | `unknown`       | `boolean`         | True/false toggles; handles `1`, `"1"`, `"yes"`, `"true"`, `"on"` |
+| `asNonNegativeInt(v)`   | `unknown`       | `number`          | Number fields with a natural minimum of 0; capped at 400 by default |
+| `asImage(v)`            | `unknown`       | `WpImage \| null`  | Image / gallery fields; handles URL string, id-only object, full WP media object |
+| `asLink(v)`             | `unknown`       | `WpAcfLink \| null`| Link / post-object fields; handles `{ title, url, target }`, bare URL string, `href`/`URL` key variants |
+| `mapCtaRepeater(rows)`  | `Array \| null`  | `CtaItem[]`        | Repeater with `cta_text` + `cta_url` rows         |
+| `newSectionId()`        | —               | `string`          | Generates UUID for `id` field in `base`           |
+| `asRelationshipPostIds` | `unknown`       | `number[]`        | ACF relationship fields; handles IDs, numeric strings, post objects |
+
+---
+
+## Normalizer rules
+
+### Whitelist pattern
+
+`PAGE_SECTION_ACF_LAYOUTS` in `normalize-page-sections.ts` is a `Record<AnySectionT["type"], true>` object used as a type-safe whitelist. Every section key **must** appear here or the section is silently dropped.
+
+```ts
+const PAGE_SECTION_ACF_LAYOUTS = {
+  my_new_section: true,
+  // ...all other keys
+} as const satisfies Record<AnySectionT["type"], true>;
+```
+
+The `satisfies` constraint makes TypeScript error if a key is missing from `AnySectionT` or vice versa.
+
+### Switch pattern
+
+`mapKnownPageSectionLayout()` switches on `layout: AnySectionT["type"]` and ends with `default: assertNever(layout)`. Every new case must be added or the build fails.
+
+### Base object
+
+Every case spreads `base = { _key, id }`:
+```ts
+const id = newSectionId();
+const _key = keyOf(i, row);  // ACF row key or "row-{i}"
+const base = { _key, id };
+// then: return { ...base, type: "my_section", ... }
+```
+
+### Field access pattern
+
+```ts
+case "my_section":
+  return {
+    ...base,
+    type: "my_section",
+    title: asString(row.title),
+    body: asHtml(row.body),
+    image: asImage(row.image),
+    button: asLink(row.button),
+    items: Array.isArray(row.items)
+      ? (row.items as { text?: unknown; icon?: unknown }[]).map((r) => ({
+          text: asString(r.item),
+          icon: asImage(r.icon),
+        }))
+      : [],
+  };
+```
+
+---
+
+## Layout key matching — mandatory across all layers
+
+The **exact same** `snake_case` string must appear in:
+1. `acf_fc_layout` value in WordPress ACF field group
+2. `PAGE_SECTION_ACF_LAYOUTS` object key
+3. `case "..."` in `mapKnownPageSectionLayout()`
+4. `type: "..."` literal in `AnySectionT`
+5. `sectionRegistry` object key
+6. `case "..."` in `SectionRenderer.tsx`
+7. ACF JSON `"name"` field of the layout in `acf-import-bundle.json`
+
+A mismatch at any point silently drops the section (no runtime error).
+
+---
+
+## Registry import conventions (`section-registry.ts`)
+
+**Static imports** (top of file) — used for older/above-the-fold sections:
+```ts
+import { HeroSection } from "@/components/sections/hero/HeroSection";
+```
+
+**Dynamic imports** (preferred for all new sections, `ssr: true`):
+```ts
+const MySectionLazy = dynamic(
+  () => import("@/components/sections/my-section").then((mod) => ({ default: mod.MySection })),
+  { ssr: true }
+);
+```
+
+Registry entry (both patterns use `asSection` cast):
+```ts
+export const sectionRegistry = {
+  my_section: asSection(MySectionLazy as (p: { section: never; lang: Locale }) => ReactNode),
+  // ...
+} satisfies SectionRegistryShape;
+```
+
+`SectionRegistryShape = Record<AnySectionT["type"], SectionComponent>` — TypeScript errors if any key is missing.
+
+---
+
+## ACF JSON field key pattern
+
+All field keys in `acf-import-bundle.json` must follow:
+```
+field_omb_<layout_name>_<field_name>
+```
+
+Examples:
+- `field_omb_audience_promo_card_title`
+- `field_omb_audience_promo_card_items`
+- `field_omb_audience_promo_card_items_0_item`  ← sub-field of repeater
+
+Unique keys prevent collisions across layouts. Never reuse a key from another layout.
+
+---
+
+## ACF JSON structure
+
+### Import bundle
+`wordpress/wp-content/themes/omb-headless/acf-import-bundle.json` — bulk import array. Push via `npm run acf:push`. This is the **authoritative source** for field group definitions.
+
+### Local JSON
+`wordpress/wp-content/themes/omb-headless/acf-json/group_*.json` — one file per field group, used by ACF Local JSON sync. Regenerate with `npm run acf:extract-local-json`.
+
+### Page builder group
+All flexible layout sections live inside the `group_omb_page_builder` field group, under the `page_builder` flexible content field. When adding a new layout:
+1. Add a new `layout` object to the `layouts` array of `page_builder` in `acf-import-bundle.json`.
+2. Set `"name": "my_new_section"` (must match `acf_fc_layout` everywhere).
+3. Add all sub-fields with keys following `field_omb_my_new_section_*`.
+4. Run `npm run acf:push` to sync to WordPress.
+
+---
+
+## enrich-sections.ts — async enrichment pass
+
+Called after normalization in page/template server components. Pattern:
+
+```ts
+const enriched = await enrichSections(sections, {
+  lang,
+  globals,
+  pageSlugPath,          // for blog/case-study archive paths
+  blogArchive,           // ?page= / ?s= parsed from URL
+  caseStudyArchive,
+});
+```
+
+Enrichment is **selective by section type**: only `testimonials`, `latest_posts`, `blog_post_overview`, `case_study_overview`, `design_showcase_grid`, `form_embed`, and `faq_contact_split` (when `useForm`) receive async data. All other sections pass through unchanged.
+
+Do not add synchronous logic to enrich-sections — it is intentionally async-only.

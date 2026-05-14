@@ -1,0 +1,145 @@
+---
+description: Salonora — TypeScript type conventions, discriminated union pattern, CoreSection, AnySectionT, and no-any rule.
+globs: ["src/types/**"]
+alwaysApply: false
+---
+
+## Core types location
+
+All shared types live in `src/types/`:
+
+| File              | Contains                                                          |
+| ----------------- | ----------------------------------------------------------------- |
+| `sections.ts`     | `AnySectionT`, `CoreSection`, all section types (`*SectionT`)    |
+| `wordpress.ts`    | `WpImage`, `WpAcfLink`, `WpPage`, `WpPost`, rest shapes          |
+| `testimonials.ts` | `TestimonialDocument`                                             |
+| `forms.ts`        | `CF7FormDefinition`                                               |
+| `globals.ts`      | `GlobalSettings` (header/footer globals)                          |
+| `acf.ts`          | Raw ACF REST shapes                                               |
+| `seo.ts`          | Yoast-derived SEO types                                           |
+
+---
+
+## Discriminated union pattern
+
+`AnySectionT` in `sections.ts` is a discriminated union on the `type` literal field:
+
+```ts
+export type AnySectionT =
+  | HeroSectionT           // type: "hero"
+  | CardsSectionT          // type: "cards"
+  | AudiencePromoCardSectionT  // type: "audience_promo_card"
+  // ... 49 more
+  | TeamBehindSalonoraSectionT; // type: "team_behind_salonora"
+```
+
+TypeScript narrows the union automatically in any `switch (section.type)` block. The `default: assertNever(section)` pattern turns missing cases into **compile errors**, not silent runtime bugs.
+
+```ts
+// src/lib/utils/assert-never.ts
+export function assertNever(value: never): never {
+  throw new Error(`Unhandled case: ${JSON.stringify(value)}`);
+}
+```
+
+Both `SectionRenderer.tsx` and `mapKnownPageSectionLayout()` in `normalize-page-sections.ts` use this pattern. When adding a new type to `AnySectionT`, the build will fail until both switch statements have the new case.
+
+---
+
+## CoreSection
+
+Every section type extends `CoreSection`:
+
+```ts
+export type CoreSection = { _key: string; id: string };
+```
+
+- `_key` — ACF flexible content row key (stable across saves); used as React `key` fallback.
+- `id` — UUID generated at normalization time by `newSectionId()`.
+
+Sections are defined as intersections:
+```ts
+export type MySectionT = CoreSection & {
+  type: "my_section";
+  // ... fields
+};
+```
+
+---
+
+## Type naming convention
+
+| Thing                 | Convention                    | Example                        |
+| --------------------- | ----------------------------- | ------------------------------ |
+| Section type          | PascalCase + `SectionT`       | `AudiencePromoCardSectionT`    |
+| Section type literal  | snake_case                    | `"audience_promo_card"`        |
+| Sub-item type         | PascalCase + descriptive name | `AudiencePromoCardFeatureRowT` |
+| Enum-style literal    | PascalCase + `T`              | `WhoWeAreForItemAccentT`       |
+| WordPress REST shapes | PascalCase starting with `Wp` | `WpImage`, `WpAcfLink`         |
+
+---
+
+## WpImage and WpAcfLink
+
+```ts
+// From src/types/wordpress.ts
+type WpImage = {
+  url: string;
+  alt: string;
+  id?: number;
+  title?: string;
+  width?: number;
+  height?: number;
+  sizes?: Record<string, unknown>;
+};
+
+type WpAcfLink = {
+  title?: string;
+  url: string;
+  target?: string;
+};
+```
+
+- `WpImage` is produced by `asImage()` in `field-mappers.ts` — never construct it manually.
+- `WpAcfLink` is produced by `asLink()` — never construct it manually.
+- Both may be `null`; always check before use.
+
+---
+
+## CtaItem
+
+```ts
+export type CtaItem = { text: string; url: WpAcfLink | null };
+```
+
+Produced in batches by `mapCtaRepeater()`. Used in nearly every section that has a CTA button.
+
+---
+
+## No-any rule
+
+**Never use `any` in `src/types/`**, `src/lib/acf/`, or `src/components/sections/`.
+
+Use `unknown` for values of unknown shape, then narrow with type guards or field-mapper helpers. The codebase currently has zero `any` in section-critical files — maintain this.
+
+Acceptable patterns:
+```ts
+// ✅ unknown + field mapper
+const title = asString(row.title);
+
+// ✅ unknown + type assertion with narrow cast
+const items = row.items as { text?: unknown; icon?: unknown }[];
+
+// ❌ never
+const items = row.items as any[];
+```
+
+---
+
+## Adding a new section type — type-layer checklist
+
+1. Define `MyNewSectionT = CoreSection & { type: "my_new_section"; ... }` in `sections.ts`.
+2. Add any sub-item types above it (e.g. `MyNewSectionItemT`).
+3. Add `| MyNewSectionT` to the `AnySectionT` union.
+4. The `PAGE_SECTION_ACF_LAYOUTS satisfies Record<AnySectionT["type"], true>` constraint in `normalize-page-sections.ts` will now error until the key is added there too.
+5. Both `assertNever` switch statements will error until their cases are added.

@@ -1,3 +1,7 @@
+> ⚠️ DEPRECATED FOR AI TOOLS — This file is kept as human reference only.
+> Cursor loads scoped rules from `.cursor/rules/` automatically.
+> Do not instruct AI to read this file directly.
+
 # Salonora — AI project context
 
 Read this file before large edits so you do not need to re-scan the whole repo. **Cursor** loads **`.cursor/rules/salonora.mdc`** (`alwaysApply: true`). **`AGENTS.md`** is the portable pointer for other agent tools. Authoritative env list: `.env.example`. Human overview: `README.md`. WordPress setup: `docs/wordpress-connection-guide.md`. **n8n / automated posts:** `docs/n8n-blog-publishing.md` (full Gutenberg-style `content` sample: `docs/n8n-blog-post-gutenberg-reference.html`).
