@@ -86,17 +86,17 @@ export type BenefitsGridSectionT = CoreSection & {
 };
 
 export type PricingPackageInclude = { icon: WpImage | null; text: string };
-export type SolvesItem = { icon: WpImage | null; text: string };
 export type PricingPackageItemT = {
   badge: string;
   title: string;
   intro: string;
-  priceLine: string;
   includes: PricingPackageInclude[];
-  solvesTitle: string;
-  solvesItems: SolvesItem[];
-  note: string;
-  smallPrint: string;
+  /** Accent line (e.g. €500 / €50) — maps ACF `pricing_title` or legacy `price_line`. */
+  pricingTitle: string;
+  /** Navy-deep line (e.g. “Stap je nu in?…”) — maps `secondary_title` or legacy `note`. */
+  secondaryTitle: string;
+  /** Optional body under titles — maps `pricing_paragraph` or legacy `small_print`. */
+  pricingParagraph: string;
   featured: boolean;
   ctas: CtaItem[];
 };
@@ -387,11 +387,18 @@ export type ImageIntroSplitSectionT = CoreSection & {
 
 export type SalonValueCardAccentT = "brand" | "rose";
 
+export type SalonValueCardChecklistItemT = {
+  text: string;
+};
+
 export type SalonValueCardT = {
   accent: SalonValueCardAccentT;
+  /** Shown on the coloured tile for this card; applies to all checklist lines. */
   icon: WpImage | null;
+  /** Optional: same image on every checklist row (replaces default circle + check). */
+  checklistIcon: WpImage | null;
   title: string;
-  text: string;
+  checklistItems: SalonValueCardChecklistItemT[];
 };
 
 /** Figma: eyebrow + headline + intro, blue gradient visual, three accent cards. When no panel visual (empty `visualImage`), render centered headline + optional footer CTA pill (597:2910-style). */
@@ -792,7 +799,11 @@ export type ProblemSolutionSectionT = CoreSection & {
   problem_image: WpImage | null;
   solution_title: string;
   solution_text: string;
+  /** Optional: one image used for every checklist row (e.g. calendar icon). Empty = built-in check disc. */
+  solution_list_icon: WpImage | null;
   solution_list: ProblemSolutionListItemT[];
+  /** Optional WYSIWYG below the checklist (e.g. closing line about reviews). Empty = hidden. */
+  solution_bottom_text: string;
   solution_image: WpImage | null;
 };
 

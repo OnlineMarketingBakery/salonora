@@ -6,6 +6,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ArrowInCircle } from "@/components/ui/ArrowInCircle";
+import { useCtaBrandArrowImage } from "@/components/providers/CtaBrandArrowProvider";
 import { registerGsapClient } from "@/lib/gsap/register";
 
 const textBody = "text-base font-normal font-sans leading-normal";
@@ -43,7 +44,8 @@ function isCtaVariant(v: ButtonVariant): v is keyof typeof ctaSurface {
 const ctaSizeClass = {
   default: "h-12 min-h-12 rounded-[24px] gap-[17px] px-3.5 text-base leading-normal",
   hero: "h-12 min-h-12 rounded-[24px] gap-[17px] px-3.5 text-lg leading-6",
-  promo: "h-[54px] min-h-[54px] rounded-[27px] gap-2 px-3 text-lg leading-6 sm:gap-8",
+  promo:
+    "h-[54px] min-h-[54px] rounded-[27px] gap-2 px-6 text-lg font-normal leading-6 sm:gap-8 sm:px-8 md:gap-10 md:px-10",
   compact: "h-12 min-h-12 rounded-[24px] gap-2 px-3.5 sm:px-4 text-[16px] tracking-[-0.04em]",
   card: "h-[42px] min-h-[42px] rounded-[24px] gap-0 pl-[18px] pr-3.5 text-sm leading-6 tracking-normal",
   package: "h-[55px] min-h-[55px] rounded-[31.5px] gap-2 px-4 text-base leading-normal",
@@ -91,7 +93,13 @@ const standardBase =
   "inline-flex items-center justify-center rounded-full px-6 py-3 transition-all duration-400 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand";
 
 const ctaLabelClass =
-  "min-w-0 break-words whitespace-normal [text-align:left]";
+  "min-w-0 overflow-hidden text-ellipsis whitespace-nowrap";
+
+function ctaLabelLayoutClass(ctaJustify: "center" | "between", hasArrow: boolean): string {
+  const align = ctaJustify === "between" ? "text-left" : "text-center";
+  const width = hasArrow ? "flex-1" : "max-w-full";
+  return `${ctaLabelClass} ${width} ${align}`;
+}
 
 const ctaBaseShared =
   "group inline-flex shrink-0 items-center font-sans font-normal transition-all duration-400 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand";
@@ -104,11 +112,11 @@ function plainTextLabel(children: ReactNode): string | null {
   return null;
 }
 
-function CtaLabel({ children }: { children: ReactNode }) {
+function CtaLabel({ children, layoutClass }: { children: ReactNode; layoutClass: string }) {
   const plain = plainTextLabel(children);
   if (plain) {
     return (
-      <span className={ctaLabelClass} aria-hidden="true" data-cta-label>
+      <span className={layoutClass} aria-hidden="true" data-cta-label>
         {Array.from(plain).map((ch, i) => (
           <span key={i} data-cta-char className="inline-block will-change-[transform,opacity]">
             {ch === " " ? "\u00a0" : ch}
@@ -118,7 +126,7 @@ function CtaLabel({ children }: { children: ReactNode }) {
     );
   }
   return (
-    <span className={ctaLabelClass} data-cta-label>
+    <span className={layoutClass} data-cta-label>
       {children}
     </span>
   );
@@ -247,6 +255,7 @@ export function Button({
   arrowContent,
 }: Props) {
   const rootRef = useRef<HTMLElement | null>(null);
+  const ctaBrandArrowImage = useCtaBrandArrowImage();
   const dis = disabled ? "pointer-events-none opacity-60" : "";
   const isCta = isCtaVariant(variant);
   const useArrow = isCta && (showArrow ?? true);
@@ -262,13 +271,18 @@ export function Button({
       `${ctaBaseShared} ${ctaWidth} ${justify} ${sizeCls} ${ctaSurface[variant]} ${shadow} ${dis} ${className}`.trim();
 
     const ctaName = plainTextLabel(children);
+    const labelLayoutClass = ctaLabelLayoutClass(ctaJustify, Boolean(useArrow));
     const inner = (
       <>
-        <CtaLabel>{children}</CtaLabel>
+        <CtaLabel layoutClass={labelLayoutClass}>{children}</CtaLabel>
         {useArrow ? (
           <span data-cta-arrow className="inline-flex shrink-0 will-change-[transform]">
             {arrowContent ?? (
-              <ArrowInCircle variant={ctaArrowVariant[variant]} className={arrowClassName ?? "h-5 w-5 shrink-0"} />
+              <ArrowInCircle
+                variant={ctaArrowVariant[variant]}
+                className={arrowClassName ?? "h-5 w-5 shrink-0"}
+                brandImage={variant === "ctaBrand" ? ctaBrandArrowImage : undefined}
+              />
             )}
           </span>
         ) : null}

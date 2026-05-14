@@ -12,6 +12,7 @@ import { getHidePrimaryMenu } from "@/lib/wordpress/hide-primary-menu-from-pathn
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { PageScrollAnimations } from "@/components/animations/PageScrollAnimations";
 import { getSiteName } from "@/lib/seo/map-yoast-to-metadata";
+import { CtaBrandArrowProvider } from "@/components/providers/CtaBrandArrowProvider";
 
 export const dynamic = "force-dynamic";
 
@@ -49,27 +50,29 @@ export default async function LangLayout({ children, params }: Props) {
         </Script>
       )}
       <div className="flex min-h-screen flex-col" data-site={getSiteName(globals)}>
-        <GlobalAnnouncementBar globals={globals} lang={lang} />
-        <div className="relative flex min-h-0 flex-1 flex-col">
-          <SiteHeader
+        <CtaBrandArrowProvider image={globals.site.defaultCtaBrandArrow}>
+          <GlobalAnnouncementBar globals={globals} lang={lang} />
+          <div className="relative flex min-h-0 flex-1 flex-col">
+            <SiteHeader
+              globals={globals}
+              lang={lang}
+              menu={primary}
+              hidePrimaryMenu={hidePrimaryMenu}
+              languageSwitcherPathname={pathname}
+              languageSwitcherHrefs={languageSwitcherHrefs}
+            />
+            <main className="relative z-0 flex-1">{children}</main>
+            <PageScrollAnimations />
+          </div>
+          <SiteFooter
             globals={globals}
             lang={lang}
-            menu={primary}
-            hidePrimaryMenu={hidePrimaryMenu}
+            footerMenu={footer}
+            legalMenu={legal}
             languageSwitcherPathname={pathname}
             languageSwitcherHrefs={languageSwitcherHrefs}
           />
-          <main className="relative z-0 flex-1">{children}</main>
-          <PageScrollAnimations />
-        </div>
-        <SiteFooter
-          globals={globals}
-          lang={lang}
-          footerMenu={footer}
-          legalMenu={legal}
-          languageSwitcherPathname={pathname}
-          languageSwitcherHrefs={languageSwitcherHrefs}
-        />
+        </CtaBrandArrowProvider>
       </div>
     </>
   );

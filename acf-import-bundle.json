@@ -2506,28 +2506,6 @@
                     "parent_repeater": "field_pricing_packages_items"
                   },
                   {
-                    "key": "field_pricing_package_price_line",
-                    "label": "Price Line",
-                    "name": "price_line",
-                    "aria-label": "",
-                    "type": "wysiwyg",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                      "width": "",
-                      "class": "",
-                      "id": ""
-                    },
-                    "default_value": "",
-                    "allow_in_bindings": 0,
-                    "tabs": "all",
-                    "toolbar": "full",
-                    "media_upload": 1,
-                    "delay": 0,
-                    "parent_repeater": "field_pricing_packages_items"
-                  },
-                  {
                     "key": "field_pricing_package_includes",
                     "label": "Includes",
                     "name": "includes",
@@ -2602,12 +2580,12 @@
                     ]
                   },
                   {
-                    "key": "field_pricing_package_solves_title",
-                    "label": "Solves Title",
-                    "name": "solves_title",
+                    "key": "field_pricing_package_price_line",
+                    "label": "Pricing title",
+                    "name": "price_line",
                     "aria-label": "",
                     "type": "wysiwyg",
-                    "instructions": "",
+                    "instructions": "Accent line (e.g. opstartkosten / maandprijs). Renders in accent colour on the site.",
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
@@ -2622,88 +2600,14 @@
                     "media_upload": 1,
                     "delay": 0,
                     "parent_repeater": "field_pricing_packages_items"
-                  },
-                  {
-                    "key": "field_pricing_package_solves_items",
-                    "label": "Solves Items",
-                    "name": "solves_items",
-                    "aria-label": "",
-                    "type": "repeater",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                      "width": "",
-                      "class": "",
-                      "id": ""
-                    },
-                    "layout": "row",
-                    "pagination": 0,
-                    "min": 0,
-                    "max": 0,
-                    "collapsed": "",
-                    "button_label": "Add Solve Item",
-                    "rows_per_page": 20,
-                    "parent_repeater": "field_pricing_packages_items",
-                    "sub_fields": [
-                      {
-                        "key": "field_69ea75e987b7c",
-                        "label": "Icon",
-                        "name": "icon",
-                        "aria-label": "",
-                        "type": "image",
-                        "instructions": "",
-                        "required": 0,
-                        "conditional_logic": 0,
-                        "wrapper": {
-                          "width": "",
-                          "class": "",
-                          "id": ""
-                        },
-                        "return_format": "array",
-                        "library": "all",
-                        "min_width": "",
-                        "min_height": "",
-                        "min_size": "",
-                        "max_width": "",
-                        "max_height": "",
-                        "max_size": "",
-                        "mime_types": "",
-                        "allow_in_bindings": 0,
-                        "preview_size": "medium",
-                        "parent_repeater": "field_pricing_package_solves_items"
-                      },
-                      {
-                        "key": "field_pricing_package_solves_item_text",
-                        "label": "Item",
-                        "name": "text",
-                        "aria-label": "",
-                        "type": "text",
-                        "instructions": "",
-                        "required": 1,
-                        "conditional_logic": 0,
-                        "wrapper": {
-                          "width": "",
-                          "class": "",
-                          "id": ""
-                        },
-                        "default_value": "",
-                        "maxlength": "",
-                        "allow_in_bindings": 0,
-                        "placeholder": "",
-                        "prepend": "",
-                        "append": "",
-                        "parent_repeater": "field_pricing_package_solves_items"
-                      }
-                    ]
                   },
                   {
                     "key": "field_pricing_package_note",
-                    "label": "Note",
+                    "label": "Secondary title",
                     "name": "note",
                     "aria-label": "",
                     "type": "wysiwyg",
-                    "instructions": "",
+                    "instructions": "Second headline (e.g. Stap je nu in?). Renders in navy-deep on the site.",
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
@@ -2718,6 +2622,28 @@
                     "media_upload": 1,
                     "delay": 0,
                     "parent_repeater": "field_pricing_packages_items"
+                  },
+                  {
+                    "key": "field_pricing_package_small_print",
+                    "label": "Pricing paragraph (optional)",
+                    "name": "small_print",
+                    "aria-label": "",
+                    "type": "wysiwyg",
+                    "instructions": "Optional body under the titles (e.g. vergelijkingstekst). Leave empty if not needed.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "default_value": "",
+                    "allow_in_bindings": 0,
+                    "parent_repeater": "field_pricing_packages_items",
+                    "tabs": "all",
+                    "toolbar": "full",
+                    "media_upload": 1,
+                    "delay": 0
                   },
                   {
                     "key": "field_69ea760f87b7d",
@@ -2782,28 +2708,6 @@
                         "parent_repeater": "field_69ea760f87b7d"
                       }
                     ]
-                  },
-                  {
-                    "key": "field_pricing_package_small_print",
-                    "label": "Small Print",
-                    "name": "small_print",
-                    "aria-label": "",
-                    "type": "text",
-                    "instructions": "",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                      "width": "",
-                      "class": "",
-                      "id": ""
-                    },
-                    "default_value": "",
-                    "maxlength": "",
-                    "allow_in_bindings": 0,
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "parent_repeater": "field_pricing_packages_items"
                   },
                   {
                     "key": "field_pricing_package_featured",
@@ -6994,7 +6898,7 @@
                 "name": "feature_cards",
                 "aria-label": "",
                 "type": "repeater",
-                "instructions": "Up to three cards with accent colour, icon, title and text.",
+                "instructions": "Up to three cards. Each row: accent colour, optional card icon, title, then checklist lines.",
                 "required": 0,
                 "conditional_logic": 0,
                 "wrapper": {
@@ -7044,11 +6948,11 @@
                   },
                   {
                     "key": "field_svp_card_icon",
-                    "label": "Icon",
+                    "label": "Card icon",
                     "name": "icon",
                     "aria-label": "",
                     "type": "image",
-                    "instructions": "Square icon on coloured tile.",
+                    "instructions": "ONE image per card: coloured tile above the title. Same icon for every checklist line (no per-line icon field).",
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
@@ -7092,11 +6996,11 @@
                     "parent_repeater": "field_svp_feature_cards"
                   },
                   {
-                    "key": "field_svp_card_text",
-                    "label": "Text",
-                    "name": "text",
+                    "key": "field_svp_card_checklist_icon_note",
+                    "label": "",
+                    "name": "",
                     "aria-label": "",
-                    "type": "textarea",
+                    "type": "message",
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
@@ -7105,13 +7009,84 @@
                       "class": "",
                       "id": ""
                     },
-                    "default_value": "",
-                    "maxlength": "",
-                    "allow_in_bindings": 0,
-                    "rows": 4,
-                    "placeholder": "",
-                    "new_lines": "wpautop",
+                    "message": "Card header: use Card icon at the top of this card (square tile). Optional checklist row icon below replaces the default circle + check on every line.",
+                    "new_lines": "br",
+                    "esc_html": 1,
                     "parent_repeater": "field_svp_feature_cards"
+                  },
+                  {
+                    "key": "field_svp_card_checklist_row_icon",
+                    "label": "Checklist row icon (optional)",
+                    "name": "checklist_icon",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "If set, this image replaces the coloured circle + check on every checklist row. Leave empty for the default.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "return_format": "array",
+                    "library": "all",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": "",
+                    "allow_in_bindings": 0,
+                    "preview_size": "thumbnail",
+                    "parent_repeater": "field_svp_feature_cards"
+                  },
+                  {
+                    "key": "field_svp_card_checklist",
+                    "label": "Checklist items",
+                    "name": "checklist_items",
+                    "aria-label": "",
+                    "type": "repeater",
+                    "instructions": "One bullet per line.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "layout": "block",
+                    "pagination": 0,
+                    "min": "",
+                    "max": "",
+                    "collapsed": "field_svp_card_checklist_line",
+                    "button_label": "Add line",
+                    "rows_per_page": 20,
+                    "parent_repeater": "field_svp_feature_cards",
+                    "sub_fields": [
+                      {
+                        "key": "field_svp_card_checklist_line",
+                        "label": "Line",
+                        "name": "item",
+                        "aria-label": "",
+                        "type": "text",
+                        "instructions": "",
+                        "required": 0,
+                        "conditional_logic": 0,
+                        "wrapper": {
+                          "width": "",
+                          "class": "",
+                          "id": ""
+                        },
+                        "default_value": "",
+                        "maxlength": "",
+                        "allow_in_bindings": 0,
+                        "placeholder": "",
+                        "prepend": "",
+                        "append": "",
+                        "parent_repeater": "field_svp_card_checklist"
+                      }
+                    ]
                   }
                 ]
               },
@@ -11732,6 +11707,32 @@
                 "delay": 0
               },
               {
+                "key": "field_omb_problem_solution_solution_list_icon",
+                "label": "Solution card - checklist icon (optional)",
+                "name": "solution_list_icon",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "If set, this image replaces the white disc + check on every checklist row. Leave empty to use the default.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "",
+                "allow_in_bindings": 0,
+                "preview_size": "medium"
+              },
+              {
                 "key": "field_omb_problem_solution_solution_list",
                 "label": "Solution card — checklist",
                 "name": "solution_list",
@@ -11776,6 +11777,27 @@
                     "parent_repeater": "field_omb_problem_solution_solution_list"
                   }
                 ]
+              },
+              {
+                "key": "field_omb_problem_solution_solution_bottom_text",
+                "label": "Solution card - bottom paragraph (optional)",
+                "name": "solution_bottom_text",
+                "aria-label": "",
+                "type": "wysiwyg",
+                "instructions": "Optional closing copy below the checklist (e.g. reviews line). Leave empty to hide.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "allow_in_bindings": 0,
+                "tabs": "all",
+                "toolbar": "basic",
+                "media_upload": 0,
+                "delay": 0
               },
               {
                 "key": "field_omb_problem_solution_solution_image",

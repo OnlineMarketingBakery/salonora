@@ -157,7 +157,7 @@ About page "Het Team Achter Salonora": two (or more) team member cards with soci
 Figma **597:2720** ("Frame 2147228539"): centered heading + two rounded panels (brand gradient left with optional `left_corner_graphic`, navy right with optional `right_overlay_graphic`); one primary CTA (`left_link`) vs two secondary CTAs (`right_primary_link`, `right_secondary_link`) with optional trailing icons.
 
 ### `problem_solution`
-Figma **1306:29** ("Frame 574"): two equal rounded cards (navy "problem" vs brand-blue "solution") with TR grid wash, `problem_image` / `solution_image` cutouts bottom-right, WYSIWYG copy, optional `solution_list` repeater (`item`) for white-disc checklist lines.
+Figma **1306:29** ("Frame 574"): two equal rounded cards (navy "problem" vs brand-blue "solution") with TR grid wash, `problem_image` / `solution_image` cutouts bottom-right, WYSIWYG copy, optional `solution_list_icon` (one image for every checklist row; empty = built-in white disc + check), optional `solution_list` repeater (`item`) for checklist lines, optional `solution_bottom_text` WYSIWYG below the checklist.
 
 ### `guarantees_promise_split`
 Figma **1127:55** ("Group 596"): portrait + floating badges (`floating_badges[]` with `icon`, `text`, `accent` brand|rose, `position` left|right); checklist `points[]` with per-row `icon` falling back to `list_default_icon`; download CTA (`downloadLink`) with optional `cta_trailing_icon`.

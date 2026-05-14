@@ -109,6 +109,7 @@ All keys are documented in **`.env.example`** at the repo root. Summary:
 | `WORDPRESS_APPLICATION_USER` / `WORDPRESS_APPLICATION_PASSWORD` | If WP returns 401 | Application Password basic auth for server fetches |
 | `REVALIDATION_SECRET` | Production ISR webhooks | Secret for `POST /api/revalidate` |
 | `NEXT_PUBLIC_DEFAULT_CF7_FORM_ID` | Optional | Default Contact Form 7 id |
+| `NEXT_PUBLIC_DEFAULT_CTA_BRAND_ARROW_URL` | Optional | Absolute image URL for blue CTA trailing icon when WordPress Site Options image is unset |
 | `WORDPRESS_SERVICE_REST_BASE` / `WORDPRESS_TESTIMONIAL_REST_BASE` / `WORDPRESS_CASE_STUDY_REST_BASE` | Rare | Override REST base if CPT slug differs |
 | `DEFAULT_LOCALE` / `SUPPORTED_LOCALES` | Optional | Default redirect locale; comma list (default `nl,en`) |
 

@@ -443,22 +443,15 @@ function mapKnownPageSectionLayout(
               badge: asString(p.badge),
               title: asString(p.title),
               intro: asHtml(p.intro),
-              priceLine: asHtml(p.price_line),
               includes: Array.isArray(p.includes)
                 ? (p.includes as { icon?: unknown; text?: unknown }[]).map((x) => ({
                     icon: asImage(x.icon),
                     text: asString(x.text),
                   }))
                 : [],
-              solvesTitle: asHtml(p.solves_title),
-              solvesItems: Array.isArray(p.solves_items)
-                ? (p.solves_items as { icon?: unknown; text?: unknown }[]).map((x) => ({
-                    icon: asImage(x.icon),
-                    text: asString(x.text),
-                  }))
-                : [],
-              note: asHtml(p.note),
-              smallPrint: asString(p.small_print),
+              pricingTitle: asHtml(p.pricing_title) || asHtml(p.price_line),
+              secondaryTitle: asHtml(p.secondary_title) || asHtml(p.note),
+              pricingParagraph: asHtml(p.pricing_paragraph) || asHtml(p.small_print),
               featured: asBool(p.featured),
               ctas: mapCtaRepeater(p.ctas as Parameters<typeof mapCtaRepeater>[0]),
             }))
@@ -783,16 +776,30 @@ function mapKnownPageSectionLayout(
         visualImage: asImage(row.visual_image),
         footerTitle: asString(row.footer_title),
         footerCtaLink: asLink(row.footer_cta_link),
-        footerCtaIcon: asImage(row.footer_cta_icon),
+        footerCtaIcon:
+          asImage(row.footer_cta_icon) ??
+          asImage((row as Record<string, unknown>).footer_button_icon),
         cards: Array.isArray(row.feature_cards)
-          ? (row.feature_cards as { accent?: unknown; icon?: unknown; title?: unknown; text?: unknown }[]).map((c) => {
+          ? (row.feature_cards as {
+              accent?: unknown;
+              icon?: unknown;
+              checklist_icon?: unknown;
+              title?: unknown;
+              checklist_items?: unknown;
+            }[]).map((c) => {
               const a = asString(c.accent);
               const accent = a === "rose" ? "rose" : "brand";
+              const checklistItems = Array.isArray(c.checklist_items)
+                ? (c.checklist_items as { item?: unknown }[])
+                    .map((r) => ({ text: asString(r.item) }))
+                    .filter((r) => r.text.trim() !== "")
+                : [];
               return {
                 accent,
                 icon: asImage(c.icon),
+                checklistIcon: asImage(c.checklist_icon),
                 title: asString(c.title),
-                text: asHtml(c.text),
+                checklistItems,
               };
             })
           : [],
@@ -1278,11 +1285,13 @@ function mapKnownPageSectionLayout(
         problem_image: asImage(row.problem_image),
         solution_title: asString(row.solution_title),
         solution_text: asHtml(row.solution_text),
+        solution_list_icon: asImage(row.solution_list_icon),
         solution_list: Array.isArray(row.solution_list)
           ? (row.solution_list as { item?: unknown }[])
               .map((r) => ({ text: asString(r.item) }))
               .filter((r) => r.text.trim() !== "")
           : [],
+        solution_bottom_text: asHtml(row.solution_bottom_text),
         solution_image: asImage(row.solution_image),
       };
     case "talk_dual_cards":

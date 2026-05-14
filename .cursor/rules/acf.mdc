@@ -160,10 +160,20 @@ Unique keys prevent collisions across layouts. Never reuse a key from another la
 
 ### Page builder group
 All flexible layout sections live inside the `group_omb_page_builder` field group, under the `page_builder` flexible content field. When adding a new layout:
-1. Add a new `layout` object to the `layouts` array of `page_builder` in **`acf-import-bundle.json` at the repo root** (canonical).
+1. Add a new `layout` entry to the `layouts` **object** on `page_builder` in **`acf-import-bundle.json` at the repo root** (canonical). (`layouts` is keyed by `layout_omb_*`, not a JSON array.)
 2. Set `"name": "my_new_section"` (must match `acf_fc_layout` everywhere).
 3. Add all sub-fields with keys following `field_omb_my_new_section_*`.
 4. Run **`npm run acf:sync-bundle`** (updates the theme mirror) and **`npm run acf:push`** to sync to WordPress (push runs sync automatically).
+
+### `pricing_packages` — package repeater (`items`)
+
+Each row maps to `PricingPackageItemT` in `normalize-page-sections.ts`. ACF **names** (REST keys) are still `price_line`, `note`, and `small_print` for backwards compatibility; labels in the bundle read **Pricing title**, **Secondary title**, and **Pricing paragraph (optional)**. The normalizer exposes them as `pricingTitle`, `secondaryTitle`, and `pricingParagraph`. Legacy `pricing_title` / `secondary_title` / `pricing_paragraph` keys are read first when present. The old **Solves** fields were removed from the import bundle.
+
+---
+
+## Globals (`fetch-globals.ts` / Site Options)
+
+- **`default_cta_brand_arrow`** (image, snake or camel in REST) → `GlobalSettings.site.defaultCtaBrandArrow`. Drives the default trailing icon for all `Button` **`variant="ctaBrand"`** pills site-wide. When unset in WordPress, Next uses the built-in default URL (overridable per deploy via **`NEXT_PUBLIC_DEFAULT_CTA_BRAND_ARROW_URL`**).
 
 ---
 

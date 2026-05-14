@@ -41,6 +41,11 @@ export type SiteSettings = {
   siteNameOverride: string;
   defaultTagline: string;
   defaultOgImage: WpImage | null;
+  /**
+   * Trailing icon for blue marketing CTAs (`Button` `variant="ctaBrand"`).
+   * ACF Site Options: `default_cta_brand_arrow`; when empty, Next uses `defaultCtaBrandArrowFallback()`.
+   */
+  defaultCtaBrandArrow: WpImage;
   enableAnnouncement: boolean;
   announcementText: string;
   announcementLink: WpAcfLink | null;

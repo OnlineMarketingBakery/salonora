@@ -3,7 +3,9 @@ import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { Locale } from "@/lib/i18n/locales";
+import { getImageUrl, getLargestImageUrl } from "@/lib/utils/media";
 import type { ProblemSolutionSectionT } from "@/types/sections";
+import type { WpImage } from "@/types/wordpress";
 import type { CSSProperties } from "react";
 
 /** Figma **1306:29** left card — deep navy stack + soft TR highlight. */
@@ -71,29 +73,52 @@ function CardGridWash() {
   );
 }
 
-function SolutionCheckRow({ text }: { text: string }) {
-  return (
-    <li className="flex items-end gap-1.5">
-      <span
-        className="relative grid size-[23px] shrink-0 place-items-center rounded-full bg-[var(--palette-white)]"
+function SolutionCheckRow({ text, listIcon }: { text: string; listIcon: WpImage | null }) {
+  const customIcon =
+    listIcon != null && (getLargestImageUrl(listIcon) || getImageUrl(listIcon)) ? listIcon : null;
+
+  const defaultMarker = (
+    <span
+      className="relative grid size-[23px] shrink-0 place-items-center rounded-full bg-[var(--palette-white)]"
+      aria-hidden
+    >
+      <svg
+        className="size-[15px] text-[var(--palette-brand-strong)]"
+        viewBox="0 0 15 13"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
         aria-hidden
       >
-        <svg
-          className="size-[15px] text-[var(--palette-brand)]"
-          viewBox="0 0 15 13"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden
-        >
-          <path
-            d="M1 6.5L5.5 11L14 1"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </span>
+        <path
+          d="M1 6.5L5.5 11L14 1"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </span>
+  );
+
+  const marker = customIcon != null ? (
+    <span className="relative flex size-[23px] shrink-0 items-end justify-center" aria-hidden>
+      <Media
+        image={customIcon}
+        width={46}
+        height={46}
+        className="h-[23px] w-[23px] object-contain object-bottom"
+        sizes="23px"
+        preferLargestSource
+        quality={95}
+      />
+    </span>
+  ) : (
+    defaultMarker
+  );
+
+  return (
+    <li className="flex items-end gap-1.5">
+      {marker}
       <p className="min-w-0 flex-1 font-sans text-[14px] leading-[1.6] text-[var(--palette-white)]">{text}</p>
     </li>
   );
@@ -111,6 +136,7 @@ export function ProblemSolutionSection({
   lang: Locale;
 }) {
   void lang;
+  const listIcon = section.solution_list_icon;
   const cardShell =
     "relative flex min-h-0 w-full flex-col overflow-hidden rounded-[24px] px-8 py-10 sm:px-10 sm:py-11 lg:min-h-[668px] lg:max-h-none lg:px-[46px] lg:py-[46px]";
 
@@ -178,9 +204,15 @@ export function ProblemSolutionSection({
                 {section.solution_list.length > 0 ? (
                   <ul className="relative z-[2] mt-1 flex max-w-[22.3125rem] flex-col gap-3 lg:max-w-none">
                     {section.solution_list.map((row, i) => (
-                      <SolutionCheckRow key={`${row.text}-${i}`} text={row.text} />
+                      <SolutionCheckRow key={`${row.text}-${i}`} text={row.text} listIcon={listIcon} />
                     ))}
                   </ul>
+                ) : null}
+                {section.solution_bottom_text ? (
+                  <RichText
+                    html={section.solution_bottom_text}
+                    className={`relative z-[2] mt-3.5 max-w-[33.5rem] lg:max-w-none ${CARD_PROSE}`}
+                  />
                 ) : null}
                 {section.solution_image ? (
                   <BottomRightWrapRail
