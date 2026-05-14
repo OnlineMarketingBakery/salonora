@@ -1,0 +1,32 @@
+# Build output
+.next/
+
+# Dependencies
+node_modules/
+
+# WordPress internals (not part of frontend dev)
+wordpress/wp-content/plugins/
+wordpress/wp-content/themes/
+wordpress/wp-content/mu-plugins/
+
+# Static assets (no code context value)
+public/
+
+# CI/CD
+.github/
+
+# Human-only docs
+docs/
+
+# Scripts (rarely edited, not part of section pipeline)
+scripts/
+
+# ACF JSON (large file — reference explicitly only when needed)
+acf-import-bundle.json
+
+# Logs and locks
+*.log
+*.lock
+*.lockb
+package-lock.json
+yarn.lock

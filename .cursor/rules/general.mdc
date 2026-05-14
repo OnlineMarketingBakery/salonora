@@ -219,3 +219,13 @@ Authoritative list: `.env.example`. When adding a new env var, also update `.env
 9. **Invent animation class names** — only `REVEAL_ITEM` is defined.
 10. **Re-add footer background CMS fields** — the frontend intentionally ignores them.
 11. **Use `any`** in TypeScript — use `unknown` and narrow explicitly.
+
+## File Indexing
+A .cursorignore file is present at the root.
+Do NOT reference or scan: .next/, node_modules/, wordpress/wp-content/,
+public/, docs/, scripts/, acf-import-bundle.json (unless explicitly needed).
+Always use explicit @file references — never @Codebase.
+
+## Section Validation
+Run `npm run validate:sections` after any section pipeline change to confirm
+all 4 layers (types, normalizer, registry, renderer) are in sync.

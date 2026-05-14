@@ -9,7 +9,8 @@
     "lint": "next lint",
     "acf:push": "node scripts/push-acf-rest.mjs",
     "acf:extract-local-json": "node scripts/extract-all-acf-local-json.mjs",
-    "acf:extract-page-builder": "node scripts/extract-acf-page-builder.mjs"
+    "acf:extract-page-builder": "node scripts/extract-acf-page-builder.mjs",
+    "validate:sections": "node scripts/validate-sections.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

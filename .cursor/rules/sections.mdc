@@ -198,3 +198,19 @@ Figma **1063:27**: badge (`eyebrow`) + headline (`title`) + WYSIWYG `body`; righ
 
 ### `faq_contact_split`
 `section_background` `white` (default) | `navy` (full-width navy-deep behind FAQ + contact). When `pricing_ctas` has rows: wide navy pills (79px tall, full width of FAQ column) under the accordion. Large screens: two columns `items-stretch` when pricing CTAs exist; fixed `lg:min-h-[609px]` on contact card only when no pricing CTAs. `ctaform` field: `"form"` activates CF7 embed in the contact card.
+
+---
+
+## GSAP Section Pattern (3-file)
+
+Use this when a section requires client-side scroll animation via useGSAP.
+
+File structure:
+  [kebab-layout-key]/
+    index.tsx   → React Server Component, dynamically imports lazy.tsx, passes section + lang props
+    shell.tsx   → layout/markup only, no animation, accepts same props
+    lazy.tsx    → "use client", imports shell, runs useGSAP for reveal logic
+
+Reference implementations: how-it-works-steps/, scrolling-ticker/
+
+Default to single index.tsx unless GSAP is explicitly required.
