@@ -269,13 +269,21 @@ function asDefaultForm(v: unknown): number | null {
 
 function fromIntegrations(o: Record<string, unknown> | null) {
   if (!o) {
-    return { gtmId: "", ga4Id: "", nextFrontendUrl: "", revalidationSecret: "", defaultContactForm: null as number | null };
+    return {
+      gtmId: "",
+      ga4Id: "",
+      nextFrontendUrl: "",
+      revalidationSecret: "",
+      ombFormBuilderSubmitSecret: "",
+      defaultContactForm: null as number | null,
+    };
   }
   return {
     gtmId: asString(o.gtm_id),
     ga4Id: asString(o.ga4_id),
     nextFrontendUrl: asString(o.next_frontend_url),
     revalidationSecret: asString(o.revalidation_secret),
+    ombFormBuilderSubmitSecret: asString(o.omb_form_builder_submit_secret),
     defaultContactForm: asDefaultForm(o.default_contact_form),
   };
 }

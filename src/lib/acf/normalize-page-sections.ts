@@ -1144,7 +1144,7 @@ function mapKnownPageSectionLayout(
         title: asString(row.title),
         subtitle: asHtml(row.subtitle),
         footer_note: asHtml(row.footer_note),
-        ombFormId: asCf7FormPostId(row.omb_form ?? row.form),
+        ombFormId: asCf7FormPostId(row.omb_form),
         successMode: (asString(row.success_mode) as "inline" | "redirect") || "inline",
         redirectLink: asLink(row.redirect_link),
         trackingContext: asString(row.tracking_context),

@@ -56,6 +56,11 @@ export type IntegrationsSettings = {
   ga4Id: string;
   nextFrontendUrl: string;
   revalidationSecret: string;
+  /**
+   * OMB Form Builder headless `POST …/public/forms/{id}/submit` Bearer token (ACF: `omb_form_builder_submit_secret`).
+   * When empty, Next falls back to `revalidationSecret` from the same options group (match `CFB_HEADLESS_SUBMIT_SECRET` in `wp-config.php`).
+   */
+  ombFormBuilderSubmitSecret: string;
   defaultContactForm: number | null;
 };
 
