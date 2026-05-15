@@ -354,9 +354,9 @@ export function HeroSection({
                           // Soft bottom fade — image dissolves into the copy section below.
                           // Removed at sm+ via the scoped style block above.
                           WebkitMaskImage:
-                            "linear-gradient(to bottom, black 65%, transparent 100%)",
+                            "linear-gradient(to bottom, black 100%, transparent 100%)",
                           maskImage:
-                            "linear-gradient(to bottom, black 65%, transparent 100%)",
+                            "linear-gradient(to bottom, black 100%, transparent 100%)",
                         } as React.CSSProperties)
                       : undefined
                   }

@@ -15,7 +15,7 @@ import {
 
 const SHELL_SELECTOR = "[data-site-header-shell]";
 
-const MEGA_MENU_GAP_PX = -1;
+const MEGA_MENU_GAP_PX = -4;
 /** Max mega width (px); panel stays centered under the header shell when the shell is wider. */
 const MEGA_MENU_MAX_WIDTH_PX = 850;
 
