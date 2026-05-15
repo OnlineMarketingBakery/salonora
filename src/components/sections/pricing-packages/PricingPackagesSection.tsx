@@ -113,7 +113,7 @@ export function PricingPackagesSection({
             </div>
           </div>
 
-          <div className="grid w-full max-w-[1300px] grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-2 lg:items-start lg:justify-center lg:gap-6">
+          <div className="grid w-full max-w-[1300px] grid-cols-1 gap-10 sm:grid-cols-1 lg:grid-cols-2 lg:items-start lg:justify-center lg:gap-6">
             {section.items.map((p, i) => {
               const hasBadge = Boolean(p.badge);
               /** Figma: ribbon + border + navy CTA go together; badge without `featured` still gets chrome. */

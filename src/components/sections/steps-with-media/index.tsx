@@ -79,12 +79,12 @@ export function StepsWithMediaSection({
   );
 
   const visual = (
-    <div className="relative mx-auto w-full max-w-[600px] shrink-0 justify-self-center lg:mx-0 lg:justify-self-start">
+    <div className="relative mx-auto w-full max-w-[600px] shrink-0 justify-self-center max-lg:pb-10 lg:mx-0 lg:justify-self-start lg:pb-0">
       <div
         aria-hidden
-        className="pointer-events-none absolute left-1/2 top-0 aspect-square w-[min(100%,572px)] max-w-[95vw] -translate-x-1/2 rounded-full bg-[var(--palette-brand)]"
+        className="pointer-events-none absolute left-1/2 top-0 aspect-square w-[min(100%,360px)] max-w-[92vw] -translate-x-1/2 rounded-full bg-[var(--palette-brand)] lg:w-[min(100%,572px)] lg:max-w-[95vw]"
       />
-      <div className="relative z-10 pt-[min(88px,12vw)]">
+      <div className="relative z-10 pt-12 sm:pt-14 lg:pt-[min(88px,12vw)]">
         <div
           className="overflow-hidden rounded-[20px] bg-[var(--palette-white)] shadow-[0px_25px_50px_-12px_color-mix(in_srgb,var(--palette-navy-deep)_25%,transparent),0px_0px_15px_0px_color-mix(in_srgb,var(--palette-navy-deep)_7%,transparent)]"
           data-browser-mockup
@@ -111,9 +111,9 @@ export function StepsWithMediaSection({
   );
 
   const copy = (
-    <div className="flex min-w-0 flex-col items-start gap-[34px] lg:max-w-[618px]">
+    <div className="relative z-10 flex min-w-0 flex-col items-start gap-6 sm:gap-8 lg:max-w-[618px] lg:gap-[34px]">
       {titleLines.length > 0 ? (
-        <h2 className="font-sans text-[40px] font-semibold leading-tight tracking-[-0.04em] text-[var(--palette-navy)] sm:text-[48px] sm:leading-[56px]">
+        <h2 className="font-sans text-[32px] font-semibold leading-tight tracking-[-0.04em] text-[var(--palette-navy)] sm:text-[40px] lg:text-[48px] lg:leading-[56px]">
           {titleLines.map((line, i) => (
             <span key={i} className="block">
               {line}
@@ -129,19 +129,21 @@ export function StepsWithMediaSection({
               key={index}
               className={
                 index > 0
-                  ? "mt-7 border-t border-[color-mix(in_srgb,var(--palette-brand)_14%,transparent)] pt-7"
+                  ? "mt-5 border-t border-[color-mix(in_srgb,var(--palette-brand)_14%,transparent)] pt-5 lg:mt-7 lg:pt-7"
                   : ""
               }
             >
-              <div className="flex flex-col gap-7 sm:flex-row sm:items-center sm:gap-[21px]">
+              <div className="flex flex-row items-start gap-4 sm:items-center sm:gap-[21px]">
                 <div
-                  className={`flex size-[86px] shrink-0 flex-col items-center justify-center rounded-[24px] px-6 py-[26px] font-sans text-[48px] font-bold leading-none tracking-[-0.04em] text-[var(--palette-white)] ${stepIconBg(step.icon_color)}`}
+                  className={`flex size-16 shrink-0 items-center justify-center rounded-2xl font-sans text-[32px] font-bold leading-none tracking-[-0.04em] text-[var(--palette-white)] sm:size-20 sm:rounded-[20px] sm:text-[40px] lg:size-[86px] lg:rounded-[24px] lg:text-[48px] ${stepIconBg(step.icon_color)}`}
                 >
                   {step.number.trim() || String(index + 1)}
                 </div>
-                <div className="flex min-w-0 flex-col gap-3 text-[var(--palette-navy)]">
+                <div className="flex min-w-0 flex-1 flex-col gap-2 pt-0.5 text-[var(--palette-navy)] sm:gap-3 sm:pt-0">
                   {step.title.trim() ? (
-                    <p className="m-0 font-sans text-2xl font-semibold leading-[1.1]">{step.title.trim()}</p>
+                    <p className="m-0 font-sans text-xl font-semibold leading-[1.15] sm:text-2xl sm:leading-[1.1]">
+                      {step.title.trim()}
+                    </p>
                   ) : null}
                   {step.description.trim() ? (
                     <RichText
@@ -175,9 +177,12 @@ export function StepsWithMediaSection({
   );
 
   return (
-    <section lang={lang} className="bg-[var(--palette-white)] py-12 md:py-16 lg:py-[103px]">
+    <section
+      lang={lang}
+      className="bg-[var(--palette-white)] py-16 max-lg:pt-24 max-lg:pb-14 md:py-24 lg:py-[103px]"
+    >
       <Container className="!max-w-[85rem]">
-        <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-x-[57px] lg:gap-y-0">
+        <div className="grid items-center gap-y-12 gap-x-12 lg:grid-cols-2 lg:gap-x-[57px] lg:gap-y-0">
           <div className={`${REVEAL_ITEM} order-1 min-w-0`}>{visual}</div>
           <div className={`${REVEAL_ITEM} order-2 min-w-0`}>{copy}</div>
         </div>
