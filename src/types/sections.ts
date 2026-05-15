@@ -398,12 +398,19 @@ export type SalonValueCardT = {
   /** Optional: same image on every checklist row (replaces default circle + check). */
   checklistIcon: WpImage | null;
   title: string;
+  /** WYSIWYG per card — used in `simple` section layout (paragraph under title). */
+  body: string;
   checklistItems: SalonValueCardChecklistItemT[];
 };
+
+/** `simple` = section title + intro + compact top-accent cards (body per card). `featured` = eyebrow + intro + checklist cards + optional split visual / footer CTA (current behaviour). */
+export type SalonValuePropositionLayoutT = "simple" | "featured";
 
 /** Figma: eyebrow + headline + intro, blue gradient visual, three accent cards. When no panel visual (empty `visualImage`), render centered headline + optional footer CTA pill (597:2910-style). */
 export type SalonValuePropositionSectionT = CoreSection & {
   type: "salon_value_proposition";
+  /** ACF select `section_layout`: compact intro row vs full featured block. */
+  sectionLayout: SalonValuePropositionLayoutT;
   eyebrow: string;
   title: string;
   intro: string;
