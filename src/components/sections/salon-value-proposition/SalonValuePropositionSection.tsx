@@ -202,17 +202,17 @@ function ValueCard({
   ) : null;
 
   const body = figmaCentered ? (
-    <div className="flex min-h-[min(432px,100%)] flex-1 flex-col gap-3 p-[34px] pb-[34px]">
-      <div className="flex min-w-0 flex-col gap-[34px]">
+    <div className="flex min-h-0 flex-1 flex-col gap-3 p-[34px] pb-[34px]">
+      <div className="flex shrink-0 min-w-0 flex-col gap-[34px]">
         {iconBlock}
         {titleEl}
       </div>
-      {copyEl}
+      <div className="flex min-h-0 flex-1 flex-col">{copyEl}</div>
     </div>
   ) : (
-    <div className="flex flex-1 flex-col gap-7 px-7 py-8 sm:gap-[34px] sm:px-[34px] sm:pb-[34px] sm:pt-8">
+    <div className="flex min-h-0 flex-1 flex-col gap-7 px-7 py-8 sm:gap-[34px] sm:px-[34px] sm:pb-[34px] sm:pt-8">
       {iconBlock}
-      <div className="flex min-w-0 flex-col gap-3 sm:gap-6">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-3 sm:gap-6">
         {titleEl}
         {copyEl}
       </div>
@@ -226,7 +226,7 @@ function ValueCard({
 
   return (
     <article
-      className={`${REVEAL_ITEM} flex min-w-0 flex-col overflow-hidden rounded-[14px] bg-white ${figmaCentered ? `min-h-[min(432px,100%)] ${CARD_SHADOW_CENTERED}` : `min-h-[min(262px,100%)] ${CARD_SHADOW}`}`}
+      className={`${REVEAL_ITEM} flex h-full min-h-0 min-w-0 flex-col overflow-hidden rounded-[14px] bg-white ${figmaCentered ? CARD_SHADOW_CENTERED : `min-h-[min(262px,100%)] ${CARD_SHADOW}`}`}
     >
       {showTopAccent ? accentStripTop : null}
       {body}
@@ -267,7 +267,7 @@ function SimpleCardsLayout({
       </div>
 
       {cards.length > 0 ? (
-        <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-6">
+        <div className="grid w-full grid-cols-1 items-stretch gap-6 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-6">
           {cards.map((card, i) => (
             <ValueCard
               key={`${section.id}-simple-card-${i}`}
@@ -339,7 +339,7 @@ function SplitPanelLayout({
       </div>
 
       {cards.length > 0 ? (
-        <div className="grid w-full grid-cols-1 gap-6 pt-2 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-6">
+        <div className="grid w-full grid-cols-1 items-stretch gap-6 pt-2 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-6">
           {cards.map((card, i) => (
             <ValueCard
               key={`${section.id}-card-${i}`}
@@ -421,11 +421,11 @@ function CenteredFooterLayout({
       </div>
 
       {cards.length > 0 ? (
-        <div className="flex w-full flex-col items-stretch gap-6 lg:flex-row lg:justify-center lg:gap-6">
+        <div className="flex w-full flex-col items-stretch gap-6 lg:flex-row lg:items-stretch lg:justify-center lg:gap-6">
           {cards.map((card, i) => (
             <div
               key={`${section.id}-card-${i}`}
-              className="w-full max-w-[418px] lg:shrink-0"
+              className="flex min-h-0 w-full max-w-[418px] flex-col lg:shrink-0"
             >
               <ValueCard card={card} cardMode="featured_centered" />
             </div>
