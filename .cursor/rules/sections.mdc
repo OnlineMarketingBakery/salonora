@@ -1,0 +1,227 @@
+---
+description: Salonora — section pipeline, all 53 section keys, per-section Figma notes, and component rules.
+globs: ["src/components/sections/**", "src/types/sections.ts"]
+alwaysApply: false
+---
+
+## Section pipeline
+
+```
+WordPress ACF REST
+  └─ acf_fc_layout: "split_copy_framed" | legacy "audience_promo_card" | "is_this_for_you"
+       │   (legacy keys are canonicalized in normalize-page-sections → type "split_copy_framed")
+       ▼
+src/lib/acf/normalize-page-sections.ts
+  └─ PAGE_SECTION_ACF_LAYOUTS whitelist (must contain the normalized `type` key)
+  └─ isKnownPageSectionLayout() type guard
+  └─ mapKnownPageSectionLayout() switch → typed AnySectionT
+  └─ field-mappers: asString, asHtml, asImage, asLink, mapCtaRepeater, etc.
+       │
+       ▼
+src/lib/acf/enrich-sections.ts  (async second pass, server-side)
+  └─ fills: testimonial items, showcase grid service cards,
+            blog/case-study paginated lists, CF7 form definitions
+       │
+       ▼
+src/lib/acf/section-registry.ts
+  └─ sectionRegistry["split_copy_framed"] → SplitCopyFramedSectionLazy
+  └─ getSectionKey(type) type guard: `type in sectionRegistry`
+       │
+       ▼
+src/components/sections/SectionRenderer.tsx
+  └─ switch(section.type) — exhaustive, assertNever(section) at default
+  └─ <sectionRegistry.split_copy_framed section={section} lang={lang} />
+       │
+       ▼
+src/components/sections/split-copy-framed/index.tsx
+  └─ Props: { section: SplitCopyFramedSectionT; lang: Locale }
+```
+
+**Every layer must use the identical `type` key** (`split_copy_framed`). Legacy WP rows keep their original `acf_fc_layout` string; the normalizer maps them to this type. A mismatch at any step silently drops the section.
+
+---
+
+## Naming conventions
+
+| Layer                        | Convention                         |
+| ---------------------------- | ---------------------------------- |
+| `acf_fc_layout` (WordPress)  | `snake_case`                       |
+| `PAGE_SECTION_ACF_LAYOUTS`   | `snake_case`                       |
+| `AnySectionT["type"]`        | `snake_case`                       |
+| `sectionRegistry` key        | `snake_case`                       |
+| `SectionRenderer` case       | `snake_case`                       |
+| Component folder             | `kebab-case` (direct 1:1 mapping)  |
+| TypeScript type              | `PascalCase` + `SectionT` suffix   |
+| Component export name        | `PascalCase` + `Section` suffix    |
+
+Example: `split_copy_framed` → folder `split-copy-framed/` → type `SplitCopyFramedSectionT` → export `SplitCopyFramedSection`.
+
+---
+
+## Component rules
+
+- **Props:** `{ section: <SectionType>; lang: Locale }` — always exactly this shape.
+- **Default:** React Server Component unless interactivity (carousel, accordion, GSAP client animation) is required.
+- **Allowed shared UI:** `<Container>`, `<Button>`, `<Media>`, `<RichText>`, `<Accordion>`, `<Card>`, `<Heading>`, `<ArrowInCircle>`.
+- **CSS:** `--palette-*` / `--color-*` variables only. No hardcoded hex values.
+- **Animation:** Add `className={REVEAL_ITEM}` (from `src/lib/animation-classes.ts`) to elements that stagger on scroll. Import the constant; do not use the bare string `"reveal-item"` in new files.
+- **Images:** Use `<Media image={section.image} ... />` — never raw `<img>`.
+- **Links:** Use `resolveLink(url, lang)` from `src/lib/utils/links.ts` for `WpAcfLink` → `{ href, label, target }`.
+- **Rich text / WYSIWYG:** Use `<RichText html={...} />` — never `dangerouslySetInnerHTML` directly.
+
+### File convention
+
+New sections: create `src/components/sections/<kebab-layout-name>/index.tsx`.
+
+**Shared split promo shell:** `split-copy-framed-visual-layout.tsx` — `SplitCopyFramedVisualLayout` + `SplitChecklistRows` used by `split-copy-framed/index.tsx`.
+
+Older sections use a named file (e.g. `BenefitsGridSection.tsx`) — do not refactor those; new sections always use `index.tsx`.
+
+**Exception — `case-study-body/`:** four section types share one folder (`CaseStudyChapterSection`, `CaseStudyProductShotSection`, `CaseStudyClientReviewSection`, `CaseStudyConversionCtaSection`). Do not replicate this pattern for new sections.
+
+### Registry import convention
+
+Sections registered as **static imports** (top of `section-registry.ts`): older / typically above-the-fold sections (hero, cards, cta, etc.).
+Sections registered as **`next/dynamic` lazy** (`ssr: true`): most newer sections. New sections should follow the dynamic pattern.
+
+---
+
+## Checklist for a new section
+
+1. Add discriminated union type to `src/types/sections.ts` + add to `AnySectionT`.
+2. Add `layout_key: true` to `PAGE_SECTION_ACF_LAYOUTS` in `normalize-page-sections.ts`.
+3. Add `case "layout_key":` to `mapKnownPageSectionLayout()` switch.
+4. Add dynamic import + registry entry in `section-registry.ts`.
+5. Add `case "layout_key":` to `SectionRenderer.tsx` switch.
+6. Create `src/components/sections/<kebab-layout-name>/index.tsx`.
+7. Add layout to **repo-root** `acf-import-bundle.json` (under `group_omb_page_builder`) with field keys `field_omb_<layout>_*`, then run `npm run acf:sync-bundle` or `npm run acf:push` so the theme mirror stays in sync.
+8. Update `ai-context.md` section registry key list.
+9. Run `npm run build` to catch assertNever compile errors.
+
+---
+
+## All 54 section keys
+
+Keys are listed alphabetically. Keys with ✦ have extended Figma/implementation notes below.
+
+```
+announcement_bar          benefits_grid            blog_post_overview ✦
+cards                     case_study_chapter ✦     case_study_client_review ✦
+case_study_conversion_cta ✦ case_study_overview ✦ case_study_product_shot ✦
+combined_strengths ✦      cost_comparison          cta
+demo_preview_split ✦      design_showcase_grid ✦    faq
+faq_contact_split ✦       feature_highlight_grid    feature_highlight_split
+features_checklist ✦      form_embed                founder_story_split ✦
+founders_banner ✦         free_demo_form ✦          growth_plans_split ✦     guarantee_split
+guarantees_promise_split ✦ hero                      how_it_works_steps
+image_intro_split         is_demo_for_you ✦        latest_posts              media_text_checklist ✦
+origin_story_split ✦      our_promises ✦            partner_intro_split ✦
+pricing_dual_cards        pricing_packages         problem_solution ✦
+process_steps             rich_text                salon_value_proposition
+scrolling_ticker          split_copy_framed ✦      steps_with_media ✦
+story_split               talk_dual_cards ✦        team_behind_salonora ✦
+testimonials              who_we_are_for ✦         why_owners_choose
+why_salonora_anders       why_salonora_different   why_we_do_this
+```
+
+---
+
+## Per-section extended notes
+
+### `demo_preview_split`
+Figma **1397:31** ("Group 605"): rounded navy panel (diagonal gradient base + brand washes + corner grids + star mist); pill `badge`, multi-line `title`, WYSIWYG **`body`** (all paragraphs; use **bold** for lead phrases). Right column **`mockup_image`** (laptop shot, aspect ~2391:1411). **Container** uses `!max-w-[85rem]` to align with `split_copy_framed` / audience promo. Legacy REST rows may still send repeater `items`; the normalizer merges those into `body` when `body` is empty.
+
+### `free_demo_form`
+Figma **1417:36** (“Group 606”): brand-blue underlay rotated **−1.66°** (`bg-brand`, `rounded-[14px]`); main shell `bg-surface` `rounded-[14px]` with generous horizontal padding; inner column **566px** (`max-w-[35.375rem]`); heading **48/56** navy, subtitle **16px** muted `leading-[1.54]`; white card **12px** radius, shadow `0 10px 27.8px` @ ~15% muted; inner form **476px** (`max-w-[29.75rem]`); field rows **20px** gap, two-column rows **12px** gap; labels **14px** muted `tracking-[-0.02em]`; controls **50px** height, **12px** radius, `bg-surface`; select chevron in **27px** white circle; radios **16px** medium `text-navy-deep`; submit **50px** gradient `from-brand` `to-brand-strong`, **14px** medium white. **ACF:** `title`, `subtitle`, `footer_note`, **`omb_form`** (preferred) or legacy **`form`** post object → published **OMB Form Builder** form id (`ombFormId`), `success_mode`, `redirect_link`, `tracking_context`. Submits via Next `POST /api/forms/free-demo` → WP `custom-form-builder/v1/public/forms/{id}/submit` (Bearer headless secret). Built-in field ids sent in `cfb` must match the form builder field ids listed in `README.md`.
+
+### `is_demo_for_you`
+Figma **696:4046**: centered `title`; left column = two `bg-surface` cards (`for_you_heading` + optional **`for_you_list_icon`** used for every `for_you_list` / `item` row, else built-in check; `not_for_you_heading` + optional **`not_for_you_list_icon`** for all `not_for_you_list` rows, else built-in X); right column = brand gradient + optional `panel_overlay` + **`portrait_image`** (`object-contain` + generous top padding so heads are not clipped); footer band = **gradient** base (`footer_message` + **`cta_link`** + optional **`cta_trailing_icon`**).
+
+### `our_promises`
+Figma **693:395** ("Frame 2147229263"): white section, centered `title`, repeater `items` (`icon`, select `icon_accent` `brand` | `rose`, `title`, WYSIWYG `description`) in a responsive four-column grid with circular icon discs.
+
+### `split_copy_framed`
+Unified split: framed photo + tilted brand panel + copy. **Normalized `type` is always `split_copy_framed`.** WordPress may still send legacy **`acf_fc_layout`** values `audience_promo_card` or `is_this_for_you`; the normalizer canonicalizes them (see `canonicalizeAcfPageLayout` + `normalizeSplitCopyFramedSection`).
+
+- **Promo card (legacy `audience_promo_card`):** `layout_mode` `card_grid`, `list_style` `filled_disc`, optional `badge_text`, multi-line `title`, WYSIWYG `description`, repeater `features` → `list`, **`show_card_shadow`** (ACF true/false: white panel drop shadow), `visual_position`, CTA.
+- **Editorial flush (legacy `is_this_for_you`):** `layout_mode` `flush_flex`, `list_style` `outlined_tile`, `title`, `subtitle`, `checklist` → `list`, hairline `show_list_dividers`, `footer_note`, `cta_trailing_icon_invert`, `visual_position`, CTA.
+- **Native layout key `split_copy_framed`:** explicit `layout_mode`, `list_style`, `list` repeater (`item` / `icon`), `show_list_dividers`, `cta_trailing_icon_invert`, plus shared fields (see `SplitCopyFramedSectionT`).
+
+### `steps_with_media`
+Figma **1322:32** ("Frame 2147230002"): brand disc + browser chrome mockup with `browser_image`; `title`; repeater `steps` (`number`, select `icon_color` `blue` | `pink`, `title`, WYSIWYG `description`); link `cta_link` for pill CTA.
+
+### `team_behind_salonora`
+About page "Het Team Achter Salonora": two (or more) team member cards with social links (`facebook`, `instagram`, `linkedin`), plus bordered bottom `bottomText`; optional decorative `backgroundWordmark`, `backgroundOverlay`, corner assets.
+
+### `talk_dual_cards`
+Figma **597:2720** ("Frame 2147228539"): centered heading + two rounded panels (brand gradient left with optional `left_corner_graphic`, navy right with optional `right_overlay_graphic`); one primary CTA (`left_link`) vs two secondary CTAs (`right_primary_link`, `right_secondary_link`) with optional trailing icons.
+
+### `problem_solution`
+Figma **1306:29** ("Frame 574"): two equal rounded cards (navy "problem" vs brand-blue "solution") with TR grid wash, `problem_image` / `solution_image` cutouts bottom-right, WYSIWYG copy, optional `solution_list_icon` (one image for every checklist row; empty = built-in white disc + check), optional `solution_list` repeater (`item`) for checklist lines, optional `solution_bottom_text` WYSIWYG below the checklist.
+
+### `guarantees_promise_split`
+Figma **1127:55** ("Group 596"): portrait + floating badges (`floating_badges[]` with `icon`, `text`, `accent` brand|rose, `position` left|right); checklist `points[]` with per-row `icon` falling back to `list_default_icon`; download CTA (`downloadLink`) with optional `cta_trailing_icon`.
+
+### `growth_plans_split`
+Figma **1149:32** ("Group 600"): split row, left collage `max-w-[30.25rem]`. Fields: `main_visual`, `floating_circles[]`, `decorative_panel` (accepted from CMS but **not rendered** — bake overlays into `main_visual`). Copy: `title`, `intro`, `upcoming_heading`, `upcoming_items[]`, `body`, `highlight_line`. `media_position` swaps columns.
+
+### `combined_strengths`
+Figma **1090:47** ("Group 595"): solid brand panel + `left_rows[]`; white cards use TR/BL corner-emphasis gradient border (`accent` brand|rose via CMS) + Figma shadow `0 6px 20px rgba(129,154,205,.26)`. Footer strip **597:3051**: horizontal gradient brand → navy-deep → brand, `min-h-[111px]`. Section background `palette-white`.
+
+### `partner_intro_split`
+Figma **1072:29**: navy visual column with layered brand arc + optional duo `image`; pale `--palette-surface` copy column (`title`, `body`, divider, brand `highlightLine`, optional CTAs).
+
+### `founder_story_split`
+Figma **1083:46** ("Group 594"): gradient card, `avatar`, `title`, `subtitle`, WYSIWYG `content`, `conclusion`, `main_image`. BG texture: `public/founder-story-card-bg.png` + brand `mix-blend-color`. FounderStorySparkMark inline SVG (brand stroke). Card `rounded-[20px]`, lg grid `528+118+460` inside `1298×756`.
+
+### `founders_banner`
+Figma **597:3120** ("Frame 2147228004"): wide rounded blue gradient strip with faint concentric rings; optional `left_image` / `right_image` cutouts (bottom fade); centered WYSIWYG `headline` + white pill `badge_text` with side rules. Optional `pill_link` — when set with a URL, pill is a `<Link>`; otherwise non-interactive badge.
+
+### `who_we_are_for`
+Figma **597:3970** ("Frame 2147228606"): centered WYSIWYG `title` + repeater `items` (`icon`, WYSIWYG `label`, select `icon_accent` `brand` | `rose` for rounded icon tile on a light gradient pill). Optional `ctas` repeater (max one row) for a primary `<Button>` below the row.
+
+### `features_checklist`
+Figma content **597:4037** ("Frame 2147228715") on decorative shell **597:3568** ("Frame 2147228001"): navy grid/glow background, centered white intro (`title`, `description`), left column white checklist cards (`checklist[]` with per-row `icon` → `list_default_icon` fallback), right column `image` with optional `button` + `button_trailing_icon` overlaid.
+
+### `media_text_checklist`
+Figma **597:3503** ("Frame 2147228620"): rounded card with `media_position` (stacked `image_top` at 188px height / framed `image_bottom`) + copy (`title`, `subtitle`, WYSIWYG `description`, `checklist_title`, repeater `checklist[]` / `item`). Optional testimonial block (`testimonial_heading`, `testimonial_body`, `testimonial_author_image`, `testimonial_author_name`, `testimonial_author_role` — hidden when all five empty). `pricing_label`, link `button`, optional `button_trailing_icon`. `panel_style` `soft_surface` | `white_card`. Checklist icon: per-row `icon` → `list_default_icon` → built-in brand check tile.
+
+### `blog_post_overview`
+Figma **830:2196**: hero `title` / `intro`, optional `show_search` (GET `?s=`), optional `show_featured`, optional `featured_post` (pinned post for featured slot on page 1), `posts_per_page`, optional `read_more_label`. Enable "Blog archive page" (`is_blog_archive`) on the WP page so `?page=` and `?s=` are applied server-side.
+
+### `case_study_overview`
+Figma **866:4217**: same mesh hero band as blog + `title` / `intro` + optional `hero_stats` (KPI cards, 1–4 `grid_columns`). Card list fixed 3 columns on large screens. `grid_rows` sets cards per page: `postsPerPage = min(50, 3 × grid_rows)`. Optional `show_featured` + `featured_case_study`, `read_more_label`. Enable "Case study archive page" (`is_case_study_archive`) on WP page.
+
+### `case_study_chapter`
+Single case study narrative block: `heading`, WYSIWYG `body`, `showDivider` (hairline rule), `tocAnchorId` (stable anchor for Inhoudsopgave, derived from ACF row `_key`).
+
+### `case_study_product_shot`
+Product/UI screenshot: optional `title` above, optional WYSIWYG `description` below, optional `showDivider`. Plain rounded figure — no brand-blue frame. Legacy `caption` ACF field is merged into `title` in normalizer.
+
+### `case_study_client_review`
+Client quote + optional video: `sectionHeading`, WYSIWYG `quote`, `videoUrl`, `videoPoster`, `personName`, `personRole`, `personPhoto`, `tocAnchorId`.
+
+### `case_study_conversion_cta`
+Mid-page conversion band: `title`, WYSIWYG `subtitle`, `cta` link. Navy rounded card style.
+
+### `origin_story_split`
+Figma **1063:27**: badge (`eyebrow`) + headline (`title`) + WYSIWYG `body`; right column = `image` with rotated brand backing panel; optional `ctas`.
+
+### `faq_contact_split`
+`section_background` `white` (default) | `navy` (full-width navy-deep behind FAQ + contact). When `pricing_ctas` has rows: wide navy pills (79px tall, full width of FAQ column) under the accordion. Large screens: two columns `items-stretch` when pricing CTAs exist; fixed `lg:min-h-[609px]` on contact card only when no pricing CTAs. `ctaform` field: `"form"` activates CF7 embed in the contact card.
+
+---
+
+## GSAP Section Pattern (3-file)
+
+Use this when a section requires client-side scroll animation via useGSAP.
+
+File structure:
+  [kebab-layout-key]/
+    index.tsx   → React Server Component, dynamically imports lazy.tsx, passes section + lang props
+    shell.tsx   → layout/markup only, no animation, accepts same props
+    lazy.tsx    → "use client", imports shell, runs useGSAP for reveal logic
+
+Reference implementations: how-it-works-steps/, scrolling-ticker/
+
+Default to single index.tsx unless GSAP is explicitly required.

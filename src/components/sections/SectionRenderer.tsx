@@ -37,10 +37,6 @@ export function SectionRenderer({ sections, lang }: { sections: AnySectionT[]; l
             return (
               <sectionRegistry.who_we_are_for key={section.id} section={section} lang={lang} />
             );
-          case "is_this_for_you":
-            return (
-              <sectionRegistry.is_this_for_you key={section.id} section={section} lang={lang} />
-            );
           case "media_text_checklist":
             return (
               <sectionRegistry.media_text_checklist key={section.id} section={section} lang={lang} />
@@ -49,9 +45,9 @@ export function SectionRenderer({ sections, lang }: { sections: AnySectionT[]; l
             return (
               <sectionRegistry.features_checklist key={section.id} section={section} lang={lang} />
             );
-          case "audience_promo_card":
+          case "split_copy_framed":
             return (
-              <sectionRegistry.audience_promo_card key={section.id} section={section} lang={lang} />
+              <sectionRegistry.split_copy_framed key={section.id} section={section} lang={lang} />
             );
           case "story_split":
             return <sectionRegistry.story_split key={section.id} section={section} lang={lang} />;
@@ -79,6 +75,8 @@ export function SectionRenderer({ sections, lang }: { sections: AnySectionT[]; l
             );
           case "image_intro_split":
             return <sectionRegistry.image_intro_split key={section.id} section={section} lang={lang} />;
+          case "is_demo_for_you":
+            return <sectionRegistry.is_demo_for_you key={section.id} section={section} lang={lang} />;
           case "salon_value_proposition":
             return <sectionRegistry.salon_value_proposition key={section.id} section={section} lang={lang} />;
           case "why_owners_choose":
@@ -99,6 +97,8 @@ export function SectionRenderer({ sections, lang }: { sections: AnySectionT[]; l
             return <sectionRegistry.faq_contact_split key={section.id} section={section} lang={lang} />;
           case "form_embed":
             return <sectionRegistry.form_embed key={section.id} section={section} lang={lang} />;
+          case "free_demo_form":
+            return <sectionRegistry.free_demo_form key={section.id} section={section} lang={lang} />;
           case "latest_posts":
             return <sectionRegistry.latest_posts key={section.id} section={section} lang={lang} />;
           case "blog_post_overview":
@@ -146,6 +146,10 @@ export function SectionRenderer({ sections, lang }: { sections: AnySectionT[]; l
           case "design_showcase_grid":
             return (
               <sectionRegistry.design_showcase_grid key={section.id} section={section} lang={lang} />
+            );
+          case "demo_preview_split":
+            return (
+              <sectionRegistry.demo_preview_split key={section.id} section={section} lang={lang} />
             );
           case "feature_highlight_grid":
             return (

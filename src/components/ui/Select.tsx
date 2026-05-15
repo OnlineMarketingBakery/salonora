@@ -1,9 +1,9 @@
 export function Select(
-  props: React.SelectHTMLAttributes<HTMLSelectElement> & { label?: string }
+  props: React.SelectHTMLAttributes<HTMLSelectElement> & { label?: string; labelClassName?: string }
 ) {
-  const { label, id, className = "", children, ...rest } = props;
+  const { label, labelClassName, id, className = "", children, ...rest } = props;
   return (
-    <label className="block text-sm font-medium text-muted">
+    <label className={labelClassName ?? "block text-sm font-medium text-muted"}>
       {label && <span className="mb-1 block">{label}</span>}
       <select
         id={id}

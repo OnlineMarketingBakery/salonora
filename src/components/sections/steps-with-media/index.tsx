@@ -111,7 +111,7 @@ export function StepsWithMediaSection({
   );
 
   const copy = (
-    <div className="flex min-w-0 flex-col gap-[34px] lg:max-w-[618px]">
+    <div className="flex min-w-0 flex-col items-start gap-[34px] lg:max-w-[618px]">
       {titleLines.length > 0 ? (
         <h2 className="font-sans text-[40px] font-semibold leading-tight tracking-[-0.04em] text-[var(--palette-navy)] sm:text-[48px] sm:leading-[56px]">
           {titleLines.map((line, i) => (
@@ -123,7 +123,7 @@ export function StepsWithMediaSection({
       ) : null}
 
       {steps.length > 0 ? (
-        <ol className="m-0 flex list-none flex-col gap-0 p-0">
+        <ol className="m-0 flex w-full list-none flex-col gap-0 p-0">
           {steps.map((step, index) => (
             <li
               key={index}
@@ -163,9 +163,10 @@ export function StepsWithMediaSection({
           variant="ctaBrand"
           ctaSize="promo"
           ctaFullWidth={false}
-          ctaElevation="default"
+          ctaElevation="none"
           ctaJustify="between"
-          className="w-full max-w-[212px] shrink-0 self-start"
+          arrowClassName="size-6 shrink-0"
+          className="w-[212px] shrink-0 !gap-[34px] !p-3 text-[18px] !font-medium leading-6 sm:!gap-[34px] sm:!p-3 md:!gap-[34px] md:!p-3"
         >
           {ctaLabel}
         </Button>

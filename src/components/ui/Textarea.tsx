@@ -1,9 +1,9 @@
 export function Textarea(
-  props: React.TextareaHTMLAttributes<HTMLTextAreaElement> & { label?: string }
+  props: React.TextareaHTMLAttributes<HTMLTextAreaElement> & { label?: string; labelClassName?: string }
 ) {
-  const { label, id, className = "", ...rest } = props;
+  const { label, labelClassName, id, className = "", ...rest } = props;
   return (
-    <label className="block text-sm font-medium text-muted">
+    <label className={labelClassName ?? "block text-sm font-medium text-muted"}>
       {label && <span className="mb-1 block">{label}</span>}
       <textarea
         id={id}

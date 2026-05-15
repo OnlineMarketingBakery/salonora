@@ -67,7 +67,7 @@ salonora/
 ## Prerequisites
 
 - **WordPress** with the stack described in [`docs/wordpress-connection-guide.md`](docs/wordpress-connection-guide.md) (ACF Pro, Polylang `nl`/`en`, Yoast, CF7, custom post types `service`, `testimonial`, and `case_study`, option pages, menus).
-- ACF: theme-root `wordpress/wp-content/themes/omb-headless/acf-import-bundle.json` for `npm run acf:push` / import; `acf-json/group_*.json` is generated with **`npm run acf:extract-local-json`** (one file per group, per ACF Local JSON). Layouts must match `src/lib/acf/` and `src/components/sections/`.
+- ACF: **`acf-import-bundle.json` at the repo root** is the canonical bulk-import file (edit this when adding flexible layouts). **`npm run acf:sync-bundle`** copies it to `wordpress/wp-content/themes/omb-headless/acf-import-bundle.json`; **`npm run acf:push`** runs that sync automatically, then POSTs to WordPress. `acf-json/group_*.json` is generated with **`npm run acf:extract-local-json`** (one file per group, per ACF Local JSON). Layouts must match `src/lib/acf/` and `src/components/sections/`.
 
 ## Setup & installation
 
@@ -109,6 +109,8 @@ All keys are documented in **`.env.example`** at the repo root. Summary:
 | `WORDPRESS_APPLICATION_USER` / `WORDPRESS_APPLICATION_PASSWORD` | If WP returns 401 | Application Password basic auth for server fetches |
 | `REVALIDATION_SECRET` | Production ISR webhooks | Secret for `POST /api/revalidate` |
 | `NEXT_PUBLIC_DEFAULT_CF7_FORM_ID` | Optional | Default Contact Form 7 id |
+| `OMB_FORM_BUILDER_SUBMIT_SECRET` (or `CFB_HEADLESS_SUBMIT_SECRET`) | For free-demo submits | Bearer token for OMB Form Builder headless `POST …/public/forms/{id}/submit` (match `wp-config.php`) |
+| `NEXT_PUBLIC_DEFAULT_CTA_BRAND_ARROW_URL` | Optional | Absolute image URL for blue CTA trailing icon when WordPress Site Options image is unset |
 | `WORDPRESS_SERVICE_REST_BASE` / `WORDPRESS_TESTIMONIAL_REST_BASE` / `WORDPRESS_CASE_STUDY_REST_BASE` | Rare | Override REST base if CPT slug differs |
 | `DEFAULT_LOCALE` / `SUPPORTED_LOCALES` | Optional | Default redirect locale; comma list (default `nl,en`) |
 
@@ -129,7 +131,7 @@ If `WORDPRESS_BASE_URL` / `WORDPRESS_API_URL` are unset, **Next Image** runs in 
 - **Flexible sections:** WordPress ACF layouts are normalized in `src/lib/acf/` and rendered via `SectionRenderer` + `src/components/sections/*`.
 - **Services, posts & case studies:** Dedicated fetchers and templates (`PageTemplate`, `PostTemplate`, `CaseStudyTemplate`).
 - **Testimonials:** Loaded by relationship IDs from section data.
-- **Forms:** CF7 via REST + server proxy (`submit-cf7-form`); embed sections use `FormEmbedSection` / `CF7Form`.
+- **Forms:** CF7 via REST + server proxy (`submit-cf7-form`) for `form_embed` and featured post/case forms; **Free demo** uses a fixed UI and `POST /api/forms/free-demo`, which forwards to **OMB Form Builder** `POST {WORDPRESS_API_URL}/custom-form-builder/v1/public/forms/{ombFormId}/submit` with JSON `{ cfb, cfb_visible_fields, cfb_post_id }` and `Authorization: Bearer` from `OMB_FORM_BUILDER_SUBMIT_SECRET` (must match WordPress `CFB_HEADLESS_SUBMIT_SECRET`). Field **ids** in the published `cfb_form` must match: `first_name`, `last_name`, `email`, `phone`, `salon_type`, `has_website`, `website_url` (when “yes”), `lang`, optional `tracking_context`.
 - **SEO:** Yoast fields mapped in `src/lib/seo/map-yoast-to-metadata.ts`.
 - **On-demand revalidation:** `POST /api/revalidate` with JSON `{ "secret": "<REVALIDATION_SECRET>", "path": "/nl" }` (optional `tag`). Configure `REVALIDATION_SECRET` and call from WP webhooks or deploy hooks when content changes.
 

@@ -98,10 +98,15 @@ export function CtaSection({ section, lang }: { section: CtaSectionT; lang: Loca
                           target={l.target}
                           variant={ctaVariantAt(i, "brand", "ctaNavyDeep")}
                           ctaSize={isPromoRow ? "promo" : "default"}
-                          ctaElevation={isPromoRow ? "none" : "default"}
+                          ctaJustify={isPromoRow ? "between" : undefined}
+                          ctaElevation="default"
                           className={
                             isPromoRow
-                              ? "w-full !min-w-0 !max-w-full tracking-[0.5px] sm:w-[388px] sm:!max-w-[388px]"
+                              ? [
+                                  "w-full min-w-0 max-w-full tracking-[0.5px]",
+                                  "sm:w-auto sm:max-w-none sm:shrink-0 sm:!px-10 md:!px-12 lg:!px-14",
+                                  isCenter ? "sm:self-center" : "sm:self-start",
+                                ].join(" ")
                               : "h-12 w-full min-w-0 max-w-sm rounded-3xl sm:max-w-none"
                           }
                         >

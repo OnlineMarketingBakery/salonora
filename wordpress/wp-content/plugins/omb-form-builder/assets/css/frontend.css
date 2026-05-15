@@ -1,0 +1,272 @@
+/* Custom Form Builder - Frontend */
+.cfb-form-wrapper { margin: 1em 0; }
+.cfb-form .cfb-form-fields li.cfb-dependent-hidden { display: none !important; }
+/* Ensure visible dependent rows and their inputs can receive clicks */
+.cfb-form .cfb-form-fields li.cfb-field-dependent:not(.cfb-dependent-hidden) { pointer-events: auto !important; }
+.cfb-form .cfb-form-fields li.cfb-field-dependent:not(.cfb-dependent-hidden) * { pointer-events: auto !important; }
+.cfb-form .cfb-form-fields .cfb-radio-card input[type="radio"] { pointer-events: none !important; } /* click goes to label */
+.cfb-form .cfb-form-fields { list-style: none; margin: 0 0 1em; padding: 0; }
+.cfb-form .cfb-form-fields li { margin-bottom: 1em; }
+.cfb-form .cfb-form-fields label { display: block; margin-bottom: 4px; font-weight: 600; }
+.cfb-form .cfb-form-fields .cfb-required { color: #b32d2e; }
+.cfb-form .cfb-form-fields input[type="text"],
+.cfb-form .cfb-form-fields input[type="email"],
+.cfb-form .cfb-form-fields input[type="tel"],
+.cfb-form .cfb-form-fields input[type="url"],
+.cfb-form .cfb-form-fields input[type="date"],
+.cfb-form .cfb-form-fields input[type="number"],
+.cfb-form .cfb-form-fields input[type="file"],
+.cfb-form .cfb-form-fields textarea,
+.cfb-form .cfb-form-fields select { width: 100%; max-width: 100%; padding: 8px; box-sizing: border-box; }
+.cfb-form .cfb-form-fields input[type="file"] { padding: 4px 0; }
+
+/* Searchable dropdown: native select hidden, custom trigger + dropdown with search */
+.cfb-form .cfb-select-searchable-wrap { position: relative; width: 100%; max-width: 100%; display: flex; align-items: stretch; flex-wrap: wrap; }
+.cfb-form .cfb-select-searchable-wrap .cfb-select-native-hidden { position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none; margin: 0; padding: 0; }
+.cfb-form .cfb-select-trigger { flex: 1; min-width: 0; display: block; width: 100%; max-width: 100%; padding: 8px 32px 8px 8px; box-sizing: border-box; text-align: left; background: #fff; border: 1px solid #8c8f94; border-radius: 0; font-size: inherit; font-family: inherit; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23505555' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; }
+.cfb-form .cfb-select-trigger:hover { border-color: #50575e; }
+.cfb-form .cfb-select-trigger.cfb-select-placeholder { color: #757575; }
+.cfb-form .cfb-select-clear { flex: 0 0 auto; width: 28px; height: 100%; min-height: 36px; padding: 0; margin-left: 2px; background: transparent; border: 1px solid transparent; border-radius: 0; font-size: 1.2em; line-height: 1; color: #50575e; cursor: pointer; }
+.cfb-form .cfb-select-clear:hover { color: #1d2327; background: #f0f0f1; border-color: #8c8f94; }
+.cfb-form .cfb-select-dropdown { display: none; position: absolute; left: 0; right: 0; top: 100%; z-index: 100; margin-top: 2px; background: #fff; border: 1px solid #8c8f94; border-radius: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.15); max-height: 260px; }
+.cfb-form .cfb-select-dropdown.cfb-select-open { display: block; }
+.cfb-form .cfb-select-search { width: 100%; padding: 8px; box-sizing: border-box; border: none; border-bottom: 1px solid #dcdcde; font-size: inherit; }
+.cfb-form .cfb-select-search:focus { outline: 1px solid #2271b1; outline-offset: -1px; }
+.cfb-form .cfb-select-list { list-style: none; margin: 0; padding: 0; max-height: 200px; overflow-y: auto; }
+.cfb-form .cfb-select-option { padding: 8px 10px; cursor: pointer; }
+.cfb-form .cfb-select-option:hover { background: #f0f0f1; }
+.cfb-form .cfb-select-option[aria-selected="true"] { background: #f0f0f1; }
+.cfb-form .cfb-select-option.cfb-select-option-selected { background: #e5f5fa; font-weight: 600; }
+
+/* Multiple file: list of selected files with remove */
+.cfb-multi-file-wrap { margin-top: 4px; }
+.cfb-multi-file-list {
+	list-style: none;
+	margin: 8px 0 0;
+	padding: 0;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	background: #f6f7f7;
+}
+.cfb-multi-file-item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 6px 10px;
+	border-bottom: 1px solid #dcdcde;
+	gap: 8px;
+}
+.cfb-multi-file-item:last-child { border-bottom: none; }
+.cfb-multi-file-name {
+	flex: 1;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: 0.95em;
+}
+.cfb-multi-file-remove {
+	flex-shrink: 0;
+	width: 28px;
+	height: 28px;
+	padding: 0;
+	font-size: 18px;
+	line-height: 1;
+	background: #dcdcde;
+	border: 1px solid #8c8f94;
+	border-radius: 3px;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	color: #50575e;
+}
+.cfb-multi-file-remove:hover {
+	background: #c3c4c7;
+	color: #1d2327;
+}
+.cfb-multi-file-list:empty { display: none; }
+.cfb-form .cfb-form-fields input.cfb-calculation { background: #f0f0f1; cursor: default; }
+.cfb-form .cfb-form-fields input.cfb-merge-text { background: #f0f0f1; cursor: default; }
+.cfb-form .cfb-form-fields .cfb-radio-group label,
+.cfb-form .cfb-form-fields .cfb-checkbox-group label { display: inline-block; margin-right: 1em; font-weight: normal; }
+
+/* Radio image cards: grid of selectable cards with image, title, description, badge */
+.cfb-form .cfb-radio-cards {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+	gap: 1em;
+	margin-top: 0.5em;
+}
+.cfb-form .cfb-radio-card {
+	display: block;
+	margin: 0;
+	cursor: pointer;
+}
+.cfb-form .cfb-radio-card input[type="radio"] {
+	position: absolute;
+	opacity: 0;
+	width: 0;
+	height: 0;
+	pointer-events: none;
+	margin: 0;
+	clip: rect(0, 0, 0, 0);
+}
+.cfb-form .cfb-radio-card-inner {
+	display: block;
+	border: 2px solid #c3c4c7;
+	border-radius: 8px;
+	overflow: hidden;
+	background: #fff;
+	transition: border-color 0.2s, box-shadow 0.2s;
+}
+.cfb-form .cfb-radio-card:hover .cfb-radio-card-inner {
+	border-color: #8c8f94;
+}
+.cfb-form .cfb-radio-card-selected .cfb-radio-card-inner,
+.cfb-form .cfb-radio-card:has(input:checked) .cfb-radio-card-inner {
+	border-color: #2271b1;
+	box-shadow: 0 0 0 1px #2271b1;
+}
+.cfb-form .cfb-radio-card-image {
+	display: block;
+	aspect-ratio: 4/3;
+	background: #f0f0f1;
+	overflow: hidden;
+}
+.cfb-form .cfb-radio-card-image img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+.cfb-form .cfb-radio-card-badge {
+	position: absolute;
+	top: 8px;
+	left: 8px;
+	background: #1d2327;
+	color: #fff;
+	font-size: 10px;
+	font-weight: 600;
+	padding: 2px 6px;
+	border-radius: 2px;
+	text-transform: uppercase;
+	letter-spacing: 0.02em;
+}
+.cfb-form .cfb-radio-card-inner {
+	position: relative;
+}
+.cfb-form .cfb-radio-card-title {
+	display: block;
+	padding: 10px 12px 4px;
+	font-weight: 600;
+	font-size: 0.95em;
+	line-height: 1.3;
+}
+.cfb-form .cfb-radio-card-desc {
+	display: block;
+	padding: 0 12px 10px;
+	font-size: 0.85em;
+	color: #50575e;
+	line-height: 1.4;
+}
+/* Validation error: red border on field (only after submit when required is empty) */
+.cfb-form .cfb-form-fields li.cfb-field-error,
+.cfb-form .cfb-field-error {
+	border: 3px solid #b32d2e !important;
+	border-radius: 4px;
+	padding: 8px;
+	box-sizing: border-box;
+	background-color: #fef7f7;
+}
+.cfb-form .cfb-field-error input,
+.cfb-form .cfb-field-error select,
+.cfb-form .cfb-field-error textarea { border-color: #b32d2e !important; }
+.cfb-form .cfb-field-error .cfb-radio-card-inner,
+.cfb-form .cfb-field-error .cfb-select-trigger { border-color: #b32d2e !important; box-shadow: 0 0 0 1px #b32d2e; }
+.cfb-form .cfb-field-error .cfb-field-error-msg {
+	display: block;
+	margin-top: 4px;
+	font-size: 0.9em;
+	color: #b32d2e;
+	font-weight: normal;
+}
+.cfb-form .cfb-section-title { margin: 1em 0 0.5em; font-size: 1.15em; }
+.cfb-form .cfb-section-desc { margin: 0 0 1em; color: #555; }
+
+/* Field layout: inline = label and input on one line */
+.cfb-form .cfb-form-fields li.cfb-layout-inline { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5em 1em; }
+.cfb-form .cfb-form-fields li.cfb-layout-inline > label { margin-bottom: 0; flex: 0 0 auto; }
+.cfb-form .cfb-form-fields li.cfb-layout-inline .cfb-radio-group,
+.cfb-form .cfb-form-fields li.cfb-layout-inline .cfb-checkbox-group { flex: 1 1 auto; }
+.cfb-form .cfb-form-fields li.cfb-layout-inline input[type="text"],
+.cfb-form .cfb-form-fields li.cfb-layout-inline input[type="email"],
+.cfb-form .cfb-form-fields li.cfb-layout-inline input[type="tel"],
+.cfb-form .cfb-form-fields li.cfb-layout-inline input[type="url"],
+.cfb-form .cfb-form-fields li.cfb-layout-inline input[type="date"],
+.cfb-form .cfb-form-fields li.cfb-layout-inline input[type="number"],
+.cfb-form .cfb-form-fields li.cfb-layout-inline textarea,
+.cfb-form .cfb-form-fields li.cfb-layout-inline select { flex: 1 1 200px; max-width: 100%; }
+
+/* HTML block (Gravity Forms style) */
+.cfb-form .cfb-field-html .cfb-html-caption { font-weight: 600; margin-bottom: 0.25em; }
+.cfb-form .cfb-field-html .cfb-html-content { margin: 0; }
+
+/* Date range: From / To inputs side by side */
+.cfb-form .cfb-date-range { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5em 1em; margin-top: 4px; }
+.cfb-form .cfb-date-range .cfb-date-range-label { display: inline; margin-bottom: 0; font-weight: 600; font-size: 0.95em; }
+.cfb-form .cfb-date-range input.cfb-date-from,
+.cfb-form .cfb-date-range input.cfb-date-to { flex: 1 1 140px; min-width: 0; }
+
+/* Rows: multiple fields per row, side by side. Column count controls layout. */
+.cfb-form .cfb-form-row { display: flex; flex-wrap: wrap; gap: 1em; margin-bottom: 1em; align-items: flex-start; }
+.cfb-form .cfb-form-row:last-child { margin-bottom: 0; }
+.cfb-form .cfb-form-row .cfb-form-fields { display: flex; flex-wrap: wrap; list-style: none; margin: 0; padding: 0; gap: 1em; flex: 1 1 100%; }
+.cfb-form .cfb-form-row .cfb-form-fields li { min-width: 0; margin-bottom: 0; }
+/* 1 column = full width */
+.cfb-form .cfb-form-row.cfb-form-cols-1 .cfb-form-fields li { flex: 0 0 100%; }
+/* 2 columns */
+.cfb-form .cfb-form-row.cfb-form-cols-2 .cfb-form-fields li { flex: 0 0 calc(50% - 0.5em); }
+/* 3 columns */
+.cfb-form .cfb-form-row.cfb-form-cols-3 .cfb-form-fields li { flex: 0 0 calc(33.333% - 0.667em); }
+/* 4 columns */
+.cfb-form .cfb-form-row.cfb-form-cols-4 .cfb-form-fields li { flex: 0 0 calc(25% - 0.75em); }
+/* 5–12 columns (gap 1em) */
+.cfb-form .cfb-form-row.cfb-form-cols-5 .cfb-form-fields li { flex: 0 0 calc(20% - 0.8em); }
+.cfb-form .cfb-form-row.cfb-form-cols-6 .cfb-form-fields li { flex: 0 0 calc(16.666% - 0.833em); }
+.cfb-form .cfb-form-row.cfb-form-cols-7 .cfb-form-fields li { flex: 0 0 calc(14.285% - 0.857em); }
+.cfb-form .cfb-form-row.cfb-form-cols-8 .cfb-form-fields li { flex: 0 0 calc(12.5% - 0.875em); }
+.cfb-form .cfb-form-row.cfb-form-cols-9 .cfb-form-fields li { flex: 0 0 calc(11.111% - 0.889em); }
+.cfb-form .cfb-form-row.cfb-form-cols-10 .cfb-form-fields li { flex: 0 0 calc(10% - 0.9em); }
+.cfb-form .cfb-form-row.cfb-form-cols-11 .cfb-form-fields li { flex: 0 0 calc(9.09% - 0.909em); }
+.cfb-form .cfb-form-row.cfb-form-cols-12 .cfb-form-fields li { flex: 0 0 calc(8.333% - 0.917em); }
+.cfb-form .cfb-form-row .cfb-form-fields li.cfb-field-html { flex: 1 1 100% !important; }
+.cfb-form-stepper .cfb-step { display: none !important; margin: 0 0 1em; padding: 0; border: none; }
+.cfb-form-stepper .cfb-step.cfb-step-active { display: block !important; }
+.cfb-form-stepper .cfb-step-progress { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; margin: 0 0 1.5em; padding: 0; }
+.cfb-form-stepper .cfb-step-progress-item { display: flex; align-items: center; gap: 6px; padding: 6px 12px; background: #f0f0f1; border-radius: 4px; font-size: 0.9em; }
+.cfb-form-stepper .cfb-step-progress-item.cfb-step-current { background: #2271b1; color: #fff; }
+.cfb-form-stepper .cfb-step-progress-item.cfb-step-done { background: #d4edda; color: #155724; }
+.cfb-form-stepper .cfb-step-progress-num { font-weight: 700; }
+.cfb-form-stepper .cfb-step-legend { margin-bottom: 0.5em; font-size: 1.1em; font-weight: 600; }
+.cfb-form-stepper .cfb-step-actions { margin: 1em 0; }
+.cfb-form-stepper .cfb-step-actions .cfb-step-prev { margin-right: 8px; }
+.cfb-form .cfb-form-actions { margin: 1em 0; }
+.cfb-form .cfb-submit { padding: 10px 20px; cursor: pointer; }
+
+/* Groups: section with label and optional border */
+.cfb-form .cfb-group { margin: 1.5em 0; }
+.cfb-form .cfb-group:first-child { margin-top: 0; }
+.cfb-form .cfb-group-title {
+	margin: 0 0 0.75em;
+	font-size: 1.1em;
+	font-weight: 600;
+	color: #1d2327;
+	padding-bottom: 0.35em;
+	border-bottom: 1px solid #c3c4c7;
+}
+.cfb-form .cfb-group .cfb-form-fields,
+.cfb-form .cfb-group .cfb-form-row { margin-bottom: 0.75em; }
+.cfb-form .cfb-group .cfb-form-row:last-child { margin-bottom: 0; }
+.cfb-form .cfb-form-message { margin: 0.5em 0; padding: 10px; border-radius: 4px; }
+.cfb-form .cfb-success { background: #d4edda; color: #155724; }
+.cfb-form .cfb-error { background: #f8d7da; color: #721c24; }

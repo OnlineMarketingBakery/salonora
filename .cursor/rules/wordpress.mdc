@@ -1,0 +1,147 @@
+---
+description: Salonora — WordPress REST client, wpFetch usage, Polylang, CF7, ISR, and WP-related env vars.
+globs: ["src/lib/wordpress/**", "src/app/api/**"]
+alwaysApply: false
+---
+
+## WordPress REST client (`src/lib/wordpress/client.ts`)
+
+**Always use `wpFetch` or `wpFetchOptional`** for all WordPress REST calls. Never use `fetch()` directly — doing so loses language injection, Application Password auth, and consistent error handling.
+
+```ts
+// Throws on error (use for required data):
+const page = await wpFetch<WpPageResponse>("/wp/v2/pages/123", { lang, revalidate: 60 });
+
+// Returns null on error (use for optional data / enrichment):
+const posts = await wpFetchOptional<WpPost[]>("/wp/v2/posts?per_page=3", { lang, revalidate: 30 });
+```
+
+**Options:**
+- `lang: Locale` — appended as `?lang=nl` (or `&lang=nl` if query already exists). Pass whenever multilingual content is needed.
+- `revalidate: number` — Next.js ISR cache TTL in seconds.
+- Auth: Application Password Basic auth is injected automatically from `WORDPRESS_APPLICATION_USER` + `WORDPRESS_APPLICATION_PASSWORD` when both are set.
+
+---
+
+## config.ts — env accessors
+
+Use these functions from `src/lib/wordpress/config.ts`; never read `process.env` directly in fetcher files:
+
+| Function / Accessor         | Returns                                    |
+| --------------------------- | ------------------------------------------ |
+| `getWordpressApiUrl()`      | REST base URL (e.g. `https://wp.site.com`) |
+| `getWordpressBaseUrl()`     | WP home URL (may differ from API URL)      |
+| `getSiteUrl()`              | `NEXT_PUBLIC_SITE_URL`                     |
+| `getCptRestBase(cpt)`       | REST base for CPT: `service`, `testimonial`, `case_study` — reads from env or defaults |
+| `getHomepageSlug(lang)`     | Lang-specific homepage slug                |
+| `getBlogPageSlug(lang)`     | Blog archive slug segment (default `blog`) |
+| `getCaseStudyArchiveSlug(lang)` | Case study archive slug (default `case-studies`) |
+| `getMenuId(location, lang)` | WP menu ID from env for a menu location    |
+| `getDefaultContactFormId()` | `NEXT_PUBLIC_DEFAULT_CF7_FORM_ID`          |
+| `getRevalidationSecret()`   | `REVALIDATION_SECRET`                      |
+
+---
+
+## REST files overview
+
+| File                              | Purpose                                              |
+| --------------------------------- | ---------------------------------------------------- |
+| `fetch-page.ts`                   | Fetch a single WP page by slug + lang                |
+| `fetch-post.ts`                   | Fetch a single blog post + author                    |
+| `fetch-service.ts`                | Fetch a single service CPT                           |
+| `fetch-case-study.ts`             | Fetch a single case study CPT                        |
+| `fetch-globals.ts`                | Fetch header/footer globals via `/omb-headless/v1/globals` |
+| `fetch-blog-posts-collection.ts`  | Paginated blog post list + search                    |
+| `fetch-case-studies-collection.ts`| Paginated case study list + search                   |
+| `fetch-testimonials.ts`           | Fetch testimonials by ID array                       |
+| `fetch-testimonial.ts`            | Single testimonial                                   |
+| `fetch-menu.ts`                   | Menu items via env IDs or fallback REST endpoint     |
+| `fetch-cf7-form.ts`               | CF7 form definition by form ID                       |
+| `fetch-seo.ts`                    | Yoast SEO fields for a page/post                     |
+| `fetch-related-posts.ts`          | Related blog posts by tag/category                   |
+| `fetch-related-case-studies.ts`   | Related case studies                                 |
+| `resolve-route.ts`                | Slug → content type + ID resolution                  |
+| `polylang-locale-hrefs.ts`        | Polylang alternate-language URLs for `<link hreflang>` |
+| `submit-cf7-form.ts`              | Server action to POST CF7 form submission            |
+| `archive-search-params.ts`        | Parse `?page=` / `?s=` from URL search params        |
+| `wp-url-to-app-pathname.ts`       | Convert WP permalink → Next.js app pathname          |
+| `wp-embedded-author.ts`           | Extract author from `_embedded["author"]`            |
+| `hide-primary-menu-from-pathname.ts` | Utility for conditional menu rendering            |
+
+---
+
+## Polylang
+
+- `lang` option on `wpFetch` injects `?lang=nl` (or `en`) automatically.
+- `src/lib/wordpress/polylang-locale-hrefs.ts` — fetches alternate-language URLs for `<link rel="alternate" hreflang>`.
+- `/api/locale-hrefs` route: `GET ?pathname=...` — called client-side by the language switcher.
+- `src/lib/i18n/config.ts` — `DEFAULT_LOCALE`, `SUPPORTED_LOCALES` from env.
+- `src/lib/i18n/locales.ts` — `Locale` type (`"nl" | "en"`).
+
+---
+
+## Contact Form 7
+
+- Form definitions fetched via `fetchCf7Form(id, lang)` from `fetch-cf7-form.ts`.
+- Form submission via server action in `submit-cf7-form.ts`.
+- `FormEmbedSection` / `CF7Form` components handle rendering.
+- Default form ID from `NEXT_PUBLIC_DEFAULT_CF7_FORM_ID` (also accessible via `getDefaultContactFormId()`).
+- `faq_contact_split` sections with `useForm: true` get their form definition from `enrichSections()` in `enrich-sections.ts`.
+
+---
+
+## OMB Form Builder (free demo)
+
+- Headless submit: `POST {WORDPRESS_API_URL}/custom-form-builder/v1/public/forms/{id}/submit` with JSON `{ cfb, cfb_visible_fields, cfb_post_id }` and `Authorization: Bearer` from `getOmbFormBuilderHeadlessSubmitSecret()` (`OMB_FORM_BUILDER_SUBMIT_SECRET` or `CFB_HEADLESS_SUBMIT_SECRET`, must match `CFB_HEADLESS_SUBMIT_SECRET` in WordPress).
+- Next proxy: `src/app/api/forms/free-demo/route.ts` + `submit-omb-free-demo-lead.ts`. Field keys inside `cfb` must match the published form’s field ids (see `README.md`).
+
+---
+
+## ISR revalidation
+
+`POST /api/revalidate` with body:
+```json
+{ "secret": "<REVALIDATION_SECRET>", "path": "/nl/over-ons" }
+// or
+{ "secret": "<REVALIDATION_SECRET>", "tag": "pages" }
+```
+
+Both `path` and `tag` are optional; at least one should be provided. Returns 200 on success, 401 on wrong secret, 500 on error.
+
+---
+
+## Menu resolution
+
+Menus are resolved via `fetch-menu.ts`:
+1. If `WP_MENU_{LOCATION}_{LANG}` env is set → `GET /wp/v2/menu-items?menus={id}`.
+2. Otherwise → public fallback `GET /omb-headless/v1/menu?location={loc}&lang={lang}` (theme-side resolver; no env IDs required).
+
+---
+
+## WordPress-related env vars
+
+| Var                               | Purpose                                              |
+| --------------------------------- | ---------------------------------------------------- |
+| `WORDPRESS_API_URL`               | WP REST base (e.g. `https://cms.salonora.nl`)        |
+| `WORDPRESS_BASE_URL`              | WP home URL (used for image remotePatterns)          |
+| `WORDPRESS_APPLICATION_USER`      | Basic auth username                                  |
+| `WORDPRESS_APPLICATION_PASSWORD`  | Basic auth password (Application Password)           |
+| `REVALIDATION_SECRET`             | ISR revalidation shared secret                       |
+| `NEXT_PUBLIC_DEFAULT_CF7_FORM_ID` | Default CF7 form ID for contact forms                |
+| `OMB_FORM_BUILDER_SUBMIT_SECRET` / `CFB_HEADLESS_SUBMIT_SECRET` | Bearer for OMB Form Builder headless free-demo submit |
+| `WORDPRESS_SERVICE_REST_BASE`     | CPT REST base for services (default: `service`)      |
+| `WORDPRESS_TESTIMONIAL_REST_BASE` | CPT REST base for testimonials                       |
+| `WORDPRESS_CASE_STUDY_REST_BASE`  | CPT REST base for case studies (default: `case_study`) |
+| `HOMEPAGE_SLUG` / `*_NL` / `*_EN`| Slug(s) for the homepage per lang                    |
+| `WORDPRESS_BLOG_PAGE_SLUG` / `*_NL` / `*_EN` | Blog archive slug segment (default: `blog`) |
+| `WORDPRESS_CASE_STUDY_PAGE_SLUG` / `*_NL` / `*_EN` | Case study archive slug (default: `case-studies`) |
+| `WP_MENU_{PRIMARY\|FOOTER\|LEGAL}_{NL\|EN}` | Menu IDs by location and language (optional) |
+
+---
+
+## Anti-patterns
+
+- **Never** call `fetch()` directly for WordPress — always use `wpFetch`/`wpFetchOptional`.
+- **Never** hardcode WordPress hostnames — use `getWordpressBaseUrl()` / `getWordpressApiUrl()`.
+- **Never** read `process.env.WORDPRESS_*` inline in fetcher files — use `config.ts` accessors.
+- **Never** do client-only data fetching for SEO-critical page content — use RSC server components.

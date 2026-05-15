@@ -193,3 +193,29 @@ export function asRelationshipPostIds(value: unknown): number[] {
   }
   return out;
 }
+
+/**
+ * ACF “Post Object” (or similar) pointing at a CF7 form — REST may return `{ id }`,
+ * a bare numeric ID, a numeric string, or a single-element array of those shapes.
+ */
+export function asCf7FormPostId(v: unknown): number {
+  if (v == null || v === false) return 0;
+  if (typeof v === "number" && Number.isFinite(v) && v > 0) return Math.floor(v);
+  if (typeof v === "string") {
+    const t = v.trim();
+    if (/^\d+$/.test(t)) {
+      const n = Number(t);
+      return Number.isFinite(n) && n > 0 ? Math.floor(n) : 0;
+    }
+    return 0;
+  }
+  if (Array.isArray(v)) {
+    if (!v.length) return 0;
+    return asCf7FormPostId(v[0]);
+  }
+  if (typeof v === "object") {
+    const o = v as Record<string, unknown>;
+    return asCf7FormPostId(o.id ?? o.ID);
+  }
+  return 0;
+}

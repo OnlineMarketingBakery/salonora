@@ -60,7 +60,7 @@ export function CF7Form({ formId, definition, successMode, redirectUrl, tracking
         <p className="text-sm text-muted">Could not load form fields. Ensure the CF7 REST API is available.</p>
       )}
       <Button type="submit" disabled={pending}>
-        {pending ? "…" : "Send"}
+        {pending ? "…" : definition?.submitLabel?.trim() || "Send"}
       </Button>
       {message && <p className="text-sm text-emerald-700">{message}</p>}
       {err && <p className="text-sm text-red-700">{err}</p>}

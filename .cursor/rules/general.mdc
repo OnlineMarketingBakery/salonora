@@ -1,0 +1,232 @@
+---
+description: Salonora — universal stack, conventions, and anti-patterns. Loads for every file.
+alwaysApply: true
+---
+
+Stack, naming, and universal conventions are in this file.
+For section work: **sections.mdc** applies automatically (globs `src/components/sections/**`, `src/types/sections.ts`).
+For ACF/normalizer work: **acf.mdc** applies automatically (globs `src/lib/acf/**`, `acf-import-bundle.json`).
+For WP REST work: **wordpress.mdc** applies automatically (globs `src/lib/wordpress/**`, `src/app/api/**`).
+For type-only work: **types.mdc** applies automatically (globs `src/types/**`).
+Do **NOT** read `ai-context.md` — it is deprecated in favour of these scoped rules.
+
+---
+
+## Project summary
+
+Salonora is a **multilingual (nl/en) Next.js 15 App Router** marketing site that renders **WordPress** content: ACF flexible sections, pages, posts, CPTs (`service`, `testimonial`, `case_study`), globals (header/footer/options), **Yoast** metadata, **Polylang** locales, and **Contact Form 7**. The repo includes **OMB headless** PHP (`wordpress/`: theme, plugin, mu-plugin) aligned with the Next fetchers.
+
+---
+
+## Tech stack
+
+| Package              | Version        |
+| -------------------- | -------------- |
+| next                 | ^15.5.18       |
+| react / react-dom    | ^19.0.0        |
+| typescript           | ^5             |
+| tailwindcss          | ^4             |
+| @tailwindcss/postcss | ^4             |
+| gsap                 | ^3.15.0        |
+| @gsap/react          | ^2.1.2         |
+| eslint               | ^9             |
+| eslint-config-next   | 15.2.3         |
+
+Node: **20.x LTS**. Dev server: `npm run dev` uses **Turbopack**. No test framework present.
+
+---
+
+## Folder map
+
+```
+src/app/[lang]/          # layout, page, [...slug], not-found
+src/app/api/revalidate/  # POST ISR
+src/app/api/locale-hrefs/# GET ?pathname= — Polylang alternates
+src/components/sections/ # one folder per ACF layout + SectionRenderer.tsx
+src/components/layout/   # header, footer, nav, drawers, announcement
+src/components/templates/# PageTemplate, PostTemplate, CaseStudyTemplate
+src/components/forms/    # CF7Form, CF7FieldRenderer
+src/components/ui/       # Button, Container, Media, RichText, Accordion,
+                         #   Card, Heading, Input, Select, Textarea,
+                         #   StarRating, ArrowInCircle
+src/lib/wordpress/       # wpFetch, config, fetch-*, resolve-route, menus, CF7 submit
+src/lib/acf/             # section-registry, normalize-*-sections, enrich-sections, field-mappers
+src/lib/i18n/            # locales, get-alternates, config (DEFAULT_LOCALE, SUPPORTED_LOCALES)
+src/lib/seo/             # map-yoast-to-metadata
+src/lib/utils/           # assert-never, links, logger, strings
+src/lib/animation-classes.ts  # exports REVEAL_ITEM constant only
+src/types/               # sections, acf, globals, seo, wordpress, testimonials, forms
+wordpress/wp-content/    # omb-headless theme, omb-headless-core plugin, mu-plugins
+public/                  # static assets (SVGs, PNGs, hero-gradiant.png)
+docs/                    # wordpress-connection-guide, n8n-blog-publishing, acf-field-group-recovery
+scripts/                 # push-acf-rest.mjs, extract-all-acf-local-json.mjs
+```
+
+---
+
+## Import alias
+
+`@/` maps to `src/` (see `tsconfig.json` paths). Always use `@/` for internal imports — never relative `../../`.
+
+---
+
+## Naming conventions
+
+| Thing                | Convention    | Example                          |
+| -------------------- | ------------- | -------------------------------- |
+| ACF layout key       | snake_case    | `split_copy_framed`            |
+| Section type literal | snake_case    | `type: "split_copy_framed"`    |
+| Section TS type      | PascalCase + SectionT | `SplitCopyFramedSectionT` |
+| Component folder     | kebab-case    | `split-copy-framed/`           |
+| Component export     | PascalCase    | `SplitCopyFramedSection`       |
+| Field mapper keys    | snake_case    | `row.badge_text`                 |
+| ACF JSON field keys  | `field_omb_[layout]_*` | `field_omb_split_copy_framed_title` |
+
+---
+
+## Brand voice & UI
+
+- **Font:** Outfit (Google Font), loaded via `globals.css`.
+- **Palette:** defined as CSS variables in `globals.css` — see CSS variable section below.
+- **Copy:** Lives in WordPress CMS. Do not hardcode product claims; match existing conversion-oriented tone (clear, professional, benefit-led).
+- **Motion:** GSAP + `@gsap/react`. Scroll-triggered stagger uses the `REVEAL_ITEM` class (see Animation section).
+
+---
+
+## CSS variable conventions
+
+Two-layer system in `globals.css`:
+
+**Layer 1 — raw palette on `:root`:**
+```
+--palette-white: #ffffff
+--palette-brand: #3990f0
+--palette-brand-strong: #0569d7
+--palette-navy: #152951
+--palette-navy-deep: #002752
+--palette-muted: #435780
+--palette-surface: #ebf3fe
+--palette-card: #ebf3fe
+--palette-pill: #ecf4fe
+--palette-accent: #1d5898
+--palette-brand-soft: #3a8ae4
+--palette-rose: #d27e91
+--palette-rose-soft: #ca7c90
+--palette-showcase-blush: #fadbe9
+--palette-showcase-mint: #cceded
+--palette-showcase-gold-wash: rgba(200,148,2,0.28)
+--palette-star: #f97316
+```
+
+**Layer 2 — Tailwind tokens (`@theme inline`):**
+`--color-brand`, `--color-navy`, `--color-navy-deep`, `--color-muted`, `--color-surface`, `--color-card`, `--color-pill`, `--color-accent`, `--color-rose`, `--font-sans`
+
+**Rules:**
+- Use `--palette-*` or `--color-*` variables only. **No hardcoded hex values** in components.
+- Tailwind utility classes (`text-brand`, `bg-navy-deep`, `bg-surface`, etc.) are preferred over raw CSS vars for standard values.
+- No `tailwind.config.*` file — Tailwind v4 is configured entirely via `@theme inline` in `globals.css`.
+
+---
+
+## Animation classes
+
+```ts
+// src/lib/animation-classes.ts
+export const REVEAL_ITEM = "reveal-item";
+```
+
+- Apply `className={REVEAL_ITEM}` (or the string `"reveal-item"`) to elements that should animate on scroll.
+- Picked up by GSAP scroll observers in `src/components/animations/` (page-level `PageScrollAnimations`).
+- Do not invent other animation class names — `REVEAL_ITEM` is the only defined constant.
+- GSAP animations that need client interactivity require `"use client"` on the component.
+
+---
+
+## Logging
+
+Use `src/lib/utils/logger.ts` (dev-aware). Do not use `console.log` directly in production paths.
+
+---
+
+## Image handling
+
+- `next.config.ts` derives `remotePatterns` from `WORDPRESS_BASE_URL` or `WORDPRESS_API_URL`.
+- If neither env is set → `unoptimized: true` (local dev fallback).
+- Do not hardcode WordPress image hostnames in config.
+- Use `<Media>` from `src/components/ui/Media.tsx` for all `WpImage` rendering — never raw `<img>`.
+
+---
+
+## Globals / footer
+
+- **Footer surface** is pure CSS in `SiteFooter.tsx`: `bg-navy-deep`, subtle grid overlay, brand-blue radial glow, Figma notch.
+- The Next app reads from CMS: copy, logo, CTAs, copyright, and language switcher **only**.
+- These CMS fields are **ignored** (do not attempt to re-add them): `footer_background_image`, `footer_background_color`, `footer_background_gradient`, `footer_top_shape_image`.
+- OMB `/omb-headless/v1/globals` still merges `footer_*` keys into the `footer` object in WP — frontend maps only the fields above.
+
+---
+
+## Commands
+
+```bash
+npm run dev      # next dev --turbopack
+npm run build    # production build
+npm run start    # next start (NODE_ENV=production)
+npm run lint     # next lint
+npm run acf:sync-bundle # copy repo-root acf-import-bundle.json → theme mirror (also runs inside acf:push)
+npm run acf:push # sync bundle mirror, then push canonical acf-import-bundle.json to WordPress via REST
+npm run acf:extract-local-json   # regenerate acf-json/group_*.json from WP
+npm run acf:extract-page-builder # extract page builder group only
+```
+
+---
+
+## Env var names
+
+`WORDPRESS_API_URL`, `WORDPRESS_BASE_URL`, `NEXT_PUBLIC_SITE_URL`,
+`HOMEPAGE_SLUG` / `HOMEPAGE_SLUG_NL` / `HOMEPAGE_SLUG_EN`,
+`WORDPRESS_BLOG_PAGE_SLUG` / `*_NL` / `*_EN` (default: `blog`),
+`WORDPRESS_CASE_STUDY_PAGE_SLUG` / `*_NL` / `*_EN` (default: `case-studies`),
+`WP_MENU_{PRIMARY|FOOTER|LEGAL}_{NL|EN}` (or `WORDPRESS_MENU_*`),
+`WORDPRESS_APPLICATION_USER`, `WORDPRESS_APPLICATION_PASSWORD`,
+`REVALIDATION_SECRET`, `NEXT_PUBLIC_DEFAULT_CF7_FORM_ID`, `NEXT_PUBLIC_DEFAULT_CTA_BRAND_ARROW_URL`,
+`WORDPRESS_SERVICE_REST_BASE`, `WORDPRESS_TESTIMONIAL_REST_BASE`,
+`WORDPRESS_CASE_STUDY_REST_BASE`, `DEFAULT_LOCALE`, `SUPPORTED_LOCALES`.
+
+Authoritative list: `.env.example`. When adding a new env var, also update `.env.example`, `ai-context.md`, and `README.md`.
+
+---
+
+## Integrations (brief)
+
+- **WordPress REST** — pages, posts, CPTs, ACF JSON, ACF options, menus.
+- **Polylang** — `lang` query on `wpFetch`; alternates via `polylang-locale-hrefs.ts`.
+- **Yoast** — fetched with content; mapped in `src/lib/seo/`.
+- **CF7** — REST list/submit; `submit-cf7-form.ts`, `FormEmbedSection`, `CF7Form`.
+- **ISR** — `POST /api/revalidate` body `{ "secret", "path"?, "tag"? }` — requires `REVALIDATION_SECRET`.
+
+---
+
+## Anti-patterns — do NOT do these
+
+1. **Bypass `wpFetch`** for WordPress REST calls (loses lang + auth + consistent error handling).
+2. **Add new section types** without updating `section-registry`, normalizer case, `AnySectionT` union, and `SectionRenderer` switch — all four must stay in sync.
+3. **Hardcode WordPress URLs** — use `getWordpressBaseUrl()` / `getSiteUrl()` / link resolvers from `src/lib/utils/links.ts`.
+4. **Client-only data fetch** for SEO-critical page body — prefer RSC/server components as used in `page.tsx`/templates.
+5. **Assume ACF REST shape without checking normalizers** — WP can return null/variant shapes; always use field-mapper helpers.
+6. **Ignore `.env.example`** when adding env-dependent behaviour.
+7. **Large drive-by refactors** — keep changes minimal and focused.
+8. **Hardcode hex values** in components — use CSS variables only.
+9. **Invent animation class names** — only `REVEAL_ITEM` is defined.
+10. **Re-add footer background CMS fields** — the frontend intentionally ignores them.
+11. **Use `any`** in TypeScript — use `unknown` and narrow explicitly.
+
+## File Indexing
+A .cursorignore file is present at the root.
+Do NOT reference or scan: .next/, node_modules/, wordpress/wp-content/,
+public/, docs/, scripts/, acf-import-bundle.json (unless explicitly needed).
+Always use explicit @file references — never @Codebase.
+
+## Section Validation
+Run `npm run validate:sections` after any section pipeline change to confirm
+all 4 layers (types, normalizer, registry, renderer) are in sync.

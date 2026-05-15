@@ -1,4 +1,5 @@
 import { asBool, asImage, asLink, asString } from "@/lib/acf/field-mappers";
+import { defaultCtaBrandArrowFallback } from "@/lib/ui/default-cta-brand-arrow";
 import type { Locale } from "@/lib/i18n/locales";
 import { logger } from "@/lib/utils/logger";
 import type { FooterSettings, GlobalSettings, ReadingSettings } from "@/types/globals";
@@ -232,20 +233,24 @@ function fromContact(o: Record<string, unknown> | null) {
 }
 
 function fromSite(o: Record<string, unknown> | null) {
+  const arrowFallback = defaultCtaBrandArrowFallback();
   if (!o) {
     return {
       siteNameOverride: "",
       defaultTagline: "",
       defaultOgImage: null,
+      defaultCtaBrandArrow: arrowFallback,
       enableAnnouncement: false,
       announcementText: "",
       announcementLink: null,
     };
   }
+  const customArrow = asImage(acfPick(o, "default_cta_brand_arrow", "defaultCtaBrandArrow"));
   return {
     siteNameOverride: asString(o.site_name_override),
     defaultTagline: asString(o.default_tagline),
     defaultOgImage: asImage(o.default_og_image),
+    defaultCtaBrandArrow: customArrow ?? arrowFallback,
     enableAnnouncement: asBool(o.enable_announcement),
     announcementText: asString(o.announcement_text),
     announcementLink: asLink(o.announcement_link),

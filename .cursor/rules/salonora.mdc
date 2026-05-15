@@ -1,10 +1,14 @@
 ---
-description: Salonora — load full project context before substantive edits
+description: Salonora — entry-point rule pointing to scoped context files
 alwaysApply: true
 ---
 
-Before non-trivial work, read **`ai-context.md`** (stack, structure, conventions, integrations, anti-patterns, env names).
+Read **`general.mdc`** before doing anything. Do not read `ai-context.md` directly — scoped rules load automatically based on the files being edited.
 
-For setup and deployment, use **`README.md`** and **`.env.example`**. For WordPress REST checks and troubleshooting, use **`docs/wordpress-connection-guide.md`**.
+Scoped rules (Cursor loads these automatically by glob):
+- **`sections.mdc`** — section pipeline, all 52 keys, per-section Figma notes, component rules (`src/components/sections/**`, `src/types/sections.ts`)
+- **`acf.mdc`** — normalizer, field mappers, registry, ACF JSON (`src/lib/acf/**`, `acf-import-bundle.json`)
+- **`wordpress.mdc`** — wpFetch, REST fetchers, Polylang, CF7, ISR (`src/lib/wordpress/**`, `src/app/api/**`)
+- **`types.mdc`** — discriminated union, CoreSection, AnySectionT, no-any rule (`src/types/**`)
 
-Keep changes minimal and aligned with patterns in `ai-context.md`. When you change conventions or add env vars, update **`ai-context.md`**, **`.env.example`**, and **`README.md`** as needed.
+For setup and deployment, use **`README.md`** and **`.env.example`**. For WordPress REST troubleshooting, use **`docs/wordpress-connection-guide.md`**. When you add env vars or change conventions, update **`.env.example`**, **`README.md`**, and the relevant `.cursor/rules/*.mdc` file.

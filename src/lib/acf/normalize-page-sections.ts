@@ -1,4 +1,4 @@
-import type { AnySectionT } from "@/types/sections";
+import type { AnySectionT, SplitCopyFramedSectionT } from "@/types/sections";
 import { assertNever } from "@/lib/utils/assert-never";
 import {
   asBool,
@@ -7,6 +7,7 @@ import {
   asLink,
   asNonNegativeInt,
   asRelationshipPostIds,
+  asCf7FormPostId,
   asString,
   mapCtaRepeater,
   newSectionId,
@@ -14,15 +15,142 @@ import {
 
 type RawRow = Record<string, unknown> & { acf_fc_layout: string };
 
+/** Legacy ACF layouts merged into `split_copy_framed` at normalize time (WP rows keep original `acf_fc_layout`). */
+function canonicalizeAcfPageLayout(layout: string): string {
+  if (layout === "audience_promo_card" || layout === "is_this_for_you") {
+    return "split_copy_framed";
+  }
+  return layout;
+}
+
+function normalizeSplitCopyFramedSection(
+  row: RawRow,
+  base: { _key: string; id: string }
+): SplitCopyFramedSectionT {
+  const acfLayout = asString(row.acf_fc_layout);
+
+  if (acfLayout === "split_copy_framed") {
+    const listDefaultIcon = asImage(row.list_default_icon);
+    const lm = asString(row.layout_mode);
+    const layout_mode = lm === "flush_flex" ? ("flush_flex" as const) : ("card_grid" as const);
+    const ls = asString(row.list_style);
+    const list_style = ls === "outlined_tile" ? ("outlined_tile" as const) : ("filled_disc" as const);
+    const vp = asString(row.visual_position);
+    const visual_position = vp === "left" ? ("left" as const) : ("right" as const);
+    const rawShadow = row.show_card_shadow;
+    const show_card_shadow =
+      layout_mode === "flush_flex"
+        ? false
+        : rawShadow === undefined || rawShadow === null
+          ? true
+          : asBool(rawShadow);
+    const show_list_dividers = asBool(row.show_list_dividers);
+    const cta_trailing_icon_invert = asBool(row.cta_trailing_icon_invert);
+    const list = Array.isArray(row.list)
+      ? (row.list as { item?: unknown; icon?: unknown }[]).map((r) => ({
+          text: asString(r.item),
+          icon: asImage(r.icon) ?? listDefaultIcon,
+        }))
+      : [];
+    return {
+      ...base,
+      type: "split_copy_framed",
+      layout_mode,
+      list_style,
+      visual_position,
+      show_card_shadow,
+      show_list_dividers,
+      cta_trailing_icon_invert,
+      badge_text: asString(row.badge_text),
+      title: asString(row.title),
+      subtitle: asString(row.subtitle),
+      description: asHtml(row.description),
+      list_default_icon: listDefaultIcon,
+      list,
+      footer_note: asHtml(row.footer_note),
+      button: asLink(row.button),
+      button_trailing_icon: asImage(row.button_trailing_icon),
+      image: asImage(row.image),
+    };
+  }
+
+  if (acfLayout === "audience_promo_card") {
+    const listDefaultIcon = asImage(row.list_default_icon);
+    const vp = asString(row.visual_position);
+    const visual_position = vp === "right" ? ("right" as const) : ("left" as const);
+    const rawShadow = row.show_card_shadow;
+    const show_card_shadow =
+      rawShadow === undefined || rawShadow === null ? true : asBool(rawShadow);
+    return {
+      ...base,
+      type: "split_copy_framed",
+      layout_mode: "card_grid",
+      list_style: "filled_disc",
+      visual_position,
+      show_card_shadow,
+      show_list_dividers: false,
+      cta_trailing_icon_invert: false,
+      badge_text: asString(row.badge_text),
+      title: asString(row.title),
+      subtitle: "",
+      description: asHtml(row.description),
+      list_default_icon: listDefaultIcon,
+      list: Array.isArray(row.features)
+        ? (row.features as { item?: unknown; icon?: unknown }[]).map((r) => ({
+            text: asString(r.item),
+            icon: asImage(r.icon) ?? listDefaultIcon,
+          }))
+        : [],
+      footer_note: "",
+      button: asLink(row.button),
+      button_trailing_icon: asImage(row.button_trailing_icon),
+      image: asImage(row.image),
+    };
+  }
+
+  if (acfLayout === "is_this_for_you") {
+    const listDefaultIcon = asImage(row.list_default_icon);
+    const vp = asString(row.visual_position);
+    const visual_position = vp === "left" ? ("left" as const) : ("right" as const);
+    return {
+      ...base,
+      type: "split_copy_framed",
+      layout_mode: "flush_flex",
+      list_style: "outlined_tile",
+      visual_position,
+      show_card_shadow: false,
+      show_list_dividers: true,
+      cta_trailing_icon_invert: true,
+      badge_text: "",
+      title: asString(row.title),
+      subtitle: asString(row.subtitle),
+      description: "",
+      list_default_icon: listDefaultIcon,
+      list: Array.isArray(row.checklist)
+        ? (row.checklist as { item?: unknown; icon?: unknown }[]).map((r) => ({
+            text: asString(r.item),
+            icon: asImage(r.icon) ?? listDefaultIcon,
+          }))
+        : [],
+      footer_note: asHtml(row.footer_note),
+      button: asLink(row.button),
+      button_trailing_icon: asImage(row.button_trailing_icon),
+      image: asImage(row.image),
+    };
+  }
+
+  return assertNever(acfLayout as never);
+}
+
 /** Known page flexible-layout names → normalized section types (must stay aligned with `mapKnownPageSectionLayout`). */
 const PAGE_SECTION_ACF_LAYOUTS = {
   announcement_bar: true,
-  audience_promo_card: true,
   benefits_grid: true,
   cards: true,
   combined_strengths: true,
   cost_comparison: true,
   cta: true,
+  demo_preview_split: true,
   design_showcase_grid: true,
   faq: true,
   feature_highlight_grid: true,
@@ -31,6 +159,7 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   faq_contact_split: true,
   features_checklist: true,
   form_embed: true,
+  free_demo_form: true,
   founders_banner: true,
   who_we_are_for: true,
   media_text_checklist: true,
@@ -40,7 +169,7 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   hero: true,
   how_it_works_steps: true,
   image_intro_split: true,
-  is_this_for_you: true,
+  is_demo_for_you: true,
   latest_posts: true,
   blog_post_overview: true,
   case_study_overview: true,
@@ -59,6 +188,7 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   case_study_conversion_cta: true,
   salon_value_proposition: true,
   scrolling_ticker: true,
+  split_copy_framed: true,
   steps_with_media: true,
   story_split: true,
   talk_dual_cards: true,
@@ -99,6 +229,35 @@ function heroStatsFromAcf(row: Record<string, unknown>): { label: string; value:
 }
 
 /** ACF `featured_post` post_object → REST may return `{ id }` or `{ ID }`. */
+/** Legacy `demo_preview_split` repeater `items` → single `body` HTML when `body` is empty. */
+function demoPreviewBodyFromAcf(row: Record<string, unknown>): string {
+  const primary = asHtml(row.body);
+  if (primary.trim()) return primary;
+  if (!Array.isArray(row.items)) return "";
+  const escLead = (s: string) =>
+    s
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  const parts: string[] = [];
+  for (const item of row.items as { lead?: unknown; body?: unknown }[]) {
+    const lead = asString(item.lead).trim();
+    const body = asHtml(item.body).trim();
+    if (!lead && !body) continue;
+    if (!lead) {
+      parts.push(body);
+      continue;
+    }
+    if (!body) {
+      parts.push(`<p><strong>${escLead(lead)}</strong></p>`);
+    } else {
+      parts.push(`<p><strong>${escLead(lead)}</strong> ${body}</p>`);
+    }
+  }
+  return parts.join("");
+}
+
 function featuredPostIdFromAcf(row: Record<string, unknown>): number | null {
   const v = row.featured_post;
   if (v == null || v === false || v === "") return null;
@@ -133,9 +292,9 @@ function mapLayout(i: number, row: RawRow): AnySectionT | null {
   const id = newSectionId();
   const _key = keyOf(i, row);
   const base = { _key, id };
-  const layout = row.acf_fc_layout;
+  const layout = canonicalizeAcfPageLayout(asString(row.acf_fc_layout));
   if (!isKnownPageSectionLayout(layout)) return null;
-  return mapKnownPageSectionLayout(layout, row, base);
+  return mapKnownPageSectionLayout(layout as AnySectionT["type"], row, base);
 }
 
 function mapKnownPageSectionLayout(
@@ -285,22 +444,15 @@ function mapKnownPageSectionLayout(
               badge: asString(p.badge),
               title: asString(p.title),
               intro: asHtml(p.intro),
-              priceLine: asHtml(p.price_line),
               includes: Array.isArray(p.includes)
                 ? (p.includes as { icon?: unknown; text?: unknown }[]).map((x) => ({
                     icon: asImage(x.icon),
                     text: asString(x.text),
                   }))
                 : [],
-              solvesTitle: asHtml(p.solves_title),
-              solvesItems: Array.isArray(p.solves_items)
-                ? (p.solves_items as { icon?: unknown; text?: unknown }[]).map((x) => ({
-                    icon: asImage(x.icon),
-                    text: asString(x.text),
-                  }))
-                : [],
-              note: asHtml(p.note),
-              smallPrint: asString(p.small_print),
+              pricingTitle: asHtml(p.pricing_title) || asHtml(p.price_line),
+              secondaryTitle: asHtml(p.secondary_title) || asHtml(p.note),
+              pricingParagraph: asHtml(p.pricing_paragraph) || asHtml(p.small_print),
               featured: asBool(p.featured),
               ctas: mapCtaRepeater(p.ctas as Parameters<typeof mapCtaRepeater>[0]),
             }))
@@ -421,26 +573,8 @@ function mapKnownPageSectionLayout(
             })
           : [],
       };
-    case "is_this_for_you": {
-      const listDefaultIcon = asImage(row.list_default_icon);
-      return {
-        ...base,
-        type: "is_this_for_you",
-        title: asString(row.title),
-        subtitle: asString(row.subtitle),
-        list_default_icon: listDefaultIcon,
-        checklist: Array.isArray(row.checklist)
-          ? (row.checklist as { item?: unknown; icon?: unknown }[]).map((r) => ({
-              text: asString(r.item),
-              icon: asImage(r.icon) ?? listDefaultIcon,
-            }))
-          : [],
-        footer_note: asHtml(row.footer_note),
-        button: asLink(row.button),
-        button_trailing_icon: asImage(row.button_trailing_icon),
-        image: asImage(row.image),
-      };
-    }
+    case "split_copy_framed":
+      return normalizeSplitCopyFramedSection(row, base);
     case "features_checklist": {
       const listDefaultIcon = asImage(row.list_default_icon);
       return {
@@ -494,22 +628,6 @@ function mapKnownPageSectionLayout(
         button_trailing_icon: asImage(row.button_trailing_icon),
       };
     }
-    case "audience_promo_card":
-      return {
-        ...base,
-        type: "audience_promo_card",
-        badge_text: asString(row.badge_text),
-        title: asString(row.title),
-        description: asHtml(row.description),
-        features: Array.isArray(row.features)
-          ? (row.features as { item?: unknown }[]).map((r) => ({
-              text: asString(r.item),
-            }))
-          : [],
-        image: asImage(row.image),
-        button: asLink(row.button),
-        button_trailing_icon: asImage(row.button_trailing_icon),
-      };
     case "guarantees_promise_split":
       return (() => {
         const listDefaultIcon = asImage(row.list_default_icon);
@@ -624,6 +742,31 @@ function mapKnownPageSectionLayout(
             }))
           : [],
       };
+    case "is_demo_for_you":
+      return {
+        ...base,
+        type: "is_demo_for_you",
+        title: asString(row.title),
+        for_you_heading: asString(row.for_you_heading),
+        for_you_list_icon: asImage(row.for_you_list_icon),
+        for_you_list: Array.isArray(row.for_you_list)
+          ? (row.for_you_list as { item?: unknown }[])
+              .map((r) => ({ text: asString(r.item) }))
+              .filter((r) => r.text.trim() !== "")
+          : [],
+        not_for_you_heading: asString(row.not_for_you_heading),
+        not_for_you_list_icon: asImage(row.not_for_you_list_icon),
+        not_for_you_list: Array.isArray(row.not_for_you_list)
+          ? (row.not_for_you_list as { item?: unknown }[])
+              .map((r) => ({ text: asString(r.item) }))
+              .filter((r) => r.text.trim() !== "")
+          : [],
+        portrait_image: asImage(row.portrait_image),
+        panel_overlay: asImage(row.panel_overlay),
+        footer_message: asHtml(row.footer_message),
+        cta_link: asLink(row.cta_link),
+        cta_trailing_icon: asImage(row.cta_trailing_icon),
+      };
     case "salon_value_proposition":
       return {
         ...base,
@@ -634,16 +777,30 @@ function mapKnownPageSectionLayout(
         visualImage: asImage(row.visual_image),
         footerTitle: asString(row.footer_title),
         footerCtaLink: asLink(row.footer_cta_link),
-        footerCtaIcon: asImage(row.footer_cta_icon),
+        footerCtaIcon:
+          asImage(row.footer_cta_icon) ??
+          asImage((row as Record<string, unknown>).footer_button_icon),
         cards: Array.isArray(row.feature_cards)
-          ? (row.feature_cards as { accent?: unknown; icon?: unknown; title?: unknown; text?: unknown }[]).map((c) => {
+          ? (row.feature_cards as {
+              accent?: unknown;
+              icon?: unknown;
+              checklist_icon?: unknown;
+              title?: unknown;
+              checklist_items?: unknown;
+            }[]).map((c) => {
               const a = asString(c.accent);
               const accent = a === "rose" ? "rose" : "brand";
+              const checklistItems = Array.isArray(c.checklist_items)
+                ? (c.checklist_items as { item?: unknown }[])
+                    .map((r) => ({ text: asString(r.item) }))
+                    .filter((r) => r.text.trim() !== "")
+                : [];
               return {
                 accent,
                 icon: asImage(c.icon),
+                checklistIcon: asImage(c.checklist_icon),
                 title: asString(c.title),
-                text: asHtml(c.text),
+                checklistItems,
               };
             })
           : [],
@@ -959,14 +1116,35 @@ function mapKnownPageSectionLayout(
           footerCtas: mapCtaRepeater(row.footer_ctas as Parameters<typeof mapCtaRepeater>[0]),
         };
       })();
+    case "demo_preview_split":
+      return {
+        ...base,
+        type: "demo_preview_split",
+        badge: asString(row.badge),
+        title: asString(row.title),
+        body: demoPreviewBodyFromAcf(row),
+        mockup_image: asImage(row.mockup_image),
+      };
     case "form_embed":
       return {
         ...base,
         type: "form_embed",
         title: asString(row.title),
         intro: asHtml(row.intro),
-        formId: (row.form as { id?: number } | null)?.id || 0,
+        formId: asCf7FormPostId(row.form),
         formDefinition: null,
+        successMode: (asString(row.success_mode) as "inline" | "redirect") || "inline",
+        redirectLink: asLink(row.redirect_link),
+        trackingContext: asString(row.tracking_context),
+      };
+    case "free_demo_form":
+      return {
+        ...base,
+        type: "free_demo_form",
+        title: asString(row.title),
+        subtitle: asHtml(row.subtitle),
+        footer_note: asHtml(row.footer_note),
+        ombFormId: asCf7FormPostId(row.omb_form ?? row.form),
         successMode: (asString(row.success_mode) as "inline" | "redirect") || "inline",
         redirectLink: asLink(row.redirect_link),
         trackingContext: asString(row.tracking_context),
@@ -1107,11 +1285,13 @@ function mapKnownPageSectionLayout(
         problem_image: asImage(row.problem_image),
         solution_title: asString(row.solution_title),
         solution_text: asHtml(row.solution_text),
+        solution_list_icon: asImage(row.solution_list_icon),
         solution_list: Array.isArray(row.solution_list)
           ? (row.solution_list as { item?: unknown }[])
               .map((r) => ({ text: asString(r.item) }))
               .filter((r) => r.text.trim() !== "")
           : [],
+        solution_bottom_text: asHtml(row.solution_bottom_text),
         solution_image: asImage(row.solution_image),
       };
     case "talk_dual_cards":
