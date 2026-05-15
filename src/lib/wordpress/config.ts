@@ -46,11 +46,15 @@ export function getDefaultContactFormId(): string | undefined {
 /**
  * Bearer secret for `POST …/custom-form-builder/v1/public/forms/{id}/submit` (OMB Form Builder headless).
  * Must match `CFB_HEADLESS_SUBMIT_SECRET` in WordPress `wp-config.php`.
+ *
+ * Env resolution order: `OMB_FORM_BUILDER_SUBMIT_SECRET`, `CFB_HEADLESS_SUBMIT_SECRET`, `REVALIDATION_SECRET`.
+ * When all unset, the free-demo API route loads WordPress Integrations via `fetchGlobals` (dedicated field, then revalidation secret).
  */
 export function getOmbFormBuilderHeadlessSubmitSecret(): string | undefined {
   const a = process.env.OMB_FORM_BUILDER_SUBMIT_SECRET?.trim();
   const b = process.env.CFB_HEADLESS_SUBMIT_SECRET?.trim();
-  return a || b || undefined;
+  const c = process.env.REVALIDATION_SECRET?.trim();
+  return a || b || c || undefined;
 }
 
 /** Fallback when WordPress Reading → Homepage is unavailable (older plugin) or not a static page. */

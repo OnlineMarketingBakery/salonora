@@ -620,7 +620,7 @@ export type FreeDemoFormSectionT = CoreSection & {
   title: string;
   subtitle: string;
   footer_note: string;
-  /** Published `cfb_form` post ID; ACF `omb_form` or legacy `form` post object. */
+  /** Published `cfb_form` post ID from ACF **`omb_form`** only (not CF7 `form`). */
   ombFormId: number;
   successMode: "inline" | "redirect";
   redirectLink: WpAcfLink | null;

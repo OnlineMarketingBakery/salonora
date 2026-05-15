@@ -107,9 +107,9 @@ All keys are documented in **`.env.example`** at the repo root. Summary:
 | `WORDPRESS_CASE_STUDY_PAGE_SLUG` / `*_NL` / `*_EN` | Optional | Case study archive segment for single-case-study breadcrumbs (default `case-studies`) |
 | `WP_MENU_*` / `WORDPRESS_MENU_*` | If using REST menus | Numeric menu IDs per location (`primary`, `footer`, `legal`) and locale |
 | `WORDPRESS_APPLICATION_USER` / `WORDPRESS_APPLICATION_PASSWORD` | If WP returns 401 | Application Password basic auth for server fetches |
-| `REVALIDATION_SECRET` | Production ISR webhooks | Secret for `POST /api/revalidate` |
+| `REVALIDATION_SECRET` | Production ISR webhooks | Secret for `POST /api/revalidate`; also used as OMB Form Builder headless Bearer when `OMB_*` / `CFB_*` submit env vars are unset (must match `CFB_HEADLESS_SUBMIT_SECRET` in `wp-config.php`) |
 | `NEXT_PUBLIC_DEFAULT_CF7_FORM_ID` | Optional | Default Contact Form 7 id |
-| `OMB_FORM_BUILDER_SUBMIT_SECRET` (or `CFB_HEADLESS_SUBMIT_SECRET`) | For free-demo submits | Bearer token for OMB Form Builder headless `POST …/public/forms/{id}/submit` (match `wp-config.php`) |
+| `OMB_FORM_BUILDER_SUBMIT_SECRET` (or `CFB_HEADLESS_SUBMIT_SECRET`) | Optional if `REVALIDATION_SECRET` or WP Integrations secrets set | Dedicated Bearer for OMB Form Builder headless `POST …/public/forms/{id}/submit` (match `wp-config.php`) |
 | `NEXT_PUBLIC_DEFAULT_CTA_BRAND_ARROW_URL` | Optional | Absolute image URL for blue CTA trailing icon when WordPress Site Options image is unset |
 | `WORDPRESS_SERVICE_REST_BASE` / `WORDPRESS_TESTIMONIAL_REST_BASE` / `WORDPRESS_CASE_STUDY_REST_BASE` | Rare | Override REST base if CPT slug differs |
 | `DEFAULT_LOCALE` / `SUPPORTED_LOCALES` | Optional | Default redirect locale; comma list (default `nl,en`) |
@@ -131,7 +131,7 @@ If `WORDPRESS_BASE_URL` / `WORDPRESS_API_URL` are unset, **Next Image** runs in 
 - **Flexible sections:** WordPress ACF layouts are normalized in `src/lib/acf/` and rendered via `SectionRenderer` + `src/components/sections/*`.
 - **Services, posts & case studies:** Dedicated fetchers and templates (`PageTemplate`, `PostTemplate`, `CaseStudyTemplate`).
 - **Testimonials:** Loaded by relationship IDs from section data.
-- **Forms:** CF7 via REST + server proxy (`submit-cf7-form`) for `form_embed` and featured post/case forms; **Free demo** uses a fixed UI and `POST /api/forms/free-demo`, which forwards to **OMB Form Builder** `POST {WORDPRESS_API_URL}/custom-form-builder/v1/public/forms/{ombFormId}/submit` with JSON `{ cfb, cfb_visible_fields, cfb_post_id }` and `Authorization: Bearer` from `OMB_FORM_BUILDER_SUBMIT_SECRET` (must match WordPress `CFB_HEADLESS_SUBMIT_SECRET`). Field **ids** in the published `cfb_form` must match: `first_name`, `last_name`, `email`, `phone`, `salon_type`, `has_website`, `website_url` (when “yes”), `lang`, optional `tracking_context`.
+- **Forms:** CF7 via REST + server proxy (`submit-cf7-form`) for `form_embed` and featured post/case forms; **Free demo** uses a fixed UI and `POST /api/forms/free-demo`, which forwards to **OMB Form Builder** `POST {WORDPRESS_API_URL}/custom-form-builder/v1/public/forms/{ombFormId}/submit` with JSON `{ cfb, cfb_visible_fields, cfb_post_id }` and `Authorization: Bearer` resolved by `resolveOmbFormBuilderBearerSecret` (env: `OMB_FORM_BUILDER_SUBMIT_SECRET`, `CFB_HEADLESS_SUBMIT_SECRET`, or `REVALIDATION_SECRET`; else WordPress **Integrations** ACF: `omb_form_builder_submit_secret`, then `revalidation_secret` — must match `CFB_HEADLESS_SUBMIT_SECRET` in `wp-config.php`). The **`free_demo_form`** layout uses ACF **`omb_form`** only (published `cfb_form` id) — **not** the CF7 **`form`** field. CFB field **`name`** values on the linked `cfb_form` must align with `submit-omb-free-demo-lead.ts` (`first_name`, `last_name`, `email`, `phone`, `salon_type`, `do_you_have_any_current_website`, `current_website_url`); Next maps those to field **`id`** keys (`field_1`, …) in the POST `cfb` object.
 - **SEO:** Yoast fields mapped in `src/lib/seo/map-yoast-to-metadata.ts`.
 - **On-demand revalidation:** `POST /api/revalidate` with JSON `{ "secret": "<REVALIDATION_SECRET>", "path": "/nl" }` (optional `tag`). Configure `REVALIDATION_SECRET` and call from WP webhooks or deploy hooks when content changes.
 
@@ -141,6 +141,7 @@ If `WORDPRESS_BASE_URL` / `WORDPRESS_API_URL` are unset, **Next Image** runs in 
 - **Polylang** — `?lang=` on requests; locale hrefs API for language switcher.
 - **Yoast SEO** — metadata for App Router.
 - **Contact Form 7** — list forms, render, submit (REST + custom plugin endpoints as needed).
+- **OMB Form Builder (free demo):** In WordPress **Global Settings → Integrations**, you can store an optional **OMB form submit secret** (ACF field key `omb_form_builder_submit_secret`). If that field is empty, Next falls back to the existing **revalidation secret** field (`revalidation_secret`) for the Bearer token when no submit-specific env vars are set. `define('CFB_HEADLESS_SUBMIT_SECRET', …)` in `wp-config.php` must use the same value.
 - **Hosting (e.g. Ploi):** Node process behind reverse proxy; forward `X-Forwarded-Proto` / `X-Forwarded-*` for correct URLs. See README section below.
 
 ## Production (Ploi / Node)

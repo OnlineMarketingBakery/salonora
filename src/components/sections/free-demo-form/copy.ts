@@ -16,6 +16,7 @@ export type FreeDemoFormCopy = {
   websitePlaceholder: string;
   submit: string;
   sending: string;
+  thankYouTitle: string;
   successDefault: string;
   errorGeneric: string;
   formNotConfigured: string;
@@ -40,8 +41,10 @@ const nl: FreeDemoFormCopy = {
   websiteUrl: "URL van je huidige website",
   websitePlaceholder: "Bijv. www.jouw-salon.nl",
   submit: "Stuur mij de gratis demo",
-  sending: "Even geduld…",
-  successDefault: "Bedankt! We nemen zo snel mogelijk contact op.",
+  sending: "Versturen…",
+  thankYouTitle: "Bedankt!",
+  successDefault:
+    "Je aanvraag is binnen. Je ontvangt de demo-video op het e-mailadres dat je hebt ingevuld.",
   errorGeneric: "Er ging iets mis. Probeer het later opnieuw.",
   formNotConfigured: "Koppel eerst een gepubliceerd formulier in WordPress (ACF: OMB-formulier).",
 };
@@ -66,7 +69,8 @@ const en: FreeDemoFormCopy = {
   websitePlaceholder: "Example: www.yoursalon.com",
   submit: "Send me the free demo",
   sending: "Sending…",
-  successDefault: "Thanks! We will get back to you shortly.",
+  thankYouTitle: "Thank you!",
+  successDefault: "Your request was received. We will send the demo video to the email address you provided.",
   errorGeneric: "Something went wrong. Please try again later.",
   formNotConfigured: "Connect a published OMB Form Builder form in WordPress (ACF: OMB form).",
 };

@@ -11,11 +11,7 @@
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
+            "wrapper": { "width": "", "class": "", "id": "" },
             "placement": "top",
             "endpoint": 0,
             "selected": 0
@@ -29,11 +25,7 @@
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
+            "wrapper": { "width": "", "class": "", "id": "" },
             "default_value": "",
             "maxlength": "",
             "allow_in_bindings": 0,
@@ -50,11 +42,7 @@
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
+            "wrapper": { "width": "", "class": "", "id": "" },
             "default_value": "",
             "maxlength": "",
             "allow_in_bindings": 0,
@@ -71,11 +59,7 @@
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
+            "wrapper": { "width": "", "class": "", "id": "" },
             "default_value": "",
             "maxlength": "",
             "allow_in_bindings": 0,
@@ -92,11 +76,24 @@
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_omb_form_builder_submit_secret",
+            "label": "OMB Form Builder headless submit secret",
+            "name": "omb_form_builder_submit_secret",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Bearer token for Next.js free-demo form to WordPress custom-form-builder submit. Must match CFB_HEADLESS_SUBMIT_SECRET in wp-config.php. Leave empty to reuse Revalidation Secret on Next when env vars are unset.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
             "default_value": "",
             "maxlength": "",
             "allow_in_bindings": 0,
@@ -113,17 +110,9 @@
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "post_type": [
-                "wpcf7_contact_form"
-            ],
-            "post_status": [
-                "publish"
-            ],
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "post_type": ["wpcf7_contact_form"],
+            "post_status": ["publish"],
             "taxonomy": "",
             "return_format": "object",
             "multiple": 0,
@@ -134,15 +123,7 @@
             "bidirectional_target": []
         }
     ],
-    "location": [
-        [
-            {
-                "param": "options_page",
-                "operator": "==",
-                "value": "omb-integrations"
-            }
-        ]
-    ],
+    "location": [[{ "param": "options_page", "operator": "==", "value": "omb-integrations" }]],
     "menu_order": 0,
     "position": "normal",
     "style": "default",
@@ -155,5 +136,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1778267550
+    "modified": 1747372800
 }

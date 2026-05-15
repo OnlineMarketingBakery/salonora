@@ -37,9 +37,8 @@ export function FreeDemoFormSection({ section, lang }: { section: FreeDemoFormSe
                   />
                 ) : null}
               </div>
-              <div
-                className={`${REVEAL_ITEM} w-full rounded-[12px] bg-white px-6 py-8 shadow-[0px_10px_27.8px_color-mix(in_srgb,var(--palette-muted)_15%,transparent)] sm:px-8 sm:py-9 md:px-11 md:py-[34px]`}
-              >
+              {/* No REVEAL_ITEM here: nested .reveal-item gets its own GSAP autoAlpha; can stay invisible while the parent shell looks visible, which breaks the form/button. */}
+              <div className="w-full rounded-[12px] bg-white px-6 py-8 shadow-[0px_10px_27.8px_color-mix(in_srgb,var(--palette-muted)_15%,transparent)] sm:px-8 sm:py-9 md:px-11 md:py-[34px]">
                 <div className="flex flex-col gap-5">
                   <FreeDemoLeadForm
                     lang={lang}

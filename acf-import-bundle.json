@@ -1043,6 +1043,27 @@
         "append": ""
       },
       {
+        "key": "field_omb_form_builder_submit_secret",
+        "label": "OMB Form Builder headless submit secret",
+        "name": "omb_form_builder_submit_secret",
+        "aria-label": "",
+        "type": "text",
+        "instructions": "Bearer token for Next.js free-demo form to WordPress custom-form-builder submit. Must match CFB_HEADLESS_SUBMIT_SECRET in wp-config.php. Leave empty to reuse Revalidation Secret on Next when env vars are unset.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "default_value": "",
+        "maxlength": "",
+        "allow_in_bindings": 0,
+        "placeholder": "",
+        "prepend": "",
+        "append": ""
+      },
+      {
         "key": "field_omb_default_contact_form",
         "label": "Default Contact Form",
         "name": "default_contact_form",
@@ -1092,7 +1113,8 @@
     "show_in_rest": 1,
     "display_title": "",
     "allow_ai_access": false,
-    "ai_description": ""
+    "ai_description": "",
+    "modified": 1747372800
   },
   {
     "key": "group_omb_page_builder",
@@ -12544,12 +12566,41 @@
                 "allow_in_bindings": 0
               },
               {
+                "key": "field_omb_free_demo_form_omb_form",
+                "label": "OMB Form Builder form",
+                "name": "omb_form",
+                "aria-label": "",
+                "type": "post_object",
+                "instructions": "Published Custom Form Builder form (cfb_form) used for Next.js free-demo headless submit.",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "post_type": [
+                  "cfb_form"
+                ],
+                "post_status": [
+                  "publish"
+                ],
+                "taxonomy": "",
+                "return_format": "object",
+                "multiple": 0,
+                "allow_null": 0,
+                "allow_in_bindings": 0,
+                "bidirectional": 0,
+                "ui": 1,
+                "bidirectional_target": []
+              },
+              {
                 "key": "field_omb_free_demo_form_form",
-                "label": "Contact Form 7 Form",
+                "label": "Contact Form 7 form (legacy)",
                 "name": "form",
                 "aria-label": "",
                 "type": "post_object",
-                "instructions": "",
+                "instructions": "Not used by the Next.js free-demo headless submit.",
                 "required": 0,
                 "conditional_logic": 0,
                 "wrapper": {
