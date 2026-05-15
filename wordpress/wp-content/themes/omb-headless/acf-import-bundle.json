@@ -6826,6 +6826,37 @@
             "display": "block",
             "sub_fields": [
               {
+                "key": "field_svp_section_layout",
+                "label": "Section layout",
+                "name": "section_layout",
+                "aria-label": "",
+                "type": "select",
+                "instructions": "Featured: eyebrow, intro, checklist cards, optional panel visual and footer CTA. Simple: centered section title + intro, then compact cards with description text under each title (no eyebrow / footer CTA in front-end).",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "choices": {
+                  "featured": "Featured (full block � barbershop style)",
+                  "simple": "Simple (title + intro + three cards)"
+                },
+                "default_value": "featured",
+                "return_format": "value",
+                "multiple": 0,
+                "allow_null": 0,
+                "ui": 1,
+                "ajax": 0,
+                "placeholder": "",
+                "allow_custom": 0,
+                "search_placeholder": "",
+                "allow_in_bindings": 0,
+                "create_options": 0,
+                "save_options": 0
+              },
+              {
                 "key": "field_svp_eyebrow",
                 "label": "Eyebrow",
                 "name": "eyebrow",
@@ -6920,7 +6951,7 @@
                 "name": "feature_cards",
                 "aria-label": "",
                 "type": "repeater",
-                "instructions": "Up to three cards. Each row: accent colour, optional card icon, title, then checklist lines.",
+                "instructions": "Up to three cards: accent, icon, title, optional description (WYSIWYG), optional checklist lines. Use checklist for Featured layout bullet lists; use Description for Simple layout or extra copy.",
                 "required": 0,
                 "conditional_logic": 0,
                 "wrapper": {
@@ -7015,6 +7046,28 @@
                     "placeholder": "",
                     "prepend": "",
                     "append": "",
+                    "parent_repeater": "field_svp_feature_cards"
+                  },
+                  {
+                    "key": "field_svp_card_body",
+                    "label": "Description",
+                    "name": "card_body",
+                    "aria-label": "",
+                    "type": "wysiwyg",
+                    "instructions": "Paragraph under the card title. Used in Simple section layout. For Featured layout, optional when you use checklist items instead; leave empty to rely on checklist only.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "default_value": "",
+                    "allow_in_bindings": 0,
+                    "tabs": "all",
+                    "toolbar": "basic",
+                    "media_upload": 0,
+                    "delay": 0,
                     "parent_repeater": "field_svp_feature_cards"
                   },
                   {

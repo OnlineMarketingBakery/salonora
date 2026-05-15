@@ -89,6 +89,7 @@ export function DesignShowcaseGridSection({
   return (
     <section
       className={`py-16 md:py-24 ${section.whiteBackground ? "bg-white" : ""}`}
+      id="design-showcase-grid"
     >
       <Container>
         {(section.title || section.intro) && (

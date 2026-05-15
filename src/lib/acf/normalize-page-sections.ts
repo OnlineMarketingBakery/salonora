@@ -767,10 +767,18 @@ function mapKnownPageSectionLayout(
         cta_link: asLink(row.cta_link),
         cta_trailing_icon: asImage(row.cta_trailing_icon),
       };
-    case "salon_value_proposition":
+    case "salon_value_proposition": {
+      const layoutRaw = asString(
+        (row as Record<string, unknown>).section_layout,
+      );
+      const sectionLayout =
+        layoutRaw === "simple" || layoutRaw === "layout_1"
+          ? "simple"
+          : "featured";
       return {
         ...base,
         type: "salon_value_proposition",
+        sectionLayout,
         eyebrow: asString(row.eyebrow),
         title: asString(row.title),
         intro: asHtml(row.intro),
@@ -786,6 +794,9 @@ function mapKnownPageSectionLayout(
               icon?: unknown;
               checklist_icon?: unknown;
               title?: unknown;
+              card_body?: unknown;
+              body?: unknown;
+              description?: unknown;
               checklist_items?: unknown;
             }[]).map((c) => {
               const a = asString(c.accent);
@@ -795,16 +806,22 @@ function mapKnownPageSectionLayout(
                     .map((r) => ({ text: asString(r.item) }))
                     .filter((r) => r.text.trim() !== "")
                 : [];
+              const bodyHtml =
+                asHtml(c.card_body) ||
+                asHtml(c.body) ||
+                asHtml(c.description);
               return {
                 accent,
                 icon: asImage(c.icon),
                 checklistIcon: asImage(c.checklist_icon),
                 title: asString(c.title),
+                body: bodyHtml,
                 checklistItems,
               };
             })
           : [],
       };
+    }
     case "why_owners_choose":
       return {
         ...base,

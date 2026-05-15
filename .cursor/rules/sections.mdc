@@ -140,6 +140,9 @@ Figma **696:4046**: centered `title`; left column = two `bg-surface` cards (`for
 ### `our_promises`
 Figma **693:395** ("Frame 2147229263"): white section, centered `title`, repeater `items` (`icon`, select `icon_accent` `brand` | `rose`, `title`, WYSIWYG `description`) in a responsive four-column grid with circular icon discs.
 
+### `salon_value_proposition`
+**ACF `section_layout`** (select, REST key `section_layout`): `simple` or `layout_1` → compact row: centered **`title`** + WYSIWYG **`intro`**, then three **`feature_cards`** with top accent strip, icon, title, and per-card WYSIWYG **`card_body`** (also reads `body` / `description`). Checklist repeater is optional fallback when `card_body` is empty. **`featured`** (default, or `layout_2`): unchanged behaviour — eyebrow, title, intro, optional **`visual_image`** split vs centered surface block, checklist cards, optional footer CTA.
+
 ### `split_copy_framed`
 Unified split: framed photo + tilted brand panel + copy. **Normalized `type` is always `split_copy_framed`.** WordPress may still send legacy **`acf_fc_layout`** values `audience_promo_card` or `is_this_for_you`; the normalizer canonicalizes them (see `canonicalizeAcfPageLayout` + `normalizeSplitCopyFramedSection`).
 

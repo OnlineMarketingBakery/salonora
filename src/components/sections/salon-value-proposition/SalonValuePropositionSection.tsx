@@ -6,6 +6,7 @@ import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
 import { getImageUrl, getLargestImageUrl } from "@/lib/utils/media";
+import { stripTags } from "@/lib/utils/strings";
 import type {
   SalonValueCardAccentT,
   SalonValueCardT,
@@ -98,17 +99,27 @@ function CardChecklist({ card }: { card: SalonValueCardT }) {
   );
 }
 
+type SalonValueCardMode =
+  | "simple"
+  | "featured_compact"
+  | "featured_centered";
+
+function cardHasVisibleBody(html: string): boolean {
+  return stripTags(html).length > 0;
+}
+
 function ValueCard({
   card,
-  centeredVariant,
+  cardMode,
   accentPlacement = "top",
 }: {
   card: SalonValuePropositionSectionT["cards"][number];
-  centeredVariant?: boolean;
-  /** Split / homepage: top strip. Centered: bottom strip + checklist design. */
+  cardMode: SalonValueCardMode;
+  /** Split panel cards: top strip. Centered featured: bottom strip. */
   accentPlacement?: "top" | "bottom";
 }) {
-  const figmaCentered = Boolean(centeredVariant);
+  const figmaCentered = cardMode === "featured_centered";
+  const isSimple = cardMode === "simple";
 
   const accentStripTop = (
     <div
@@ -167,8 +178,28 @@ function ValueCard({
       </h3>
     ) : null;
 
-  const copyEl =
-    card.checklistItems.length > 0 ? <CardChecklist card={card} /> : null;
+  const hasBody = cardHasVisibleBody(card.body);
+  const copyEl = isSimple ? (
+    hasBody ? (
+      <RichText
+        html={card.body}
+        className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-none !prose-p:text-left !prose-p:text-base !prose-p:font-normal !prose-p:leading-[1.4] !prose-p:text-muted [&_p+_p]:mt-3! [&_strong]:font-semibold [&_strong]:text-navy"
+      />
+    ) : card.checklistItems.length > 0 ? (
+      <CardChecklist card={card} />
+    ) : null
+  ) : card.checklistItems.length > 0 ? (
+    <CardChecklist card={card} />
+  ) : hasBody ? (
+    <RichText
+      html={card.body}
+      className={
+        figmaCentered
+          ? "!prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-none !prose-p:text-left !prose-p:text-base !prose-p:font-normal !prose-p:leading-[1.4] !prose-p:text-muted [&_p+_p]:mt-3! [&_strong]:font-semibold [&_strong]:text-navy"
+          : "!prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-none !prose-p:text-left !prose-p:text-base !prose-p:font-normal !prose-p:leading-[1.6] !prose-p:text-muted [&_p+_p]:mt-3! [&_strong]:font-semibold [&_strong]:text-navy"
+      }
+    />
+  ) : null;
 
   const body = figmaCentered ? (
     <div className="flex min-h-[min(432px,100%)] flex-1 flex-col gap-3 p-[34px] pb-[34px]">
@@ -188,9 +219,10 @@ function ValueCard({
     </div>
   );
 
-  const showTopAccent = !figmaCentered && accentPlacement === "top";
+  const showTopAccent =
+    isSimple || (!figmaCentered && accentPlacement === "top");
   const showBottomAccent =
-    figmaCentered || (!figmaCentered && accentPlacement === "bottom");
+    figmaCentered || (!isSimple && !figmaCentered && accentPlacement === "bottom");
 
   return (
     <article
@@ -200,6 +232,52 @@ function ValueCard({
       {body}
       {showBottomAccent ? accentStripBottom : null}
     </article>
+  );
+}
+
+function SimpleCardsLayout({
+  section,
+  titleLines,
+  cards,
+}: {
+  section: SalonValuePropositionSectionT;
+  titleLines: string[];
+  cards: SalonValuePropositionSectionT["cards"];
+}) {
+  return (
+    <div className="flex flex-col gap-10 sm:gap-11 lg:gap-[46px]">
+      <div
+        className={`${REVEAL_ITEM} mx-auto flex w-full max-w-[720px] flex-col items-center gap-4 text-center sm:gap-5`}
+      >
+        {titleLines.length > 0 ? (
+          <h2 className="font-sans text-[32px] font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-[40px] sm:leading-[1.1] md:text-[44px] lg:text-[48px] lg:leading-[56px]">
+            {titleLines.map((line, i) => (
+              <span key={i} className="block">
+                {line}
+              </span>
+            ))}
+          </h2>
+        ) : null}
+        {section.intro ? (
+          <RichText
+            html={section.intro}
+            className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-none !prose-p:text-center !prose-p:text-base !prose-p:font-normal !prose-p:leading-[1.6] !prose-p:text-muted [&_p+_p]:mt-3! [&_strong]:font-semibold [&_strong]:text-navy"
+          />
+        ) : null}
+      </div>
+
+      {cards.length > 0 ? (
+        <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-6">
+          {cards.map((card, i) => (
+            <ValueCard
+              key={`${section.id}-simple-card-${i}`}
+              card={card}
+              cardMode="simple"
+            />
+          ))}
+        </div>
+      ) : null}
+    </div>
   );
 }
 
@@ -263,7 +341,11 @@ function SplitPanelLayout({
       {cards.length > 0 ? (
         <div className="grid w-full grid-cols-1 gap-6 pt-2 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-6">
           {cards.map((card, i) => (
-            <ValueCard key={`${section.id}-card-${i}`} card={card} />
+            <ValueCard
+              key={`${section.id}-card-${i}`}
+              card={card}
+              cardMode="featured_compact"
+            />
           ))}
         </div>
       ) : null}
@@ -345,7 +427,7 @@ function CenteredFooterLayout({
               key={`${section.id}-card-${i}`}
               className="w-full max-w-[418px] lg:shrink-0"
             >
-              <ValueCard card={card} centeredVariant />
+              <ValueCard card={card} cardMode="featured_centered" />
             </div>
           ))}
         </div>
@@ -393,13 +475,29 @@ export function SalonValuePropositionSection({
     .map((l) => l.trim())
     .filter(Boolean);
 
-  const cards = section.cards.filter(
-    (c) =>
-      c.title.trim() ||
-      c.icon ||
-      c.checklistIcon ||
-      c.checklistItems.length > 0,
-  );
+  const cards = section.cards.filter((c) => {
+    const hasCopy =
+      cardHasVisibleBody(c.body) || c.checklistItems.length > 0;
+    return Boolean(
+      c.title.trim() || c.icon || c.checklistIcon || hasCopy,
+    );
+  });
+
+  const isSimpleLayout = section.sectionLayout === "simple";
+
+  if (isSimpleLayout) {
+    return (
+      <section className="bg-surface py-16 md:py-24">
+        <Container className="!max-w-[85rem]">
+          <SimpleCardsLayout
+            section={section}
+            titleLines={titleLines}
+            cards={cards}
+          />
+        </Container>
+      </section>
+    );
+  }
 
   const showSplitPanelLayout = Boolean(section.visualImage);
 
