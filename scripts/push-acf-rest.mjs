@@ -16,7 +16,13 @@ function readEnvFileText(absPath) {
   return buf.toString("utf8").replace(/^\uFEFF/, "");
 }
 
-function mergeEnvFromFile(absPath) {
+/**
+ * @param {string} absPath
+ * @param {{ override?: boolean }} [opts]
+ * When `override` is false (default), only fills missing/empty keys — matches old behaviour for `.env`.
+ * `.env.local` uses `override: true` so it always wins over Windows/shell env and stale values.
+ */
+function mergeEnvFromFile(absPath, { override = false } = {}) {
   if (!existsSync(absPath)) return;
   let text;
   try {
@@ -41,14 +47,15 @@ function mergeEnvFromFile(absPath) {
     }
     if (!key) continue;
     const cur = process.env[key];
-    if (cur === undefined || cur === "") process.env[key] = val;
+    if (override || cur === undefined || cur === "") process.env[key] = val;
   }
 }
 
-config({ path: envLocal, quiet: true });
+// Base first, then local with override so REVALIDATION_SECRET in .env.local beats OS/User env (common 401 cause).
 config({ path: envFallback, quiet: true });
-mergeEnvFromFile(envLocal);
+config({ path: envLocal, override: true, quiet: true });
 mergeEnvFromFile(envFallback);
+mergeEnvFromFile(envLocal, { override: true });
 
 const JSON_PATH = resolve(__dirname, "../acf-import-bundle.json");
 const WP_URL = process.env.WORDPRESS_API_URL?.trim();

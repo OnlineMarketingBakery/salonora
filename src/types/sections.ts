@@ -614,14 +614,14 @@ export type FormEmbedSectionT = CoreSection & {
   trackingContext: string;
 };
 
-/** Figma **1417:36** — pale blue rounded shell, centered title + subtitle, white card, CF7 lead form (surface inputs, gradient submit). */
+/** Figma **1417:36** — pale blue shell, centered title + subtitle (ACF), white card, built-in lead form → OMB Form Builder headless REST. */
 export type FreeDemoFormSectionT = CoreSection & {
   type: "free_demo_form";
   title: string;
   subtitle: string;
   footer_note: string;
-  formId: number;
-  formDefinition: CF7FormDefinition | null;
+  /** Published `cfb_form` post ID; ACF `omb_form` or legacy `form` post object. */
+  ombFormId: number;
   successMode: "inline" | "redirect";
   redirectLink: WpAcfLink | null;
   trackingContext: string;

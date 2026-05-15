@@ -191,6 +191,6 @@ const enriched = await enrichSections(sections, {
 });
 ```
 
-Enrichment is **selective by section type**: only `testimonials`, `latest_posts`, `blog_post_overview`, `case_study_overview`, `design_showcase_grid`, `form_embed`, `free_demo_form`, and `faq_contact_split` (when `useForm`) receive async data. All other sections pass through unchanged.
+Enrichment is **selective by section type**: only `testimonials`, `latest_posts`, `blog_post_overview`, `case_study_overview`, `design_showcase_grid`, `form_embed`, and `faq_contact_split` (when `useForm`) receive async data. All other sections pass through unchanged.
 
 Do not add synchronous logic to enrich-sections — it is intentionally async-only.

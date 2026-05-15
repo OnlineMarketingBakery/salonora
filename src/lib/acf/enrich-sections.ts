@@ -1,7 +1,7 @@
 import { fetchTestimonialsByIds } from "@/lib/wordpress/fetch-testimonials";
 import { fetchCf7Form } from "@/lib/wordpress/fetch-cf7-form";
+import { getCptRestBase, getDefaultContactFormId } from "@/lib/wordpress/config";
 import { wpFetchOptional } from "@/lib/wordpress/client";
-import { getCptRestBase } from "@/lib/wordpress/config";
 import type { ArchiveUrlQuery } from "@/lib/wordpress/archive-search-params";
 import type {
   AnySectionT,
@@ -38,6 +38,16 @@ function escapePlainForHtml(text: string): string {
 
 /** @deprecated Use ArchiveUrlQuery */
 export type BlogArchiveQuery = ArchiveUrlQuery;
+
+function resolvedContactFormId(primary: number, globals: GlobalSettings): number {
+  if (primary > 0) return primary;
+  const fromGlobals = globals.integrations.defaultContactForm;
+  if (typeof fromGlobals === "number" && Number.isFinite(fromGlobals) && fromGlobals > 0) {
+    return Math.floor(fromGlobals);
+  }
+  const fromEnv = Number(getDefaultContactFormId());
+  return Number.isFinite(fromEnv) && fromEnv > 0 ? Math.floor(fromEnv) : 0;
+}
 
 export type EnrichContext = {
   lang: Locale;
@@ -77,11 +87,9 @@ export async function enrichSections(
     } else if (s.type === "design_showcase_grid") {
       out.push(await enrichDesignShowcaseGrid(s as DesignShowcaseGridSectionT, ctx));
     } else if (s.type === "form_embed") {
-      const def = s.formId ? await fetchCf7Form(s.formId, lang) : null;
-      out.push({ ...s, formDefinition: def });
-    } else if (s.type === "free_demo_form") {
-      const def = s.formId ? await fetchCf7Form(s.formId, lang) : null;
-      out.push({ ...s, formDefinition: def });
+      const fid = resolvedContactFormId(s.formId, globals);
+      const def = fid ? await fetchCf7Form(fid, lang) : null;
+      out.push({ ...s, formId: fid, formDefinition: def });
     } else if (s.type === "faq_contact_split" && s.useForm) {
       const fid = s.customForm?.id || globals.integrations.defaultContactForm || 0;
       out.push({ ...s, formDefinition: fid ? await fetchCf7Form(Number(fid), lang) : null, defaultFormId: Number(fid) });

@@ -90,6 +90,13 @@ Use these functions from `src/lib/wordpress/config.ts`; never read `process.env`
 
 ---
 
+## OMB Form Builder (free demo)
+
+- Headless submit: `POST {WORDPRESS_API_URL}/custom-form-builder/v1/public/forms/{id}/submit` with JSON `{ cfb, cfb_visible_fields, cfb_post_id }` and `Authorization: Bearer` from `getOmbFormBuilderHeadlessSubmitSecret()` (`OMB_FORM_BUILDER_SUBMIT_SECRET` or `CFB_HEADLESS_SUBMIT_SECRET`, must match `CFB_HEADLESS_SUBMIT_SECRET` in WordPress).
+- Next proxy: `src/app/api/forms/free-demo/route.ts` + `submit-omb-free-demo-lead.ts`. Field keys inside `cfb` must match the published form’s field ids (see `README.md`).
+
+---
+
 ## ISR revalidation
 
 `POST /api/revalidate` with body:
@@ -121,6 +128,7 @@ Menus are resolved via `fetch-menu.ts`:
 | `WORDPRESS_APPLICATION_PASSWORD`  | Basic auth password (Application Password)           |
 | `REVALIDATION_SECRET`             | ISR revalidation shared secret                       |
 | `NEXT_PUBLIC_DEFAULT_CF7_FORM_ID` | Default CF7 form ID for contact forms                |
+| `OMB_FORM_BUILDER_SUBMIT_SECRET` / `CFB_HEADLESS_SUBMIT_SECRET` | Bearer for OMB Form Builder headless free-demo submit |
 | `WORDPRESS_SERVICE_REST_BASE`     | CPT REST base for services (default: `service`)      |
 | `WORDPRESS_TESTIMONIAL_REST_BASE` | CPT REST base for testimonials                       |
 | `WORDPRESS_CASE_STUDY_REST_BASE`  | CPT REST base for case studies (default: `case_study`) |

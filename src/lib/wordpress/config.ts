@@ -43,6 +43,16 @@ export function getDefaultContactFormId(): string | undefined {
   return process.env.NEXT_PUBLIC_DEFAULT_CF7_FORM_ID;
 }
 
+/**
+ * Bearer secret for `POST …/custom-form-builder/v1/public/forms/{id}/submit` (OMB Form Builder headless).
+ * Must match `CFB_HEADLESS_SUBMIT_SECRET` in WordPress `wp-config.php`.
+ */
+export function getOmbFormBuilderHeadlessSubmitSecret(): string | undefined {
+  const a = process.env.OMB_FORM_BUILDER_SUBMIT_SECRET?.trim();
+  const b = process.env.CFB_HEADLESS_SUBMIT_SECRET?.trim();
+  return a || b || undefined;
+}
+
 /** Fallback when WordPress Reading → Homepage is unavailable (older plugin) or not a static page. */
 export function getHomepageSlug(lang: "nl" | "en"): string {
   const key = `HOMEPAGE_SLUG_${lang.toUpperCase()}` as const;
