@@ -202,7 +202,7 @@ export type WhoWeAreForSectionT = CoreSection & {
   ctas: CtaItem[];
 };
 
-/** Figma **693:395** (“Frame 2147229263”) — centered heading + grid of promises: circular icon (brand/rose), title, body. */
+/** Figma **599:1448** (“Frame 2147229263”) — centered heading + grid of promises: circular icon (brand/rose), title, body. */
 export type OurPromisesItemT = {
   icon: WpImage | null;
   title: string;
@@ -411,6 +411,8 @@ export type SalonValuePropositionSectionT = CoreSection & {
   type: "salon_value_proposition";
   /** ACF select `section_layout`: compact intro row vs full featured block. */
   sectionLayout: SalonValuePropositionLayoutT;
+  /** ACF `white_background`: full-width white band (overrides default surface split). */
+  whiteBackground?: boolean;
   eyebrow: string;
   title: string;
   intro: string;

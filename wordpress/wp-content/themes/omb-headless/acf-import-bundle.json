@@ -6857,6 +6857,27 @@
                 "save_options": 0
               },
               {
+                "key": "field_omb_salon_value_proposition_white_background",
+                "label": "White section background",
+                "name": "white_background",
+                "aria-label": "",
+                "type": "true_false",
+                "instructions": "Uses a full-width white band behind this section instead of the default light surface.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "message": "",
+                "default_value": 0,
+                "ui": 1,
+                "ui_on_text": "Yes",
+                "ui_off_text": "No",
+                "allow_in_bindings": 0
+              },
+              {
                 "key": "field_svp_eyebrow",
                 "label": "Eyebrow",
                 "name": "eyebrow",

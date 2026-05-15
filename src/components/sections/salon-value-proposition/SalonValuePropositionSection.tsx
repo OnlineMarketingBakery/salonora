@@ -484,10 +484,18 @@ export function SalonValuePropositionSection({
   });
 
   const isSimpleLayout = section.sectionLayout === "simple";
+  const showSplitPanelLayout = Boolean(section.visualImage);
+  const sectionSurfaceClass = section.whiteBackground
+    ? "bg-white"
+    : isSimpleLayout
+      ? "bg-surface"
+      : showSplitPanelLayout
+        ? "bg-white"
+        : "bg-surface";
 
   if (isSimpleLayout) {
     return (
-      <section className="bg-surface py-16 md:py-24">
+      <section className={`py-16 md:py-24 ${sectionSurfaceClass}`}>
         <Container className="!max-w-[85rem]">
           <SimpleCardsLayout
             section={section}
@@ -499,12 +507,8 @@ export function SalonValuePropositionSection({
     );
   }
 
-  const showSplitPanelLayout = Boolean(section.visualImage);
-
   return (
-    <section
-      className={`py-16 md:py-24 ${showSplitPanelLayout ? "bg-white" : "bg-surface"}`}
-    >
+    <section className={`py-16 md:py-24 ${sectionSurfaceClass}`}>
       <Container className="!max-w-[85rem]">
         {showSplitPanelLayout ? (
           <SplitPanelLayout

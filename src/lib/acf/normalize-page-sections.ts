@@ -779,6 +779,7 @@ function mapKnownPageSectionLayout(
         ...base,
         type: "salon_value_proposition",
         sectionLayout,
+        whiteBackground: asBool(row.white_background),
         eyebrow: asString(row.eyebrow),
         title: asString(row.title),
         intro: asHtml(row.intro),

@@ -73,9 +73,17 @@ function CardGridWash() {
   );
 }
 
-function SolutionCheckRow({ text, listIcon }: { text: string; listIcon: WpImage | null }) {
+function SolutionCheckRow({
+  text,
+  listIcon,
+}: {
+  text: string;
+  listIcon: WpImage | null;
+}) {
   const customIcon =
-    listIcon != null && (getLargestImageUrl(listIcon) || getImageUrl(listIcon)) ? listIcon : null;
+    listIcon != null && (getLargestImageUrl(listIcon) || getImageUrl(listIcon))
+      ? listIcon
+      : null;
 
   const defaultMarker = (
     <span
@@ -100,26 +108,32 @@ function SolutionCheckRow({ text, listIcon }: { text: string; listIcon: WpImage 
     </span>
   );
 
-  const marker = customIcon != null ? (
-    <span className="relative flex size-[23px] shrink-0 items-end justify-center" aria-hidden>
-      <Media
-        image={customIcon}
-        width={46}
-        height={46}
-        className="h-[23px] w-[23px] object-contain object-bottom"
-        sizes="23px"
-        preferLargestSource
-        quality={95}
-      />
-    </span>
-  ) : (
-    defaultMarker
-  );
+  const marker =
+    customIcon != null ? (
+      <span
+        className="relative flex size-[23px] shrink-0 items-end justify-center"
+        aria-hidden
+      >
+        <Media
+          image={customIcon}
+          width={46}
+          height={46}
+          className="h-[23px] w-[23px] object-contain object-bottom"
+          sizes="23px"
+          preferLargestSource
+          quality={95}
+        />
+      </span>
+    ) : (
+      defaultMarker
+    );
 
   return (
     <li className="flex items-end gap-1.5">
       {marker}
-      <p className="min-w-0 flex-1 font-sans text-[14px] leading-[1.6] text-[var(--palette-white)]">{text}</p>
+      <p className="min-w-0 flex-1 font-sans text-[14px] leading-[1.6] text-[var(--palette-white)]">
+        {text}
+      </p>
     </li>
   );
 }
@@ -127,6 +141,16 @@ function SolutionCheckRow({ text, listIcon }: { text: string; listIcon: WpImage 
 /** Figma **1306:29** — portrait box (logical px). */
 const PROBLEM_FIGURE = { w: 235, h: 353 };
 const SOLUTION_FIGURE = { w: 288, h: 363 };
+
+/** Mobile: reserve space so copy does not run under bottom-right cutouts. */
+const PROBLEM_CONTENT_PB = "pb-[clamp(10.5rem,44vw,15.5rem)] lg:pb-0";
+const SOLUTION_CONTENT_PB = "pb-[clamp(11.5rem,48vw,17rem)] lg:pb-0";
+
+const FIGURE_BLEED = "-mb-10 -mr-8 sm:-mb-11 sm:-mr-10 lg:mb-0 lg:mr-0";
+
+const PROBLEM_FIGURE_SHELL = `pointer-events-none absolute bottom-0 right-0 z-[1] flex items-end justify-end overflow-visible ${FIGURE_BLEED} w-[200px] sm:h-[clamp(220px,50vw,360px)] sm:w-[clamp(188px,54vw,260px)] lg:h-[353px] lg:w-[235px]`;
+
+const SOLUTION_FIGURE_SHELL = `pointer-events-none absolute bottom-0 right-0 z-[1] flex items-end justify-end overflow-visible ${FIGURE_BLEED} w-[245px] sm:h-[clamp(240px,52vw,380px)] sm:w-[clamp(200px,58vw,288px)] lg:h-[363px] lg:w-[288px]`;
 
 export function ProblemSolutionSection({
   section,
@@ -144,15 +168,20 @@ export function ProblemSolutionSection({
     <section className="bg-[var(--palette-white)] py-12 md:py-16">
       <Container className="!max-w-[81.25rem]">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-6">
-          <article className={`${REVEAL_ITEM} ${cardShell}`} style={PROBLEM_CARD_BG}>
+          <article
+            className={`${REVEAL_ITEM} ${cardShell}`}
+            style={PROBLEM_CARD_BG}
+          >
             <CardGridWash />
-            <div className="relative z-[1] flex min-h-0 w-full min-w-0 flex-1 flex-col gap-[22px] self-stretch [overflow-wrap:anywhere]">
+            <div
+              className={`relative z-[1] flex min-h-0 w-full min-w-0 flex-col gap-[22px] self-stretch [overflow-wrap:anywhere] lg:flex-1 ${section.problem_image ? PROBLEM_CONTENT_PB : ""}`}
+            >
               {section.problem_title ? (
                 <h2 className="w-full font-sans text-[clamp(1.5rem,3.5vw,2.125rem)] font-semibold leading-[0.98] tracking-[-0.02em] text-[var(--palette-white)]">
                   {section.problem_title}
                 </h2>
               ) : null}
-              <div className="relative min-h-0 w-full min-w-0 flex-1 self-stretch lg:block lg:flow-root lg:min-h-0">
+              <div className="relative min-h-0 w-full min-w-0 self-stretch lg:flex-1 lg:block lg:flow-root lg:min-h-0">
                 {section.problem_text ? (
                   <RichText
                     html={section.problem_text}
@@ -170,31 +199,33 @@ export function ProblemSolutionSection({
               </div>
             </div>
             {section.problem_image ? (
-              <div
-                className="pointer-events-none relative z-[1] mt-8 flex w-full justify-center lg:absolute lg:bottom-0 lg:right-0 lg:mt-0 lg:flex lg:h-[353px] lg:w-[235px] lg:items-end lg:justify-end"
-                aria-hidden
-              >
+              <div className={PROBLEM_FIGURE_SHELL} aria-hidden>
                 <Media
                   image={section.problem_image}
                   width={470}
                   height={706}
-                  className="h-auto max-h-[min(340px,56vw)] w-full max-w-[235px] object-contain object-bottom lg:max-h-full lg:max-w-none"
-                  sizes="(max-width: 1024px) 45vw, 235px"
+                  className="h-full w-full max-h-none max-w-none object-contain object-bottom object-right"
+                  sizes="(max-width: 1024px) 58vw, 235px"
                   preferLargestSource
                 />
               </div>
             ) : null}
           </article>
 
-          <article className={`${REVEAL_ITEM} ${cardShell}`} style={SOLUTION_CARD_BG}>
+          <article
+            className={`${REVEAL_ITEM} ${cardShell}`}
+            style={SOLUTION_CARD_BG}
+          >
             <CardGridWash />
-            <div className="relative z-[1] flex min-h-0 w-full min-w-0 flex-1 flex-col gap-[22px] self-stretch [overflow-wrap:anywhere]">
+            <div
+              className={`relative z-[1] flex min-h-0 w-full min-w-0 flex-col gap-[22px] self-stretch [overflow-wrap:anywhere] lg:flex-1 ${section.solution_image ? SOLUTION_CONTENT_PB : ""}`}
+            >
               {section.solution_title ? (
                 <h2 className="w-full font-sans text-[clamp(1.5rem,3.5vw,2.125rem)] font-semibold leading-[0.98] tracking-[-0.02em] text-[var(--palette-white)]">
                   {section.solution_title}
                 </h2>
               ) : null}
-              <div className="relative min-h-0 w-full min-w-0 flex-1 self-stretch lg:block lg:flow-root lg:min-h-0">
+              <div className="relative min-h-0 w-full min-w-0 self-stretch lg:flex-1 lg:block lg:flow-root lg:min-h-0">
                 {section.solution_text ? (
                   <RichText
                     html={section.solution_text}
@@ -204,7 +235,11 @@ export function ProblemSolutionSection({
                 {section.solution_list.length > 0 ? (
                   <ul className="relative z-[2] mt-1 flex max-w-[22.3125rem] flex-col gap-3 lg:max-w-none">
                     {section.solution_list.map((row, i) => (
-                      <SolutionCheckRow key={`${row.text}-${i}`} text={row.text} listIcon={listIcon} />
+                      <SolutionCheckRow
+                        key={`${row.text}-${i}`}
+                        text={row.text}
+                        listIcon={listIcon}
+                      />
                     ))}
                   </ul>
                 ) : null}
@@ -225,16 +260,13 @@ export function ProblemSolutionSection({
               </div>
             </div>
             {section.solution_image ? (
-              <div
-                className="pointer-events-none relative z-[1] mt-8 flex w-full justify-center lg:absolute lg:bottom-0 lg:right-0 lg:mt-0 lg:flex lg:h-[363px] lg:w-[288px] lg:items-end lg:justify-end"
-                aria-hidden
-              >
+              <div className={SOLUTION_FIGURE_SHELL} aria-hidden>
                 <Media
                   image={section.solution_image}
                   width={576}
                   height={726}
-                  className="h-auto max-h-[min(360px,58vw)] w-full max-w-[288px] object-contain object-bottom lg:max-h-full lg:max-w-none"
-                  sizes="(max-width: 1024px) 50vw, 288px"
+                  className="h-full w-full max-h-none max-w-none object-contain object-bottom object-right"
+                  sizes="(max-width: 1024px) 62vw, 288px"
                   preferLargestSource
                 />
               </div>
