@@ -1,18 +1,29 @@
 import { Container } from "@/components/ui/Container";
 import { RichText } from "@/components/ui/RichText";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
+import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
 import type { FreeDemoFormSectionT } from "@/types/sections";
-import type { Locale } from "@/lib/i18n/locales";
 import { FreeDemoLeadForm } from "./FreeDemoLeadForm";
 
 /** Figma **1417:36** — Group 606: brand tilt underlay (−1.66°), 14px surface shell, 12px white card, 566px heading column, 476px form column. */
-export function FreeDemoFormSection({ section, lang }: { section: FreeDemoFormSectionT; lang: Locale }) {
+export function FreeDemoFormSection({
+  section,
+  lang,
+}: {
+  section: FreeDemoFormSectionT;
+  lang: Locale;
+}) {
   const redirect = resolveLink(section.redirectLink, lang);
   return (
-    <section className="overflow-visible pt-16 pb-24 md:pt-24 md:pb-32 lg:pb-40">
+    <section
+      className="overflow-visible pt-16 pb-24 md:pt-24 md:pb-32 lg:pb-40"
+      id="free-demo-form"
+    >
       <Container className="overflow-visible">
-        <div className={`${REVEAL_ITEM} relative mx-auto w-full max-w-[73.875rem] px-2 sm:px-4`}>
+        <div
+          className={`${REVEAL_ITEM} relative mx-auto w-full max-w-[73.875rem] px-2 sm:px-4`}
+        >
           <div
             aria-hidden
             className="pointer-events-none absolute left-1/2 top-[52%] z-0 h-[104%] w-[101%] max-w-none rounded-[14px] bg-brand sm:h-[102%] sm:w-[100%]"
