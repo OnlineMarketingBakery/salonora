@@ -1,6 +1,7 @@
 import { wpFetchCollectionOptional, wpFetchOptional } from "@/lib/wordpress/client";
 import { buildLocalePath } from "@/lib/i18n/get-alternates";
 import type { Locale } from "@/lib/i18n/locales";
+import { filterPostsByLocale } from "@/lib/i18n/post-language";
 import type { BlogPostOverviewCardT } from "@/types/sections";
 import { stripTags, toPlainText } from "@/lib/utils/strings";
 import { estimateReadMinutes } from "@/lib/blog/read-minutes";
@@ -16,6 +17,7 @@ type WpPostListRow = {
   id: number;
   slug: string;
   date?: string;
+  link?: string;
   title: { rendered: string };
   excerpt: { rendered: string };
   content?: { rendered: string };
@@ -69,7 +71,10 @@ export async function fetchBlogPostsCollection(options: {
   const path = `/wp/v2/posts?${params.toString()}`;
   const res = await wpFetchCollectionOptional<WpPostListRow[]>(path, { lang, revalidate: 30 });
   if (!res) return null;
-  const items = Array.isArray(res.data) ? res.data.map((p) => mapWpPostListRowToBlogOverviewCard(p, lang)) : [];
+  const raw = Array.isArray(res.data) ? res.data : [];
+  const filtered = filterPostsByLocale(raw, lang);
+  console.log(`[blog-collection] lang=${lang} before=${raw.length} after=${filtered.length} sampleLink=${raw[0]?.link}`);
+  const items = filtered.map((p) => mapWpPostListRowToBlogOverviewCard(p, lang));
   return { items, total: res.total, totalPages: res.totalPages };
 }
 

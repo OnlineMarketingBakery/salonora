@@ -13,6 +13,7 @@ import type {
 } from "@/types/sections";
 import { buildLocalePath } from "@/lib/i18n/get-alternates";
 import type { Locale } from "@/lib/i18n/locales";
+import { filterPostsByLocale } from "@/lib/i18n/post-language";
 import { toPlainText, stripTags } from "@/lib/utils/strings";
 import type { GlobalSettings } from "@/types/globals";
 import { fetchBlogPostsCollection, fetchBlogOverviewPostCardById } from "@/lib/wordpress/fetch-blog-posts-collection";
@@ -20,6 +21,7 @@ import { fetchCaseStudiesCollection, fetchCaseStudyOverviewCardById } from "@/li
 type WpCptList = {
   id: number;
   slug: string;
+  link?: string;
   title: { rendered: string };
   excerpt: { rendered: string };
 };
@@ -113,7 +115,9 @@ async function fetchServicesEmbeddedUpTo(lang: Locale, limit: number): Promise<W
       { lang, revalidate: 30 }
     );
     if (!chunk?.length) break;
-    out.push(...chunk);
+    const matching = filterPostsByLocale(chunk, lang);
+    console.log(`[services-grid] lang=${lang} before=${chunk.length} after=${matching.length} sampleLink=${chunk[0]?.link}`);
+    out.push(...matching);
     if (chunk.length < batch) break;
     page++;
   }

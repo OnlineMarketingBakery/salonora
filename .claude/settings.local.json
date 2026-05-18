@@ -1,7 +1,19 @@
 {
   "permissions": {
     "allow": [
-      "Bash(dir /B \"C:\\\\Users\\\\USER\\\\OneDrive\\\\Desktop\\\\OMB\\\\salonora\\\\src\\\\components\\\\sections\")"
+      "Bash(dir /B \"C:\\\\Users\\\\USER\\\\OneDrive\\\\Desktop\\\\OMB\\\\salonora\\\\src\\\\components\\\\sections\")",
+      "Bash(Get-ChildItem -Path . -Recurse -Filter \"*.tsx\" -o Name)",
+      "Bash(Select-String \"design-showcase|types|sections\")",
+      "Bash(Remove-Item -Recurse -Force .next -ErrorAction SilentlyContinue)",
+      "Bash(npm run *)",
+      "Bash(curl -s -o /dev/null \"http://localhost:3001/en/\")",
+      "Bash(curl -s -o /dev/null \"http://localhost:3001/en/diensten\" -w \"%{http_code}\\\\n\")",
+      "Bash(curl -s -o /dev/null \"http://localhost:3001/en/services\" -w \"%{http_code}\\\\n\")",
+      "Bash(curl -s -o /dev/null \"http://localhost:3001/nl/\" -w \"%{http_code}\\\\n\")",
+      "Bash(curl -s \"https://backend.salonora.eu/wp-json/wp/v2/pages?per_page=50&lang=en\")",
+      "Bash(node -e \"const d=require\\('fs'\\).readFileSync\\('/dev/stdin','utf8'\\); const pages=JSON.parse\\(d\\); pages.forEach\\(p=>console.log\\(p.id, p.slug\\)\\);\")",
+      "Bash(node -e \"const pages=require\\('/tmp/wp_pages.json'\\); pages.forEach\\(p=>console.log\\(p.id, p.slug\\)\\);\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"http://localhost:3001/en/\")"
     ]
   }
 }
