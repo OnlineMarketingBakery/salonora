@@ -260,7 +260,7 @@ export function PricingDualCardsSection({
               </div>
 
               {person ? (
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 z-1 col-start-1 row-start-1 flex items-end justify-center max-lg:px-6 sm:max-lg:px-12 lg:inset-x-auto lg:right-10 lg:col-start-2 lg:row-start-1 lg:justify-end xl:right-12">
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 z-1 flex items-end justify-center max-lg:px-6 sm:max-lg:px-12 lg:inset-x-auto lg:right-10 lg:w-[min(42%,440px)] lg:justify-end xl:right-12">
                   <Media
                     image={person}
                     width={560}
