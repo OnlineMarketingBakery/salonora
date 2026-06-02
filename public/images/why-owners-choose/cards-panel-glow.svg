@@ -1,0 +1,17 @@
+﻿<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" viewBox="0 0 478 437" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <g clip-path="url(#why-owners-cards-glow-clip)">
+    <g filter="url(#why-owners-cards-glow-blur)">
+      <circle cx="55" cy="399" r="91" fill="#3990F0"/>
+    </g>
+  </g>
+  <defs>
+    <filter id="why-owners-cards-glow-blur" x="-336" y="8" width="782" height="782" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+      <feGaussianBlur stdDeviation="150" result="effect1_foregroundBlur"/>
+    </filter>
+    <clipPath id="why-owners-cards-glow-clip">
+      <path d="M0 0H478V437H14C6.26802 437 0 430.732 0 423V0Z" fill="white"/>
+    </clipPath>
+  </defs>
+</svg>

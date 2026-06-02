@@ -30,6 +30,19 @@ const portraitHaloGradient: CSSProperties = {
 /** Figma 597:6060 — Ellipse 1995 arc + white rim (757×757). */
 const PANEL_ARC_ELLIPSE_SRC = "/partner-intro-ellipse.svg";
 
+/**
+ * Figma 1714:1119 / 1714:1120 — left cards panel (638×668).
+ * Base #ebf3fe + two blurred Ellipse 1975 layers (1714:1122 blue BL, 1714:1124 light TR).
+ * Ellipse centers on panel: ~(55, 630) and ~(583, 38); r=91 + ~150px blur.
+ */
+const cardsPanelBackdropStyle: CSSProperties = {
+  backgroundColor: "var(--palette-surface)",
+  backgroundImage: [
+    "radial-gradient(ellipse 74% 70% at 8.6% 94.3%, color-mix(in srgb, var(--palette-brand) 36%, transparent) 0%, color-mix(in srgb, var(--palette-brand) 10%, transparent) 40%, transparent 72%)",
+    "radial-gradient(ellipse 74% 70% at 91.4% 5.7%, color-mix(in srgb, var(--palette-white) 92%, #d27e91 8%) 0%, color-mix(in srgb, var(--palette-white) 55%, transparent) 36%, transparent 72%)",
+  ].join(", "),
+};
+
 function accentBarClass(accent: SalonValueCardAccentT) {
   return accent === "rose" ? "bg-[#d27e91]" : "bg-[#3990f0]";
 }
@@ -40,26 +53,19 @@ function iconTileClass(accent: SalonValueCardAccentT) {
 
 function OwnersChooseCard({
   card,
-  index,
 }: {
   card: WhyOwnersChooseSectionT["cards"][number];
-  index: number;
 }) {
-  const solidEmphasis = index === 1;
-  const surfaceClass = solidEmphasis
-    ? "bg-white shadow-[0px_6px_24px_rgba(21,41,81,0.24)]"
-    : "border border-white/50 bg-gradient-to-b from-white to-white/[0.4] backdrop-blur-[11px]";
-
   return (
     <article
-      className={`${REVEAL_ITEM} relative flex w-full min-w-0 items-center pr-[18px]`}
+      className={`${REVEAL_ITEM} group relative flex w-full min-w-0 items-center pr-[18px]`}
     >
       <div
         className={`mr-[-18px] h-[85px] w-[23px] shrink-0 rounded-[10px] ${accentBarClass(card.accent)}`}
         aria-hidden
       />
       <div
-        className={`mr-[-18px] flex min-h-[127px] min-w-0 flex-1 flex-col justify-center gap-2.5 rounded-[10px] p-6 sm:p-6 ${surfaceClass}`}
+        className="mr-[-18px] flex min-h-[127px] min-w-0 flex-1 flex-col justify-center gap-2.5 rounded-[10px] border border-white/50 bg-gradient-to-b from-white to-white/[0.4] p-6 backdrop-blur-[11px] transition-[background-color,box-shadow,border-color] duration-200 group-hover:border-transparent group-hover:bg-white group-hover:shadow-[0px_6px_24px_rgba(21,41,81,0.24)] sm:p-6"
       >
         <div className="flex min-w-0 items-center gap-5">
           <div
@@ -92,6 +98,16 @@ function OwnersChooseCard({
         </div>
       </div>
     </article>
+  );
+}
+
+function WhyOwnersChooseCardsPanelBackdrop() {
+  return (
+    <div
+      className="pointer-events-none absolute inset-0 rounded-[14px]"
+      style={cardsPanelBackdropStyle}
+      aria-hidden
+    />
   );
 }
 
@@ -171,23 +187,16 @@ export function WhyOwnersChooseSection({
           </header>
 
           <div className="grid w-full grid-cols-1 items-stretch gap-8 lg:grid-cols-2 lg:gap-10">
+            {/* Figma 1714:1118 — 638×668, p-48, absolute bg 1714:1119 behind cards */}
             <div
-              className={`${REVEAL_ITEM} relative isolate min-h-[min(560px,100%)] overflow-hidden rounded-[14px] bg-[#ebf3fe] p-6 sm:p-10 lg:p-12`}
+              className={`${REVEAL_ITEM} relative isolate flex min-h-[min(560px,100%)] flex-col justify-center overflow-hidden rounded-[14px] p-6 sm:p-10 lg:min-h-[668px] lg:p-12`}
             >
-              <div
-                className="pointer-events-none absolute -left-24 bottom-0 h-[55%] w-[75%] rounded-full bg-brand/[0.07] blur-3xl"
-                aria-hidden
-              />
-              <div
-                className="pointer-events-none absolute -right-16 top-0 h-[45%] w-[60%] rounded-full bg-white/80 blur-3xl"
-                aria-hidden
-              />
-              <div className="relative z-10 flex flex-col gap-5">
+              <WhyOwnersChooseCardsPanelBackdrop />
+              <div className="relative z-10 flex flex-col gap-[20px]">
                 {cards.map((card, i) => (
                   <OwnersChooseCard
                     key={`${section.id}-woc-${i}`}
                     card={card}
-                    index={i}
                   />
                 ))}
               </div>

@@ -6,28 +6,7 @@ import { resolveLink } from "@/lib/utils/links";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { WhySalonoraDifferentSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
-
-function InsightPattern() {
-  return (
-    <div
-      className="pointer-events-none absolute inset-0 overflow-hidden rounded-[14px] opacity-[0.24]"
-      aria-hidden
-    >
-      <div
-        className="absolute left-0 top-0 h-[160%] w-[75%] -translate-x-[8%] -translate-y-[10%]"
-        style={{
-          backgroundImage: `repeating-radial-gradient(
-            circle at 18% 22%,
-            transparent 0,
-            transparent 20px,
-            rgba(255, 255, 255, 0.16) 20px,
-            rgba(255, 255, 255, 0.16) 21px
-          )`,
-        }}
-      />
-    </div>
-  );
-}
+import { InsightPattern } from "@/components/sections/why-salonora-shared/InsightPattern";
 
 export function WhySalonoraDifferentSection({
   section,
@@ -48,11 +27,11 @@ export function WhySalonoraDifferentSection({
   const ctaLabel = primaryCta?.text || ctaLink?.label || (ctaHref ? "Meer informatie" : "");
 
   return (
-    <section className="bg-[#ebf3fe] py-16 sm:py-20 md:pt-[88px] md:pb-[85px]">
-      <Container className="!max-w-[85rem]">
+    <section className="bg-surface py-16 sm:py-20 md:pt-[88px] md:pb-[85px]">
+      <Container className="max-w-[1300px]!">
         <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between lg:gap-5">
           <div
-            className={`${REVEAL_ITEM} flex w-full max-w-[min(100%,420px)] shrink-0 flex-col gap-6 lg:max-w-[382px]`}
+            className={`${REVEAL_ITEM} flex w-full max-w-[382px] shrink-0 flex-col gap-6`}
           >
             <div className="flex flex-col gap-[14px]">
               {titleLines.length > 0 ? (
@@ -93,13 +72,13 @@ export function WhySalonoraDifferentSection({
             ) : null}
           </div>
 
-          <div className={`${REVEAL_ITEM} relative w-full min-w-0 lg:flex-1`}>
-            <div className="relative isolate overflow-visible rounded-[14px] bg-gradient-to-b from-[#3990f0] to-[#0569d7] px-5 pb-10 pt-8 sm:px-8 sm:pb-12 sm:pt-10 lg:flex lg:min-h-[509px] lg:flex-col lg:px-14 lg:pb-0 lg:pt-10">
+          <div className={`${REVEAL_ITEM} relative w-full min-w-0 lg:w-[898px] lg:max-w-[898px] lg:shrink-0`}>
+            <div className="relative isolate overflow-hidden rounded-[14px] bg-linear-to-b from-brand to-brand-strong px-5 py-8 sm:px-8 sm:py-10 lg:flex lg:h-[509px] lg:items-center lg:justify-center lg:px-14 lg:py-0">
               <InsightPattern />
-              <div className="relative z-10 flex w-full flex-1 flex-col items-center gap-8 lg:min-h-0 lg:flex-row lg:items-stretch lg:justify-center lg:gap-[45px]">
-                <div className="mx-auto flex w-full max-w-[417px] flex-col items-center gap-[15px] lg:mx-0 lg:w-[417px] lg:max-w-[417px] lg:shrink-0 lg:self-center lg:items-stretch">
+              <div className="relative z-10 flex w-full flex-col items-center gap-8 lg:flex-row lg:items-center lg:justify-center lg:gap-[45px]">
+                <div className="flex w-full max-w-[417px] flex-col items-center gap-[15px] lg:shrink-0 lg:items-stretch">
                   {section.insightHeading ? (
-                    <p className="text-center font-sans text-[28px] font-semibold leading-tight text-white sm:text-[32px] lg:text-[34px] lg:leading-[56px]">
+                    <p className="text-center font-sans text-[28px] font-semibold leading-[56px] text-white sm:text-[32px] lg:text-[34px]">
                       {section.insightHeading}
                     </p>
                   ) : null}
@@ -131,12 +110,12 @@ export function WhySalonoraDifferentSection({
                 </div>
 
                 {section.phoneImage ? (
-                  <div className="relative z-20 flex w-full max-w-[280px] shrink-0 justify-center sm:max-w-[300px] lg:flex lg:w-[324px] lg:max-w-[324px] lg:shrink-0 lg:flex-col lg:items-center lg:justify-end lg:self-stretch lg:overflow-visible lg:leading-[0]">
+                  <div className="relative z-20 flex h-[300px] w-full max-w-[324px] shrink-0 items-end justify-center sm:h-[380px] lg:h-[443px] lg:w-[324px]">
                     <Media
                       image={section.phoneImage}
                       width={648}
                       height={886}
-                      className="block h-auto w-full max-w-[280px] object-contain object-bottom leading-none drop-shadow-[0_20px_40px_rgba(0,39,82,0.35)] sm:max-w-[300px] lg:max-h-[min(443px,100%)] lg:w-full lg:max-w-[324px]"
+                      className="block h-full w-full object-contain object-bottom drop-shadow-[0_20px_40px_rgba(0,39,82,0.35)]"
                       sizes="(min-width: 1024px) 324px, 70vw"
                       preferLargestSource
                     />

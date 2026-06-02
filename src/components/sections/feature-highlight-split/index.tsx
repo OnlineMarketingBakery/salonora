@@ -1,3 +1,4 @@
+/** Figma **346:5623** — badge/heading/CTA **597:5386**, phone **597:5432**, cards **597:5396**. */
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
@@ -8,8 +9,16 @@ import { resolveLink } from "@/lib/utils/links";
 import type { FeatureHighlightSplitSectionT } from "@/types/sections";
 import type { CSSProperties } from "react";
 
-/** Exported from Figma (`68aa8766d05fb7bf86a05084_hero-bg`): mesh wash before blue color-blend. */
+/** Figma **346:5625** — mesh wash before brand color-blend (**346:5626**). */
 const HERO_BG_SRC = "/feature-highlight-split-hero-bg.png";
+
+/** Figma page coords relative to content origin (x=142): left 0, phone 186, cards 788. */
+const LG_LEFT_W = 341;
+const LG_PHONE_L = 186;
+const LG_PHONE_W = 568;
+const LG_PHONE_H = 618;
+const LG_CARDS_L = 788;
+const LG_CARDS_W = 368;
 
 /** Figma 946:34 — heading supports manual line breaks; strip tags only when splitting. */
 function linesFromHeading(raw: string | undefined): string[] {
@@ -20,10 +29,6 @@ function linesFromHeading(raw: string | undefined): string[] {
     .filter(Boolean);
 }
 
-/**
- * Hero wash — desktop `346:5625` (img h 134.3%); mobile artboard `597:2296` under `597:2295`
- * (img h 186.44%, same asset + crop). Brand tint still `346:5626` / `597:2297`.
- */
 const heroBgImageStyle: Pick<CSSProperties, "backgroundImage"> = {
   backgroundImage: `url("${HERO_BG_SRC}")`,
 };
@@ -33,14 +38,14 @@ const brandColorBlendLayer: CSSProperties = {
   mixBlendMode: "color",
 };
 
-/** Cards: gradient + shadow per Figma (346:6111 …). */
+/** Cards: Figma **346:6111** — white → 53% white gradient + soft shadow. */
 const cardFace: CSSProperties = {
   background: `linear-gradient(
     90deg,
     var(--palette-white) 0%,
     color-mix(in srgb, var(--palette-white) 53%, transparent) 100%
   )`,
-  boxShadow: `0 11px 12px color-mix(in srgb, var(--palette-muted) 10%, transparent)`,
+  boxShadow: "0 11px 24px rgba(67, 87, 128, 0.1)",
 };
 
 const headlineStyle: CSSProperties = {
@@ -50,20 +55,167 @@ const headlineStyle: CSSProperties = {
 
 const cardProse = [
   "!prose-p:mb-[5px] !prose-p:mt-0 last:!prose-p:mb-0",
-  "!prose-p:max-w-none !prose-p:text-lg !prose-p:font-medium !prose-p:leading-[1.1]",
+  "!prose-p:max-w-none !prose-p:text-[18px] !prose-p:font-medium !prose-p:leading-[1.1]",
   "!prose-p:text-navy-deep prose-strong:text-navy-deep",
   "[&_p:last-child]:!mb-0",
 ].join(" ");
 
-function lgGridColsClass(hasLeft: boolean, hasVisual: boolean, hasPromises: boolean): string {
-  if (hasLeft && hasVisual && hasPromises) return "lg:grid-cols-[341px_568px_368px]";
-  if (hasLeft && hasVisual) return "lg:grid-cols-[341px_568px]";
-  if (hasVisual && hasPromises) return "lg:grid-cols-[568px_368px]";
-  if (hasLeft && hasPromises) return "lg:grid-cols-[341px_368px]";
-  if (hasLeft) return "lg:grid-cols-[341px]";
-  if (hasVisual) return "lg:grid-cols-[568px]";
-  if (hasPromises) return "lg:grid-cols-[368px]";
-  return "";
+/** Figma **597:5407–5410** — flat-left tab with curved right edge (not a symmetric pill). */
+const ACCENT_PATH =
+  "M0 0C5.79402 6.4378 9 14.7924 9 23.4536V26.5464C9 35.2076 5.79402 43.5622 0 50V0Z";
+
+function CardAccent({ variant }: { variant: "brand" | "rose" }) {
+  const fill = variant === "brand" ? "#3990F0" : "#D27E91";
+
+  return (
+    <svg
+      width={9}
+      height={50}
+      viewBox="0 0 9 50"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className="pointer-events-none absolute top-1/2 left-0 z-[1] block h-[50px] w-[9px] min-w-[9px] shrink-0 -translate-y-1/2"
+      aria-hidden
+    >
+      <path d={ACCENT_PATH} fill={fill} />
+    </svg>
+  );
+}
+
+function PromiseCard({
+  html,
+  index,
+  isLongCard,
+}: {
+  html: string;
+  index: number;
+  isLongCard: boolean;
+}) {
+  const shortCardProse = " [&_p]:whitespace-nowrap";
+  const longCardProse = " [&_p]:max-w-[275px] [&_p]:whitespace-normal";
+
+  return (
+    <div
+      className={`relative flex w-full shrink-0 items-center rounded-[14px] px-[32px] ${
+        isLongCard ? "h-[121px]" : "h-[80px]"
+      }`}
+      style={cardFace}
+    >
+      <CardAccent variant={index % 2 === 0 ? "brand" : "rose"} />
+      <RichText
+        html={html}
+        className={`relative z-[2] w-full max-w-none ${cardProse}${isLongCard ? longCardProse : shortCardProse}`}
+      />
+    </div>
+  );
+}
+
+function LeftColumn({
+  badge,
+  titleLines,
+  ctaHref,
+  ctaLabel,
+  ctaTarget,
+  className = "",
+  style,
+}: {
+  badge?: string;
+  titleLines: string[];
+  ctaHref?: string;
+  ctaLabel?: string;
+  ctaTarget?: string;
+  className?: string;
+  style?: CSSProperties;
+}) {
+  return (
+    <div className={`flex flex-col gap-7 lg:gap-[28px] ${className}`} style={style}>
+      <div className="flex flex-col gap-[19px]">
+        {badge?.trim() ? (
+          <span className="inline-flex h-[42px] w-[146px] items-center justify-center rounded-[21px] bg-[#fefeff] px-5 text-base font-medium leading-[1.6] text-brand">
+            {badge.trim()}
+          </span>
+        ) : null}
+        {titleLines.length > 0 ? (
+          <h2
+            className="min-w-0 font-sans font-semibold tracking-normal text-navy-deep"
+            style={headlineStyle}
+          >
+            {titleLines.map((line, i) => (
+              <span key={i} className="block">
+                {line}
+              </span>
+            ))}
+          </h2>
+        ) : null}
+      </div>
+      {ctaHref && ctaLabel?.trim() ? (
+        <Button
+          href={ctaHref}
+          target={ctaTarget}
+          variant="ctaBrand"
+          ctaSize="package"
+          ctaElevation="none"
+          ctaFullWidth={false}
+          ctaJustify="center"
+          className="!h-[63px] !min-h-[63px] w-full max-w-[252px] gap-9 !rounded-[31.5px] !px-[22px] !py-[18px] !text-xl !font-normal !leading-normal [box-shadow:0_6px_10px_rgba(57,144,240,0.54)] sm:!w-[252px]"
+          arrowClassName="size-[27px] shrink-0"
+        >
+          {ctaLabel.trim()}
+        </Button>
+      ) : null}
+    </div>
+  );
+}
+
+function PhoneColumn({
+  mockup,
+  className = "",
+  style,
+}: {
+  mockup: NonNullable<FeatureHighlightSplitSectionT["mockup_image"]>;
+  className?: string;
+  style?: CSSProperties;
+}) {
+  return (
+    <div className={`flex justify-center ${className}`} style={style}>
+      <div className="relative h-auto w-full max-w-[568px] lg:h-[618px] lg:max-w-none">
+        <Media
+          image={mockup}
+          width={568}
+          height={618}
+          className="mx-auto h-auto w-full object-contain object-bottom lg:h-full lg:max-h-[618px]"
+          sizes="(min-width: 1024px) 568px, 100vw"
+          preferLargestSource
+        />
+      </div>
+    </div>
+  );
+}
+
+function PromiseCards({
+  promises,
+  className = "",
+  style,
+}: {
+  promises: NonNullable<FeatureHighlightSplitSectionT["promise_items"]>;
+  className?: string;
+  style?: CSSProperties;
+}) {
+  return (
+    <div className={`flex w-full flex-col gap-[20px] overflow-visible ${className}`} style={style}>
+      {promises.map((item, i) => {
+        const isLongCard = i === promises.length - 1 && promises.length > 1;
+        return (
+          <PromiseCard
+            key={i}
+            html={item.text ?? ""}
+            index={i}
+            isLongCard={isLongCard}
+          />
+        );
+      })}
+    </div>
+  );
 }
 
 export function FeatureHighlightSplitSection({
@@ -89,117 +241,83 @@ export function FeatureHighlightSplitSection({
     Boolean(ctaHref && ctaLabel.trim());
   const hasVisual = Boolean(mockup);
   const hasPromises = promises.length > 0;
+  const useFigmaDesktopLayout = hasLeft && hasVisual && hasPromises;
 
   if (!hasLeft && !hasVisual && !hasPromises) {
     return null;
   }
 
-  const gridCols = lgGridColsClass(hasLeft, hasVisual, hasPromises);
-
   return (
-    <section className="relative isolate overflow-hidden py-14 sm:py-16 lg:flex lg:min-h-[804px] lg:items-center lg:py-0">
-      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden>
-        {/* Fallback base so blend never sits on empty transparency before paint */}
+    <section className="relative isolate overflow-hidden py-14 sm:py-16 lg:min-h-[804px] lg:py-[93px]">
+      <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden bg-white" aria-hidden>
         <div
-          className="absolute inset-0"
+          className="absolute top-0 left-1/2 h-[901px] w-[1440px] max-w-none -translate-x-1/2 lg:h-[134.3%] lg:min-h-full lg:w-[138.84%] lg:translate-x-0 lg:left-[-19.42%]"
           style={{
-            background:
-              "color-mix(in srgb, var(--palette-white) 88%, var(--palette-surface))",
+            ...heroBgImageStyle,
+            backgroundSize: "cover",
+            backgroundPosition: "top center",
+            backgroundRepeat: "no-repeat",
           }}
-          aria-hidden
-        />
-        <div
-          className="absolute top-0 left-[-19.42%] h-[186.44%] min-h-full w-[138.84%] bg-cover bg-top bg-no-repeat lg:h-[134.3%]"
-          style={heroBgImageStyle}
           aria-hidden
         />
         <div className="absolute inset-0" style={brandColorBlendLayer} aria-hidden />
       </div>
 
-      <Container className="relative z-10 w-full max-w-[90rem]">
+      <Container className="relative z-10 !max-w-[90rem]">
+        {/* Mobile / partial layouts */}
         <div
-          className={`mx-auto grid w-full max-w-[1345px] grid-cols-1 gap-10 lg:gap-x-[34px] lg:gap-y-0 lg:items-center ${gridCols}`}
+          className={`mx-auto flex w-full max-w-[1156px] flex-col gap-10 ${
+            useFigmaDesktopLayout ? "lg:hidden" : ""
+          }`}
         >
           {hasLeft ? (
-            <div
-              className={`${REVEAL_ITEM} relative z-10 flex w-full min-w-0 flex-col gap-7 lg:w-[341px] lg:gap-[28px]`}
-            >
-              <div className="flex flex-col gap-[19px]">
-                {section.badge?.trim() ? (
-                  <Button
-                    type="button"
-                    variant="white"
-                    className="h-[42px] min-h-[42px] w-fit rounded-[21px] border-0 bg-white px-5 py-0 text-base font-medium leading-[1.6] text-brand shadow-none hover:bg-white"
-                  >
-                    {section.badge.trim()}
-                  </Button>
-                ) : null}
-                {titleLines.length > 0 ? (
-                  <h2
-                    className="min-w-0 font-sans font-semibold tracking-normal text-navy-deep"
-                    style={headlineStyle}
-                  >
-                    {titleLines.map((line, i) => (
-                      <span key={i} className="block">
-                        {line}
-                      </span>
-                    ))}
-                  </h2>
-                ) : null}
-              </div>
-              {ctaHref && ctaLabel.trim() ? (
-                <Button
-                  href={ctaHref}
-                  target={ctaLink?.target}
-                  variant="ctaBrand"
-                  ctaSize="package"
-                  ctaElevation="none"
-                  ctaFullWidth={false}
-                  className="!h-[63px] !min-h-[63px] w-full max-w-[252px] gap-9 !rounded-[31.5px] !px-[22px] !py-[18px] !text-xl !font-normal !leading-normal [box-shadow:0_6px_10px_color-mix(in_srgb,var(--palette-brand)_54%,transparent)] sm:!w-[252px]"
-                  arrowClassName="size-[27px] shrink-0"
-                >
-                  {ctaLabel.trim()}
-                </Button>
-              ) : null}
-            </div>
+            <LeftColumn
+              className={REVEAL_ITEM}
+              badge={section.badge}
+              titleLines={titleLines}
+              ctaHref={ctaHref}
+              ctaLabel={ctaLabel}
+              ctaTarget={ctaLink?.target}
+            />
           ) : null}
-
           {hasVisual && mockup ? (
-            <div className={`${REVEAL_ITEM} relative z-0 flex w-full justify-center lg:w-[568px]`}>
-              <div className="relative h-auto w-full max-w-[568px]">
-                <Media
-                  image={mockup}
-                  width={568}
-                  height={618}
-                  className="mx-auto h-auto w-full object-contain"
-                  sizes="(min-width: 1024px) 568px, 100vw"
-                  preferLargestSource
-                />
-              </div>
-            </div>
+            <PhoneColumn mockup={mockup} className={REVEAL_ITEM} />
           ) : null}
-
           {hasPromises ? (
-            <div className={`${REVEAL_ITEM} relative z-10 flex w-full flex-col gap-5 lg:w-[368px]`}>
-              {promises.map((item, i) => {
-                const isLongCard =
-                  i === promises.length - 1 && promises.length > 1;
-                return (
-                  <div
-                    key={i}
-                    className={`flex items-center rounded-[14px] px-8 ${isLongCard ? "min-h-[121px]" : "min-h-[80px]"}`}
-                    style={cardFace}
-                  >
-                    <RichText
-                      html={item.text ?? ""}
-                      className={`w-full max-w-none ${cardProse}`}
-                    />
-                  </div>
-                );
-              })}
-            </div>
+            <PromiseCards promises={promises} className={REVEAL_ITEM} />
           ) : null}
         </div>
+
+        {/* Desktop: Figma absolute positions (597:5386 / 597:5432 / 597:5396) */}
+        {useFigmaDesktopLayout && mockup ? (
+          <div
+            className={`${REVEAL_ITEM} relative mx-auto hidden h-[618px] w-full max-w-[1156px] lg:block`}
+          >
+            <LeftColumn
+              className="absolute top-0 left-0 z-20"
+              style={{ width: LG_LEFT_W }}
+              badge={section.badge}
+              titleLines={titleLines}
+              ctaHref={ctaHref}
+              ctaLabel={ctaLabel}
+              ctaTarget={ctaLink?.target}
+            />
+            <PhoneColumn
+              mockup={mockup}
+              className="absolute top-0 z-10"
+              style={{
+                left: LG_PHONE_L,
+                width: LG_PHONE_W,
+                height: LG_PHONE_H,
+              }}
+            />
+            <PromiseCards
+              promises={promises}
+              className="absolute top-0 z-20"
+              style={{ left: LG_CARDS_L, width: LG_CARDS_W }}
+            />
+          </div>
+        ) : null}
       </Container>
     </section>
   );

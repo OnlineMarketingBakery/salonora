@@ -483,8 +483,10 @@ export function SalonValuePropositionSection({
     );
   });
 
-  const isSimpleLayout = section.sectionLayout === "simple";
   const showSplitPanelLayout = Boolean(section.visualImage);
+  /** WP may keep `simple` while a visual is set — use the featured split panel so EN/NL match Figma. */
+  const isSimpleLayout =
+    section.sectionLayout === "simple" && !showSplitPanelLayout;
   const sectionSurfaceClass = section.whiteBackground
     ? "bg-white"
     : isSimpleLayout
