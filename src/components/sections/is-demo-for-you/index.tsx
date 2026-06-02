@@ -8,17 +8,32 @@ import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
 import type { IsDemoForYouSectionT } from "@/types/sections";
 import type { WpImage } from "@/types/wordpress";
+import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties } from "react";
 
-/** Single-line `background` — newlines inside the value break `background` in some engines (flat blue panel). */
+/** Figma 696:4123 — vertical brand gradient on the portrait column. */
 const panelGradient: CSSProperties = {
-  background: [
-    "radial-gradient(120% 85% at 50% -5%, color-mix(in srgb, var(--palette-white) 32%, transparent) 0%, transparent 45%)",
-    "radial-gradient(95% 70% at 100% 100%, color-mix(in srgb, var(--palette-brand-strong) 55%, transparent) 0%, transparent 55%)",
-    "linear-gradient(168deg, var(--palette-brand) 0%, color-mix(in srgb, var(--palette-brand) 55%, var(--palette-brand-strong)) 48%, var(--palette-brand-strong) 100%)",
-  ].join(", "),
+  background: "linear-gradient(180deg, var(--palette-brand) 0%, #0079ff 100%)",
 };
+
+/** Figma 696:4124 — all three ring strokes, exported as one RGBA overlay (576×677). */
+const PORTRAIT_PANEL_RINGS_SRC = "/is-demo-for-you/portrait-panel-rings.png";
+
+function PortraitPanelRings() {
+  return (
+    <Image
+      src={PORTRAIT_PANEL_RINGS_SRC}
+      alt=""
+      width={576}
+      height={677}
+      unoptimized
+      className="block h-full w-full select-none object-fill"
+      draggable={false}
+      aria-hidden
+    />
+  );
+}
 
 const footerBarGradient: CSSProperties = {
   background: [
@@ -192,38 +207,24 @@ export function IsDemoForYouSection({
 
               {hasPortrait ? (
                 <div
-                  className={`${REVEAL_ITEM} relative isolate flex min-h-[min(24rem,70vw)] w-full flex-col overflow-hidden rounded-xl lg:min-h-[36rem]`}
+                  className={`${REVEAL_ITEM} relative isolate mx-auto flex aspect-[576/677] w-full max-w-[36rem] flex-col overflow-hidden rounded-xl lg:mx-0`}
                   style={panelGradient}
                 >
-                  {section.panel_overlay ? (
-                    <div
-                      className="pointer-events-none absolute inset-0 opacity-90"
-                      aria-hidden
-                    >
-                      <Media
-                        image={section.panel_overlay}
-                        fill
-                        className="object-cover object-center"
-                        sizes="(min-width: 1024px) 40vw, 100vw"
-                      />
-                    </div>
-                  ) : null}
                   <div
-                    className="pointer-events-none absolute inset-0 opacity-25"
+                    className="pointer-events-none absolute inset-0 z-0"
                     aria-hidden
-                    style={{
-                      backgroundImage: `radial-gradient(circle at 50% 40%, color-mix(in srgb, var(--palette-white) 55%, transparent) 0%, transparent 55%)`,
-                    }}
-                  />
-                  {/* Padding on all sides + contain so head and feet stay inside the gradient card. */}
-                  <div className="relative flex min-h-0 flex-1 flex-col justify-end px-3 pt-14 sm:px-5 sm:pt-16 md:pt-20 lg:min-h-[28rem] lg:px-6 lg:pt-24">
-                    <div className="relative mx-auto w-full max-w-lg lg:max-w-none">
+                  >
+                    <PortraitPanelRings />
+                  </div>
+                  {/* Figma 696:4128 — portrait starts ~56px from panel top (8.3%). */}
+                  <div className="relative z-10 flex min-h-0 flex-1 flex-col justify-end px-2 pt-[8.3%] sm:px-4 lg:px-0">
+                    <div className="relative mx-auto w-full max-w-[34.125rem]">
                       <Media
                         image={portraitImage}
                         width={546}
                         height={621}
-                        className="mx-auto h-auto w-full max-h-[min(30rem,75vh)] object-contain object-center lg:max-h-[min(34rem,70vh)]"
-                        sizes="(min-width: 1024px) 40vw, 90vw"
+                        className="mx-auto h-auto w-full max-h-[min(38.625rem,78vh)] object-contain object-bottom lg:max-h-[38.8125rem]"
+                        sizes="(min-width: 1024px) 34.125rem, 92vw"
                         preferLargestSource
                       />
                     </div>

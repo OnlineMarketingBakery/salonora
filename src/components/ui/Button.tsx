@@ -97,7 +97,7 @@ const ctaLabelClass =
 
 function ctaLabelLayoutClass(ctaJustify: "center" | "between", hasArrow: boolean): string {
   const align = ctaJustify === "between" ? "text-left" : "text-center";
-  const width = hasArrow ? "flex-1" : "max-w-full";
+  const width = ctaJustify === "between" && hasArrow ? "flex-1" : "max-w-full";
   return `${ctaLabelClass} ${width} ${align}`;
 }
 
