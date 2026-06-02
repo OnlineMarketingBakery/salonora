@@ -378,25 +378,6 @@ function CenteredFooterLayout({
   const hasFooterCta = Boolean(footerHref);
   const showFooterBlock = hasFooterCopy || hasFooterCta;
 
-  const footerIcon = section.footerCtaIcon;
-  const footerIconSrc =
-    footerIcon != null
-      ? getLargestImageUrl(footerIcon) || getImageUrl(footerIcon)
-      : "";
-  const footerCtaArrow =
-    footerIcon && footerIconSrc !== "" ? (
-      <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-white">
-        <Media
-          image={footerIcon}
-          width={40}
-          height={40}
-          className="h-5 w-5 shrink-0 object-contain"
-          sizes="20px"
-          preferLargestSource
-        />
-      </span>
-    ) : undefined;
-
   return (
     <div className="flex flex-col items-center gap-10 sm:gap-10 lg:gap-10">
       <div
@@ -454,10 +435,11 @@ function CenteredFooterLayout({
                 href={footerHref}
                 target={footerResolved?.target}
                 variant="ctaBrand"
-                ctaSize="promo"
+                ctaSize="compact"
                 ctaJustify="between"
                 ctaFullWidth
-                arrowContent={footerCtaArrow}
+                arrowClassName="h-5 w-5 shrink-0"
+                className="!px-4 sm:!px-[17px]"
               >
                 {footerLabel}
               </Button>
