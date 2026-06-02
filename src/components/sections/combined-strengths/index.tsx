@@ -158,16 +158,16 @@ export function CombinedStrengthsSection({
               className={`${REVEAL_ITEM} flex min-h-[111px] w-full flex-col items-center justify-center gap-4 overflow-hidden rounded-[20px] px-6 py-8 sm:flex-row sm:gap-6 sm:px-10`}
             >
               {section.footer_logo ? (
-                <div className="relative h-10 w-auto shrink-0 sm:h-11">
+                <span className="inline-flex size-12 shrink-0 items-center justify-center rounded-full bg-white sm:size-14">
                   <Media
                     image={section.footer_logo}
-                    width={193}
-                    height={84}
-                    className="h-full w-auto max-w-[12rem] object-contain object-center"
-                    sizes="200px"
+                    width={96}
+                    height={96}
+                    className="h-8 w-8 object-contain sm:h-9 sm:w-9"
+                    sizes="56px"
                     preferLargestSource
                   />
-                </div>
+                </span>
               ) : null}
               {section.footer_text ? (
                 <p className="text-center font-sans text-lg font-semibold leading-snug text-[var(--palette-white)] sm:text-left sm:text-xl">
