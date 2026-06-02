@@ -31,6 +31,14 @@ import { FaqSection } from "@/components/sections/faq/FaqSection";
 import { HowItWorksStepsSectionShell } from "@/components/sections/how-it-works-steps/shell";
 import { ScrollingTickerSectionShell } from "@/components/sections/scrolling-ticker/shell";
 
+const HeroWaveDashboardSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/hero-wave-dashboard").then((mod) => ({
+      default: mod.HeroWaveDashboardSection,
+    })),
+  { ssr: true }
+);
+
 const DesignShowcaseGridSectionLazy = dynamic(
   () =>
     import("@/components/sections/design-showcase-grid").then((mod) => ({
@@ -228,6 +236,9 @@ type SectionRegistryShape = Record<AnySectionT["type"], SectionComponent>;
 
 export const sectionRegistry = {
   hero: asSection(HeroSection as (p: { section: never; lang: Locale }) => ReactNode),
+  hero_wave_dashboard: asSection(
+    HeroWaveDashboardSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
   cards: asSection(CardsSection as (p: { section: never; lang: Locale }) => ReactNode),
   cost_comparison: asSection(CostComparisonSection as (p: { section: never; lang: Locale }) => ReactNode),
   benefits_grid: asSection(BenefitsGridSection as (p: { section: never; lang: Locale }) => ReactNode),

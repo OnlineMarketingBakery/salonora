@@ -163,7 +163,7 @@ export function DesignShowcaseGridSection({
           </div>
         ) : null}
 
-        {footerCtas.length > 0 ? (
+        {/* {footerCtas.length > 0 ? (
           <div
             className={`${REVEAL_ITEM} mt-12 flex flex-wrap items-center justify-center gap-4`}
           >
@@ -191,7 +191,7 @@ export function DesignShowcaseGridSection({
               );
             })}
           </div>
-        ) : null}
+        ) : null} */}
       </Container>
     </section>
   );

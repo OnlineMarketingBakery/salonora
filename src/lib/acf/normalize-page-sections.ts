@@ -167,6 +167,7 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   growth_plans_split: true,
   guarantees_promise_split: true,
   hero: true,
+  hero_wave_dashboard: true,
   how_it_works_steps: true,
   image_intro_split: true,
   is_demo_for_you: true,
@@ -339,6 +340,18 @@ function mapKnownPageSectionLayout(
         offerTextSize,
       };
     }
+    case "hero_wave_dashboard":
+      return {
+        ...base,
+        type: "hero_wave_dashboard",
+        eyebrow: asString(row.eyebrow),
+        title: asString(row.title),
+        offerText: asHtml(row.offer_text),
+        ctas: mapCtaRepeater(row.ctas as Parameters<typeof mapCtaRepeater>[0]),
+        leftFloatingImage: asImage(row.left_floating_image),
+        rightFloatingImage: asImage(row.right_floating_image),
+        dashboardImage: asImage(row.dashboard_image),
+      };
     case "combined_strengths":
       return {
         ...base,

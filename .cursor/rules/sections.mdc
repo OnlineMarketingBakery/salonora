@@ -100,7 +100,7 @@ Sections registered as **`next/dynamic` lazy** (`ssr: true`): most newer section
 
 ---
 
-## All 54 section keys
+## All 55 section keys
 
 Keys are listed alphabetically. Keys with ✦ have extended Figma/implementation notes below.
 
@@ -113,7 +113,7 @@ demo_preview_split ✦      design_showcase_grid ✦    faq
 faq_contact_split ✦       feature_highlight_grid    feature_highlight_split
 features_checklist ✦      form_embed                founder_story_split ✦
 founders_banner ✦         free_demo_form ✦          growth_plans_split ✦     guarantee_split
-guarantees_promise_split ✦ hero                      how_it_works_steps
+guarantees_promise_split ✦ hero                      hero_wave_dashboard ✦     how_it_works_steps
 image_intro_split         is_demo_for_you ✦        latest_posts              media_text_checklist ✦
 origin_story_split ✦      our_promises ✦            partner_intro_split ✦
 pricing_dual_cards        pricing_packages         problem_solution ✦
@@ -127,6 +127,9 @@ why_salonora_anders       why_salonora_different   why_we_do_this
 ---
 
 ## Per-section extended notes
+
+### `hero_wave_dashboard`
+Figma **1727:27** ("Group 612"): full-bleed `/hero-wave-dashboard-bg.png` (1714:111 — gradient + wave); proportional 1440×1080 canvas; copy @ y186, avatars @ (120,272)/(1219,363), dashboard @ y463 width 990.5px; dual CTAs (white + brand). Nav is site-wide.
 
 ### `demo_preview_split`
 Figma **1397:31** ("Group 605"): rounded navy panel (diagonal gradient base + brand washes + corner grids + star mist); pill `badge`, multi-line `title`, WYSIWYG **`body`** (all paragraphs; use **bold** for lead phrases). Right column **`mockup_image`** (laptop shot, aspect ~2391:1411). **Container** uses `!max-w-[85rem]` to align with `split_copy_framed` / audience promo. Legacy REST rows may still send repeater `items`; the normalizer merges those into `body` when `body` is empty.
