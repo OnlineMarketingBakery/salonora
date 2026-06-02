@@ -30,6 +30,19 @@ const portraitHaloGradient: CSSProperties = {
 /** Figma 597:6060 — Ellipse 1995 arc + white rim (757×757). */
 const PANEL_ARC_ELLIPSE_SRC = "/partner-intro-ellipse.svg";
 
+/**
+ * Figma 1714:1119 / 1714:1120 — left cards panel (638×668).
+ * Base #ebf3fe + two blurred Ellipse 1975 layers (1714:1122 blue BL, 1714:1124 light TR).
+ * Ellipse centers on panel: ~(55, 630) and ~(583, 38); r=91 + ~150px blur.
+ */
+const cardsPanelBackdropStyle: CSSProperties = {
+  backgroundColor: "var(--palette-surface)",
+  backgroundImage: [
+    "radial-gradient(ellipse 74% 70% at 8.6% 94.3%, color-mix(in srgb, var(--palette-brand) 36%, transparent) 0%, color-mix(in srgb, var(--palette-brand) 10%, transparent) 40%, transparent 72%)",
+    "radial-gradient(ellipse 74% 70% at 91.4% 5.7%, color-mix(in srgb, var(--palette-white) 92%, #d27e91 8%) 0%, color-mix(in srgb, var(--palette-white) 55%, transparent) 36%, transparent 72%)",
+  ].join(", "),
+};
+
 function accentBarClass(accent: SalonValueCardAccentT) {
   return accent === "rose" ? "bg-[#d27e91]" : "bg-[#3990f0]";
 }
@@ -40,26 +53,19 @@ function iconTileClass(accent: SalonValueCardAccentT) {
 
 function OwnersChooseCard({
   card,
-  index,
 }: {
   card: WhyOwnersChooseSectionT["cards"][number];
-  index: number;
 }) {
-  const solidEmphasis = index === 1;
-  const surfaceClass = solidEmphasis
-    ? "bg-white shadow-[0px_6px_24px_rgba(21,41,81,0.24)]"
-    : "border border-white/50 bg-gradient-to-b from-white to-white/[0.4] backdrop-blur-[11px]";
-
   return (
     <article
-      className={`${REVEAL_ITEM} relative flex w-full min-w-0 items-center pr-[18px]`}
+      className={`${REVEAL_ITEM} group relative flex w-full min-w-0 items-center pr-[18px]`}
     >
       <div
         className={`mr-[-18px] h-[85px] w-[23px] shrink-0 rounded-[10px] ${accentBarClass(card.accent)}`}
         aria-hidden
       />
       <div
-        className={`mr-[-18px] flex min-h-[127px] min-w-0 flex-1 flex-col justify-center gap-2.5 rounded-[10px] p-6 sm:p-6 ${surfaceClass}`}
+        className="mr-[-18px] flex min-h-[127px] min-w-0 flex-1 flex-col justify-center gap-2.5 rounded-[10px] border border-white/50 bg-gradient-to-b from-white to-white/[0.4] p-6 backdrop-blur-[11px] transition-[background-color,box-shadow,border-color] duration-200 group-hover:border-transparent group-hover:bg-white group-hover:shadow-[0px_6px_24px_rgba(21,41,81,0.24)] sm:p-6"
       >
         <div className="flex min-w-0 items-center gap-5">
           <div
@@ -95,6 +101,16 @@ function OwnersChooseCard({
   );
 }
 
+function WhyOwnersChooseCardsPanelBackdrop() {
+  return (
+    <div
+      className="pointer-events-none absolute inset-0 rounded-[14px]"
+      style={cardsPanelBackdropStyle}
+      aria-hidden
+    />
+  );
+}
+
 function WhyOwnersChoosePanelBackdrop() {
   return (
     <div
@@ -110,7 +126,7 @@ function WhyOwnersChoosePanelBackdrop() {
         />
       </div>
       {/* Figma 597:6060 — x=62 y=305, 757×757 */}
-      <div className="absolute left-[9.72%] top-[60%] aspect-square w-[118.68%] max-w-[757px]">
+      <div className="absolute left-[4%] top-[58%] aspect-square w-[125%] max-w-[757px] lg:left-[9.72%] lg:top-[60%] lg:w-[118.68%]">
         <Image
           src={PANEL_ARC_ELLIPSE_SRC}
           alt=""
@@ -171,23 +187,16 @@ export function WhyOwnersChooseSection({
           </header>
 
           <div className="grid w-full grid-cols-1 items-stretch gap-8 lg:grid-cols-2 lg:gap-10">
+            {/* Figma 1714:1118 — 638×668, p-48, absolute bg 1714:1119 behind cards */}
             <div
-              className={`${REVEAL_ITEM} relative isolate min-h-[min(560px,100%)] overflow-hidden rounded-[14px] bg-[#ebf3fe] p-6 sm:p-10 lg:p-12`}
+              className={`${REVEAL_ITEM} relative isolate flex min-h-[min(560px,100%)] flex-col justify-center overflow-hidden rounded-[14px] p-6 sm:p-10 lg:min-h-[668px] lg:p-12`}
             >
-              <div
-                className="pointer-events-none absolute -left-24 bottom-0 h-[55%] w-[75%] rounded-full bg-brand/[0.07] blur-3xl"
-                aria-hidden
-              />
-              <div
-                className="pointer-events-none absolute -right-16 top-0 h-[45%] w-[60%] rounded-full bg-white/80 blur-3xl"
-                aria-hidden
-              />
-              <div className="relative z-10 flex flex-col gap-5">
+              <WhyOwnersChooseCardsPanelBackdrop />
+              <div className="relative z-10 flex flex-col gap-[20px]">
                 {cards.map((card, i) => (
                   <OwnersChooseCard
                     key={`${section.id}-woc-${i}`}
                     card={card}
-                    index={i}
                   />
                 ))}
               </div>
@@ -195,11 +204,15 @@ export function WhyOwnersChooseSection({
 
             {/* Figma Frame 2147229423 (597:6055): 638×668, copy inset 48px */}
             <div
-              className={`${REVEAL_ITEM} relative isolate flex min-h-[min(560px,100%)] flex-col overflow-hidden rounded-[14px] px-8 pt-8 sm:px-10 sm:pt-10 lg:min-h-[668px] lg:px-12 lg:pt-12`}
+              className={`${REVEAL_ITEM} relative isolate flex min-h-[580px] flex-col overflow-hidden rounded-[14px] px-6 pt-6 sm:min-h-[560px] sm:px-10 sm:pt-10 lg:min-h-[668px] lg:p-12 ${
+                section.panelImage
+                  ? "pb-[min(52vw,260px)] sm:pb-10 lg:pb-12"
+                  : "pb-6"
+              }`}
             >
               <WhyOwnersChoosePanelBackdrop />
               {section.panelImage ? (
-                <div className="pointer-events-none absolute bottom-[-10%] right-0 z-[2] h-[min(78%,520px)] w-[min(58%,360px)] sm:w-[min(56%,400px)] lg:h-[min(82%,548px)] lg:w-[min(54%,420px)]">
+                <div className="pointer-events-none absolute bottom-0 right-0 z-[2] h-[min(58vw,300px)] w-[min(58vw,280px)] sm:h-[min(78%,520px)] sm:w-[min(56%,360px)] lg:bottom-[-10%] lg:h-[min(82%,548px)] lg:w-[min(54%,420px)]">
                   <Media
                     image={section.panelImage}
                     width={638}
@@ -213,14 +226,14 @@ export function WhyOwnersChooseSection({
               <div className="relative z-10 flex w-full max-w-[376px] shrink-0 flex-col">
                 <div className="flex flex-col gap-5">
                   {section.panelTitle ? (
-                    <h3 className="text-[34px] font-semibold leading-[1.12] tracking-tight text-white">
+                    <h3 className="text-[28px] font-semibold leading-[1.12] tracking-tight text-white sm:text-[34px]">
                       {section.panelTitle}
                     </h3>
                   ) : null}
                   {section.panelText ? (
                     <RichText
                       html={section.panelText}
-                      className="max-w-[337px] !prose-p:mb-0 !prose-p:mt-0 !prose-p:text-[14px] !prose-p:font-normal !prose-p:leading-[1.4] !prose-p:text-white [&_p+_p]:!mt-0 [&_strong]:font-semibold [&_strong]:text-white text-white"
+                      className="max-w-none sm:max-w-[337px] !prose-p:mb-0 !prose-p:mt-0 !prose-p:text-[14px] !prose-p:font-normal !prose-p:leading-[1.4] !prose-p:text-white [&_p+_p]:!mt-0 [&_strong]:font-semibold [&_strong]:text-white text-white"
                     />
                   ) : null}
                 </div>
@@ -232,7 +245,7 @@ export function WhyOwnersChooseSection({
                       variant="ctaBrand"
                       ctaElevation="none"
                       ctaFullWidth={false}
-                      className="!h-12 !min-h-12 !w-[196px] !min-w-[196px] !max-w-[196px] shrink-0 !rounded-[24px] !px-[17px] !text-base !font-normal whitespace-nowrap shadow-[0px_6px_10px_color-mix(in_srgb,var(--palette-brand)_54%,transparent)]"
+                      className="!h-12 !min-h-12 !w-[196px] !min-w-[196px] !max-w-[196px] shrink-0 self-start !rounded-[24px] !px-[17px] !text-base !font-normal whitespace-nowrap shadow-[0px_6px_10px_color-mix(in_srgb,var(--palette-brand)_54%,transparent)]"
                       arrowClassName="!size-5"
                     >
                       {ctaLabel}

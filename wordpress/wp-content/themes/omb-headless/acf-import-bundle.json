@@ -12775,6 +12775,220 @@
                 "append": ""
               }
             ]
+          },
+          "layout_omb_hero_wave_dashboard": {
+            "key": "layout_omb_hero_wave_dashboard",
+            "name": "hero_wave_dashboard",
+            "label": "Hero wave dashboard",
+            "display": "block",
+            "sub_fields": [
+              {
+                "key": "field_omb_hero_wave_dashboard_eyebrow",
+                "label": "Eyebrow",
+                "name": "eyebrow",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Small line above the headline.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+              },
+              {
+                "key": "field_omb_hero_wave_dashboard_title",
+                "label": "Title",
+                "name": "title",
+                "aria-label": "",
+                "type": "text",
+                "instructions": "Main H1 headline.",
+                "required": 1,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "allow_in_bindings": 0,
+                "placeholder": "",
+                "prepend": "",
+                "append": ""
+              },
+              {
+                "key": "field_omb_hero_wave_dashboard_offer_text",
+                "label": "Offer text",
+                "name": "offer_text",
+                "aria-label": "",
+                "type": "wysiwyg",
+                "instructions": "Bold pricing line under headline.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "allow_in_bindings": 0,
+                "tabs": "all",
+                "toolbar": "basic",
+                "media_upload": 0,
+                "delay": 0
+              },
+              {
+                "key": "field_omb_hero_wave_dashboard_ctas",
+                "label": "CTAs",
+                "name": "ctas",
+                "aria-label": "",
+                "type": "repeater",
+                "instructions": "Two pills: white first, brand second.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "layout": "table",
+                "min": 0,
+                "max": 2,
+                "collapsed": "",
+                "button_label": "Add CTA",
+                "rows_per_page": 20,
+                "sub_fields": [
+                  {
+                    "key": "field_omb_hero_wave_dashboard_cta_text",
+                    "label": "CTA text",
+                    "name": "cta_text",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "allow_in_bindings": 0,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_omb_hero_wave_dashboard_ctas"
+                  },
+                  {
+                    "key": "field_omb_hero_wave_dashboard_cta_url",
+                    "label": "CTA URL",
+                    "name": "cta_url",
+                    "aria-label": "",
+                    "type": "link",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "return_format": "array",
+                    "allow_in_bindings": 0,
+                    "parent_repeater": "field_omb_hero_wave_dashboard_ctas"
+                  }
+                ]
+              },
+              {
+                "key": "field_omb_hero_wave_dashboard_left_floating_image",
+                "label": "Left floating image",
+                "name": "left_floating_image",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "Circular avatar left of headline.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "png,jpg,jpeg,webp,svg",
+                "allow_in_bindings": 0,
+                "preview_size": "medium"
+              },
+              {
+                "key": "field_omb_hero_wave_dashboard_right_floating_image",
+                "label": "Right floating image",
+                "name": "right_floating_image",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "Circular avatar right of headline.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "png,jpg,jpeg,webp,svg",
+                "allow_in_bindings": 0,
+                "preview_size": "medium"
+              },
+              {
+                "key": "field_omb_hero_wave_dashboard_dashboard_image",
+                "label": "Dashboard image",
+                "name": "dashboard_image",
+                "aria-label": "",
+                "type": "image",
+                "instructions": "Browser mockup overlapping bottom wave.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "return_format": "array",
+                "library": "all",
+                "min_width": "",
+                "min_height": "",
+                "min_size": "",
+                "max_width": "",
+                "max_height": "",
+                "max_size": "",
+                "mime_types": "png,jpg,jpeg,webp,svg",
+                "allow_in_bindings": 0,
+                "preview_size": "medium"
+              }
+            ],
+            "min": "",
+            "max": ""
           }
         },
         "min": "",

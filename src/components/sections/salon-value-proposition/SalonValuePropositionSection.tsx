@@ -319,15 +319,19 @@ function SplitPanelLayout({
         </div>
 
         <div
-          className={`${REVEAL_ITEM} relative isolate w-full min-w-0 flex-1 overflow-hidden rounded-[14px] bg-gradient-to-b from-brand to-brand-strong lg:max-w-[825px]`}
+          className={`${REVEAL_ITEM} relative isolate w-full min-w-0 flex-1 overflow-hidden rounded-[14px] lg:max-w-[825px] ${
+            section.visualImage
+              ? ""
+              : "bg-gradient-to-b from-brand to-brand-strong"
+          }`}
         >
           {section.visualImage ? (
-            <div className="relative flex min-h-[280px] items-center justify-center sm:min-h-[360px] lg:min-h-[460px]">
+            <div className="relative aspect-[165/92] w-full min-h-[280px] sm:min-h-[360px] lg:aspect-auto lg:min-h-[460px]">
               <Media
                 image={section.visualImage}
                 width={1650}
                 height={920}
-                className="h-auto w-full max-w-full object-contain object-center"
+                className="absolute inset-0 h-full w-full object-cover object-bottom"
                 sizes="(min-width: 1024px) 50vw, 100vw"
                 preferLargestSource
               />
@@ -483,8 +487,10 @@ export function SalonValuePropositionSection({
     );
   });
 
-  const isSimpleLayout = section.sectionLayout === "simple";
   const showSplitPanelLayout = Boolean(section.visualImage);
+  /** WP may keep `simple` while a visual is set — use the featured split panel so EN/NL match Figma. */
+  const isSimpleLayout =
+    section.sectionLayout === "simple" && !showSplitPanelLayout;
   const sectionSurfaceClass = section.whiteBackground
     ? "bg-white"
     : isSimpleLayout

@@ -12,6 +12,18 @@ export type HeroVariantT = "default" | "compact";
 /** Offer text scale. `large` is the original homepage size (lg:36px); `medium` (lg:30px) and `small` (lg:24px) for inner pages. */
 export type HeroOfferTextSizeT = "large" | "medium" | "small";
 
+/** Figma **1727:27** ("Group 612") — navy gradient hero with floating avatars, dual CTAs, dashboard mockup over white wave. */
+export type HeroWaveDashboardSectionT = CoreSection & {
+  type: "hero_wave_dashboard";
+  eyebrow: string;
+  title: string;
+  offerText: string;
+  ctas: CtaItem[];
+  leftFloatingImage: WpImage | null;
+  rightFloatingImage: WpImage | null;
+  dashboardImage: WpImage | null;
+};
+
 export type HeroSectionT = CoreSection & {
   type: "hero";
   eyebrow: string;
@@ -952,6 +964,7 @@ export type TeamBehindSalonoraSectionT = CoreSection & {
 
 export type AnySectionT =
   | HeroSectionT
+  | HeroWaveDashboardSectionT
   | CardsSectionT
   | CostComparisonSectionT
   | BenefitsGridSectionT

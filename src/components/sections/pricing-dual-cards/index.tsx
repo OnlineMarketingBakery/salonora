@@ -102,7 +102,7 @@ function PricingPackageCard({
 
   return (
     <article
-      className={`${REVEAL_ITEM} flex min-h-0 flex-col gap-6 rounded-[20px] p-10 sm:p-12 lg:p-12 ${panelBg}`}
+      className={`${REVEAL_ITEM} flex min-h-0 flex-col gap-6 rounded-[20px] p-6 sm:gap-6 sm:p-10 lg:p-12 ${panelBg}`}
       style={isTinted ? undefined : elevatedCardShadow}
     >
       {/* Header */}
@@ -230,20 +230,16 @@ export function PricingDualCardsSection({
             style={heroShell}
           >
             {/* Figma ~62% copy / ~38% visual; 48–64px band padding */}
-            <div className="grid min-h-0 grid-cols-1 gap-8 px-12 sm:gap-10 lg:min-h-[369px] lg:grid-cols-[1.65fr_1fr] lg:items-stretch lg:gap-12 lg:px-16">
-              <div className="relative z-2 flex min-w-0 flex-col gap-5 self-center lg:max-w-xl lg:gap-6 lg:pr-4 xl:max-w-152">
+            <div className="relative grid min-h-0 grid-cols-1 max-lg:gap-0 px-6 pt-6 sm:px-12 sm:pt-10 lg:min-h-[369px] lg:grid-cols-[1.65fr_1fr] lg:items-stretch lg:gap-12 lg:px-16 lg:py-12">
+              <div className="relative z-2 col-start-1 row-start-1 flex min-w-0 flex-col gap-5 self-start max-lg:pb-[min(50vw,260px)] lg:max-w-xl lg:gap-6 lg:pr-4 lg:pb-0 xl:max-w-152">
                 {section.badge?.trim() ? (
-                  <Button
-                    type="button"
-                    variant="white"
-                    className="h-[42px] min-h-[42px] w-fit rounded-full border-0 bg-white px-4 font-sans text-base font-medium leading-relaxed text-navy-deep shadow-none hover:bg-white"
-                  >
+                  <span className="inline-flex h-[42px] min-h-[42px] w-fit shrink-0 items-center justify-center rounded-[21px] bg-white px-[18px] text-base font-medium leading-[1.6] text-navy-deep">
                     {section.badge.trim()}
-                  </Button>
+                  </span>
                 ) : null}
                 <div className="flex flex-col gap-4 lg:gap-5">
                   {section.title?.trim() ? (
-                    <h2 className="font-sans text-4xl font-semibold leading-[1.08] tracking-normal text-white sm:text-5xl">
+                    <h2 className="font-sans text-3xl font-semibold leading-[1.08] tracking-normal text-white sm:text-4xl lg:text-5xl">
                       {section.title.trim()}
                     </h2>
                   ) : null}
@@ -264,12 +260,12 @@ export function PricingDualCardsSection({
               </div>
 
               {person ? (
-                <div className="relative z-1 flex min-h-[260px] w-full items-end justify-center sm:min-h-[300px] lg:min-h-0 lg:justify-end">
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 z-1 col-start-1 row-start-1 flex items-end justify-center max-lg:px-6 sm:max-lg:px-12 lg:pointer-events-auto lg:relative lg:inset-auto lg:col-auto lg:row-auto lg:flex lg:min-h-0 lg:justify-end">
                   <Media
                     image={person}
                     width={560}
                     height={720}
-                    className="h-auto max-h-[min(100%,420px)] w-full max-w-[min(100%,380px)] object-contain object-bottom sm:max-h-[min(100%,460px)] sm:max-w-[400px] lg:max-h-full lg:max-w-[min(100%,420px)] lg:translate-y-1px"
+                    className="h-auto w-full max-w-[min(100%,380px)] object-contain object-bottom max-lg:max-h-[min(52vw,300px)] max-lg:translate-y-[6%] sm:max-h-[min(58vw,340px)] sm:max-w-[400px] lg:max-h-full lg:max-w-[min(100%,420px)] lg:translate-y-1px"
                     sizes="(min-width: 1024px) 420px, min(380px, 100vw)"
                     preferLargestSource
                   />

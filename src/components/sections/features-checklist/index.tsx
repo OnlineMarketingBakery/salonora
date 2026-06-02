@@ -1,8 +1,9 @@
-/** Content: Figma **597:4037** (“Frame 2147228715”). Decorative shell: **597:3568** (“Frame 2147228001”). */
+/** Content: Figma **597:4037** (“Frame 2147228715”). Decorative shell: **597:3568** (same as **1714:244**). */
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
+import { NavyStarfieldBackdrop } from "@/components/sections/shared/NavyStarfieldBackdrop";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
@@ -23,15 +24,6 @@ const FC_NOTCH_SLOT: CSSProperties = {
   width: `${(201 / 528) * 100}%`,
   height: `${(60 / 382) * 100}%`,
   minHeight: "72px",
-};
-
-/** Figma shell 597:3568 — light grid on navy (reference screenshot density). */
-const GRID_BG: CSSProperties = {
-  backgroundImage: `
-    linear-gradient(color-mix(in srgb, var(--palette-brand) 30%, transparent) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, var(--palette-brand) 30%, transparent) 1px, transparent 1px)
-  `,
-  backgroundSize: "28px 28px",
 };
 
 function ChecklistGlyph({ icon }: { icon: WpImage | null }) {
@@ -104,32 +96,12 @@ export function FeaturesChecklistSection({
 
   if (!hasBody) return null;
 
-  /** Vertical padding: Figma shell **597:3568** (~151px inset) → nearest scale steps. */
+  /** Vertical padding: Figma shell **1714:244** (~151px inset) → nearest scale steps. */
   const sectionPad = "py-36 md:py-40";
 
   return (
-    <section className={`relative isolate overflow-hidden bg-[var(--palette-navy-deep)] ${sectionPad}`}>
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.2]"
-        style={GRID_BG}
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_85%_70%_at_0%_0%,color-mix(in_srgb,var(--palette-brand)_52%,transparent)_0%,transparent_58%)]"
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_85%_70%_at_100%_100%,color-mix(in_srgb,var(--palette-brand)_48%,transparent)_0%,transparent_58%)]"
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute -left-[min(28%,12rem)] top-0 h-[418px] w-[358px] rounded-full bg-[var(--palette-brand)] opacity-[0.12] blur-[100px]"
-        aria-hidden
-      />
-      <div
-        className="pointer-events-none absolute -bottom-[10%] -right-[min(22%,10rem)] h-[418px] w-[358px] rounded-full bg-[var(--palette-brand)] opacity-[0.12] blur-[100px]"
-        aria-hidden
-      />
+    <section className={`relative isolate overflow-hidden bg-navy-deep ${sectionPad}`}>
+      <NavyStarfieldBackdrop />
 
       <Container className="relative z-[1]">
         <div className={`flex flex-col gap-9 ${REVEAL_ITEM}`}>

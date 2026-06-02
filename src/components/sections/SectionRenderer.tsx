@@ -11,6 +11,10 @@ export function SectionRenderer({ sections, lang }: { sections: AnySectionT[]; l
         switch (section.type) {
           case "hero":
             return <sectionRegistry.hero key={section.id} section={section} lang={lang} />;
+          case "hero_wave_dashboard":
+            return (
+              <sectionRegistry.hero_wave_dashboard key={section.id} section={section} lang={lang} />
+            );
           case "cards":
             return <sectionRegistry.cards key={section.id} section={section} lang={lang} />;
           case "cost_comparison":

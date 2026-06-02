@@ -18,8 +18,8 @@ const PANEL_BG: Record<DesignShowcaseGridCardTint, string> = {
   gold: "var(--palette-showcase-gold-wash)",
 };
 
-/** Figma-style circular outline + northeast arrow (uses palette vars, not button CTA asset). */
-function ShowcaseCardCornerArrow({ className = "" }: { className?: string }) {
+/** Figma 346:6074 — plain northeast arrow (brand stroke, no circle). */
+function ShowcaseCardArrow({ className = "" }: { className?: string }) {
   return (
     <svg
       className={className}
@@ -30,18 +30,10 @@ function ShowcaseCardCornerArrow({ className = "" }: { className?: string }) {
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden
     >
-      <circle
-        cx="20"
-        cy="20"
-        r="18"
-        stroke="var(--palette-brand)"
-        strokeOpacity={0.35}
-        strokeWidth="1.5"
-      />
       <path
-        d="M14 26L24 16M24 16H17M24 16V23"
-        stroke="var(--palette-navy-deep)"
-        strokeWidth="2"
+        d="M11 29L29 11M29 11H19M29 11V21"
+        stroke="var(--palette-brand)"
+        strokeWidth="2.5"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -118,7 +110,7 @@ export function DesignShowcaseGridSection({
               const inner = (
                 <>
                   <div
-                    className={`${REVEAL_ITEM} relative w-full overflow-hidden rounded-md`}
+                    className={`${REVEAL_ITEM} relative w-full overflow-hidden rounded-[6px]`}
                     style={{
                       aspectRatio: "480 / 315",
                       backgroundColor: bg,
@@ -135,26 +127,26 @@ export function DesignShowcaseGridSection({
                     ) : null}
                   </div>
                   <div
-                    className={`${REVEAL_ITEM} mt-10 flex items-end justify-between gap-6`}
+                    className={`${REVEAL_ITEM} flex w-full items-center justify-between gap-6`}
                   >
-                    <div className="min-w-0 flex-1 text-2xl font-medium leading-snug text-navy-deep">
+                    <div className="min-w-0 flex-1 text-xl font-medium leading-[0.91] text-navy-deep sm:text-2xl">
                       <RichText
                         html={card.titleHtml}
-                        className="[&_p]:mb-1 [&_p:last-child]:mb-0 prose-p:text-navy-deep prose-headings:text-navy-deep"
+                        className="[&_p]:mb-[5px] [&_p:last-child]:mb-0 prose-p:text-navy-deep prose-p:leading-[0.91] prose-headings:text-navy-deep"
                       />
                     </div>
-                    <ShowcaseCardCornerArrow className="h-10 w-10 shrink-0" />
+                    <ShowcaseCardArrow className="h-10 w-10 shrink-0 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                   </div>
                 </>
               );
 
-              const cardClass = `${REVEAL_ITEM} flex flex-col rounded-2xl bg-white p-6 shadow-lg`;
+              const cardClass = `${REVEAL_ITEM} group flex flex-col gap-6 rounded-[14px] bg-white p-5 shadow-[0px_5px_32px_rgba(67,87,128,0.12)] transition-[box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:shadow-[0px_8px_40px_rgba(67,87,128,0.18)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 sm:gap-10 sm:p-6`;
 
               return (
                 <Link
                   key={`${section.id}-card-${index}`}
                   href={card.href}
-                  className={`${cardClass} transition-opacity hover:opacity-95`}
+                  className={cardClass}
                 >
                   {inner}
                 </Link>
@@ -163,7 +155,7 @@ export function DesignShowcaseGridSection({
           </div>
         ) : null}
 
-        {footerCtas.length > 0 ? (
+        {/* {footerCtas.length > 0 ? (
           <div
             className={`${REVEAL_ITEM} mt-12 flex flex-wrap items-center justify-center gap-4`}
           >
@@ -185,13 +177,13 @@ export function DesignShowcaseGridSection({
                 >
                   <span className="inline-flex items-center gap-3 sm:gap-4">
                     <span className="sm:whitespace-nowrap">{label}</span>
-                    <ShowcaseCardCornerArrow className="h-10 w-10 shrink-0" />
+                    <ShowcaseCardArrow className="h-10 w-10 shrink-0" />
                   </span>
                 </Button>
               );
             })}
           </div>
-        ) : null}
+        ) : null} */}
       </Container>
     </section>
   );
