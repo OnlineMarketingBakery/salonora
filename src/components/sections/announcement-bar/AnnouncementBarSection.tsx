@@ -125,10 +125,10 @@ function TickerSparkle({ className }: { className?: string }) {
 
 /** Figma 26px — typography plugin defaults win in CSS order; use ! and [&_] to force size. */
 const richTickerClass =
-  "prose max-w-none font-sans !text-[26px] !font-medium !leading-[1.1] !text-white " +
-  "[&_p]:!my-0 [&_p]:!inline [&_p]:!whitespace-nowrap [&_p]:!text-[26px] [&_p]:!font-medium [&_p]:!leading-[1.1] [&_p]:!text-white " +
-  "[&_span]:!text-[26px] [&_span]:!font-medium [&_span]:!leading-[1.1] [&_span]:!text-white " +
-  "[&_strong]:!text-[26px] [&_a]:!text-white [&_em]:!text-[26px]";
+  "prose max-w-none font-sans !text-xl !font-medium !leading-[1.1] !text-white sm:!text-[26px] " +
+  "[&_p]:!my-0 [&_p]:!inline [&_p]:!whitespace-nowrap [&_p]:!text-xl [&_p]:!font-medium [&_p]:!leading-[1.1] [&_p]:!text-white sm:[&_p]:!text-[26px] " +
+  "[&_span]:!text-xl [&_span]:!font-medium [&_span]:!leading-[1.1] [&_span]:!text-white sm:[&_span]:!text-[26px] " +
+  "[&_strong]:!text-xl sm:[&_strong]:!text-[26px] [&_a]:!text-white [&_em]:!text-xl sm:[&_em]:!text-[26px]";
 
 function TickerSegments({
   items,
@@ -263,7 +263,7 @@ export function AnnouncementBarSection({
 
   return (
     <section
-      className="relative z-10 -mb-16 -mt-10 w-full overflow-hidden bg-transparent"
+      className="relative z-10 -mb-8 -mt-6 w-full overflow-hidden bg-transparent sm:-mb-16 sm:-mt-10"
       aria-label={tickerLabel}
     >
       {IS_DEV_BUILD ? (

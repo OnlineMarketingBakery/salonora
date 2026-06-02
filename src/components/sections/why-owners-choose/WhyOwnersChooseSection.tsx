@@ -126,7 +126,7 @@ function WhyOwnersChoosePanelBackdrop() {
         />
       </div>
       {/* Figma 597:6060 — x=62 y=305, 757×757 */}
-      <div className="absolute left-[9.72%] top-[60%] aspect-square w-[118.68%] max-w-[757px]">
+      <div className="absolute left-[4%] top-[58%] aspect-square w-[125%] max-w-[757px] lg:left-[9.72%] lg:top-[60%] lg:w-[118.68%]">
         <Image
           src={PANEL_ARC_ELLIPSE_SRC}
           alt=""
@@ -204,11 +204,15 @@ export function WhyOwnersChooseSection({
 
             {/* Figma Frame 2147229423 (597:6055): 638×668, copy inset 48px */}
             <div
-              className={`${REVEAL_ITEM} relative isolate flex min-h-[min(560px,100%)] flex-col overflow-hidden rounded-[14px] px-8 pt-8 sm:px-10 sm:pt-10 lg:min-h-[668px] lg:px-12 lg:pt-12`}
+              className={`${REVEAL_ITEM} relative isolate flex min-h-[580px] flex-col overflow-hidden rounded-[14px] px-6 pt-6 sm:min-h-[560px] sm:px-10 sm:pt-10 lg:min-h-[668px] lg:p-12 ${
+                section.panelImage
+                  ? "pb-[min(52vw,260px)] sm:pb-10 lg:pb-12"
+                  : "pb-6"
+              }`}
             >
               <WhyOwnersChoosePanelBackdrop />
               {section.panelImage ? (
-                <div className="pointer-events-none absolute bottom-[-10%] right-0 z-[2] h-[min(78%,520px)] w-[min(58%,360px)] sm:w-[min(56%,400px)] lg:h-[min(82%,548px)] lg:w-[min(54%,420px)]">
+                <div className="pointer-events-none absolute bottom-0 right-0 z-[2] h-[min(58vw,300px)] w-[min(58vw,280px)] sm:h-[min(78%,520px)] sm:w-[min(56%,360px)] lg:bottom-[-10%] lg:h-[min(82%,548px)] lg:w-[min(54%,420px)]">
                   <Media
                     image={section.panelImage}
                     width={638}
@@ -222,14 +226,14 @@ export function WhyOwnersChooseSection({
               <div className="relative z-10 flex w-full max-w-[376px] shrink-0 flex-col">
                 <div className="flex flex-col gap-5">
                   {section.panelTitle ? (
-                    <h3 className="text-[34px] font-semibold leading-[1.12] tracking-tight text-white">
+                    <h3 className="text-[28px] font-semibold leading-[1.12] tracking-tight text-white sm:text-[34px]">
                       {section.panelTitle}
                     </h3>
                   ) : null}
                   {section.panelText ? (
                     <RichText
                       html={section.panelText}
-                      className="max-w-[337px] !prose-p:mb-0 !prose-p:mt-0 !prose-p:text-[14px] !prose-p:font-normal !prose-p:leading-[1.4] !prose-p:text-white [&_p+_p]:!mt-0 [&_strong]:font-semibold [&_strong]:text-white text-white"
+                      className="max-w-none sm:max-w-[337px] !prose-p:mb-0 !prose-p:mt-0 !prose-p:text-[14px] !prose-p:font-normal !prose-p:leading-[1.4] !prose-p:text-white [&_p+_p]:!mt-0 [&_strong]:font-semibold [&_strong]:text-white text-white"
                     />
                   ) : null}
                 </div>
@@ -241,7 +245,7 @@ export function WhyOwnersChooseSection({
                       variant="ctaBrand"
                       ctaElevation="none"
                       ctaFullWidth={false}
-                      className="!h-12 !min-h-12 !w-[196px] !min-w-[196px] !max-w-[196px] shrink-0 !rounded-[24px] !px-[17px] !text-base !font-normal whitespace-nowrap shadow-[0px_6px_10px_color-mix(in_srgb,var(--palette-brand)_54%,transparent)]"
+                      className="!h-12 !min-h-12 !w-[196px] !min-w-[196px] !max-w-[196px] shrink-0 self-start !rounded-[24px] !px-[17px] !text-base !font-normal whitespace-nowrap shadow-[0px_6px_10px_color-mix(in_srgb,var(--palette-brand)_54%,transparent)]"
                       arrowClassName="!size-5"
                     >
                       {ctaLabel}

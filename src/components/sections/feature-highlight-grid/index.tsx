@@ -44,7 +44,7 @@ function HighlightCard({ card }: { card: FeatureHighlightGridCardT }) {
 
   return (
     <article
-      className={`${REVEAL_ITEM} relative isolate flex min-h-[387px] w-full flex-col rounded-[14px] border border-brand p-[30px]`}
+      className={`${REVEAL_ITEM} relative isolate flex min-h-0 w-full flex-col rounded-[14px] border border-brand p-6 sm:p-[30px] lg:min-h-[387px]`}
       style={cardFaceStyle}
     >
       {/* Figma 1714:1019 — glass scrim */}
@@ -67,10 +67,10 @@ function HighlightCard({ card }: { card: FeatureHighlightGridCardT }) {
           />
         </div>
       ) : null}
-      <div className="relative z-10 flex min-h-full w-full max-w-[335px] flex-col justify-between gap-[157px]">
+      <div className="relative z-10 flex min-h-full w-full max-w-[335px] flex-col justify-between gap-8 lg:gap-[157px]">
         {titleLines.length > 0 ? (
           <div className="flex w-full flex-col gap-[22px]">
-            <h3 className="font-sans text-[30px] font-medium leading-[0.88] text-white">
+            <h3 className="font-sans text-2xl font-medium leading-[0.88] text-white sm:text-[30px]">
               {titleLines.map((line, i) => (
                 <span key={i} className="block">
                   {line}
@@ -119,7 +119,7 @@ export function FeatureHighlightGridSection({
               </span>
             ) : null}
             {titleLines.length > 0 ? (
-              <h2 className="max-w-[555px] font-sans text-[48px] font-semibold leading-[56px] tracking-[-0.04em] text-white">
+              <h2 className="max-w-[555px] font-sans text-[32px] font-semibold leading-tight tracking-[-0.04em] text-white sm:text-[40px] sm:leading-[1.15] lg:text-[48px] lg:leading-[56px]">
                 {titleLines.map((line, i) => (
                   <span key={i} className="block">
                     {line}

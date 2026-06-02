@@ -148,7 +148,7 @@ export function TestimonialsCarousel({
                 {slideItems.map((t) => (
                   <blockquote
                     key={t.id}
-                    className={`${REVEAL_ITEM} relative flex h-full min-h-[200px] flex-col gap-[23px] rounded-[14px] bg-linear-to-b from-white to-[rgba(255,255,255,0.48)] p-[34px] shadow-[0px_18px_48px_0px_rgba(67,87,128,0.08)]`}
+                    className={`${REVEAL_ITEM} relative flex h-full min-h-[200px] flex-col gap-[23px] rounded-[14px] bg-linear-to-b from-white to-[rgba(255,255,255,0.48)] p-6 shadow-[0px_18px_48px_0px_rgba(67,87,128,0.08)] sm:p-[34px]`}
                   >
                     <QuoteGlyph />
                     <RichText
@@ -183,8 +183,8 @@ export function TestimonialsCarousel({
                           </div>
                         )}
                         <div className="flex min-w-0 flex-col gap-[10px]">
-                          <p className="truncate text-base font-medium leading-[1.6] text-navy">{t.clientName}</p>
-                          <p className="truncate text-xs font-normal leading-[1.4] text-[#475569]">{t.clientRole}</p>
+                          <p className="line-clamp-2 text-base font-medium leading-[1.6] text-navy">{t.clientName}</p>
+                          <p className="line-clamp-2 text-xs font-normal leading-[1.4] text-[#475569]">{t.clientRole}</p>
                         </div>
                       </div>
                       {typeof t.rating === "number" && t.rating > 0 && <RatingPill rating={t.rating} />}

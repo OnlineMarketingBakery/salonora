@@ -49,13 +49,13 @@ const cardFace: CSSProperties = {
 };
 
 const headlineStyle: CSSProperties = {
-  fontSize: "clamp(2.75rem, 6vw + 1rem, 5.25rem)",
-  lineHeight: "clamp(3rem, 6vw + 1.125rem, 5.875rem)",
+  fontSize: "clamp(2rem, 5vw + 0.5rem, 5.25rem)",
+  lineHeight: "clamp(2.25rem, 5vw + 0.75rem, 5.875rem)",
 };
 
 const cardProse = [
   "!prose-p:mb-[5px] !prose-p:mt-0 last:!prose-p:mb-0",
-  "!prose-p:max-w-none !prose-p:text-[18px] !prose-p:font-medium !prose-p:leading-[1.1]",
+  "!prose-p:max-w-none !prose-p:text-base !prose-p:font-medium !prose-p:leading-[1.1] lg:!prose-p:text-[18px]",
   "!prose-p:text-navy-deep prose-strong:text-navy-deep",
   "[&_p:last-child]:!mb-0",
 ].join(" ");
@@ -91,13 +91,13 @@ function PromiseCard({
   index: number;
   isLongCard: boolean;
 }) {
-  const shortCardProse = " [&_p]:whitespace-nowrap";
-  const longCardProse = " [&_p]:max-w-[275px] [&_p]:whitespace-normal";
+  const shortCardProse = " [&_p]:whitespace-normal lg:[&_p]:whitespace-nowrap";
+  const longCardProse = " [&_p]:max-w-none [&_p]:whitespace-normal lg:[&_p]:max-w-[275px]";
 
   return (
     <div
-      className={`relative flex w-full shrink-0 items-center rounded-[14px] px-[32px] ${
-        isLongCard ? "h-[121px]" : "h-[80px]"
+      className={`relative flex w-full shrink-0 items-center rounded-[14px] px-6 sm:px-[32px] ${
+        isLongCard ? "min-h-[121px] py-4 lg:h-[121px] lg:py-0" : "min-h-[80px] py-3 lg:h-[80px] lg:py-0"
       }`}
       style={cardFace}
     >
@@ -110,12 +110,43 @@ function PromiseCard({
   );
 }
 
+function LeftCta({
+  ctaHref,
+  ctaLabel,
+  ctaTarget,
+  className = "",
+}: {
+  ctaHref?: string;
+  ctaLabel?: string;
+  ctaTarget?: string;
+  className?: string;
+}) {
+  if (!ctaHref || !ctaLabel?.trim()) return null;
+
+  return (
+    <Button
+      href={ctaHref}
+      target={ctaTarget}
+      variant="ctaBrand"
+      ctaSize="package"
+      ctaElevation="none"
+      ctaFullWidth={false}
+      ctaJustify="center"
+      className={`!h-[63px] !min-h-[63px] w-full max-w-[252px] gap-9 !rounded-[31.5px] !px-[22px] !py-[18px] !text-base !font-normal !leading-normal [box-shadow:0_6px_10px_rgba(57,144,240,0.54)] sm:!text-xl sm:!w-[252px] ${className}`.trim()}
+      arrowClassName="size-[27px] shrink-0"
+    >
+      {ctaLabel.trim()}
+    </Button>
+  );
+}
+
 function LeftColumn({
   badge,
   titleLines,
   ctaHref,
   ctaLabel,
   ctaTarget,
+  showCta = true,
   className = "",
   style,
 }: {
@@ -124,6 +155,7 @@ function LeftColumn({
   ctaHref?: string;
   ctaLabel?: string;
   ctaTarget?: string;
+  showCta?: boolean;
   className?: string;
   style?: CSSProperties;
 }) {
@@ -148,20 +180,8 @@ function LeftColumn({
           </h2>
         ) : null}
       </div>
-      {ctaHref && ctaLabel?.trim() ? (
-        <Button
-          href={ctaHref}
-          target={ctaTarget}
-          variant="ctaBrand"
-          ctaSize="package"
-          ctaElevation="none"
-          ctaFullWidth={false}
-          ctaJustify="center"
-          className="!h-[63px] !min-h-[63px] w-full max-w-[252px] gap-9 !rounded-[31.5px] !px-[22px] !py-[18px] !text-xl !font-normal !leading-normal [box-shadow:0_6px_10px_rgba(57,144,240,0.54)] sm:!w-[252px]"
-          arrowClassName="size-[27px] shrink-0"
-        >
-          {ctaLabel.trim()}
-        </Button>
+      {showCta ? (
+        <LeftCta ctaHref={ctaHref} ctaLabel={ctaLabel} ctaTarget={ctaTarget} />
       ) : null}
     </div>
   );
@@ -264,7 +284,7 @@ export function FeatureHighlightSplitSection({
       </div>
 
       <Container className="relative z-10 !max-w-[90rem]">
-        {/* Mobile / partial layouts */}
+        {/* Mobile: badge/title → phone → CTA → cards (desktop unchanged below) */}
         <div
           className={`mx-auto flex w-full max-w-[1156px] flex-col gap-10 ${
             useFigmaDesktopLayout ? "lg:hidden" : ""
@@ -278,10 +298,19 @@ export function FeatureHighlightSplitSection({
               ctaHref={ctaHref}
               ctaLabel={ctaLabel}
               ctaTarget={ctaLink?.target}
+              showCta={false}
             />
           ) : null}
           {hasVisual && mockup ? (
             <PhoneColumn mockup={mockup} className={REVEAL_ITEM} />
+          ) : null}
+          {hasLeft ? (
+            <LeftCta
+              className={REVEAL_ITEM}
+              ctaHref={ctaHref}
+              ctaLabel={ctaLabel}
+              ctaTarget={ctaLink?.target}
+            />
           ) : null}
           {hasPromises ? (
             <PromiseCards promises={promises} className={REVEAL_ITEM} />

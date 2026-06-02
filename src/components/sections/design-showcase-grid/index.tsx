@@ -129,7 +129,7 @@ export function DesignShowcaseGridSection({
                   <div
                     className={`${REVEAL_ITEM} flex w-full items-center justify-between gap-6`}
                   >
-                    <div className="min-w-0 flex-1 text-2xl font-medium leading-[0.91] text-navy-deep">
+                    <div className="min-w-0 flex-1 text-xl font-medium leading-[0.91] text-navy-deep sm:text-2xl">
                       <RichText
                         html={card.titleHtml}
                         className="[&_p]:mb-[5px] [&_p:last-child]:mb-0 prose-p:text-navy-deep prose-p:leading-[0.91] prose-headings:text-navy-deep"
@@ -140,7 +140,7 @@ export function DesignShowcaseGridSection({
                 </>
               );
 
-              const cardClass = `${REVEAL_ITEM} group flex flex-col gap-10 rounded-[14px] bg-white p-6 shadow-[0px_5px_32px_rgba(67,87,128,0.12)] transition-[box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:shadow-[0px_8px_40px_rgba(67,87,128,0.18)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2`;
+              const cardClass = `${REVEAL_ITEM} group flex flex-col gap-6 rounded-[14px] bg-white p-5 shadow-[0px_5px_32px_rgba(67,87,128,0.12)] transition-[box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:shadow-[0px_8px_40px_rgba(67,87,128,0.18)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 sm:gap-10 sm:p-6`;
 
               return (
                 <Link

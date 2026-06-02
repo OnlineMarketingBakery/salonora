@@ -64,11 +64,11 @@ function ImageTextRow({ icon, text }: { icon: WpImage | null; text: string }) {
           />
         </div>
       ) : null}
-      <p className="min-w-0 flex-1 text-2xl font-semibold leading-none text-brand">
+      <p className="min-w-0 flex-1 text-xl font-semibold leading-snug text-brand sm:text-2xl sm:leading-none">
         {textLines.map((line, i) => (
           <span
             key={i}
-            className={`block whitespace-nowrap ${i === 0 && textLines.length > 1 ? "mb-[5px]" : ""}`}
+            className={`block break-words sm:whitespace-nowrap ${i === 0 && textLines.length > 1 ? "mb-[5px]" : ""}`}
           >
             {line}
           </span>

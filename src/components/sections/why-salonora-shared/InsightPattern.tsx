@@ -12,7 +12,7 @@ export function InsightPattern() {
 
   return (
     <svg
-      className="pointer-events-none absolute left-0 top-0 h-full w-[614px] max-w-[72%]"
+      className="pointer-events-none absolute left-0 top-0 h-full w-[68.4%] max-w-[614px] lg:w-[614px] lg:max-w-none"
       viewBox="0 0 614 509"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

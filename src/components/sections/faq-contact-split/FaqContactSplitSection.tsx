@@ -31,7 +31,7 @@ export function FaqContactSplitSection({ section, lang }: { section: FaqContactS
         <div className="mx-auto flex w-full max-w-[1156px] flex-col items-center gap-10 md:gap-12">
           {section.title && (
             <h2
-              className={`${REVEAL_ITEM} w-full text-center text-[40px] font-semibold leading-tight tracking-[-0.04em] sm:text-[48px] sm:leading-[56px] ${navyBg ? "text-white" : "text-navy-deep"}`}
+              className={`${REVEAL_ITEM} w-full text-center text-[32px] font-semibold leading-tight tracking-[-0.04em] sm:text-[40px] sm:leading-[1.15] lg:text-[48px] lg:leading-[56px] ${navyBg ? "text-white" : "text-navy-deep"}`}
             >
               {section.title.split(/\r?\n+/).map((line, i) => {
                 const t = line.trim();
@@ -91,7 +91,7 @@ export function FaqContactSplitSection({ section, lang }: { section: FaqContactS
                             />
                           ) : undefined
                         }
-                        className="h-[79px] min-h-[79px] w-full max-w-full rounded-full px-5 text-xl font-normal leading-[1.1] tracking-[-0.8px]"
+                        className="min-h-[64px] h-auto w-full max-w-full rounded-full px-5 py-3 text-lg font-normal leading-[1.1] tracking-[-0.8px] sm:h-[79px] sm:min-h-[79px] sm:py-0 sm:text-xl"
                       >
                         {t}
                       </Button>
@@ -123,7 +123,7 @@ export function FaqContactSplitSection({ section, lang }: { section: FaqContactS
                 >
                   <div className="flex w-full min-w-0 max-w-[401px] flex-col items-center gap-6 text-center text-white">
                     {cardTitleLines.length > 0 && (
-                      <h3 className="w-full text-[40px] font-medium leading-[47px] tracking-[-0.04em] sm:text-[48px] sm:leading-[47px] sm:tracking-[-0.04em]">
+                      <h3 className="w-full text-[32px] font-medium leading-tight tracking-[-0.04em] sm:text-[40px] sm:leading-[47px] lg:text-[48px] lg:tracking-[-0.04em]">
                         {cardTitleLines.map((line, i) => (
                           <span key={i} className="block [text-wrap:balance]">
                             {line}
@@ -134,7 +134,7 @@ export function FaqContactSplitSection({ section, lang }: { section: FaqContactS
                     {section.cardText && (
                       <RichText
                         html={section.cardText}
-                        className="w-full !prose-p:mb-0 !prose-p:mt-0 !prose-p:text-center !prose-p:text-2xl !prose-p:font-semibold !prose-p:leading-[1.2] !prose-p:tracking-[-0.04em] !prose-p:text-white"
+                        className="w-full !prose-p:mb-0 !prose-p:mt-0 !prose-p:text-center !prose-p:text-lg !prose-p:font-semibold !prose-p:leading-[1.2] !prose-p:tracking-[-0.04em] !prose-p:text-white sm:!prose-p:text-2xl"
                       />
                     )}
                     {section.contactCtas.length > 0 && (

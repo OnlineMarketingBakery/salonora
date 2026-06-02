@@ -81,7 +81,7 @@ function StepCard({ step }: { step: HowItWorksStepsStepItemT }) {
 
   return (
     <article
-      className={`${REVEAL_ITEM} flex w-full flex-col items-center justify-center gap-5 rounded-[17px] bg-linear-to-b from-white to-surface p-[34px] text-center md:h-[282px] md:min-w-0 md:flex-1 md:basis-0`}
+      className={`${REVEAL_ITEM} flex w-full flex-col items-center justify-center gap-5 rounded-[17px] bg-linear-to-b from-white to-surface p-6 text-center sm:p-[34px] md:h-[282px] md:min-w-0 md:flex-1 md:basis-0`}
     >
       {step.icon ? (
         <div className="flex size-[62px] shrink-0 items-center justify-center overflow-hidden rounded-[10px]">
@@ -167,7 +167,7 @@ export function HowItWorksStepsSection({
                 </span>
               ) : null}
               {titleLines.length > 0 ? (
-                <h2 className="font-sans text-[48px] font-bold leading-[56px] tracking-[-0.04em] text-navy-deep">
+                <h2 className="font-sans text-[32px] font-bold leading-tight tracking-[-0.04em] text-navy-deep sm:text-[40px] sm:leading-[1.15] lg:text-[48px] lg:leading-[56px]">
                   {titleLines.map((line, i) => (
                     <span key={i} className="block">
                       {line}
@@ -202,7 +202,7 @@ export function HowItWorksStepsSection({
                     arrowClassName="size-6 shrink-0"
                     className={
                       v === "ctaBrand"
-                        ? "h-12 min-h-12 w-[196px] shrink-0 gap-2 rounded-[24px] border border-white px-3.5 text-base font-medium leading-normal! text-white shadow-[0px_6px_10px_rgba(57,144,240,0.54)] sm:pl-[17px] sm:pr-3"
+                        ? "h-12 min-h-12 w-full max-w-[196px] shrink-0 gap-2 rounded-[24px] border border-white px-3.5 text-base font-medium leading-normal! text-white shadow-[0px_6px_10px_rgba(57,144,240,0.54)] sm:w-[196px] sm:pl-[17px] sm:pr-3"
                         : "w-fit max-w-full gap-4 text-lg leading-6"
                     }
                   >
@@ -215,7 +215,7 @@ export function HowItWorksStepsSection({
 
           {section.footerTagline ? (
             <p
-              className={`${REVEAL_ITEM} max-w-[956px] text-center text-2xl font-bold leading-[1.22] text-accent`}
+              className={`${REVEAL_ITEM} max-w-[956px] text-center text-xl font-bold leading-[1.22] text-accent sm:text-2xl`}
             >
               {section.footerTagline}
             </p>
