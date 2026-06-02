@@ -385,14 +385,16 @@ function CenteredFooterLayout({
       : "";
   const footerCtaArrow =
     footerIcon && footerIconSrc !== "" ? (
-      <Media
-        image={footerIcon}
-        width={40}
-        height={40}
-        className="h-8 w-8 shrink-0 object-contain"
-        sizes="20px"
-        preferLargestSource
-      />
+      <span className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-white">
+        <Media
+          image={footerIcon}
+          width={40}
+          height={40}
+          className="h-5 w-5 shrink-0 object-contain"
+          sizes="20px"
+          preferLargestSource
+        />
+      </span>
     ) : undefined;
 
   return (

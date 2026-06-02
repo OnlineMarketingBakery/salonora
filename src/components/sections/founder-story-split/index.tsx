@@ -63,7 +63,7 @@ export function FounderStorySplitSection(props: {
       <Container className="max-w-[90rem]">
         <div className="mx-auto w-full max-w-[1298px]">
           <div
-            className={`${REVEAL_ITEM} isolate relative min-h-0 overflow-hidden rounded-[20px] shadow-[0_24px_80px_color-mix(in_srgb,var(--palette-brand)_22%,transparent)] lg:min-h-[756px]`}
+            className={`${REVEAL_ITEM} isolate relative min-h-0 overflow-hidden rounded-[20px] lg:min-h-[756px]`}
           >
             {/* Figma `597:2280` — texture + brand wash (`z-0` below copy + accent) */}
             <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>

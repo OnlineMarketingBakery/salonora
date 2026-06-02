@@ -60,7 +60,7 @@ export function HeroSection({
   // ─── Behind image shared classes ─────────────────────────────────────────────
   const behindMediaClass =
     "h-auto max-h-full w-full object-contain object-bottom object-right";
-  const behindWidthClass = behindOnly ? "w-[40%]" : "w-1/2";
+  const behindWidthClass = behindOnly ? "w-[85%]" : "w-1/2";
 
   // ─── Title size ──────────────────────────────────────────────────────────────
   const titleSizeClass = isCompact
@@ -320,9 +320,9 @@ export function HeroSection({
                     image={section.behindImage}
                     preferLargestSource
                     className={behindMediaClass}
-                    width={560}
-                    height={640}
-                    sizes="40vw"
+                    width={706}
+                    height={543}
+                    sizes="85vw"
                     quality={90}
                   />
                 </div>

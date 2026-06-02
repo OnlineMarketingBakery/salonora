@@ -109,10 +109,10 @@ export function MediaTextChecklistSection({
 
   const mediaColumn = (
     <div
-      className={`flex min-w-0 flex-col gap-4 sm:gap-6 lg:h-full lg:min-h-0 ${hasMedia ? mediaOrder : ""}`}
+      className={`flex min-w-0 flex-col gap-4 sm:gap-6 lg:self-start ${hasMedia ? mediaOrder : ""}`}
     >
       {section.image_top ? (
-        <div className="relative h-[min(188px,52vw)] w-full shrink-0 overflow-hidden rounded-[14px] sm:rounded-2xl lg:h-[188px]">
+        <div className="relative h-[min(188px,52vw)] w-full shrink-0 overflow-hidden rounded-[14px] sm:rounded-2xl lg:h-[188px] lg:max-h-[188px]">
           <Media
             image={section.image_top}
             fill
@@ -124,13 +124,13 @@ export function MediaTextChecklistSection({
       ) : null}
       {section.image_bottom ? (
         <div
-          className={`flex min-h-0 flex-col rounded-2xl p-2.5 sm:p-3 lg:min-h-0 lg:flex-1 lg:p-4 ${bottomFrameBg}`}
+          className={`flex shrink-0 flex-col rounded-2xl p-2.5 sm:p-3 lg:p-4 ${bottomFrameBg}`}
         >
-          <div className="relative h-[min(415px,80vw)] w-full overflow-hidden rounded-xl sm:rounded-2xl lg:h-auto lg:min-h-[400px] lg:flex-1">
+          <div className="relative h-[min(415px,80vw)] w-full max-h-[415px] overflow-hidden rounded-xl sm:rounded-2xl lg:h-[400px] lg:max-h-[400px]">
             <Media
               image={section.image_bottom}
               fill
-              className="object-cover"
+              className="object-cover object-center"
               sizes="(min-width: 1024px) 42vw, 100vw"
               preferLargestSource
             />
@@ -190,7 +190,7 @@ export function MediaTextChecklistSection({
 
   const copyColumn = (
     <div
-      className={`flex min-w-0 flex-col gap-6 lg:min-h-0 lg:max-w-[36rem] ${hasMedia ? `${copyOrder} lg:h-full lg:justify-between lg:gap-0` : ""}`}
+      className={`flex min-w-0 flex-col gap-6 lg:min-h-0 lg:max-w-[36rem] ${hasMedia ? copyOrder : ""}`}
     >
       {hasUpperBlock || hasTestimonial ? (
         <div className="flex shrink-0 flex-col gap-6">
@@ -294,7 +294,7 @@ export function MediaTextChecklistSection({
     <section lang={lang} className="bg-[var(--palette-white)] py-7 md:py-8">
       <Container className="!max-w-[85rem]">
         <div
-          className={`${REVEAL_ITEM} grid gap-10 rounded-[20px] p-6 sm:p-10 md:gap-12 lg:items-stretch lg:gap-15 lg:p-14 ${hasMedia ? "lg:grid-cols-2" : ""} ${outerCard}`}
+          className={`${REVEAL_ITEM} grid gap-10 rounded-[20px] p-6 sm:p-10 md:gap-12 lg:items-start lg:gap-15 lg:p-14 ${hasMedia ? "lg:grid-cols-2" : ""} ${outerCard}`}
         >
           {hasMedia ? mediaColumn : null}
           {copyColumn}
