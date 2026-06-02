@@ -1,10 +1,8 @@
-import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { Locale } from "@/lib/i18n/locales";
-import { resolveLink } from "@/lib/utils/links";
 import type {
   DesignShowcaseGridCardTint,
   DesignShowcaseGridSectionT,
@@ -67,13 +65,11 @@ function mediaSizesForCols(cols: 1 | 2 | 3): string {
 
 export function DesignShowcaseGridSection({
   section,
-  lang,
 }: {
   section: DesignShowcaseGridSectionT;
   lang: Locale;
 }) {
   const cards = section.cards ?? [];
-  const footerCtas = section.footerCtas ?? [];
   const cols = section.gridColumns ?? 2;
   const gridClass = gridColsClass(cols);
   const mediaSizes = mediaSizesForCols(cols);

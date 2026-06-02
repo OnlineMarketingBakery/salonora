@@ -229,9 +229,9 @@ export function PricingDualCardsSection({
             className={`${REVEAL_ITEM} relative isolate overflow-hidden rounded-[20px]`}
             style={heroShell}
           >
-            {/* Figma ~62% copy / ~38% visual; 48–64px band padding */}
-            <div className="relative grid min-h-0 grid-cols-1 max-lg:gap-0 px-6 pt-6 sm:px-12 sm:pt-10 lg:min-h-[369px] lg:grid-cols-[1.65fr_1fr] lg:items-stretch lg:gap-12 lg:px-16 lg:py-12">
-              <div className="relative z-2 col-start-1 row-start-1 flex min-w-0 flex-col gap-5 self-start max-lg:pb-[min(50vw,260px)] lg:max-w-xl lg:gap-6 lg:pr-4 lg:pb-0 xl:max-w-152">
+            {/* Figma ~62% copy / ~38% visual; person flush to card bottom (lg:pb-0) */}
+            <div className="relative grid min-h-0 grid-cols-1 max-lg:gap-0 px-6 pt-6 sm:px-12 sm:pt-10 lg:min-h-[369px] lg:grid-cols-[1.65fr_1fr] lg:items-stretch lg:gap-12 lg:px-16 lg:pt-12 lg:pb-0">
+              <div className="relative z-2 col-start-1 row-start-1 flex min-w-0 flex-col gap-5 self-start max-lg:pb-[min(50vw,260px)] lg:max-w-xl lg:gap-6 lg:pr-4 lg:pb-12 xl:max-w-152">
                 {section.badge?.trim() ? (
                   <span className="inline-flex h-[42px] min-h-[42px] w-fit shrink-0 items-center justify-center rounded-[21px] bg-white px-[18px] text-base font-medium leading-[1.6] text-navy-deep">
                     {section.badge.trim()}
@@ -260,12 +260,12 @@ export function PricingDualCardsSection({
               </div>
 
               {person ? (
-                <div className="pointer-events-none absolute inset-x-0 bottom-0 z-1 col-start-1 row-start-1 flex items-end justify-center max-lg:px-6 sm:max-lg:px-12 lg:pointer-events-auto lg:relative lg:inset-auto lg:col-auto lg:row-auto lg:flex lg:min-h-0 lg:justify-end">
+                <div className="pointer-events-none absolute inset-x-0 bottom-0 z-1 col-start-1 row-start-1 flex items-end justify-center max-lg:px-6 sm:max-lg:px-12 lg:inset-x-auto lg:right-10 lg:col-start-2 lg:row-start-1 lg:justify-end xl:right-12">
                   <Media
                     image={person}
                     width={560}
                     height={720}
-                    className="h-auto w-full max-w-[min(100%,380px)] object-contain object-bottom max-lg:max-h-[min(52vw,300px)] max-lg:translate-y-[6%] sm:max-h-[min(58vw,340px)] sm:max-w-[400px] lg:max-h-full lg:max-w-[min(100%,420px)] lg:translate-y-1px"
+                    className="h-auto w-full max-w-[min(100%,380px)] object-contain object-bottom max-lg:max-h-[min(52vw,300px)] max-lg:translate-y-[6%] sm:max-h-[min(58vw,340px)] sm:max-w-[400px] lg:max-h-[min(100%,380px)] lg:max-w-[min(100%,420px)]"
                     sizes="(min-width: 1024px) 420px, min(380px, 100vw)"
                     preferLargestSource
                   />
