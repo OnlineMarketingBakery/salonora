@@ -10,6 +10,11 @@ import { injectHeadingIds, markStyleTintedDivs } from "@/lib/blog/post-html";
 import { estimateReadMinutes } from "@/lib/blog/read-minutes";
 import { toPlainText } from "@/lib/utils/strings";
 import { fetchRelatedPostCards } from "./fetch-related-posts";
+import {
+  fetchBlogSingleTailSections,
+  fetchBlogSingleTemplateShowRelatedPosts,
+  resolveBlogShowRelatedPosts,
+} from "./fetch-blog-single-tail-sections";
 import { getBlogPageSlug } from "./config";
 import { formatPostMonthYear } from "@/lib/i18n/format-post-month-year";
 import { resolveAuthorFromRestEmbed } from "@/lib/wordpress/wp-embedded-author";
@@ -33,6 +38,12 @@ function mapPostLeadHtml(acf: Record<string, unknown>): string | null {
   return html;
 }
 
+function mapPostEyebrow(acf: Record<string, unknown>): string | null {
+  const raw = acf.post_eyebrow;
+  const text = typeof raw === "string" ? raw.trim() : "";
+  return text || null;
+}
+
 function mapShowToc(acf: Record<string, unknown>): boolean {
   const v = acf.show_toc;
   if (v === undefined || v === null) return true;
@@ -54,10 +65,12 @@ function toDoc(p: WpPostRaw, gs: GlobalSettings, lang: Locale, author: PostAutho
     content,
     excerpt: p.excerpt?.rendered || "",
     postLeadHtml: mapPostLeadHtml(acf),
+    postEyebrow: mapPostEyebrow(acf),
     featuredImage: featured?.source_url || null,
     featuredImageAlt: featured?.alt_text || "",
     featuredFormId: featuredForm && typeof featuredForm === "object" ? featuredForm.id || null : null,
     sections: normalizePostSections((acf as { post_sections?: unknown }).post_sections),
+    layoutSections: [],
     seo: mapYoastToSeo(p, gs, { fallbackTitle: p.title?.rendered || "Post" }),
     publishedAt: p.date || "",
     dateLabel: formatPostMonthYear(p.date, lang),
@@ -84,10 +97,16 @@ export async function fetchPostBySlug(
   const raw = list[0];
   const author = await resolvePostAuthor(raw, lang);
   const doc = toDoc(raw, gs, lang, author);
-  if (doc.showRelatedPosts) {
+  const [layoutSections, templateShowRelated] = await Promise.all([
+    fetchBlogSingleTailSections(lang, gs),
+    fetchBlogSingleTemplateShowRelatedPosts(lang),
+  ]);
+  const showRelatedPosts = resolveBlogShowRelatedPosts(templateShowRelated, doc.showRelatedPosts);
+  let merged = { ...doc, layoutSections, showRelatedPosts };
+  if (merged.showRelatedPosts) {
     const cats = Array.isArray(raw.categories) ? raw.categories : [];
-    const relatedPosts = await fetchRelatedPostCards(lang, doc.id, cats, 3);
-    return { doc: { ...doc, relatedPosts }, raw };
+    const relatedPosts = await fetchRelatedPostCards(lang, merged.id, cats, 3);
+    merged = { ...merged, relatedPosts };
   }
-  return { doc, raw };
+  return { doc: merged, raw };
 }

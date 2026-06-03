@@ -853,6 +853,13 @@ export type RichTextSectionT = CoreSection & {
   contentWidth: "default" | "narrow" | "wide";
 };
 
+/** Blog single closing panel — Global Templates only (pale blue band, title + WYSIWYG). */
+export type BlogConclusionPanelSectionT = CoreSection & {
+  type: "blog_conclusion_panel";
+  title: string;
+  body: string;
+};
+
 /** Single case study — narrative block (Figma 879:27 “Probleem”, “Resultaat”, etc.). */
 export type CaseStudyChapterSectionT = CoreSection & {
   type: "case_study_chapter";
@@ -1010,6 +1017,7 @@ export type AnySectionT =
   | ProblemSolutionSectionT
   | TalkDualCardsSectionT
   | RichTextSectionT
+  | BlogConclusionPanelSectionT
   | CaseStudyChapterSectionT
   | CaseStudyProductShotSectionT
   | CaseStudyClientReviewSectionT

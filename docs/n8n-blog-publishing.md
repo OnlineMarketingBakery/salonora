@@ -70,10 +70,7 @@ Example `acf` fragment on `POST /wp/v2/posts`:
 REST shape for ACF can vary by ACF version; confirm with `GET .../posts/{id}?acf_format=standard&lang=nl`.
 
 ## Reference: full Gutenberg-style body (copy-paste / REST)
-
-Use **[n8n-blog-post-gutenberg-reference.html](./n8n-blog-post-gutenberg-reference.html)** when you want a **complete example** of post `content` as WordPress saves it: `<!-- wp:paragraph -->`, `<!-- wp:heading … -->`, `<!-- wp:html -->` with inline-styled markup, lists, and CTAs. Copy the file into the WordPress post **Code editor**, or paste the whole string into the **`content`** field of `POST` / `PUT /wp/v2/posts` (escape for JSON in n8n).
-
-**Compared to the HTML contract below:** that contract uses **`salonora-*` wrapper classes** so the Next template gets predictable **TOC** behavior, section numbering, and Figma-aligned callouts. The Gutenberg reference relies on **generic HTML** inside `wp:html` blocks; the site still applies global post styles, and **`markStyleTintedDivs`** may add `salonora-tinted` to some inline-background divs, but you will not get the same guarantees as with the documented wrappers. Prefer **`salonora-*` markup** for production parity with the design system; use the Gutenberg file when your pipeline exports **block editor markup** or you need a **structural template** for a colleague to swap text inside.
+Use **[n8n-blog-post-gutenberg-reference.html](./n8n-blog-post-gutenberg-reference.html)** for a **complete** post `content` example: `<!-- wp:paragraph -->`, plain `<!-- wp:heading -->` blocks (no inline typography), and `<!-- wp:html -->` with **`salonora-*`** callouts, tables, checklists, and CTAs (blog single Figma **1643:54**). It follows the **HTML contract** in the next section. Copy into the WordPress **Code editor**, or paste into the **content** field on `POST` / `PUT /wp/v2/posts` (escape for JSON in n8n). Swap copy; keep class names. **Do not** put FAQ, the conclusion panel, or related posts in `content` — use **Templates → blog_single_sections** ([blog-single-template.md](./blog-single-template.md)).
 
 ## HTML contract (post body)
 
@@ -166,3 +163,6 @@ The template uses the **embedded author** from WordPress (`_embed=1`): display n
 
 - Use a **dedicated** WordPress user and application password for n8n with minimal capabilities (`edit_posts`, `upload_files` if needed).
 - Store secrets in n8n credentials or environment variables, not in workflow JSON exports.
+
+
+Use **[n8n-blog-post-gutenberg-reference.html](./n8n-blog-post-gutenberg-reference.html)** for a **complete** post content example: <!-- wp:paragraph -->, plain <!-- wp:heading --> blocks (no inline typography), and <!-- wp:html --> with **`salonora-*`** callouts, tables, checklists, and CTAs (blog single Figma **1643:54**). It follows the **HTML contract** in the next section. Copy into the WordPress **Code editor**, or paste into the **content** field on POST / PUT /wp/v2/posts (escape for JSON in n8n). Swap copy; keep class names. **Do not** put FAQ, the conclusion panel, or related posts in content — use **Templates → blog_single_sections** ([blog-single-template.md](./blog-single-template.md)).

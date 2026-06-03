@@ -145,6 +145,7 @@ function normalizeSplitCopyFramedSection(
 /** Known page flexible-layout names → normalized section types (must stay aligned with `mapKnownPageSectionLayout`). */
 const PAGE_SECTION_ACF_LAYOUTS = {
   announcement_bar: true,
+  blog_conclusion_panel: true,
   benefits_grid: true,
   cards: true,
   combined_strengths: true,
@@ -1348,6 +1349,13 @@ function mapKnownPageSectionLayout(
         title: asString(row.title),
         body: asHtml(row.body),
         contentWidth: (asString(row.content_width) as "default" | "narrow" | "wide") || "default",
+      };
+    case "blog_conclusion_panel":
+      return {
+        ...base,
+        type: "blog_conclusion_panel",
+        title: asString(row.title),
+        body: asHtml(row.body),
       };
     case "case_study_chapter":
       return {

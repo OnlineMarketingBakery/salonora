@@ -195,6 +195,9 @@ Figma **597:3503** ("Frame 2147228620"): rounded card with `media_position` (sta
 ### `blog_post_overview`
 Figma **830:2196**: hero `title` / `intro`, optional `show_search` (GET `?s=`), optional `show_featured`, optional `featured_post` (pinned post for featured slot on page 1), `posts_per_page`, optional `read_more_label`. Enable "Blog archive page" (`is_blog_archive`) on the WP page so `?page=` and `?s=` are applied server-side.
 
+### Blog single template (not a section type)
+Global **Templates** ACF options (`omb-templates-settings`, field `blog_single_sections`, same layouts as `page_sections`). Injected on every **post** via `fetchBlogSingleTailSections` → `PostDocument.layoutSections` → `PostTemplate` (after body, before `PostRelatedGrid`). Fallback: layout page `is_blog_single_layout`. Related cards stay on the post (`show_related_posts` + categories). See `docs/blog-single-template.md`.
+
 ### `case_study_overview`
 Figma **866:4217**: same mesh hero band as blog + `title` / `intro` + optional `hero_stats` (KPI cards, 1–4 `grid_columns`). Card list fixed 3 columns on large screens. `grid_rows` sets cards per page: `postsPerPage = min(50, 3 × grid_rows)`. Optional `show_featured` + `featured_case_study`, `read_more_label`. Enable "Case study archive page" (`is_case_study_archive`) on WP page.
 

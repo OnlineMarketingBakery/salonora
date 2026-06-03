@@ -152,3 +152,16 @@ export function extractPostToc(html: string): PostTocItem[] {
   }
   return items;
 }
+
+/** True for blog TOC rows: top-level sections (1., 2., …), not subsections (2.2, 1.3.4) or h3. */
+export function isBlogTocMainSectionItem(item: PostTocItem): boolean {
+  if (item.level === 3) return false;
+  const label = item.label.trim();
+  if (/^\d+(?:\.\d+)+/.test(label)) return false;
+  return true;
+}
+
+/** Blog single TOC — only main chapter headings; subsections stay in the article. */
+export function filterBlogPostTocItems(items: PostTocItem[]): PostTocItem[] {
+  return items.filter(isBlogTocMainSectionItem);
+}

@@ -81,7 +81,7 @@ export function PostArticleMeta({
         <span>
           {lang === "nl" ? (
             <>
-              {t.readLabel} {t.minRead(readMinutes)}
+              {t.readLabel} {readMinutes} minuten
             </>
           ) : (
             <>

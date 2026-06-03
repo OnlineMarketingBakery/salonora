@@ -42,13 +42,13 @@ export function PostBreadcrumbs({
       ) : null}
       <nav
         aria-label="Breadcrumb"
-        className={breadcrumbParent ? "sr-only" : "text-[16px] leading-[1.4] text-[var(--palette-navy)]"}
+        className={breadcrumbParent ? "sr-only" : "text-base font-medium leading-[1.4] text-navy"}
       >
         <ol className="flex flex-wrap items-center gap-x-1 gap-y-1">
           <li>
             <Link
               href={buildLocalePath(lang, blogArchivePath)}
-              className="font-medium text-[var(--palette-brand)] transition hover:underline"
+              className="font-medium text-brand transition hover:underline"
             >
               {t.blog}
             </Link>

@@ -35,6 +35,8 @@ Use these functions from `src/lib/wordpress/config.ts`; never read `process.env`
 | `getCptRestBase(cpt)`       | REST base for CPT: `service`, `testimonial`, `case_study` — reads from env or defaults |
 | `getHomepageSlug(lang)`     | Lang-specific homepage slug                |
 | `getBlogPageSlug(lang)`     | Blog archive slug segment (default `blog`) |
+| `fetchBlogSingleTailSections` | Blog single shared tail: **Templates** options (`omb-templates-settings` / `blog_single_sections`), then layout page fallback |
+| `getBlogSingleLayoutSlug(lang)` | Legacy layout page slug (default `blog-single-layout`; ACF `is_blog_single_layout`) |
 | `getCaseStudyArchiveSlug(lang)` | Case study archive slug (default `case-studies`) |
 | `getMenuId(location, lang)` | WP menu ID from env for a menu location    |
 | `getDefaultContactFormId()` | `NEXT_PUBLIC_DEFAULT_CF7_FORM_ID`          |

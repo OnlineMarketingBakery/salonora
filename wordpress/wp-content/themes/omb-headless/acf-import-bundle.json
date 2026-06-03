@@ -12989,6 +12989,48 @@
             ],
             "min": "",
             "max": ""
+          },
+          "layout_omb_blog_conclusion_panel": {
+            "key": "layout_omb_blog_conclusion_panel",
+            "name": "blog_conclusion_panel",
+            "label": "Blog conclusion panel",
+            "display": "block",
+            "sub_fields": [
+              {
+                "key": "field_omb_blog_conclusion_panel_title",
+                "label": "Title",
+                "name": "title",
+                "type": "text",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "placeholder": ""
+              },
+              {
+                "key": "field_omb_blog_conclusion_panel_body",
+                "label": "Body",
+                "name": "body",
+                "type": "wysiwyg",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "tabs": "all",
+                "toolbar": "full",
+                "media_upload": 0,
+                "delay": 0
+              }
+            ]
           }
         },
         "min": "",
@@ -15506,5 +15548,78 @@
     "show_in_rest": 1,
     "display_title": "",
     "modified": 1715610000
+  },
+  {
+    "key": "group_omb_templates_settings",
+    "title": "OMB Templates Settings",
+    "fields": [
+      {
+        "key": "field_omb_templates_tab",
+        "label": "Blog single",
+        "name": "",
+        "type": "tab",
+        "placement": "top",
+        "endpoint": 0
+      },
+      {
+        "key": "field_omb_templates_show_related_posts",
+        "label": "Show related posts",
+        "name": "show_related_posts",
+        "type": "true_false",
+        "instructions": "When off, the related posts grid is hidden on every blog single (per-post toggle must also be on).",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "message": "",
+        "default_value": 1,
+        "ui": 1,
+        "ui_on_text": "Yes",
+        "ui_off_text": "No"
+      },
+      {
+        "key": "field_omb_blog_single_sections",
+        "label": "Blog single sections",
+        "name": "blog_single_sections",
+        "type": "clone",
+        "instructions": "Shared sections after the article on every blog post (e.g. FAQ). Uses the same layouts as Page Builder page_sections.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "clone": [
+          "field_omb_page_sections"
+        ],
+        "display": "seamless",
+        "layout": "block",
+        "prefix_label": 0,
+        "prefix_name": 0
+      }
+    ],
+    "location": [
+      [
+        {
+          "param": "options_page",
+          "operator": "==",
+          "value": "omb-templates-settings"
+        }
+      ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "Global tail sections for blog single posts (Next.js PostTemplate).",
+    "show_in_rest": 1,
+    "modified": 1780468103
   }
 ]

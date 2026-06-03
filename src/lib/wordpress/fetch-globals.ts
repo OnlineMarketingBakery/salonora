@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { asBool, asImage, asLink, asString } from "@/lib/acf/field-mappers";
 import { defaultCtaBrandArrowFallback } from "@/lib/ui/default-cta-brand-arrow";
 import type { Locale } from "@/lib/i18n/locales";
@@ -27,7 +28,7 @@ function unwrapAcfOptionsPayload(data: Record<string, unknown> | null): Record<s
   return { ...data, ...acfRecord };
 }
 
-type OmbGlobalsRestPayload = {
+export type OmbGlobalsRestPayload = {
   header?: Record<string, unknown>;
   footer?: Record<string, unknown>;
   contact?: Record<string, unknown>;
@@ -36,6 +37,8 @@ type OmbGlobalsRestPayload = {
   defaultSeo?: Record<string, unknown>;
   /** WordPress Settings → Reading (static front page), from omb-headless-core. */
   reading?: Record<string, unknown>;
+  /** ACF options: blog single tail sections (`blog_single_sections`), per `?lang=`. */
+  templates?: Record<string, unknown>;
 };
 
 /**
@@ -43,7 +46,12 @@ type OmbGlobalsRestPayload = {
  * WordPress does not register the `acf` REST namespace (common); native
  * `acf/v1/options/…` and `acf/v3/options/…` routes then return 404 and globals stay empty.
  */
-async function fetchGlobalsViaOmbRest(lang: Locale): Promise<OmbGlobalsRestPayload | null> {
+/** Cached OMB globals payload (shared with template section resolution). */
+export const getOmbGlobalsPayload = cache(async (lang: Locale): Promise<OmbGlobalsRestPayload | null> => {
+  return fetchGlobalsViaOmbRestUncached(lang);
+});
+
+async function fetchGlobalsViaOmbRestUncached(lang: Locale): Promise<OmbGlobalsRestPayload | null> {
   const base = getWordpressApiUrl();
   if (!base) return null;
   const url = new URL(`${base}/omb-headless/v1/globals`);
@@ -104,7 +112,8 @@ async function fetchReadingViaOmbRest(lang: Locale): Promise<Record<string, unkn
   }
 }
 
-async function fetchAcfOptions(path: string, lang: Locale): Promise<Record<string, unknown> | null> {
+/** ACF options page slug, e.g. `omb-templates-settings` (Polylang via `?lang=`). */
+export const fetchAcfOptions = cache(async (path: string, lang: Locale): Promise<Record<string, unknown> | null> => {
   const base = getWordpressApiUrl();
   if (!base) return null;
   const tryPaths = [
@@ -131,7 +140,7 @@ async function fetchAcfOptions(path: string, lang: Locale): Promise<Record<strin
     }
   }
   return null;
-}
+});
 
 function fromHeader(o: Record<string, unknown> | null) {
   if (!o) {
@@ -318,7 +327,7 @@ function fromDefaultSeo(o: Record<string, unknown> | null) {
 }
 
 export async function fetchGlobals(lang: Locale): Promise<GlobalSettings> {
-  const omb = await fetchGlobalsViaOmbRest(lang);
+  const omb = await getOmbGlobalsPayload(lang);
   if (omb != null) {
     const siteUnwrapped = unwrapAcfOptionsPayload(omb.site ?? null);
     const footer = footerFromOmbPayload(omb.footer ?? null, siteUnwrapped);

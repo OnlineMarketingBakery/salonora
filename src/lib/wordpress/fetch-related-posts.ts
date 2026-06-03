@@ -1,5 +1,6 @@
 import { wpFetchOptional } from "@/lib/wordpress/client";
 import { buildLocalePath } from "@/lib/i18n/get-alternates";
+import { filterPostsByLocale } from "@/lib/i18n/post-language";
 import type { Locale } from "@/lib/i18n/locales";
 import type { BlogPostOverviewCardT } from "@/types/sections";
 import { stripTags, toPlainText } from "@/lib/utils/strings";
@@ -14,6 +15,7 @@ type WpEmbeddedAuthor = {
 type WpPostListRow = {
   id: number;
   slug: string;
+  link?: string;
   date?: string;
   title: { rendered: string };
   excerpt: { rendered: string };
@@ -48,7 +50,8 @@ function mapRow(p: WpPostListRow, lang: Locale): BlogPostOverviewCardT {
 }
 
 /**
- * Same-language posts sharing the first category, excluding the current post.
+ * Same-locale posts (NL/EN via `link` path), excluding the current post.
+ * Prefers shared category; falls back to latest posts in that language when uncategorized.
  */
 export async function fetchRelatedPostCards(
   lang: Locale,
@@ -56,11 +59,14 @@ export async function fetchRelatedPostCards(
   categoryIds: number[],
   limit: number
 ): Promise<BlogPostOverviewCardT[]> {
+  const safeLimit = Math.min(12, Math.max(1, limit));
+  const per = Math.min(24, Math.max(safeLimit, safeLimit * 4));
+  const base = `exclude=${excludePostId}&per_page=${per}&orderby=date&order=desc&_embed=1`;
   const cat = categoryIds.find((id) => Number.isFinite(id) && id > 0);
-  if (!cat) return [];
-  const per = Math.min(12, Math.max(1, limit));
-  const path = `/wp/v2/posts?categories=${cat}&exclude=${excludePostId}&per_page=${per}&orderby=date&order=desc&_embed=1`;
+  const path = cat ? `/wp/v2/posts?categories=${cat}&${base}` : `/wp/v2/posts?${base}`;
   const rows = await wpFetchOptional<WpPostListRow[]>(path, { lang, revalidate: 60 });
   if (!Array.isArray(rows)) return [];
-  return rows.map((p) => mapRow(p, lang));
+  const localeScoped = filterPostsByLocale(rows, lang);
+  const pool = localeScoped.length > 0 ? localeScoped : rows;
+  return pool.slice(0, safeLimit).map((p) => mapRow(p, lang));
 }
