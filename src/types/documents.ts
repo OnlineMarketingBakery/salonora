@@ -1,4 +1,10 @@
-import type { AnySectionT, BlogPostOverviewCardT, CaseStudyOverviewCardT, CaseStudyOverviewMetricT } from "./sections";
+import type {
+  AnySectionT,
+  BlogPostOverviewCardT,
+  CaseStudyOverviewCardT,
+  CaseStudyOverviewMetricT,
+  FooterSectionT,
+} from "./sections";
 import type { SeoPayload } from "./seo";
 
 export type PageDocument = {
@@ -16,6 +22,12 @@ export type PageDocument = {
   isCaseStudyArchive?: boolean;
   /** When true, page supplies shared tail sections for all blog posts (ACF: is_blog_single_layout). */
   isBlogSingleLayout?: boolean;
+  /**
+   * When true, layout renders `footerSections` instead of global Footer settings (ACF: `use_custom_footer`).
+   */
+  useCustomFooter: boolean;
+  /** Per-page footer (`footer_section` layout only; ACF: `page_footer_sections`). */
+  footerSections: FooterSectionT[];
   sections: AnySectionT[];
   seo: SeoPayload;
 };

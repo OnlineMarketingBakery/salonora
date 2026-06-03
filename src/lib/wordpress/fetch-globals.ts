@@ -1,17 +1,11 @@
 import { cache } from "react";
 import { asBool, asImage, asLink, asString } from "@/lib/acf/field-mappers";
+import { acfPick, mapFooterFieldsFromAcfRow } from "@/lib/acf/map-footer-fields";
 import { defaultCtaBrandArrowFallback } from "@/lib/ui/default-cta-brand-arrow";
 import type { Locale } from "@/lib/i18n/locales";
 import { logger } from "@/lib/utils/logger";
 import type { FooterSettings, GlobalSettings, ReadingSettings } from "@/types/globals";
 import { getWordpressApiUrl, getWordpressAuthorizationHeader } from "./config";
-
-/** OMB REST / some stacks expose ACF keys as camelCase; WP REST uses snake_case. */
-function acfPick(o: Record<string, unknown>, snake: string, camel: string): unknown {
-  if (Object.prototype.hasOwnProperty.call(o, snake)) return o[snake];
-  if (Object.prototype.hasOwnProperty.call(o, camel)) return o[camel];
-  return undefined;
-}
 
 /**
  * ACF options GET responses may expose fields at the JSON root or under `acf`
@@ -167,31 +161,11 @@ function fromHeader(o: Record<string, unknown> | null) {
 }
 
 function fromFooter(o: Record<string, unknown> | null) {
+  const mapped = mapFooterFieldsFromAcfRow(o);
   if (!o) {
-    return {
-      footerTitle: "",
-      footerText: "",
-      footerLogo: null,
-      footerCopyright: "",
-      showFooterLanguageSwitcher: true,
-      footerCtaFootnote: "",
-      footerCtaPrimaryLink: null,
-      footerCtaSecondaryLink: null,
-    };
+    return { ...mapped, showFooterLanguageSwitcher: true };
   }
-  return {
-    footerTitle: asString(o.footer_title),
-    footerText: asString(o.footer_text),
-    footerLogo: asImage(o.footer_logo),
-    footerCopyright: asString(o.footer_copyright),
-    showFooterLanguageSwitcher: asBool(o.show_footer_language_switcher),
-    footerCtaFootnote: asString(acfPick(o, "footer_cta_text", "footerCtaText")),
-    footerCtaPrimaryLink: asLink(acfPick(o, "footer_cta_primary_link", "footerCtaPrimaryLink")),
-    footerCtaSecondaryLink:
-      asLink(acfPick(o, "footer_cta_secondary_link", "footerCtaSecondaryLink")) ??
-      asLink(o.footer_cta_2_link) ??
-      asLink(o.footer_cta2_link),
-  };
+  return mapped;
 }
 
 /** Until WP content is re-saved under the new ACF field names, use legacy `global_cta_*` (still returned in site options). */
