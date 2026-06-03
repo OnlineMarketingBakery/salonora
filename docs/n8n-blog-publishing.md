@@ -72,6 +72,26 @@ REST shape for ACF can vary by ACF version; confirm with `GET .../posts/{id}?acf
 ## Reference: full Gutenberg-style body (copy-paste / REST)
 Use **[n8n-blog-post-gutenberg-reference.html](./n8n-blog-post-gutenberg-reference.html)** for a **complete** post `content` example: `<!-- wp:paragraph -->`, plain `<!-- wp:heading -->` blocks (no inline typography), and `<!-- wp:html -->` with **`salonora-*`** callouts, tables, checklists, and CTAs (blog single Figma **1643:54**). It follows the **HTML contract** in the next section. Copy into the WordPress **Code editor**, or paste into the **content** field on `POST` / `PUT /wp/v2/posts` (escape for JSON in n8n). Swap copy; keep class names. **Do not** put FAQ, the conclusion panel, or related posts in `content` — use **Templates → blog_single_sections** ([blog-single-template.md](./blog-single-template.md)).
 
+
+## Reference: standard guide layout (inline Gutenberg)
+
+Full paste-ready sample: **[n8n-blog-post-gutenberg-reference.html](./n8n-blog-post-gutenberg-reference.html)** (schoonheidssalon starter guide).
+
+Contract and component recipes: **[../src/lib/blog/n8n-gutenberg-layout-contract.md](../src/lib/blog/n8n-gutenberg-layout-contract.md)**.
+
+| Layer | What to use |
+|-------|-------------|
+| Body | `<!-- wp:paragraph -->`, `<!-- wp:list -->` |
+| Sections (TOC) | `<!-- wp:heading -->` level **2** — duplicate typography in block JSON **and** `style=""` on `<h2>` |
+| Subsections | `<!-- wp:heading -->` level **3** — same for `<h3>` |
+| Cards / tables / CTAs | `<!-- wp:html -->` — one wrapper `<div style="...">`, inline CSS only (no `salonora-*` classes) |
+
+**Colours (standard guide):** navy `#0D1B3E`, brand `#1B6FDB`, surface `#EFF6FF`, body `#374151`.
+
+**Inside cards:** put titles as `<h2>` / `<h3>` *inside* the `wp:html` div (with inline styles), not as separate Heading blocks before the card.
+
+On Salonora, inline-styled section headings skip theme counter pills; tinted `wp:html` wrappers are auto-tagged for TOC/card rules (`markStyleTintedDivs`).
+
 ## HTML contract (post body)
 
 The single-post template injects **`id`** attributes on **`<h2>`** and **`<h3>`** for the table of contents. You can also set `id` yourself in HTML.

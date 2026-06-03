@@ -115,29 +115,44 @@ export function markStyleTintedDivs(html: string): string {
   });
 }
 
+const SAL_HEADING_ATTR_RE = /\bdata-sal-heading\s*=\s*(["'])([23])\1/i;
+
+function nextHeadingId(inner: string, used: Set<string>): string {
+  const base = slugifyHeadingFragment(inner);
+  let id = base;
+  let n = 2;
+  while (used.has(id)) {
+    id = `${base}-${n}`;
+    n += 1;
+  }
+  used.add(id);
+  return id;
+}
+
 /**
- * Adds stable `id` attributes to h2/h3 for TOC anchors when missing.
+ * Adds stable `id` attributes to h2/h3 and inline section titles (`data-sal-heading`) for TOC anchors.
  * Handles duplicate slugs by suffixing -2, -3, …
  */
 export function injectHeadingIds(html: string): string {
   if (!html) return html;
   const used = new Set<string>();
-  return html.replace(/<h([23])(\s[^>]*)?>([\s\S]*?)<\/h\1>/gi, (full, level: string, attrs: string | undefined, inner: string) => {
+  let result = html.replace(/<h([23])(\s[^>]*)?>([\s\S]*?)<\/h\1>/gi, (full, level: string, attrs: string | undefined, inner: string) => {
     const attrStr = attrs || "";
     if (/\bid\s*=\s*["'][^"']*["']/i.test(attrStr)) {
       return full;
     }
-    const base = slugifyHeadingFragment(inner);
-    let id = base;
-    let n = 2;
-    while (used.has(id)) {
-      id = `${base}-${n}`;
-      n += 1;
-    }
-    used.add(id);
+    const id = nextHeadingId(inner, used);
     const open = `<h${level}${attrStr} id="${id}">`;
     return `${open}${inner}</h${level}>`;
   });
+  result = result.replace(/<div(\s[^>]*)>([\s\S]*?)<\/div>/gi, (full, attrs: string, inner: string) => {
+    if (!SAL_HEADING_ATTR_RE.test(attrs)) return full;
+    if (/\bid\s*=\s*["'][^"']*["']/i.test(attrs)) return full;
+    const id = nextHeadingId(inner, used);
+    const spacer = attrs.endsWith(" ") ? "" : " ";
+    return `<div${attrs}${spacer}id="${id}">${inner}</div>`;
+  });
+  return result;
 }
 
 export function extractPostToc(html: string): PostTocItem[] {
@@ -146,6 +161,13 @@ export function extractPostToc(html: string): PostTocItem[] {
   const re = /<h([23])(?:\s[^>]*)?\bid=["']([^"']+)["'][^>]*>([\s\S]*?)<\/h\1>/gi;
   let m: RegExpExecArray | null;
   while ((m = re.exec(cleaned)) !== null) {
+    const level = Number(m[1]) as 2 | 3;
+    if (level !== 2 && level !== 3) continue;
+    items.push({ id: m[2], label: stripTags(m[3]).trim() || m[2], level });
+  }
+  const salRe =
+    /<div[^>]*\bdata-sal-heading\s*=\s*["']([23])["'][^>]*\bid=["']([^"']+)["'][^>]*>([\s\S]*?)<\/div>/gi;
+  while ((m = salRe.exec(cleaned)) !== null) {
     const level = Number(m[1]) as 2 | 3;
     if (level !== 2 && level !== 3) continue;
     items.push({ id: m[2], label: stripTags(m[3]).trim() || m[2], level });

@@ -186,6 +186,30 @@ a {
 }
 
 /*
+ * Gutenberg / n8n posts: headings with inline `style` carry their own layout (24px sections, 18px subs).
+ * Do not add theme counter pills or left padding — matches docs/n8n-blog-post-gutenberg-reference.html.
+ */
+.post-article-body.post-prose h2[style],
+.post-article-body.post-prose h3[style] {
+  padding-left: 0;
+}
+
+.post-article-body.post-prose h2[style] {
+  counter-increment: post-h2 0;
+  counter-reset: post-h3;
+}
+
+.post-article-body.post-prose h3[style] {
+  counter-increment: post-h3 0;
+}
+
+.post-article-body.post-prose h2[style]::before,
+.post-article-body.post-prose h3[style]::before {
+  content: none !important;
+  display: none !important;
+}
+
+/*
  * Tinted / card wrappers: headings inside skip section pills; TOC skips these blocks (post-html.ts).
  * Use `salonora-tinted` on any `<div>` with a non-white background (alone or combined with e.g. inline styles).
  */
