@@ -51,7 +51,7 @@ export function SiteHeader({
     <header
       className={
         sticky
-          ? `sticky top-3 z-50 w-full bg-transparent px-4 py-2 sm:px-6 md:px-8 lg:px-10 xl:px-12 ${overlapPull}`
+          ? `sticky top-0 z-50 w-full bg-transparent px-4 py-2 sm:px-6 md:px-8 lg:px-10 xl:px-12 ${overlapPull}`
           : `relative z-50 w-full bg-transparent px-4 pt-5 sm:px-6 sm:pt-6 md:px-8 md:pt-5 lg:px-10 lg:pt-5 xl:px-12 ${overlapPull}`
       }
     >

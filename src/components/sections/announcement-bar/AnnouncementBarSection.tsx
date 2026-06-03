@@ -294,7 +294,7 @@ export function AnnouncementBarSection({
         </div>
       ) : null}
 
-      <div className="relative mx-auto flex min-h-0 w-full items-center justify-center py-10 sm:py-12">
+      <div className="relative mx-auto flex min-h-0 w-full items-center justify-center overflow-x-clip py-10 sm:py-12">
         <div
           aria-hidden
           className="pointer-events-none absolute left-1/2 top-1/2 z-0 flex w-[140vw] max-w-none -translate-x-1/2 -translate-y-1/2 items-center justify-center"
