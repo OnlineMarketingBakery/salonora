@@ -43,8 +43,8 @@ export function PostArticleMeta({
   const t = COPY[lang];
   const authorName = author.name.trim() || "—";
   return (
-    <div className="flex flex-wrap items-center gap-x-7 gap-y-2 text-[16px] font-medium leading-[1.4] text-[var(--palette-navy)]">
-      <span className="inline-flex items-center gap-3">
+    <div className="flex flex-wrap items-center gap-x-7 gap-y-2 text-[16px] font-medium leading-[1.4] text-navy">
+      <span className="inline-flex items-center gap-[7px]">
         {author.avatarUrl ? (
           <Image
             src={author.avatarUrl}
@@ -56,27 +56,27 @@ export function PostArticleMeta({
           />
         ) : (
           <span
-            className="size-11 shrink-0 rounded-full bg-[var(--palette-surface)] ring-1 ring-[color-mix(in_srgb,var(--palette-brand)_12%,transparent)]"
+            className="size-11 shrink-0 rounded-full bg-surface ring-1 ring-[color-mix(in_srgb,var(--palette-brand)_12%,transparent)]"
             aria-hidden
           />
         )}
         <span>{authorName}</span>
       </span>
-      <span className="inline-flex items-center gap-3">
+      <span className="inline-flex items-center gap-[7px]">
         <span
-          className="flex size-11 shrink-0 items-center justify-center rounded-full bg-[var(--palette-surface)] ring-1 ring-[color-mix(in_srgb,var(--palette-brand)_10%,transparent)]"
+          className="flex size-11 shrink-0 items-center justify-center rounded-full bg-surface"
           aria-hidden
         >
-          <CalendarIcon className="size-5 text-[var(--palette-brand)]" />
+          <CalendarIcon className="size-5 text-brand" />
         </span>
         <span>{dateLabel || "—"}</span>
       </span>
-      <span className="inline-flex items-center gap-3">
+      <span className="inline-flex items-center gap-[7px]">
         <span
-          className="flex size-11 shrink-0 items-center justify-center rounded-full bg-[var(--palette-surface)] ring-1 ring-[color-mix(in_srgb,var(--palette-brand)_10%,transparent)]"
+          className="flex size-11 shrink-0 items-center justify-center rounded-full bg-surface"
           aria-hidden
         >
-          <ClockIcon className="size-5 text-[var(--palette-brand)]" />
+          <ClockIcon className="size-5 text-brand" />
         </span>
         <span>
           {lang === "nl" ? (

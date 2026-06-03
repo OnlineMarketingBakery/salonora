@@ -90,16 +90,16 @@ export function PostTableOfContents({
   return (
     <nav
       aria-labelledby="post-toc-heading"
-      className="flex max-h-none flex-col overflow-hidden rounded-[12px] bg-surface lg:max-h-[34.75rem]"
+      className="flex max-h-none w-full max-w-[19.1875rem] flex-col overflow-hidden rounded-[12px] bg-[#ebf3fe] lg:max-h-[34.75rem]"
     >
-      <div className="flex h-[52px] shrink-0 items-center gap-2.5 rounded-t-[14px] bg-brand px-5">
+      <div className="flex h-[52px] shrink-0 items-center gap-[7px] rounded-t-[14px] bg-brand pl-[19px] pr-[19px]">
         <TocListIcon className="size-[22px] shrink-0 text-white" />
-        <h2 id="post-toc-heading" className="text-2xl font-semibold leading-[1.1] text-white">
+        <h2 id="post-toc-heading" className="text-[24px] font-semibold leading-[1.1] text-white">
           {t.title}
         </h2>
       </div>
       <ul
-        className={`flex min-h-0 list-none flex-col gap-2.5 overflow-y-auto overscroll-y-contain px-[18px] py-[18px] ${TOC_SCROLL}`}
+        className={`flex min-h-0 list-none flex-col gap-[10px] overflow-y-auto overscroll-y-contain px-[18px] py-[18px] ${TOC_SCROLL}`}
       >
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
@@ -107,7 +107,7 @@ export function PostTableOfContents({
             <li key={`${item.level}-${item.id}`}>
               <a
                 href={`#${item.id}`}
-                className={`flex items-center rounded-[10px] bg-white px-4 text-[14px] font-normal leading-[1.28] text-navy transition hover:text-brand hover:underline ${
+                className={`flex items-center rounded-[10px] bg-white px-[34px] text-[14px] font-normal leading-[1.28] text-navy transition hover:text-brand hover:underline ${
                   isLast ? "min-h-[42px] py-2.5" : "min-h-[61px] py-3"
                 }`}
               >

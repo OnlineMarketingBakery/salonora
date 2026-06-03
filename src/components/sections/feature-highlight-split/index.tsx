@@ -56,7 +56,7 @@ const headlineStyle: CSSProperties = {
 const cardProse = [
   "!prose-p:mb-[5px] !prose-p:mt-0 last:!prose-p:mb-0",
   "!prose-p:max-w-none !prose-p:text-base !prose-p:font-medium !prose-p:leading-[1.1] lg:!prose-p:text-[18px]",
-  "!prose-p:text-navy-deep prose-strong:text-navy-deep",
+  "prose-strong:text-navy-deep",
   "[&_p:last-child]:!mb-0",
 ].join(" ");
 
@@ -96,7 +96,7 @@ function PromiseCard({
 
   return (
     <div
-      className={`relative flex w-full shrink-0 items-center rounded-[14px] px-6 sm:px-[32px] ${
+      className={`surface-light relative flex w-full shrink-0 items-center rounded-[14px] px-6 sm:px-[32px] ${
         isLongCard ? "min-h-[121px] py-4 lg:h-[121px] lg:py-0" : "min-h-[80px] py-3 lg:h-[80px] lg:py-0"
       }`}
       style={cardFace}

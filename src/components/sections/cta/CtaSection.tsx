@@ -28,7 +28,7 @@ export function CtaSection({ section, lang }: { section: CtaSectionT; lang: Loca
           />
           <div className="relative z-10 w-full sm:pt-0">
             <div
-              className="w-full rounded-[14px] bg-white p-5 text-navy shadow-[0px_15px_20.2px_rgba(67,87,128,0.46)] sm:p-10 sm:pt-8 md:px-12 md:py-16 lg:px-16 lg:py-20 xl:px-20 xl:py-[4.5rem] 2xl:px-[84px] 2xl:py-[84px] min-h-0"
+              className="surface-light w-full rounded-[14px] bg-white p-5 text-navy shadow-[0px_15px_20.2px_rgba(67,87,128,0.46)] sm:p-10 sm:pt-8 md:px-12 md:py-16 lg:px-16 lg:py-20 xl:px-20 xl:py-[4.5rem] 2xl:px-[84px] 2xl:py-[84px] min-h-0"
             >
               <div
                 className={[
@@ -61,9 +61,8 @@ export function CtaSection({ section, lang }: { section: CtaSectionT; lang: Loca
                       "!prose-p:text-base",
                       "!prose-p:font-normal",
                       "!prose-p:leading-[1.4]",
-                      "!prose-p:!text-navy",
                       "[&_p+_p]:!mt-3.5",
-                      "[&_a]:!text-navy",
+                      "[&_a]:!text-brand",
                       "[&_strong]:!text-navy",
                     ]
                       .filter(Boolean)

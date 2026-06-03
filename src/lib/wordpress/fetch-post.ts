@@ -6,7 +6,12 @@ import { mapYoastToSeo } from "@/lib/seo/map-yoast-to-metadata";
 import type { GlobalSettings } from "@/types/globals";
 import type { PostAuthorT, PostBreadcrumbParentT, PostDocument } from "@/types/documents";
 import { asBool, asLink } from "@/lib/acf/field-mappers";
-import { injectHeadingIds, markStyleTintedDivs } from "@/lib/blog/post-html";
+import {
+  injectHeadingIds,
+  markStyleTintedDivs,
+  preparePostContentHtml,
+  upgradeNumberedRows,
+} from "@/lib/blog/post-html";
 import { estimateReadMinutes } from "@/lib/blog/read-minutes";
 import { toPlainText } from "@/lib/utils/strings";
 import { fetchRelatedPostCards } from "./fetch-related-posts";
@@ -56,7 +61,9 @@ function toDoc(p: WpPostRaw, gs: GlobalSettings, lang: Locale, author: PostAutho
   const featuredForm = (acf as { featured_form?: { id?: number } | null }).featured_form;
   const showRelatedPosts = asBool((acf as { show_related_posts?: unknown }).show_related_posts);
   const rawHtml = p.content?.rendered || "";
-  const content = injectHeadingIds(markStyleTintedDivs(rawHtml));
+  const content = injectHeadingIds(
+    upgradeNumberedRows(markStyleTintedDivs(preparePostContentHtml(rawHtml)))
+  );
   return {
     kind: "post",
     id: p.id,

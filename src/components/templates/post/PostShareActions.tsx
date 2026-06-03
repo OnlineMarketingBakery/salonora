@@ -59,10 +59,10 @@ export function PostShareActions({
       <button
         type="button"
         onClick={onShare}
-        className="inline-flex h-[47px] min-w-[111px] shrink-0 items-center justify-center gap-[18px] rounded-[24px] bg-[var(--palette-brand)] px-3 text-[16px] font-normal text-white shadow-[0_6px_10px_rgba(57,144,240,0.35)] transition hover:opacity-[0.94]"
+        className="inline-flex h-[47px] min-w-[111px] shrink-0 items-center justify-center gap-[18px] rounded-[24px] bg-brand p-3 text-[16px] font-normal leading-normal text-white transition hover:opacity-[0.94]"
       >
         {t.share}
-        <ShareIcon className="size-6 shrink-0 text-white" />
+        <ShareIcon className="size-[24px] shrink-0 text-white" />
       </button>
       {hint ? <span className="text-xs text-[var(--palette-muted)]">{hint}</span> : null}
     </div>

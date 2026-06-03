@@ -1,43 +1,49 @@
-﻿# n8n Gutenberg body — layout contract (canonical)
+# n8n Gutenberg body — layout contract (Figma 1800:2)
 
-Use this pattern for automated blog posts (see `n8n-gutenberg-reference.source.html` for a full paste-ready example).
+Full paste-ready sample: **`docs/n8n-blog-post-gutenberg-reference.html`** (same content as **`n8n-blog-post-gutenberg-skeleton.html`**).
+
+## Paste instructions
+
+1. Open file in **Cursor/VS Code** (or use **`.txt`** copy) — do not copy from browser preview of `.html`.
+2. WordPress post → **Code editor** → select all → paste from first `<!-- wp:paragraph -->` (skip top comment).
+3. Update post.
+
+## Figma tokens (blog article body)
+
+| Token | Hex |
+|-------|-----|
+| Navy (H2, labels) | `#152951` |
+| Brand (H3 objections, pills, buttons) | `#3990f0` |
+| Surface (cards, zebra rows) | `#ebf3fe` |
+| Body text | `#435780` |
+| Table border | `#acc6ea` |
+
+| Element | Size |
+|---------|------|
+| Section H2 | `48px` / `600` |
+| Subsection H3 (flow) | `18px` brand or `24px` navy |
+| Answer / tip box title | `34px` uppercase brand |
+| Body | `16px` / `line-height: 1.4` |
 
 ## Block types
 
-| Content | Block | Notes |
-|---------|-------|--------|
-| Body copy | `wp:paragraph` | Plain `<p>` — no inline styles on paragraphs |
-| Bullet lists | `wp:list` + `wp:list-item` | Native list blocks |
-| Section title (TOC chapter) | `wp:heading` level 2 | JSON `style` **and** matching `style=""` on `<h2>` |
-| Subsection title | `wp:heading` level 3 | JSON `style` **and** matching `style=""` on `<h3>` |
-| Cards, tables, CTAs, checklists | `wp:html` | Single wrapper `<div style="...">` — **inline CSS only**, no classes |
+| Content | Block |
+|---------|--------|
+| Body copy | `wp:paragraph`, `wp:list` |
+| TOC chapters | `wp:heading` level 2 — JSON + inline `style` on `<h2>` |
+| Subsections | `wp:heading` level 3 |
+| Cards, tables, CTAs | `wp:html` — inline CSS only |
 
-## Design tokens (standard guide layout)
+Answer / CTA callout: `background:#ebf3fe; border-radius:12px; border-bottom:6px solid #3990f0; padding:30px 32px; margin:28px 0`. Title: `34px` / `600` / uppercase / `#3990f0`. No `<hr>` between sections (spacing via H2 margins).
 
-- Navy: `#0D1B3E`
-- Brand: `#1B6FDB`
-- Pale blue surface: `#EFF6FF`
-- Body text: `#374151`
-- H2 section: `24px` / `700`, `margin-top:40px`
-- H3 subsection: `18px` / `700`, color brand
+Pill row (Reden / Stap / Fout): flex `gap:24px`; pill `min-height:46px`, `background:#ebf3fe`, label `24px` brand `600`; title `24px` navy `600`.
 
-## wp:html component recipes
+Numbered row: `28×28px` circle `border-radius:14px`, `background:#3990f0`, `gap:8px`, body `16px` `#435780`.
 
-1. **Tip (left bar)** — `background:#EFF6FF; border-left:4px solid #1B6FDB; border-radius:16px; padding:28px 28px 28px 24px`
-   - Title: `<h2 style="...26px...">` inside the div (not a separate Heading block)
-2. **Checklist card** — pale blue box + flex rows + inline SVG checkmark
-3. **Cost rows** — flex `space-between` rows, alternating `#EFF6FF` / `#fff`, last row brand border
-4. **Inline CTA** — tip box + pill `<a style="border-radius:50px...">` buttons
-5. **Green micro-tip** — `#F0FDF4` / `#166534`
-6. **Warning** — `#FFFBEB` / `#F59E0B` left border
-7. **Dark promo** — `#1B4F8A` panel + white text
+Objection quotes: `wp:heading` level 2, `24px` `#3990f0` (not a `<div>`).
 
-## Next.js behaviour
+Section dividers: do not use `<!-- wp:html --><hr>…` blocks.
 
-- `markStyleTintedDivs` adds `salonora-tinted` to non-white `wp:html` wrappers → headings **inside** cards skip counter pills; those blocks are omitted from the sidebar TOC.
-- `wp:heading` with inline `style` on `<h2>`/`<h3>` skips theme counter pills (`globals.css`).
-- Section `h2` ids are injected in `fetch-post.ts` for TOC anchors.
+## Not in `content`
 
-## Do not put in `content`
-
-FAQ, conclusion panel, related posts — use Templates → `blog_single_sections`.
+Eyebrow, H1, hero, sidebar TOC, FAQ, Tot slot, related posts — Salonora template / ACF.

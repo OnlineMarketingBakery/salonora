@@ -1,5 +1,7 @@
+import { decodeHtmlEntitiesPlain } from "@/lib/utils/decode-html-entities-plain";
+
 export function stripTags(html: string): string {
-  return html.replace(/<[^>]+>/g, "").trim();
+  return decodeHtmlEntitiesPlain(html.replace(/<[^>]+>/g, "").trim());
 }
 
 /** URL-safe fragment id from visible heading text. */

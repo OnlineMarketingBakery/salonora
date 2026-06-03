@@ -34,7 +34,6 @@ const stepProseOnCard = [
   "!prose-p:text-base",
   "!prose-p:font-normal",
   "!prose-p:leading-[1.4]",
-  "!prose-p:text-navy",
   "[&_a]:!text-navy",
 ].join(" ");
 
@@ -52,7 +51,7 @@ function ProcessStepBlock({ s, maxWidthClass }: { s: ProcessStepItemT; maxWidthC
       <div
         className={[
           REVEAL_ITEM,
-          "box-border flex w-full max-w-[383px] min-h-[240px] flex-col items-stretch justify-between gap-0 rounded-[12px] bg-white p-[30px] sm:min-h-[275px] lg:min-h-[275px]",
+          "surface-light box-border flex w-full max-w-[383px] min-h-[240px] flex-col items-stretch justify-between gap-0 rounded-[12px] bg-white p-[30px] sm:min-h-[275px] lg:min-h-[275px]",
           maxWidthClass,
         ].join(" ")}
       >

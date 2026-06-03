@@ -13,7 +13,6 @@ const introProse = [
   "!prose-p:text-base",
   "!prose-p:font-normal",
   "!prose-p:leading-[1.4]",
-  "!prose-p:text-navy",
   "[&>p+_p]:!mt-3.5",
   /* Figma: 24px after the 3-paragraph block before the “teaser” (4th p) */
   "[&>p:nth-of-type(3)+p]:!mt-6",
@@ -25,7 +24,7 @@ const cardCtaClassName =
 
 export function PricingCtaSection({ section, lang }: { section: PricingCtaSectionT; lang: Locale }) {
   return (
-    <section className="bg-[#F0F7FF] py-16 sm:py-20 md:py-24">
+    <section className="surface-light bg-[#F0F7FF] py-16 sm:py-20 md:py-24">
       <Container className="!max-w-[85rem]">
         <div className="mx-auto flex w-full max-w-[1100px] flex-col items-center gap-6">
           <div className={`${REVEAL_ITEM} w-full max-w-[826px] text-center`}>
@@ -92,7 +91,7 @@ export function PricingCtaSection({ section, lang }: { section: PricingCtaSectio
               >
                 <RichText
                   html={section.bottomContactText}
-                  className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-none !prose-p:text-center !prose-p:font-sans !prose-p:text-base !prose-p:font-semibold !prose-p:leading-[1.4] !prose-p:text-navy !prose-p:whitespace-normal [&_a]:!font-semibold [&_a]:!text-brand [&_a]:!no-underline hover:[&_a]:!underline"
+                  className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-none !prose-p:text-center !prose-p:font-sans !prose-p:text-base !prose-p:font-semibold !prose-p:leading-[1.4] !prose-p:whitespace-normal [&_a]:!font-semibold [&_a]:!text-brand [&_a]:!no-underline hover:[&_a]:!underline"
                 />
               </div>
             )}

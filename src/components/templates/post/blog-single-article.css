@@ -1,0 +1,341 @@
+/**
+ * Blog single post body — Figma 1800:2 / 1643:54 (article column only).
+ * Tokens: site palette + Figma Dev Mode (Outfit, not prompt overrides).
+ * Scoped to `.blog-single-post .post-article-body` — hero, TOC, FAQ, footer unchanged.
+ */
+
+.blog-single-post .post-article-body.post-prose {
+  --post-navy: var(--palette-navy);
+  --post-brand: var(--palette-brand);
+  --post-body: var(--palette-muted);
+  --post-surface: var(--palette-surface);
+  --post-border: #acc6ea;
+
+  width: 100%;
+  max-width: 60.5rem;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--post-body);
+  counter-reset: none;
+}
+
+/* Figma: no auto-number pills on section headings */
+.blog-single-post .post-article-body.post-prose h2,
+.blog-single-post .post-article-body.post-prose h3 {
+  padding-left: 0;
+  counter-increment: none;
+}
+
+.blog-single-post .post-article-body.post-prose h2::before,
+.blog-single-post .post-article-body.post-prose h3::before {
+  content: none !important;
+  display: none !important;
+}
+
+.blog-single-post .post-article-body.post-prose p {
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--post-body);
+}
+
+.blog-single-post .post-article-body.post-prose > *:last-child,
+.blog-single-post .post-article-body.post-prose p:last-child {
+  margin-bottom: 0;
+}
+
+.blog-single-post .post-article-body.post-prose strong {
+  font-weight: 600;
+  color: var(--post-navy);
+}
+
+.blog-single-post .post-article-body.post-prose a {
+  color: var(--post-brand);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Section H2 — Figma 48px / 600 / #152951 */
+.blog-single-post .post-article-body.post-prose h2:not([style]) {
+  margin: 3rem 0 0.75rem;
+  font-size: 3rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--post-navy);
+}
+
+.blog-single-post .post-article-body.post-prose h2[style] {
+  font-weight: 600 !important;
+  line-height: 1.1 !important;
+}
+
+.blog-single-post .post-article-body.post-prose h3:not([style]) {
+  margin: 1.5rem 0 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--post-brand);
+}
+
+.blog-single-post .post-article-body.post-prose h3[style] {
+  font-weight: 600 !important;
+  line-height: 1.1 !important;
+}
+
+.blog-single-post .post-article-body.post-prose h2:first-of-type {
+  margin-top: 0;
+}
+
+.blog-single-post .post-article-body.post-prose hr {
+  margin: 2.5rem 0;
+  border: 0;
+  border-top: 1px solid var(--post-border);
+  height: 0;
+}
+
+/* Callout band — Figma: #ebf3fe body, 12px radius, full-width #3990f0 6px footer */
+.blog-single-post .post-article-body.post-prose .salonora-band {
+  margin: 1.75rem 0;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--post-surface);
+}
+
+.blog-single-post .post-article-body.post-prose .salonora-band__body {
+  padding: 1.875rem 2rem 1.625rem;
+  background: var(--post-surface) !important;
+}
+
+.blog-single-post .post-article-body.post-prose .salonora-band__footer {
+  display: block;
+  height: 6px !important;
+  margin: 0 !important;
+  width: 100%;
+  background: var(--post-brand) !important;
+  line-height: 0 !important;
+  font-size: 0 !important;
+}
+
+.blog-single-post .post-article-body.post-prose .salonora-band p {
+  color: var(--post-body);
+}
+
+.blog-single-post .post-article-body.post-prose .salonora-band p[style*="text-transform:uppercase"],
+.blog-single-post .post-article-body.post-prose .salonora-band p[style*="text-transform: uppercase"] {
+  margin-bottom: 0.875rem !important;
+  font-size: 2.125rem !important;
+  font-weight: 600 !important;
+  line-height: 1.1 !important;
+  text-transform: uppercase !important;
+  color: var(--post-brand) !important;
+}
+
+/* Tinted wrappers without band markup — surface + brand footer strip */
+.blog-single-post .post-article-body.post-prose .salonora-tinted:not(.salonora-num-badge):not(.salonora-num-row):not(.salonora-band),
+.blog-single-post .post-article-body.post-prose .salonora-tip,
+.blog-single-post .post-article-body.post-prose .salonora-callout,
+.blog-single-post .post-article-body.post-prose .salonora-warn {
+  position: relative;
+  margin: 1.75rem 0;
+  padding: 1.875rem 2rem 1.625rem;
+  border: none;
+  border-radius: 12px;
+  background: var(--post-surface) !important;
+  overflow: hidden;
+}
+
+.blog-single-post .post-article-body.post-prose .salonora-tinted:not(.salonora-band)::after,
+.blog-single-post .post-article-body.post-prose .salonora-tip::after,
+.blog-single-post .post-article-body.post-prose .salonora-callout::after {
+  content: "";
+  display: block;
+  height: 6px;
+  margin: 0;
+  background: var(--post-brand);
+}
+
+/* Numbered rows — Figma: 28px solid #3990f0 circles */
+.blog-single-post .post-article-body.post-prose .salonora-num-list {
+  margin: 1.125rem 0;
+}
+
+.blog-single-post .post-article-body.post-prose .salonora-num-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 11px;
+}
+
+.blog-single-post .post-article-body.post-prose .salonora-num-row:last-child {
+  margin-bottom: 0;
+}
+
+.blog-single-post .post-article-body.post-prose .salonora-num-badge {
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  border-radius: 14px;
+  background: var(--post-brand) !important;
+  color: #fff !important;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.blog-single-post .post-article-body.post-prose .salonora-num-row > span:not(.salonora-num-badge) {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--post-body);
+}
+
+/* Lists — Figma list-disc, leading ~1.8 on items */
+.blog-single-post .post-article-body.post-prose ul:not(.salonora-checklist ul) {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+  list-style-type: disc;
+}
+
+.blog-single-post .post-article-body.post-prose ul:not(.salonora-checklist ul) > li {
+  line-height: 1.8;
+}
+
+.blog-single-post .post-article-body.post-prose ul:not(.salonora-checklist ul) > li::marker {
+  color: var(--post-brand);
+}
+
+.blog-single-post .post-article-body.post-prose ol:not(.salonora-num-list) {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.blog-single-post .post-article-body.post-prose ol:not(.salonora-num-list) > li {
+  line-height: 1.8;
+}
+
+.blog-single-post .post-article-body.post-prose ol:not(.salonora-num-list) > li::marker {
+  color: var(--post-brand);
+  font-weight: 600;
+}
+
+.blog-single-post .post-article-body.post-prose li {
+  margin: 0.25em 0;
+}
+
+/*
+ * Tables — Figma wraps markup in a bordered div (WP `wp:html`); border lives on the
+ * wrapper only. A second border + radius on `<table>` caused a white “gutter” under the top edge.
+ */
+.blog-single-post .post-article-body.post-prose div:has(> table) {
+  margin: 1.375rem 0;
+  padding: 0 !important;
+  border: 1px solid var(--post-border) !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  background: transparent;
+}
+
+.blog-single-post .post-article-body.post-prose table {
+  width: 100%;
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  border-collapse: collapse;
+  font-size: 1rem;
+}
+
+/* Rare: table not wrapped in WP html block */
+.blog-single-post .post-article-body.post-prose > table {
+  margin: 1.375rem 0;
+  border: 1px solid var(--post-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.blog-single-post .post-article-body.post-prose thead th {
+  background: var(--post-navy) !important;
+  color: #fff !important;
+  padding: 0.9375rem 1.375rem;
+  text-align: left;
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+}
+
+.blog-single-post .post-article-body.post-prose tbody td {
+  padding: 0.875rem 1.375rem;
+  border-top: 1px solid var(--post-border);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--post-body);
+  vertical-align: top;
+}
+
+.blog-single-post .post-article-body.post-prose tbody tr:nth-child(odd) td {
+  background: #fff;
+}
+
+.blog-single-post .post-article-body.post-prose tbody tr:nth-child(even) td {
+  background: var(--post-surface);
+}
+
+.blog-single-post .post-article-body.post-prose tbody td:first-child {
+  font-weight: 600;
+  color: var(--post-navy);
+}
+
+.blog-single-post .post-article-body.post-prose figure {
+  margin: 1.5rem 0;
+}
+
+.blog-single-post .post-article-body.post-prose figure img {
+  border-radius: 10px;
+}
+
+.blog-single-post .post-article-body.post-prose blockquote {
+  margin: 1.25rem 0;
+  padding-left: 1rem;
+  border-left: 3px solid color-mix(in srgb, var(--post-brand) 45%, transparent);
+  font-style: normal;
+  color: var(--post-navy);
+}
+
+@media (max-width: 768px) {
+  .blog-single-post .post-article-body.post-prose {
+    max-width: 100%;
+  }
+
+  .blog-single-post .post-article-body.post-prose h2:not([style]) {
+    font-size: clamp(1.75rem, 6vw, 3rem);
+  }
+
+  .blog-single-post .post-article-body.post-prose .salonora-band__body {
+    padding: 1.25rem 1.25rem 1rem;
+  }
+
+  .blog-single-post .post-article-body.post-prose table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 375px) {
+  .blog-single-post .post-article-body.post-prose .salonora-band p[style*="text-transform"] {
+    font-size: 1.75rem !important;
+  }
+
+  .blog-single-post .post-article-body.post-prose thead th,
+  .blog-single-post .post-article-body.post-prose tbody td {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+  }
+}

@@ -31,6 +31,8 @@
   --foreground: var(--palette-navy-deep);
   --brand: var(--palette-brand);
   --brand-dark: var(--palette-navy-deep);
+  /* Body copy on light surfaces (#435780); dark bands override below */
+  --text-paragraph: var(--palette-muted);
 }
 
 /* Same-page anchors (e.g. post TOC): native smooth scroll; Next `<Link href="#…">` skips this. */
@@ -49,6 +51,7 @@
   --color-navy: var(--palette-navy);
   --color-navy-deep: var(--palette-navy-deep);
   --color-muted: var(--palette-muted);
+  --color-copy: var(--text-paragraph);
   --color-surface: var(--palette-surface);
   --color-card: var(--palette-card);
   --color-pill: var(--palette-pill);
@@ -62,6 +65,33 @@
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+/*
+ * Paragraph copy: #435780 on light backgrounds; on dark / inverted sections keep
+ * whatever colour the block already uses (usually inherited white).
+ */
+.text-white,
+.bg-navy-deep,
+.bg-navy,
+.surface-dark,
+[data-surface="dark"] {
+  --text-paragraph: currentColor;
+}
+
+.bg-white,
+.bg-background,
+.bg-surface,
+.bg-card,
+.bg-pill,
+.surface-light {
+  --text-paragraph: var(--palette-muted);
+}
+
+.prose {
+  --tw-prose-body: var(--text-paragraph);
+  --tw-prose-bullets: var(--text-paragraph);
+  --tw-prose-counters: var(--text-paragraph);
 }
 
 a {

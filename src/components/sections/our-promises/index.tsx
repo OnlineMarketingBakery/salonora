@@ -96,7 +96,7 @@ export function OurPromisesSection({
                   {item.description.trim() ? (
                     <RichText
                       html={item.description}
-                      className="w-full max-w-[17.125rem] [&_p]:m-0 [&_p+p]:mt-1 [&_p]:text-center [&_p]:font-sans [&_p]:text-sm [&_p]:font-normal [&_p]:leading-[1.4] [&_p]:text-navy-deep prose-strong:font-semibold prose-strong:text-navy-deep"
+                      className="w-full max-w-[17.125rem] [&_p]:m-0 [&_p+p]:mt-1 [&_p]:text-center [&_p]:font-sans [&_p]:text-sm [&_p]:font-normal [&_p]:leading-[1.4] [&_p]:text-muted prose-strong:font-semibold prose-strong:text-navy-deep"
                     />
                   ) : null}
                 </li>

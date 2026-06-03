@@ -17,9 +17,9 @@ export function BlogConclusionPanelSection({
     <section className="blog-single-conclusion bg-white pb-12 md:pb-16">
       <Container>
         <BlogSingleTailWidth>
-          <div className="rounded-[12px] bg-surface px-6 py-10 sm:px-10 sm:py-12 md:px-[70px] md:py-16">
+          <div className="rounded-t-[12px] bg-surface px-6 py-10 sm:px-10 sm:py-12 md:px-[70px] md:py-16">
             {section.title?.trim() ? (
-              <h2 className="max-w-[52rem] text-[2rem] font-semibold leading-[1.1] text-navy sm:text-[2.375rem] md:text-[3rem]">
+              <h2 className="max-w-[65.5rem] text-[2rem] font-semibold leading-[1.1] text-navy sm:text-[2.375rem] md:text-[3rem]">
                 {section.title}
               </h2>
             ) : null}

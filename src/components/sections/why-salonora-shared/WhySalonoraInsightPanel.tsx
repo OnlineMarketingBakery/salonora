@@ -9,17 +9,17 @@ function InsightCard({ index, text }: { index: number; text: string }) {
 
   return (
     <div
-      className={`flex w-full shrink-0 items-center justify-center rounded-[24.5px] bg-white p-6 lg:p-6 ${
+      className={`surface-light flex w-full shrink-0 items-center justify-center rounded-[24.5px] bg-white p-6 lg:p-6 ${
         isLongCard ? "lg:h-[104px]" : "lg:h-[77px]"
       }`}
     >
       {looksLikeHtml ? (
         <RichText
           html={text}
-          className="w-full text-center! !prose-p:mb-0 !prose-p:mt-0 !prose-p:text-sm !prose-p:font-normal !prose-p:leading-[1.4] !prose-p:text-[#002752] [&_p+_p]:mt-0! lg:!prose-p:text-[14px]"
+          className="w-full text-center! !prose-p:mb-0 !prose-p:mt-0 !prose-p:text-sm !prose-p:font-normal !prose-p:leading-[1.4] !prose-p:text-copy [&_p+_p]:mt-0! lg:!prose-p:text-[14px]"
         />
       ) : (
-        <p className="w-full text-center font-sans text-sm font-normal leading-[1.4] text-[#002752] whitespace-pre-line lg:text-[14px]">
+        <p className="w-full text-center font-sans text-sm font-normal leading-[1.4] text-copy whitespace-pre-line lg:text-[14px]">
           {raw}
         </p>
       )}

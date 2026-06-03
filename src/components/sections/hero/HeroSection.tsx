@@ -366,10 +366,10 @@ export function HeroSection({
                 />
               )}
               {hasFloatingCard && (
-                <div className="pointer-events-auto absolute z-20 bottom-4 left-1/2 -translate-x-1/2 w-[min(86%,260px)] rounded-2xl bg-white px-4 py-3 shadow-[0_11px_24px_color-mix(in_srgb,var(--palette-muted)_12%,transparent)] sm:bottom-6 sm:w-[min(80%,260px)] sm:px-5 sm:py-4 lg:left-auto lg:right-0 lg:top-1/2 lg:bottom-auto lg:translate-x-0 lg:-translate-y-1/2 lg:px-6 lg:py-5">
+                <div className="surface-light pointer-events-auto absolute z-20 bottom-4 left-1/2 -translate-x-1/2 w-[min(86%,260px)] rounded-2xl bg-white px-4 py-3 shadow-[0_11px_24px_color-mix(in_srgb,var(--palette-muted)_12%,transparent)] sm:bottom-6 sm:w-[min(80%,260px)] sm:px-5 sm:py-4 lg:left-auto lg:right-0 lg:top-1/2 lg:bottom-auto lg:translate-x-0 lg:-translate-y-1/2 lg:px-6 lg:py-5">
                   <RichText
                     html={section.floatingCard ?? ""}
-                    className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-none !prose-p:text-left !prose-p:text-xs !prose-p:font-medium !prose-p:leading-snug !prose-p:text-navy-deep sm:!prose-p:text-sm lg:!prose-p:text-base [&_p+_p]:mt-1.5!"
+                    className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-none !prose-p:text-left !prose-p:text-xs !prose-p:font-medium !prose-p:leading-snug !prose-p:text-copy sm:!prose-p:text-sm lg:!prose-p:text-base [&_p+_p]:mt-1.5!"
                   />
                 </div>
               )}
