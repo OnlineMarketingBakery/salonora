@@ -87,7 +87,7 @@ export function PrimaryNavMegaNavItem({ item }: Props) {
     <div ref={rootRef} className="group relative">
       <Link
         href={item.href}
-        className="relative flex items-center gap-2 whitespace-nowrap py-1 text-[16px] font-medium tracking-[-0.04em] text-navy transition-opacity duration-200 hover:opacity-85"
+        className="relative flex items-center gap-2 whitespace-nowrap py-1 text-[16px] font-medium text-navy transition-opacity duration-200 hover:opacity-85"
         target={item.target}
         aria-haspopup="menu"
         onPointerEnter={prefetchWhoWeServeMegaPreviews}

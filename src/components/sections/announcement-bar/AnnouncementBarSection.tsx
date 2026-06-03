@@ -263,7 +263,7 @@ export function AnnouncementBarSection({
 
   return (
     <section
-      className="relative z-10 -mb-8 -mt-6 w-full overflow-hidden bg-transparent sm:-mb-16 sm:-mt-10"
+      className="announcement-bar-overlap relative z-30 -my-12 w-full bg-transparent sm:-my-16"
       aria-label={tickerLabel}
     >
       {IS_DEV_BUILD ? (
@@ -294,10 +294,10 @@ export function AnnouncementBarSection({
         </div>
       ) : null}
 
-      <div className="relative mx-auto flex min-h-[104px] w-full items-center justify-center">
+      <div className="relative mx-auto flex min-h-0 w-full items-center justify-center py-10 sm:py-12">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-visible"
+          className="pointer-events-none absolute left-1/2 top-1/2 z-0 flex w-[140vw] max-w-none -translate-x-1/2 -translate-y-1/2 items-center justify-center"
         >
           <div className="flex min-w-[128vw] max-w-none origin-center translate-y-[10px] rotate-[0.42deg] items-center justify-center sm:min-w-[134vw]">
             <div

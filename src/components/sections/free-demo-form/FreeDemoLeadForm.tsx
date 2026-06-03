@@ -11,10 +11,10 @@ import { getFreeDemoFormCopy, type SalonTypeSlug } from "./copy";
  * value text 16px medium #002752 (`text-navy-deep`).
  */
 const fieldShellClass =
-  "flex h-[50px] w-full min-h-[50px] items-center rounded-[12px] !border-0 !bg-surface px-4 text-base font-medium leading-[1.54] tracking-[-0.02em] text-navy-deep shadow-none outline-none ring-0 placeholder:text-muted/30 focus:!border-0 focus:ring-2 focus:ring-brand/35 [&:-webkit-autofill]:[-webkit-text-fill-color:var(--palette-navy-deep)] [&:-webkit-autofill]:shadow-[inset_0_0_0_1000px_var(--palette-surface)]";
+  "flex h-[50px] w-full min-h-[50px] items-center rounded-[12px] !border-0 !bg-surface px-4 text-base font-medium leading-[1.54] text-navy-deep shadow-none outline-none ring-0 placeholder:text-muted/30 focus:!border-0 focus:ring-2 focus:ring-brand/35 [&:-webkit-autofill]:[-webkit-text-fill-color:var(--palette-navy-deep)] [&:-webkit-autofill]:shadow-[inset_0_0_0_1000px_var(--palette-surface)]";
 
 const labelClass =
-  "block w-full text-left text-sm font-normal leading-[1.54] tracking-[-0.02em] text-muted";
+  "block w-full text-left text-sm font-normal leading-[1.54] text-muted";
 
 const salonSlugs: SalonTypeSlug[] = [
   "hair",
@@ -196,7 +196,7 @@ export function FreeDemoLeadForm({
           aria-live="polite"
           className="flex flex-col gap-2 rounded-[12px] border border-emerald-600/25 bg-surface px-5 py-6 text-center sm:px-7 sm:py-7"
         >
-          <p className="text-lg font-semibold tracking-[-0.02em] text-navy-deep">
+          <p className="text-lg font-semibold text-navy-deep">
             {c.thankYouTitle}
           </p>
           <p className="text-base font-medium leading-[1.54] text-muted">
@@ -279,7 +279,7 @@ export function FreeDemoLeadForm({
               {c.hasWebsiteQuestion}
             </legend>
             <div className="flex flex-wrap items-center gap-x-[11px] gap-y-2">
-              <label className="inline-flex cursor-pointer items-center gap-1 text-base font-medium leading-[1.54] tracking-[-0.02em] text-navy-deep">
+              <label className="inline-flex cursor-pointer items-center gap-1 text-base font-medium leading-[1.54] text-navy-deep">
                 <input
                   type="radio"
                   name="has_website_ui"
@@ -289,7 +289,7 @@ export function FreeDemoLeadForm({
                 />
                 <span>{c.yes}</span>
               </label>
-              <label className="inline-flex cursor-pointer items-center gap-1 text-base font-medium leading-[1.54] tracking-[-0.02em] text-navy-deep">
+              <label className="inline-flex cursor-pointer items-center gap-1 text-base font-medium leading-[1.54] text-navy-deep">
                 <input
                   type="radio"
                   name="has_website_ui"

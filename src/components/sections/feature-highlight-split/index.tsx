@@ -169,7 +169,7 @@ function LeftColumn({
         ) : null}
         {titleLines.length > 0 ? (
           <h2
-            className="min-w-0 font-sans font-semibold tracking-normal text-navy-deep"
+            className="min-w-0 font-sans font-semibold text-navy-deep"
             style={headlineStyle}
           >
             {titleLines.map((line, i) => (

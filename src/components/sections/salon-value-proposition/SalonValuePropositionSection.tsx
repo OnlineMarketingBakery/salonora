@@ -166,8 +166,8 @@ function ValueCard({
       <h3
         className={
           figmaCentered
-            ? "font-sans text-2xl font-semibold leading-[1.1] tracking-tight text-navy"
-            : "text-xl font-medium leading-[1.1] tracking-tight text-navy sm:text-2xl"
+            ? "font-sans text-2xl font-semibold leading-[1.1] text-navy"
+            : "text-xl font-medium leading-[1.1] text-navy sm:text-2xl"
         }
       >
         {titleLines.map((line, i) => (
@@ -250,7 +250,7 @@ function SimpleCardsLayout({
         className={`${REVEAL_ITEM} mx-auto flex w-full max-w-[720px] flex-col items-center gap-4 text-center sm:gap-5`}
       >
         {titleLines.length > 0 ? (
-          <h2 className="font-sans text-[32px] font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-[40px] sm:leading-[1.1] md:text-[44px] lg:text-[48px] lg:leading-[56px]">
+          <h2 className="font-sans text-[32px] font-semibold leading-tight text-navy sm:text-[40px] sm:leading-[1.1] md:text-[44px] lg:text-[48px] lg:leading-[56px]">
             {titleLines.map((line, i) => (
               <span key={i} className="block">
                 {line}
@@ -302,7 +302,7 @@ function SplitPanelLayout({
             </span>
           ) : null}
           {titleLines.length > 0 ? (
-            <h2 className="font-sans text-[32px] font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-[40px] sm:leading-[1.1] md:text-[44px] lg:text-[48px] lg:leading-[56px]">
+            <h2 className="font-sans text-[32px] font-semibold leading-tight text-navy sm:text-[40px] sm:leading-[1.1] md:text-[44px] lg:text-[48px] lg:leading-[56px]">
               {titleLines.map((line, i) => (
                 <span key={i} className="block">
                   {line}
@@ -390,7 +390,7 @@ function CenteredFooterLayout({
         ) : null}
         <div className="flex w-full flex-col items-center gap-[18px]">
           {titleLines.length > 0 ? (
-            <h2 className="font-sans text-[32px] font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-[40px] sm:leading-[1.1] md:text-[44px] lg:text-[48px] lg:leading-[56px]">
+            <h2 className="font-sans text-[32px] font-semibold leading-tight text-navy sm:text-[40px] sm:leading-[1.1] md:text-[44px] lg:text-[48px] lg:leading-[56px]">
               {titleLines.map((line, i) => (
                 <span key={i} className="block">
                   {line}
@@ -425,7 +425,7 @@ function CenteredFooterLayout({
           className={`${REVEAL_ITEM} flex w-full max-w-[418px] flex-col items-center gap-[18px]`}
         >
           {hasFooterCopy ? (
-            <p className="text-center font-sans text-xl font-medium leading-[1.1] tracking-tight text-navy sm:text-2xl">
+            <p className="text-center font-sans text-xl font-medium leading-[1.1] text-navy sm:text-2xl">
               {section.footerTitle}
             </p>
           ) : null}

@@ -55,7 +55,7 @@ export function TestimonialsSection({
       <Container className="relative z-10 max-w-[1314px]">
         {section.title ? (
           <h2
-            className={`${REVEAL_ITEM} mx-auto max-w-[min(100%,477px)] text-center text-3xl font-semibold leading-tight tracking-tight text-navy-deep sm:text-4xl lg:leading-[56px]`}
+            className={`${REVEAL_ITEM} mx-auto max-w-[min(100%,477px)] text-center text-3xl font-semibold leading-tight text-navy-deep sm:text-4xl lg:leading-[56px]`}
           >
             {section.title}
           </h2>

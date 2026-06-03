@@ -36,7 +36,7 @@ export function FreeDemoFormSection({
               <div className="flex w-full flex-col items-center gap-3">
                 {section.title ? (
                   <h2
-                    className={`${REVEAL_ITEM} w-full max-w-[34.25rem] text-3xl font-semibold leading-tight tracking-[-0.035em] text-navy sm:text-4xl md:text-[2.75rem] md:leading-[1.12] lg:text-[3rem] lg:leading-[56px]`}
+                    className={`${REVEAL_ITEM} w-full max-w-[34.25rem] text-3xl font-semibold leading-tight text-navy sm:text-4xl md:text-[2.75rem] md:leading-[1.12] lg:text-[3rem] lg:leading-[56px]`}
                   >
                     {section.title}
                   </h2>

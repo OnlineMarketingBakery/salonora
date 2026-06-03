@@ -29,7 +29,7 @@ export function PricingCtaSection({ section, lang }: { section: PricingCtaSectio
         <div className="mx-auto flex w-full max-w-[1100px] flex-col items-center gap-6">
           <div className={`${REVEAL_ITEM} w-full max-w-[826px] text-center`}>
             {section.title && (
-              <h2 className="text-[40px] font-semibold leading-tight tracking-[-0.04em] text-navy-deep sm:text-[48px] sm:leading-[56px] [text-wrap:balance]">
+              <h2 className="text-[40px] font-semibold leading-tight text-navy-deep sm:text-[48px] sm:leading-[56px] [text-wrap:balance]">
                 {section.title}
               </h2>
             )}

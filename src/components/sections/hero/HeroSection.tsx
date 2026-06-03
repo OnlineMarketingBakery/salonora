@@ -64,8 +64,8 @@ export function HeroSection({
 
   // ─── Title size ──────────────────────────────────────────────────────────────
   const titleSizeClass = isCompact
-    ? "text-[1.75rem] font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-[2.25rem] md:text-[2.75rem] lg:text-[3.25rem] lg:leading-[3.75rem]"
-    : "text-[1.875rem] font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-4xl md:text-5xl lg:text-[4rem] lg:leading-[4.625rem]";
+    ? "text-[1.75rem] font-semibold leading-tight text-navy sm:text-[2.25rem] md:text-[2.75rem] lg:text-[3.25rem] lg:leading-[3.75rem]"
+    : "text-[1.875rem] font-semibold leading-tight text-navy sm:text-4xl md:text-5xl lg:text-[4rem] lg:leading-[4.625rem]";
 
   // ─── Offer text size ─────────────────────────────────────────────────────────
   const offerSize = section.offerTextSize ?? "large";
@@ -260,7 +260,7 @@ export function HeroSection({
                     <StarRating className="shrink-0" />
                     <RichText
                       html={section.trustLine}
-                      className="text-xs font-medium leading-normal tracking-[-0.04em] text-muted sm:text-sm [&_strong]:font-bold [&_strong]:text-navy"
+                      className="text-xs font-medium leading-normal text-muted sm:text-sm [&_strong]:font-bold [&_strong]:text-navy"
                     />
                   </div>
                 )}

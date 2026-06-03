@@ -72,7 +72,7 @@ function PackageInclude({
       ) : (
         <CheckIconFallback />
       )}
-      <p className="min-w-0 font-sans text-[14px] font-normal leading-[1.6] tracking-[-0.28px] text-navy-deep">
+      <p className="min-w-0 font-sans text-[14px] font-normal leading-[1.6] text-navy-deep">
         {text}
       </p>
     </div>
@@ -100,14 +100,14 @@ export function PricingPackagesSection({
             )}
             <div className="flex w-full flex-col items-center gap-[15px] text-center">
               {section.title && (
-                <h2 className="max-w-[464px] font-sans text-3xl font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-4xl sm:leading-tight lg:text-[48px] lg:leading-[56px] lg:tracking-[-0.04em]">
+                <h2 className="max-w-[464px] font-sans text-3xl font-semibold leading-tight text-navy sm:text-4xl sm:leading-tight lg:text-[48px] lg:leading-[56px]">
                   {section.title}
                 </h2>
               )}
               {section.intro && (
                 <RichText
                   html={section.intro}
-                  className="w-full !prose-p:mt-0 !prose-p:max-w-none !prose-p:text-center !prose-p:font-sans !prose-p:text-[16px] !prose-p:font-normal !prose-p:leading-[1.54] !prose-p:tracking-normal !prose-p:text-muted"
+                  className="w-full !prose-p:mt-0 !prose-p:max-w-none !prose-p:text-center !prose-p:font-sans !prose-p:text-[16px] !prose-p:font-normal !prose-p:leading-[1.54] !prose-p:text-muted"
                 />
               )}
             </div>
@@ -149,7 +149,7 @@ export function PricingPackagesSection({
                       {p.intro && (
                         <RichText
                           html={p.intro}
-                          className="!prose-p:mt-0 !prose-p:max-w-full !prose-p:text-left !prose-p:font-sans !prose-p:text-[14px] !prose-p:font-normal !prose-p:leading-[1.6] !prose-p:tracking-[-0.28px] !prose-p:text-muted"
+                          className="!prose-p:mt-0 !prose-p:max-w-full !prose-p:text-left !prose-p:font-sans !prose-p:text-[14px] !prose-p:font-normal !prose-p:leading-[1.6] !prose-p:text-muted"
                         />
                       )}
                     </div>
@@ -178,7 +178,7 @@ export function PricingPackagesSection({
                                 prose={false}
                                 html={p.pricingTitle}
                                 className={[
-                                  "text-left font-sans text-[18px] font-bold leading-tight tracking-normal !text-accent",
+                                  "text-left font-sans text-[18px] font-bold leading-tight !text-accent",
                                   "[&_p]:!m-0 [&_p]:!max-w-full [&_p]:!text-left [&_p]:!font-sans [&_p]:!text-[18px] [&_p]:!font-bold [&_p]:!leading-tight [&_p]:!text-accent",
                                   "[&_h1]:!m-0 [&_h1]:!font-sans [&_h1]:!text-[18px] [&_h1]:!font-bold [&_h1]:!leading-tight [&_h1]:!text-accent",
                                   "[&_h2]:!m-0 [&_h2]:!font-sans [&_h2]:!text-[18px] [&_h2]:!font-bold [&_h2]:!leading-tight [&_h2]:!text-accent",
@@ -194,7 +194,7 @@ export function PricingPackagesSection({
                                 prose={false}
                                 html={p.secondaryTitle}
                                 className={[
-                                  "text-left font-sans text-[18px] font-bold leading-tight tracking-normal !text-navy-deep",
+                                  "text-left font-sans text-[18px] font-bold leading-tight !text-navy-deep",
                                   "[&_p]:!m-0 [&_p]:!max-w-full [&_p]:!text-left [&_p]:!font-sans [&_p]:!text-[18px] [&_p]:!font-bold [&_p]:!leading-tight [&_p]:!text-navy-deep",
                                   "[&_h1]:!m-0 [&_h1]:!font-sans [&_h1]:!text-[18px] [&_h1]:!font-bold [&_h1]:!leading-tight [&_h1]:!text-navy-deep",
                                   "[&_h2]:!m-0 [&_h2]:!font-sans [&_h2]:!text-[18px] [&_h2]:!font-bold [&_h2]:!leading-tight [&_h2]:!text-navy-deep",
@@ -212,7 +212,7 @@ export function PricingPackagesSection({
                             prose={false}
                             html={p.pricingParagraph}
                             className={[
-                              "text-left font-sans text-[16px] font-normal leading-[1.6] tracking-normal !text-muted",
+                              "text-left font-sans text-[16px] font-normal leading-[1.6] !text-muted",
                               "[&_p]:!m-0 [&_p]:!max-w-full [&_p]:!text-left [&_p]:!font-sans [&_p]:!text-[16px] [&_p]:!font-normal [&_p]:!leading-[1.6] [&_p]:!text-muted",
                               "[&_h1]:!m-0 [&_h1]:!font-sans [&_h1]:!text-[16px] [&_h1]:!font-normal [&_h1]:!text-muted",
                               "[&_h2]:!m-0 [&_h2]:!font-sans [&_h2]:!text-[16px] [&_h2]:!font-normal [&_h2]:!text-muted",
@@ -288,7 +288,7 @@ export function PricingPackagesSection({
                     className={
                       i < 2
                         ? [
-                            "w-full min-w-0 max-w-full tracking-[0.5px]",
+                            "w-full min-w-0 max-w-full",
                             "sm:w-auto sm:max-w-none sm:shrink-0 sm:self-center sm:!px-10 md:!px-12 lg:!px-14",
                           ].join(" ")
                         : "h-12 w-full min-w-0 max-w-md rounded-3xl"

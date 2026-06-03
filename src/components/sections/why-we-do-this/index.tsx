@@ -60,7 +60,7 @@ export function WhyWeDoThisSection({
 
                 <div className="flex w-full flex-col items-start gap-[19px] text-white">
                   {section.title ? (
-                    <h2 className="w-full font-sans text-[40px] font-semibold leading-[48px] tracking-[-0.04em] text-white sm:text-[48px] sm:leading-[56px]">
+                    <h2 className="w-full font-sans text-[40px] font-semibold leading-[48px] text-white sm:text-[48px] sm:leading-[56px]">
                       {section.title}
                     </h2>
                   ) : null}

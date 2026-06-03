@@ -47,3 +47,9 @@ Section dividers: do not use `<!-- wp:html --><hr>…` blocks.
 ## Not in `content`
 
 Eyebrow, H1, hero, sidebar TOC, FAQ, Tot slot, related posts — Salonora template / ACF.
+
+## Sidebar TOC (Inhoudsopgave)
+
+- **From post HTML:** main chapter `h2` headings only (not `h3` objections like `2.1`, not callout wrappers).
+- **Last item:** title from global **`blog_conclusion_panel`** (`#post-conclusion`) when set in Templates — not from WordPress body.
+- **Never:** `faq_contact_split` (“Veelgestelde vragen”) — FAQ is below the article column; Figma may show it for full-page layout, but the TOC is article + conclusion only.

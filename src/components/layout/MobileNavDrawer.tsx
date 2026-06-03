@@ -64,7 +64,7 @@ function NavLinks({
               target={m.target}
               rel={m.target === "_blank" ? "noopener noreferrer" : undefined}
               onClick={onNavigate}
-              className={`block py-1.5 text-lg font-medium tracking-[-0.04em] ${
+              className={`block py-1.5 text-lg font-medium ${
                 isActive(m.href) ? "text-brand" : "text-navy"
               }`}
             >

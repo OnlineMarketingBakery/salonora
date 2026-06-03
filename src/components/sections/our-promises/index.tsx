@@ -55,7 +55,7 @@ export function OurPromisesSection({
           className={`${REVEAL_ITEM} mx-auto flex w-full max-w-[76.8125rem] flex-col items-center gap-10 sm:gap-14 lg:gap-[4.8125rem]`}
         >
           {titleLines.length > 0 ? (
-            <h2 className="m-0 w-full text-center font-sans text-3xl font-bold leading-tight tracking-[-0.04em] text-navy-deep sm:text-4xl lg:text-[3rem] lg:leading-[3.5rem]">
+            <h2 className="m-0 w-full text-center font-sans text-3xl font-bold leading-tight text-navy-deep sm:text-4xl lg:text-[3rem] lg:leading-[3.5rem]">
               {titleLines.map((line, i) => (
                 <span key={i} className="block">
                   {line}

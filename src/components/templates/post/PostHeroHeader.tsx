@@ -99,7 +99,7 @@ export function PostHeroHeader({
 
       {/* Figma 1643:235 — 48px semibold navy */}
       <h1
-        className={`text-[48px] font-semibold leading-[1.1] tracking-normal text-navy ${eyebrow ? "mt-[18px]" : ""}`}
+        className={`text-[48px] font-semibold leading-[1.1] text-navy ${eyebrow ? "mt-[18px]" : ""}`}
       >
         {title}
       </h1>

@@ -35,7 +35,7 @@ export function WhySalonoraAndersSection({
           >
             <div className="flex flex-col gap-[14px]">
               {titleLines.length > 0 ? (
-                <h2 className="font-sans text-[32px] font-semibold leading-tight tracking-[-0.04em] text-[#002752] sm:text-[40px] sm:leading-[1.1] lg:text-[48px] lg:leading-[56px]">
+                <h2 className="font-sans text-[32px] font-semibold leading-tight text-[#002752] sm:text-[40px] sm:leading-[1.1] lg:text-[48px] lg:leading-[56px]">
                   {titleLines.map((line, i) => (
                     <span key={i} className="block">
                       {line}

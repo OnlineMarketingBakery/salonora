@@ -40,7 +40,7 @@ export function CtaSection({ section, lang }: { section: CtaSectionT; lang: Loca
                 {section.title && (
                   <h2
                     className={[
-                      "w-full min-w-0 text-[40px] font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-[48px] sm:leading-[56px] [text-wrap:balance]",
+                      "w-full min-w-0 text-[40px] font-semibold leading-tight text-navy sm:text-[48px] sm:leading-[56px] [text-wrap:balance]",
                       !isCenter && "!text-left",
                     ]
                       .filter(Boolean)
@@ -102,7 +102,7 @@ export function CtaSection({ section, lang }: { section: CtaSectionT; lang: Loca
                           className={
                             isPromoRow
                               ? [
-                                  "w-full min-w-0 max-w-full tracking-[0.5px]",
+                                  "w-full min-w-0 max-w-full",
                                   "sm:w-auto sm:max-w-none sm:shrink-0 sm:!px-10 md:!px-12 lg:!px-14",
                                   isCenter ? "sm:self-center" : "sm:self-start",
                                 ].join(" ")

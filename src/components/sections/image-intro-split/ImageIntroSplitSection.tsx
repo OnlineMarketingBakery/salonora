@@ -88,7 +88,7 @@ export function ImageIntroSplitSection({ section }: { section: ImageIntroSplitSe
   const showLowerBlock = featureRows.length > 0;
 
   const titleClassName =
-    "font-sans text-[32px] font-semibold tracking-normal text-navy sm:text-[40px] sm:leading-[1.18] lg:text-[48px] lg:leading-[59px]";
+    "font-sans text-[32px] font-semibold text-navy sm:text-[40px] sm:leading-[1.18] lg:text-[48px] lg:leading-[59px]";
 
   return (
     <section className="bg-white pt-10 pb-16 sm:pt-12 sm:pb-20 md:pt-14 md:pb-24">

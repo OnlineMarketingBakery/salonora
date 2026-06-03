@@ -5,9 +5,7 @@ import { CF7Form } from "@/components/forms/CF7Form";
 import { fetchCf7Form } from "@/lib/wordpress/fetch-cf7-form";
 import type { PostDocument } from "@/types/documents";
 import type { Locale } from "@/lib/i18n/locales";
-import { extractPostToc, filterBlogPostTocItems } from "@/lib/blog/post-html";
-import { appendBlogFaqTocItem } from "@/lib/blog/post-toc";
-import { pickBlogTailFaqSections } from "@/lib/wordpress/fetch-blog-single-tail-sections";
+import { buildBlogPostToc } from "@/lib/blog/post-html";
 import { getSiteUrl } from "@/lib/wordpress/config";
 import { buildLocalePath } from "@/lib/i18n/get-alternates";
 import { PostTableOfContents } from "./post/PostTableOfContents";
@@ -18,15 +16,10 @@ import { PostArticleBody } from "./post/PostArticleBody";
 
 export async function PostTemplate({ document: doc, lang }: { document: PostDocument; lang: Locale }) {
   const formDef = doc.featuredFormId ? await fetchCf7Form(doc.featuredFormId, lang) : null;
-  const faqSections = pickBlogTailFaqSections(doc.layoutSections);
   const postSections = doc.sections.filter(
     (s) => s.type !== "faq_contact_split" && s.type !== "blog_conclusion_panel"
   );
-  const toc = appendBlogFaqTocItem(
-    filterBlogPostTocItems(extractPostToc(doc.content)),
-    lang,
-    faqSections.length > 0
-  );
+  const toc = buildBlogPostToc(doc.content, doc.layoutSections);
   const site = getSiteUrl();
   const path = buildLocalePath(lang, doc.slug).replace(/^\//, "");
   const shareUrl = `${site}/${path}`;
@@ -42,6 +35,13 @@ export async function PostTemplate({ document: doc, lang }: { document: PostDocu
           id={isFirstFaq ? "post-faq" : undefined}
           className="post-single-faq scroll-mt-28"
         >
+          <SectionRenderer sections={[section]} lang={lang} />
+        </div>
+      );
+    }
+    if (section.type === "blog_conclusion_panel") {
+      return (
+        <div key={section.id} id="post-conclusion" className="scroll-mt-28">
           <SectionRenderer sections={[section]} lang={lang} />
         </div>
       );

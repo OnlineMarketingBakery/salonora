@@ -146,7 +146,7 @@ const FIGMA_ACCENT_BLUE = "text-[#3182ce]";
 const FIGMA_EYEBROW =
   "text-left text-[13px] font-normal leading-[1.4] text-[#64748b] sm:text-sm";
 const FIGMA_METRIC_LABEL = `text-left text-sm font-normal leading-[1.4] ${FIGMA_ACCENT_BLUE} sm:text-[15px] sm:leading-[1.4]`;
-const FIGMA_METRIC_VALUE = `text-left text-[1.875rem] font-bold leading-none tracking-[-0.02em] ${FIGMA_TITLE_COLOR} sm:text-[2.125rem] whitespace-nowrap`;
+const FIGMA_METRIC_VALUE = `text-left text-[1.875rem] font-bold leading-none ${FIGMA_TITLE_COLOR} sm:text-[2.125rem] whitespace-nowrap`;
 /** Hairlines: light blue-grey (vertical + hr). */
 const FIGMA_RULE_BG = "bg-[#cbd5e1]";
 const FIGMA_RULE_BORDER = "border-[#cbd5e1]";
@@ -224,7 +224,7 @@ export function CaseStudyOverviewSection({
         <Container className="relative z-10">
           <header className={`max-w-[65rem] ${REVEAL_ITEM}`}>
             {section.title ? (
-              <h1 className="text-[2rem] font-semibold leading-[1.1] tracking-[-0.03em] text-[var(--palette-navy)] sm:text-[2.5rem] md:text-[3rem] lg:text-[60px] lg:leading-[1.05]">
+              <h1 className="text-[2rem] font-semibold leading-[1.1] text-[var(--palette-navy)] sm:text-[2.5rem] md:text-[3rem] lg:text-[60px] lg:leading-[1.05]">
                 {section.title}
               </h1>
             ) : null}
@@ -284,7 +284,7 @@ export function CaseStudyOverviewSection({
                 <div className="flex w-full flex-col gap-3 sm:gap-4">
                   {/* FIX: projectLabel removed from featured section to match Figma */}
                   <h2
-                    className={`text-left w-full text-[1.75rem] font-bold leading-[1.15] tracking-[-0.02em] sm:text-[2rem] md:text-[2.5rem] md:leading-[1.12] lg:text-[48px] lg:leading-[1.08] ${FIGMA_TITLE_COLOR}`}
+                    className={`text-left w-full text-[1.75rem] font-bold leading-[1.15] sm:text-[2rem] md:text-[2.5rem] md:leading-[1.12] lg:text-[48px] lg:leading-[1.08] ${FIGMA_TITLE_COLOR}`}
                   >
                     {featured.title}
                   </h2>

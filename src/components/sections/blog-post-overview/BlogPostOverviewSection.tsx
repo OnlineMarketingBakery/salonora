@@ -236,7 +236,7 @@ export function BlogPostOverviewSection({
         <Container className="relative z-10">
           <header className={`max-w-4xl ${REVEAL_ITEM}`}>
             {section.title ? (
-              <h1 className="text-[2rem] font-semibold leading-[1.1] tracking-[-0.03em] text-[var(--palette-navy)] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.75rem] lg:leading-[1.1]">
+              <h1 className="text-[2rem] font-semibold leading-[1.1] text-[var(--palette-navy)] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.75rem] lg:leading-[1.1]">
                 {section.title}
               </h1>
             ) : null}

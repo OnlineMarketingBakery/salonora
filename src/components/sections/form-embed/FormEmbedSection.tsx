@@ -13,7 +13,7 @@ export function FormEmbedSection({ section, lang }: { section: FormEmbedSectionT
       <Container>
         {section.title && (
           <h2
-            className={`${REVEAL_ITEM} text-3xl font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-4xl lg:text-[48px] lg:leading-[56px]`}
+            className={`${REVEAL_ITEM} text-3xl font-semibold leading-tight text-navy sm:text-4xl lg:text-[48px] lg:leading-[56px]`}
           >
             {section.title}
           </h2>

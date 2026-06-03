@@ -203,7 +203,7 @@ export function MediaTextChecklistSection({
           {hasTestimonial ? (
             <div className="flex flex-col gap-3.5">
               {section.testimonial_heading ? (
-                <p className="font-sans text-[20px] font-semibold leading-[1.4] tracking-[-0.02em] text-[var(--palette-navy)]">
+                <p className="font-sans text-[20px] font-semibold leading-[1.4] text-[var(--palette-navy)]">
                   {section.testimonial_heading}
                 </p>
               ) : null}

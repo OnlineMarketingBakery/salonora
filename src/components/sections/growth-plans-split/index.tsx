@@ -84,7 +84,7 @@ export function GrowthPlansSplitSection({
         {(titleLines.length > 0 || section.intro) && (
           <div className="flex min-w-0 flex-col gap-[14px]">
             {titleLines.length > 0 ? (
-              <h2 className="font-sans text-[32px] font-semibold leading-[1.12] tracking-[-0.04em] text-navy sm:text-[40px] sm:leading-[1.1] lg:text-[48px] lg:leading-[56px]">
+              <h2 className="font-sans text-[32px] font-semibold leading-[1.12] text-navy sm:text-[40px] sm:leading-[1.1] lg:text-[48px] lg:leading-[56px]">
                 {titleLines.map((line, i) => (
                   <span key={i} className="block">
                     {line}

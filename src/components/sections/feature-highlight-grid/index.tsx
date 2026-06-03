@@ -119,7 +119,7 @@ export function FeatureHighlightGridSection({
               </span>
             ) : null}
             {titleLines.length > 0 ? (
-              <h2 className="max-w-[555px] font-sans text-[32px] font-semibold leading-tight tracking-[-0.04em] text-white sm:text-[40px] sm:leading-[1.15] lg:text-[48px] lg:leading-[56px]">
+              <h2 className="max-w-[555px] font-sans text-[32px] font-semibold leading-tight text-white sm:text-[40px] sm:leading-[1.15] lg:text-[48px] lg:leading-[56px]">
                 {titleLines.map((line, i) => (
                   <span key={i} className="block">
                     {line}

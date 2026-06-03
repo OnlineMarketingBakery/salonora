@@ -46,10 +46,10 @@ const ctaSizeClass = {
   hero: "h-12 min-h-12 rounded-[24px] gap-[17px] px-3.5 text-lg leading-6",
   promo:
     "h-[54px] min-h-[54px] rounded-[27px] gap-2 px-6 text-lg font-normal leading-6 sm:gap-8 sm:px-8 md:gap-10 md:px-10",
-  compact: "h-12 min-h-12 rounded-[24px] gap-2 px-3.5 sm:px-4 text-[16px] tracking-[-0.04em]",
-  card: "h-[42px] min-h-[42px] rounded-[24px] gap-0 pl-[18px] pr-3.5 text-sm leading-6 tracking-normal",
+  compact: "h-12 min-h-12 rounded-[24px] gap-2 px-3.5 sm:px-4 text-[16px]",
+  card: "h-[42px] min-h-[42px] rounded-[24px] gap-0 pl-[18px] pr-3.5 text-sm leading-6",
   package: "h-[55px] min-h-[55px] rounded-[31.5px] gap-2 px-4 text-base leading-normal",
-  drawer: "h-12 min-h-12 rounded-full gap-2.5 px-4 text-[16px] tracking-[-0.04em]",
+  drawer: "h-12 min-h-12 rounded-full gap-2.5 px-4 text-[16px]",
 } as const;
 
 export type ButtonCtaSize = keyof typeof ctaSizeClass;

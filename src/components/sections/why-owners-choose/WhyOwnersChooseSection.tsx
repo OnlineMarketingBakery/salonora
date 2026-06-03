@@ -84,7 +84,7 @@ function OwnersChooseCard({
           </div>
           <div className="flex min-w-0 flex-1 flex-col gap-2">
             {card.title ? (
-              <h3 className="text-lg font-semibold leading-[1.1] tracking-tight text-navy sm:text-xl">
+              <h3 className="text-lg font-semibold leading-[1.1] text-navy sm:text-xl">
                 {card.title}
               </h3>
             ) : null}
@@ -176,7 +176,7 @@ export function WhyOwnersChooseSection({
               </span>
             ) : null}
             {titleLines.length > 0 ? (
-              <h2 className="font-sans text-[32px] font-semibold leading-tight tracking-[-0.04em] text-navy-deep sm:text-[40px] sm:leading-[1.1] md:text-[44px] lg:text-[48px] lg:leading-[56px]">
+              <h2 className="font-sans text-[32px] font-semibold leading-tight text-navy-deep sm:text-[40px] sm:leading-[1.1] md:text-[44px] lg:text-[48px] lg:leading-[56px]">
                 {titleLines.map((line, i) => (
                   <span key={i} className="block">
                     {line}
@@ -226,7 +226,7 @@ export function WhyOwnersChooseSection({
               <div className="relative z-10 flex w-full max-w-[376px] shrink-0 flex-col">
                 <div className="flex flex-col gap-5">
                   {section.panelTitle ? (
-                    <h3 className="text-[28px] font-semibold leading-[1.12] tracking-tight text-white sm:text-[34px]">
+                    <h3 className="text-[28px] font-semibold leading-[1.12] text-white sm:text-[34px]">
                       {section.panelTitle}
                     </h3>
                   ) : null}

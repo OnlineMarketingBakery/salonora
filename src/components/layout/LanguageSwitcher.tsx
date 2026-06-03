@@ -89,8 +89,8 @@ export function LanguageSwitcher({
               href={hrefs[l] ?? buildLocalePath(l, pathAfterLocalePrefix(pathname))}
               className={
                 l === lang
-                  ? "rounded-full bg-zinc-100/95 px-3 py-1.5 text-[12px] font-semibold tracking-[0.1em] text-navy"
-                  : "rounded-full px-2.5 py-1.5 text-[12px] font-medium tracking-[0.1em] text-muted/70 transition hover:text-navy"
+                  ? "rounded-full bg-zinc-100/95 px-3 py-1.5 text-[12px] font-semibold text-navy"
+                  : "rounded-full px-2.5 py-1.5 text-[12px] font-medium text-muted/70 transition hover:text-navy"
               }
               hrefLang={l}
             >

@@ -50,7 +50,7 @@ export function StorySplitSection({ section, lang }: { section: StorySplitSectio
     <div className={`${REVEAL_ITEM} flex w-full min-w-0 max-w-[748px] flex-col gap-6`}>
       <div className="flex min-w-0 flex-col gap-6">
         {titleLines.length > 0 && (
-          <h2 className="font-sans text-[40px] font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-[48px] sm:leading-[56px]">
+          <h2 className="font-sans text-[40px] font-semibold leading-tight text-navy sm:text-[48px] sm:leading-[56px]">
             {titleLines.map((line, i) => (
               <span key={i} className="block">
                 {line}
