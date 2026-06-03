@@ -74,7 +74,7 @@ export function PartnerIntroSplitSection({
           >
             <div className="mx-auto flex w-full max-w-[35.125rem] flex-col gap-6 lg:mx-0">
               {titleLines.length > 0 ? (
-                <h2 className="font-sans text-[32px] font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-[40px] sm:leading-[1.1] lg:text-[48px] lg:leading-[56px]">
+                <h2 className="font-sans text-[32px] font-semibold leading-tight text-navy sm:text-[40px] sm:leading-[1.1] lg:text-[48px] lg:leading-[56px]">
                   {titleLines.map((line, i) => (
                     <span key={i} className="block">
                       {line}

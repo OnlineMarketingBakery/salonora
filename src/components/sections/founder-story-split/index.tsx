@@ -107,7 +107,7 @@ export function FounderStorySplitSection(props: {
                     ) : null}
 
                     {titleLines.length > 0 ? (
-                      <h2 className="min-w-0 font-sans text-[30px] font-semibold leading-none tracking-[-0.04em] text-navy sm:text-[40px] lg:text-[48px] lg:leading-[56px]">
+                      <h2 className="min-w-0 font-sans text-[30px] font-semibold leading-none text-navy sm:text-[40px] lg:text-[48px] lg:leading-[56px]">
                         {titleLines.map((line, i) => (
                           <span key={i} className="block">
                             {line}

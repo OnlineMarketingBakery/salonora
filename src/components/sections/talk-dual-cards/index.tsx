@@ -60,7 +60,7 @@ export function TalkDualCardsSection({
         <div className="flex flex-col items-center gap-[54px]">
           {section.title ? (
             <h2
-              className={`${REVEAL_ITEM} text-center font-sans text-[clamp(1.75rem,4vw,3rem)] font-semibold leading-[1.17] tracking-[-0.04em] text-[var(--palette-navy)] md:text-[48px] md:leading-[56px]`}
+              className={`${REVEAL_ITEM} text-center font-sans text-[clamp(1.75rem,4vw,3rem)] font-semibold leading-[1.17] text-[var(--palette-navy)] md:text-[48px] md:leading-[56px]`}
             >
               {section.title}
             </h2>

@@ -45,8 +45,8 @@ export function PrimaryNavMegaDropdown({ items, menuLabel }: Props) {
               onFocus={() => setActive(i)}
               className={
                 rowActive
-                  ? "flex min-h-14 shrink-0 items-center rounded-xl bg-brand px-4 py-2.5 text-[15px] font-medium tracking-[-0.04em] text-white shadow-md outline-none transition-[background-color,box-shadow,color] duration-300 ease-out focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:ring-offset-2 focus-visible:ring-offset-brand sm:min-h-15 sm:rounded-2xl sm:px-5 sm:text-[16px]"
-                  : "flex min-h-14 shrink-0 items-center rounded-xl bg-surface px-4 py-2.5 text-[15px] font-medium tracking-[-0.04em] text-navy outline-none transition-[background-color,box-shadow,color] duration-300 ease-out hover:bg-pill hover:shadow-sm focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 sm:min-h-15 sm:rounded-2xl sm:px-5 sm:text-[16px]"
+                  ? "flex min-h-14 shrink-0 items-center rounded-xl bg-brand px-4 py-2.5 text-[15px] font-medium text-white shadow-md outline-none transition-[background-color,box-shadow,color] duration-300 ease-out focus-visible:ring-2 focus-visible:ring-white/90 focus-visible:ring-offset-2 focus-visible:ring-offset-brand sm:min-h-15 sm:rounded-2xl sm:px-5 sm:text-[16px]"
+                  : "flex min-h-14 shrink-0 items-center rounded-xl bg-surface px-4 py-2.5 text-[15px] font-medium text-navy outline-none transition-[background-color,box-shadow,color] duration-300 ease-out hover:bg-pill hover:shadow-sm focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 sm:min-h-15 sm:rounded-2xl sm:px-5 sm:text-[16px]"
               }
             >
               {c.label}

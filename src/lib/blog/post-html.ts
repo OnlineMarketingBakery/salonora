@@ -1,4 +1,5 @@
 import { slugifyHeadingFragment, stripTags } from "@/lib/utils/strings";
+import type { AnySectionT } from "@/types/sections";
 
 export type PostTocItem = { id: string; label: string; level: 2 | 3 };
 
@@ -349,4 +350,22 @@ export function isBlogTocMainSectionItem(item: PostTocItem): boolean {
 /** Blog single TOC — only main chapter headings; subsections stay in the article. */
 export function filterBlogPostTocItems(items: PostTocItem[]): PostTocItem[] {
   return items.filter(isBlogTocMainSectionItem);
+}
+
+function tocAlreadyHasLabel(items: PostTocItem[], title: string): boolean {
+  const norm = title.trim().toLowerCase();
+  return items.some((i) => i.label.trim().toLowerCase() === norm);
+}
+
+/**
+ * Blog sidebar TOC: main `h2` chapters from post HTML, plus the shared
+ * `blog_conclusion_panel` title when configured (not FAQ — template-only).
+ */
+export function buildBlogPostToc(content: string, layoutSections: AnySectionT[]): PostTocItem[] {
+  const items = filterBlogPostTocItems(extractPostToc(content));
+  const panel = layoutSections.find((s) => s.type === "blog_conclusion_panel");
+  if (!panel || panel.type !== "blog_conclusion_panel") return items;
+  const title = panel.title.trim();
+  if (!title || tocAlreadyHasLabel(items, title)) return items;
+  return [...items, { id: "post-conclusion", label: title, level: 2 }];
 }

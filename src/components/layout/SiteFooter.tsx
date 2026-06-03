@@ -164,8 +164,9 @@ export function SiteFooter({
   /** Figma 597:6148 — slightly narrower accent under "Follow us". */
   const ruleGradientFollow =
     "mt-[17px] h-[3px] w-full max-w-[111px] shrink-0 bg-[linear-gradient(90deg,transparent_6%,rgba(57,144,240,0.95)_50%,transparent_94%)]";
-  /** Vertical separator Quick Links | Follow us — blue tint on dark footer (Figma). */
-  const colHairline = "bg-[rgba(57,144,240,0.5)]";
+  /** Vertical separators — fade at top/bottom like Figma gradient rules (597:6134–6170). */
+  const colHairline =
+    "bg-[linear-gradient(180deg,transparent_6%,rgba(57,144,240,0.95)_50%,transparent_94%)]";
   const showLegalMobile =
     legalMenu.length > 0 || g.footer.showFooterLanguageSwitcher;
 
@@ -237,10 +238,10 @@ export function SiteFooter({
 
           <div
             className={[
-              "relative z-10 mx-auto w-full max-w-[1276px] px-6 lg:px-0",
+              "relative z-10 mx-auto w-full max-w-[1276px] px-6 pb-[24px] md:pb-[36px] lg:px-0",
               g.footer.footerLogo
                 ? useNotchMask
-                  ? "pt-[115px] md:pt-[147px]"
+                  ? "pt-[100px] md:pt-[120px]"
                   : "sm:pt-32 md:pt-36"
                 : "pt-14 sm:pt-16",
             ]
@@ -467,8 +468,13 @@ export function SiteFooter({
             )}
           </div>
 
-          <div className="w-full">
-            <div className="mx-auto w-full max-w-[1300px] pointer-events-none relative [filter:drop-shadow(0_-6px_24px_rgba(57,144,240,0.55))_drop-shadow(0_-16px_48px_rgba(57,144,240,0.4))_drop-shadow(0_-28px_72px_rgba(57,144,240,0.28))_drop-shadow(0_-40px_104px_rgba(57,144,240,0.16))_drop-shadow(0_-52px_140px_rgba(57,144,240,0.08))_drop-shadow(0_-64px_180px_rgba(57,144,240,0.04))]">
+          {/*
+            Figma 597:6115 — the wave shape is the BACKGROUND layer and the centred copyright
+            sits OVER it (overlay), not stacked below. Wave (child 1) defines the height; the
+            copyright (child 2) is absolutely centred over the wave.
+          */}
+          <div className="relative w-full">
+            <div className="mx-auto w-full max-w-[1300px] pointer-events-none relative [filter:drop-shadow(0_-10px_44px_rgba(57,144,240,0.22))_drop-shadow(0_-30px_100px_rgba(57,144,240,0.1))_drop-shadow(0_-56px_160px_rgba(57,144,240,0.04))]">
               <img
                 src="/footer-shape-top.svg"
                 width={1283}
@@ -479,20 +485,13 @@ export function SiteFooter({
                 decoding="async"
               />
             </div>
-            {/*
-              Figma 597:6115 — copyright is a single centred line on a slightly darker navy band.
-              Legal links have already been rendered ABOVE this band (see block above), so the bar
-              contains only the centred copyright at every breakpoint.
-            */}
-            <div className="relative z-10 bg-[color-mix(in_srgb,var(--palette-navy-deep)_72%,black)]">
-              <div className="mx-auto flex w-full max-w-[1300px] items-center justify-center px-4 py-4 sm:px-6 sm:py-5 md:px-8">
-                <p
-                  className={`text-center text-[16px] font-normal leading-[1.5] ${fg}`}
-                >
-                  {g.footer.footerCopyright ||
-                    `Copyright ©${new Date().getFullYear()} Salonora all right reserved`}
-                </p>
-              </div>
+            <div className="absolute inset-0 z-10 flex items-center justify-center px-4 sm:px-6 md:px-8">
+              <p
+                className={`text-center text-[16px] font-normal leading-[1.5] ${fg}`}
+              >
+                {g.footer.footerCopyright ||
+                  `Copyright ©${new Date().getFullYear()} Salonora all right reserved`}
+              </p>
             </div>
           </div>
         </div>

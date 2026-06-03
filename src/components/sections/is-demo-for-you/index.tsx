@@ -180,7 +180,7 @@ export function IsDemoForYouSection({
         <div className="flex flex-col gap-10 md:gap-12">
           {title ? (
             <h2
-              className={`${REVEAL_ITEM} m-0 text-center font-sans text-3xl font-semibold leading-tight tracking-tight text-navy sm:text-4xl lg:text-[48px] lg:leading-[56px]`}
+              className={`${REVEAL_ITEM} m-0 text-center font-sans text-3xl font-semibold leading-tight text-navy sm:text-4xl lg:text-[48px] lg:leading-[56px]`}
             >
               {title}
             </h2>

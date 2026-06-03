@@ -44,7 +44,7 @@ function normalize(html) {
     "background:#ebf3fe;border-radius:12px;border-bottom:6px solid #3990f0;padding:30px 32px;margin:28px 0"
   );
   out = out.replace(
-    /margin:0 0 12px;font-size:20px;font-weight:700;letter-spacing:0\.4px;text-transform:uppercase;color:#3990f0;line-height:1\.2/gi,
+    /margin:0 0 12px;font-size:20px;font-weight:700;text-transform:uppercase;color:#3990f0;line-height:1\.2/gi,
     "margin:0 0 14px;color:#3990f0;font-size:34px;font-weight:600;line-height:1.1;text-transform:uppercase"
   );
   out = out.replace(/line-height:1\.65/gi, "line-height:1.4");

@@ -27,7 +27,7 @@ export function CostComparisonSection({ section, lang }: { section: CostComparis
         >
           <div className={`${REVEAL_ITEM} flex w-full max-w-[555px] flex-col items-start gap-6`}>
             {section.title && (
-              <h2 className="text-3xl font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-4xl lg:text-[48px] lg:leading-[3.5rem]">
+              <h2 className="text-3xl font-semibold leading-tight text-navy sm:text-4xl lg:text-[48px] lg:leading-[3.5rem]">
                 {section.title}
               </h2>
             )}
@@ -99,7 +99,7 @@ export function CostComparisonSection({ section, lang }: { section: CostComparis
                           </p>
                         )}
                         {section.price && (
-                          <p className="text-center text-2xl font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-[34px] sm:leading-tight sm:tracking-[-1.36px]">
+                          <p className="text-center text-2xl font-semibold leading-tight text-navy sm:text-[34px] sm:leading-tight">
                             {section.price}
                           </p>
                         )}

@@ -108,14 +108,14 @@ export function FeaturesChecklistSection({
           {(section.title || section.description) && (
             <header className="mx-auto flex w-full max-w-[800px] flex-col items-center gap-3.5 text-center text-[var(--palette-white)] sm:gap-4">
               {section.title ? (
-                <h2 className="w-full max-w-[720px] text-pretty font-sans text-[clamp(1.75rem,5vw,3rem)] font-semibold leading-[1.12] tracking-[-0.02em] text-[var(--palette-white)] lg:text-[48px] lg:leading-[1.1]">
+                <h2 className="w-full max-w-[720px] text-pretty font-sans text-[clamp(1.75rem,5vw,3rem)] font-semibold leading-[1.12] text-[var(--palette-white)] lg:text-[48px] lg:leading-[1.1]">
                   {section.title}
                 </h2>
               ) : null}
               {section.description ? (
                 <RichText
                   html={section.description}
-                  className="prose max-w-none w-full min-w-0 font-sans !text-[color-mix(in_srgb,var(--palette-white)_94%,transparent)] prose-p:!my-0 prose-p:!text-[color-mix(in_srgb,var(--palette-white)_94%,transparent)] prose-strong:!font-semibold prose-strong:!text-[var(--palette-white)] prose-a:!text-[var(--palette-white)] prose-a:!underline prose-a:!decoration-white/35 prose-a:!underline-offset-[3px] prose-li:!text-[color-mix(in_srgb,var(--palette-white)_92%,transparent)] prose-ul:!my-0 [&_p+p]:!mt-[1.125rem] prose-p:first-of-type:!mx-auto prose-p:first-of-type:!max-w-[42rem] prose-p:first-of-type:!text-center prose-p:first-of-type:!font-normal prose-p:first-of-type:!text-[17px] prose-p:first-of-type:!leading-[1.65] prose-p:first-of-type:!tracking-[-0.01em] [&_p:not(:first-of-type)]:!mx-auto [&_p:not(:first-of-type)]:!max-w-[36rem] [&_p:not(:first-of-type)]:!text-center [&_p:not(:first-of-type)]:!font-normal [&_p:not(:first-of-type)]:!text-[16px] [&_p:not(:first-of-type)]:!leading-[1.65] [&_p:not(:first-of-type)]:!tracking-[-0.01em]"
+                  className="prose max-w-none w-full min-w-0 font-sans !text-[color-mix(in_srgb,var(--palette-white)_94%,transparent)] prose-p:!my-0 prose-p:!text-[color-mix(in_srgb,var(--palette-white)_94%,transparent)] prose-strong:!font-semibold prose-strong:!text-[var(--palette-white)] prose-a:!text-[var(--palette-white)] prose-a:!underline prose-a:!decoration-white/35 prose-a:!underline-offset-[3px] prose-li:!text-[color-mix(in_srgb,var(--palette-white)_92%,transparent)] prose-ul:!my-0 [&_p+p]:!mt-[1.125rem] prose-p:first-of-type:!mx-auto prose-p:first-of-type:!max-w-[42rem] prose-p:first-of-type:!text-center prose-p:first-of-type:!font-normal prose-p:first-of-type:!text-[17px] prose-p:first-of-type:!leading-[1.65] prose-p: [&_p:not(:first-of-type)]:!mx-auto [&_p:not(:first-of-type)]:!max-w-[36rem] [&_p:not(:first-of-type)]:!text-center [&_p:not(:first-of-type)]:!font-normal [&_p:not(:first-of-type)]:!text-[16px] [&_p:not(:first-of-type)]:!leading-[1.65] [&_p:not(:first-of-type)]:"
                 />
               ) : null}
             </header>

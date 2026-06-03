@@ -104,7 +104,7 @@ function AccordionRowSplit({
             <PlusIcon className="h-[21px] w-[21px]" />
           </span>
         </span>
-        <span className="min-w-0 text-xl font-normal leading-[1.1] tracking-[-0.8px] text-slate-900">{item.title}</span>
+        <span className="min-w-0 text-xl font-normal leading-[1.1] text-slate-900">{item.title}</span>
       </button>
       <div
         ref={panelRef}

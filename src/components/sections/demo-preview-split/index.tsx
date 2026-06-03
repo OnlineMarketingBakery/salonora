@@ -149,7 +149,7 @@ export function DemoPreviewSplitSection({
 
               {titleLines.length > 0 ? (
                 <h2
-                  className={`${REVEAL_ITEM} m-0 font-sans text-[32px] font-bold leading-[1.12] tracking-[-0.04em] text-white sm:text-[40px] sm:leading-[1.08] lg:text-[48px] lg:leading-[56px]`}
+                  className={`${REVEAL_ITEM} m-0 font-sans text-[32px] font-bold leading-[1.12] text-white sm:text-[40px] sm:leading-[1.08] lg:text-[48px] lg:leading-[56px]`}
                 >
                   {titleLines.map((line, i) => (
                     <span key={i} className="block">

@@ -71,7 +71,7 @@ export function SiteHeader({
               {logo ? (
                 <Media image={logo} width={180} height={40} className="h-8 w-auto sm:h-9" />
               ) : (
-                <span className="text-[17px] font-semibold tracking-[-0.04em] text-navy">Salonora</span>
+                <span className="text-[17px] font-semibold text-navy">Salonora</span>
               )}
             </Link>
 
@@ -88,7 +88,7 @@ export function SiteHeader({
                       <div key={m.id} className="group relative">
                         <Link
                           href={m.href}
-                          className="relative flex items-center gap-2 whitespace-nowrap py-1 text-[16px] font-medium tracking-[-0.04em] text-navy transition-opacity duration-200 hover:opacity-85"
+                          className="relative flex items-center gap-2 whitespace-nowrap py-1 text-[16px] font-medium text-navy transition-opacity duration-200 hover:opacity-85"
                           target={m.target}
                           aria-haspopup="menu"
                         >
@@ -116,7 +116,7 @@ export function SiteHeader({
                                   href={c.href}
                                   role="menuitem"
                                   target={c.target}
-                                  className="block px-4 py-2.5 text-[15px] font-medium tracking-[-0.03em] text-navy transition-colors hover:bg-surface/80 hover:text-brand"
+                                  className="block px-4 py-2.5 text-[15px] font-medium text-navy transition-colors hover:bg-surface/80 hover:text-brand"
                                 >
                                   {c.label}
                                 </Link>
@@ -130,7 +130,7 @@ export function SiteHeader({
                     <Link
                       key={m.id}
                       href={m.href}
-                      className="relative whitespace-nowrap py-1 text-[16px] font-medium tracking-[-0.04em] text-navy transition-colors duration-200 hover:opacity-85"
+                      className="relative whitespace-nowrap py-1 text-[16px] font-medium text-navy transition-colors duration-200 hover:opacity-85"
                       target={m.target}
                     >
                       {m.label}

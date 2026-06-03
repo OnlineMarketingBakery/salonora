@@ -102,7 +102,7 @@ function StepCard({ step }: { step: HowItWorksStepsStepItemT }) {
         />
       )}
       {step.title ? (
-        <h3 className="w-full max-w-[307px] text-2xl font-bold leading-[1.1] tracking-tight text-navy-deep">
+        <h3 className="w-full max-w-[307px] text-2xl font-bold leading-[1.1] text-navy-deep">
           {step.title}
         </h3>
       ) : null}
@@ -167,7 +167,7 @@ export function HowItWorksStepsSection({
                 </span>
               ) : null}
               {titleLines.length > 0 ? (
-                <h2 className="font-sans text-[32px] font-bold leading-tight tracking-[-0.04em] text-navy-deep sm:text-[40px] sm:leading-[1.15] lg:text-[48px] lg:leading-[56px]">
+                <h2 className="font-sans text-[32px] font-bold leading-tight text-navy-deep sm:text-[40px] sm:leading-[1.15] lg:text-[48px] lg:leading-[56px]">
                   {titleLines.map((line, i) => (
                     <span key={i} className="block">
                       {line}

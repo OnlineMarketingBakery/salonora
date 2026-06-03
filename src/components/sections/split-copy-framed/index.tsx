@@ -128,7 +128,7 @@ export function SplitCopyFramedSection({
       <div className="flex min-w-0 flex-col gap-6">
         <div className="flex min-w-0 flex-col gap-[14px]">
           {titleLines.length > 0 ? (
-            <h2 className="font-sans text-[40px] font-bold leading-tight tracking-[-0.04em] text-[var(--palette-navy)] sm:text-[48px] sm:leading-[56px]">
+            <h2 className="font-sans text-[40px] font-bold leading-tight text-[var(--palette-navy)] sm:text-[48px] sm:leading-[56px]">
               {titleLines.map((line, i) => (
                 <span key={i} className="block">
                   {line}
@@ -156,7 +156,7 @@ export function SplitCopyFramedSection({
         {(section.title.trim() || section.subtitle.trim()) && (
           <div className="flex max-w-[20.875rem] flex-col gap-2.5">
             {section.title.trim() ? (
-              <h2 className="font-sans text-[clamp(2rem,4vw,3rem)] font-semibold leading-[1.15] tracking-[-0.02em] text-[var(--palette-navy)]">
+              <h2 className="font-sans text-[clamp(2rem,4vw,3rem)] font-semibold leading-[1.15] text-[var(--palette-navy)]">
                 {section.title.trim()}
               </h2>
             ) : null}

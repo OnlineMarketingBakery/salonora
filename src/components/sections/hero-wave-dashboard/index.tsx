@@ -116,7 +116,7 @@ export function HeroWaveDashboardSection({
 
             {section.title.trim() ? (
               <h1
-                className={`${REVEAL_ITEM} m-0 font-sans text-[1.875rem] font-semibold leading-[1.08] tracking-[-0.04em] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.75rem] lg:leading-16`}
+                className={`${REVEAL_ITEM} m-0 font-sans text-[1.875rem] font-semibold leading-[1.08] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.75rem] lg:leading-16`}
               >
                 {section.title.trim()}
               </h1>

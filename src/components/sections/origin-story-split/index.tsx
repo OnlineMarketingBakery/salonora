@@ -39,7 +39,7 @@ export function OriginStorySplitSection({
             ) : null}
 
             {titleLines.length > 0 ? (
-              <h2 className="font-sans text-[40px] font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-[48px] sm:leading-[56px]">
+              <h2 className="font-sans text-[40px] font-semibold leading-tight text-navy sm:text-[48px] sm:leading-[56px]">
                 {titleLines.map((line, i) => (
                   <span key={i} className="block">
                     {line}

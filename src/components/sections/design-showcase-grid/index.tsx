@@ -84,7 +84,7 @@ export function DesignShowcaseGridSection({
           <header className="mx-auto max-w-4xl text-center">
             {section.title ? (
               <h2
-                className={`${REVEAL_ITEM} text-3xl font-semibold leading-tight tracking-[-0.04em] text-navy-deep sm:text-4xl lg:text-[48px] lg:leading-[56px]`}
+                className={`${REVEAL_ITEM} text-3xl font-semibold leading-tight text-navy-deep sm:text-4xl lg:text-[48px] lg:leading-[56px]`}
               >
                 {section.title}
               </h2>
@@ -92,7 +92,7 @@ export function DesignShowcaseGridSection({
             {section.intro ? (
               <RichText
                 html={section.intro}
-                className={`${REVEAL_ITEM} mt-4 text-sm leading-relaxed text-muted prose-headings:text-muted prose-a:text-brand prose-a:no-underline hover:prose-a:underline`}
+                className={`${REVEAL_ITEM} mt-4 text-base leading-relaxed text-muted prose-p:text-base prose-headings:text-muted prose-a:text-brand prose-a:no-underline hover:prose-a:underline`}
               />
             ) : null}
           </header>

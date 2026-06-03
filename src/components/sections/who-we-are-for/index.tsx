@@ -32,7 +32,7 @@ export function WhoWeAreForSection({
           {section.title ? (
             <RichText
               html={section.title}
-              className="mx-auto max-w-[458px] text-center font-sans text-[clamp(1.75rem,4.2vw,3rem)] font-semibold leading-[1.15] tracking-[-0.04em] text-navy sm:text-[40px] sm:leading-[1.12] lg:text-[48px] lg:leading-[56px] [&_*]:text-navy [&_p]:mb-0 [&_p]:mt-0 [&_p+p]:mt-2 prose-headings:text-navy prose-strong:text-navy"
+              className="mx-auto max-w-[458px] text-center font-sans text-[clamp(1.75rem,4.2vw,3rem)] font-semibold leading-[1.15] text-navy sm:text-[40px] sm:leading-[1.12] lg:text-[48px] lg:leading-[56px] [&_*]:text-navy [&_p]:mb-0 [&_p]:mt-0 [&_p+p]:mt-2 prose-headings:text-navy prose-strong:text-navy"
             />
           ) : null}
 

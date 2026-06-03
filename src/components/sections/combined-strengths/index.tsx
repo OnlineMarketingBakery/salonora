@@ -82,7 +82,7 @@ export function CombinedStrengthsSection({
             >
               <div className="flex w-full max-w-[33.6875rem] flex-col gap-8 sm:gap-[51px]">
                 {titleLines.length > 0 ? (
-                  <h2 className="font-sans text-[28px] font-semibold leading-[1.15] tracking-[-0.04em] text-[var(--palette-white)] sm:text-[40px] lg:text-[48px]">
+                  <h2 className="font-sans text-[28px] font-semibold leading-[1.15] text-[var(--palette-white)] sm:text-[40px] lg:text-[48px]">
                     {titleLines.map((line, i) => (
                       <span key={i} className="block sm:leading-[56px]">
                         {line}
@@ -136,7 +136,7 @@ export function CombinedStrengthsSection({
                     className={`flex w-full flex-col justify-center px-[34px] py-[34px] lg:min-h-[184px] ${titleBodyGap}`}
                   >
                     {card.title ? (
-                      <h3 className="font-sans text-2xl font-semibold leading-[1.1] tracking-[-0.04em] text-navy-deep">
+                      <h3 className="font-sans text-2xl font-semibold leading-[1.1] text-navy-deep">
                         {card.title}
                       </h3>
                     ) : null}

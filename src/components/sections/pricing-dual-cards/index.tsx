@@ -29,12 +29,12 @@ const priceHighlightProse = [
 ].join(" ");
 
 const priceSecondaryProse = [
-  "!prose-p:my-0 !prose-p:text-sm !prose-p:font-medium !prose-p:leading-relaxed !prose-p:tracking-tight",
+  "!prose-p:my-0 !prose-p:text-sm !prose-p:font-medium !prose-p:leading-relaxed",
   "!prose-p:text-navy-deep prose-strong:text-navy-deep",
 ].join(" ");
 
 const priceFooterProse = [
-  "!prose-p:my-0 !prose-p:text-sm !prose-p:leading-relaxed !prose-p:tracking-tight",
+  "!prose-p:my-0 !prose-p:text-sm !prose-p:leading-relaxed",
   "!prose-p:text-muted prose-strong:text-navy-deep",
   "[&_p+p]:mt-3",
 ].join(" ");
@@ -108,7 +108,7 @@ function PricingPackageCard({
       {/* Header */}
       <div className="flex min-w-0 flex-col gap-3 lg:min-h-0">
         {card.title?.trim() ? (
-          <h3 className="max-w-xl font-sans text-2xl font-semibold leading-tight tracking-normal text-navy">
+          <h3 className="max-w-xl font-sans text-2xl font-semibold leading-tight text-navy">
             {card.title.trim()}
           </h3>
         ) : null}
@@ -239,7 +239,7 @@ export function PricingDualCardsSection({
                 ) : null}
                 <div className="flex flex-col gap-4 lg:gap-5">
                   {section.title?.trim() ? (
-                    <h2 className="font-sans text-3xl font-semibold leading-[1.08] tracking-normal text-white sm:text-4xl lg:text-5xl">
+                    <h2 className="font-sans text-3xl font-semibold leading-[1.08] text-white sm:text-4xl lg:text-5xl">
                       {section.title.trim()}
                     </h2>
                   ) : null}

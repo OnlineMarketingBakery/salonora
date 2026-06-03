@@ -12,7 +12,7 @@ export function CaseStudyMetricsBar({ metrics }: { metrics: CaseStudyOverviewMet
             className={`flex min-w-0 flex-col gap-2.5 py-5 first:pt-0 last:pb-0 sm:flex-1 sm:justify-center sm:border-l sm:border-white/25 sm:py-0 sm:pl-10 sm:first:border-l-0 sm:first:pl-0`}
           >
             <p className="text-base font-normal leading-[1.4] text-white">{m.label}</p>
-            <p className="text-[34px] font-medium leading-[58px] tracking-tight">{m.value}</p>
+            <p className="text-[34px] font-medium leading-[58px]">{m.value}</p>
           </li>
         ))}
       </ul>

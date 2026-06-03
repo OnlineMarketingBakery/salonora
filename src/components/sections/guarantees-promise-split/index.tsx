@@ -34,7 +34,7 @@ function PointRow({ icon, text }: { icon: WpImage | null; text: string }) {
       <ListPointGraphic icon={icon} />
       <RichText
         html={text}
-        className="prose-strong:font-semibold prose-strong:text-[var(--palette-navy)] !prose-p:mb-0 !prose-p:mt-0 !prose-p:text-[16px] !prose-p:leading-[1.4] prose-p:text-[var(--palette-muted)] prose-p:tracking-normal"
+        className="prose-strong:font-semibold prose-strong:text-[var(--palette-navy)] !prose-p:mb-0 !prose-p:mt-0 !prose-p:text-[16px] !prose-p:leading-[1.4] prose-p:text-[var(--palette-muted)]"
       />
     </li>
   );
@@ -99,7 +99,7 @@ function FloatingBadge({
     >
       <BadgeIcon icon={icon} accent={accent} />
       {/* Figma pills use near-black headline type on white */}
-      <span className="whitespace-nowrap font-sans text-[17px] font-bold leading-[1.35] tracking-[-0.02em] text-[var(--foreground)] sm:text-[20px] sm:leading-[1.4]">
+      <span className="whitespace-nowrap font-sans text-[17px] font-bold leading-[1.35] text-[var(--foreground)] sm:text-[20px] sm:leading-[1.4]">
         {text}
       </span>
     </div>
@@ -222,7 +222,7 @@ export function GuaranteesPromiseSplitSection({
               ) : null}
 
               {titleLines.length ? (
-                <h2 className="max-w-[574px] font-sans text-[48px] font-semibold leading-[56px] tracking-[-0.04em] text-[var(--palette-navy)]">
+                <h2 className="max-w-[574px] font-sans text-[48px] font-semibold leading-[56px] text-[var(--palette-navy)]">
                   {titleLines.map((l, i) => (
                     <span key={i} className="block">
                       {l}

@@ -177,7 +177,7 @@ export function ProblemSolutionSection({
               className={`relative z-[1] flex min-h-0 w-full min-w-0 flex-col gap-[22px] self-stretch [overflow-wrap:anywhere] lg:flex-1 ${section.problem_image ? PROBLEM_CONTENT_PB : ""}`}
             >
               {section.problem_title ? (
-                <h2 className="w-full font-sans text-[clamp(1.5rem,3.5vw,2.125rem)] font-semibold leading-[0.98] tracking-[-0.02em] text-[var(--palette-white)]">
+                <h2 className="w-full font-sans text-[clamp(1.5rem,3.5vw,2.125rem)] font-semibold leading-[0.98] text-[var(--palette-white)]">
                   {section.problem_title}
                 </h2>
               ) : null}
@@ -221,7 +221,7 @@ export function ProblemSolutionSection({
               className={`relative z-[1] flex min-h-0 w-full min-w-0 flex-col gap-[22px] self-stretch [overflow-wrap:anywhere] lg:flex-1 ${section.solution_image ? SOLUTION_CONTENT_PB : ""}`}
             >
               {section.solution_title ? (
-                <h2 className="w-full font-sans text-[clamp(1.5rem,3.5vw,2.125rem)] font-semibold leading-[0.98] tracking-[-0.02em] text-[var(--palette-white)]">
+                <h2 className="w-full font-sans text-[clamp(1.5rem,3.5vw,2.125rem)] font-semibold leading-[0.98] text-[var(--palette-white)]">
                   {section.solution_title}
                 </h2>
               ) : null}

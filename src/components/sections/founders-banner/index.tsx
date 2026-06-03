@@ -50,7 +50,7 @@ function FoundersPill({
   const lines = (
     <>
       <span className={ruleBase} style={ruleLeftStyle} aria-hidden />
-      <span className="text-[15px] font-semibold leading-none tracking-[-0.02em] text-navy sm:text-[16px]">
+      <span className="text-[15px] font-semibold leading-none text-navy sm:text-[16px]">
         {badgeText}
       </span>
       <span className={ruleBase} style={ruleRightStyle} aria-hidden />
@@ -176,7 +176,7 @@ export function FoundersBannerSection({
             {section.headline ? (
               <RichText
                 html={section.headline}
-                className="font-sans text-[clamp(1.375rem,4vw,2.125rem)] font-semibold leading-[1.2] tracking-[-0.03em] text-[var(--palette-white)] [&_p]:mb-0 [&_p]:mt-0 [&_p+p]:mt-3 [&_*]:text-[var(--palette-white)] prose-strong:text-[var(--palette-white)]"
+                className="font-sans text-[clamp(1.375rem,4vw,2.125rem)] font-semibold leading-[1.2] text-[var(--palette-white)] [&_p]:mb-0 [&_p]:mt-0 [&_p+p]:mt-3 [&_*]:text-[var(--palette-white)] prose-strong:text-[var(--palette-white)]"
               />
             ) : null}
 

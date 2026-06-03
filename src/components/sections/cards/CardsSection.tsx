@@ -22,7 +22,7 @@ export function CardsSection({ section, lang }: { section: CardsSectionT; lang: 
       <Container>
         {section.title && (
           <h2
-            className={`${REVEAL_ITEM} mb-10 text-center text-3xl font-semibold leading-tight tracking-[-0.04em] text-navy sm:text-4xl lg:mb-12 lg:text-[48px] lg:leading-[56px]`}
+            className={`${REVEAL_ITEM} mb-10 text-center text-3xl font-semibold leading-tight text-navy sm:text-4xl lg:mb-12 lg:text-[48px] lg:leading-[56px]`}
           >
             {section.title}
           </h2>

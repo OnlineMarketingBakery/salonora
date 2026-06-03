@@ -62,7 +62,7 @@ export function StepsWithMediaSection({
   const copy = (
     <div className="relative z-10 flex min-w-0 flex-col items-start gap-6 sm:gap-8 lg:max-w-[618px] lg:gap-[34px]">
       {titleLines.length > 0 ? (
-        <h2 className="font-sans text-[32px] font-bold leading-tight tracking-[-0.04em] text-[var(--palette-navy)] sm:text-[40px] lg:text-[48px] lg:leading-[56px]">
+        <h2 className="font-sans text-[32px] font-bold leading-tight text-[var(--palette-navy)] sm:text-[40px] lg:text-[48px] lg:leading-[56px]">
           {titleLines.map((line, i) => (
             <span key={i} className="block">
               {line}
@@ -78,7 +78,7 @@ export function StepsWithMediaSection({
               <li>
                 <div className="flex flex-row items-start gap-4 sm:items-center sm:gap-[21px]">
                   <div
-                    className={`flex size-14 shrink-0 items-center justify-center rounded-2xl font-sans text-[32px] font-bold leading-none tracking-[-0.04em] text-[var(--palette-white)] sm:size-[72px] sm:rounded-[20px] sm:text-[40px] lg:size-[86px] lg:rounded-[24px] lg:text-[48px] ${stepIconBg(step.icon_color)}`}
+                    className={`flex size-14 shrink-0 items-center justify-center rounded-2xl font-sans text-[32px] font-bold leading-none text-[var(--palette-white)] sm:size-[72px] sm:rounded-[20px] sm:text-[40px] lg:size-[86px] lg:rounded-[24px] lg:text-[48px] ${stepIconBg(step.icon_color)}`}
                   >
                     {step.number.trim() || String(index + 1)}
                   </div>

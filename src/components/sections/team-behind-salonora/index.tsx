@@ -173,7 +173,7 @@ function MemberCard({
           <div className="min-w-0 max-md:mx-auto max-md:max-w-[40ch] md:text-left">
             {/* ▼ MOBILE FIX 6: Name clamped tighter 20px–22px on mobile */}
             <h3
-              className={`${REVEAL_ITEM} text-[clamp(20px,5vw,22px)] font-semibold leading-snug tracking-[-0.04em] text-navy md:text-[36px] md:leading-[56px]`}
+              className={`${REVEAL_ITEM} text-[clamp(20px,5vw,22px)] font-semibold leading-snug text-navy md:text-[36px] md:leading-[56px]`}
             >
               {member.name}
             </h3>
@@ -344,7 +344,7 @@ export function TeamBehindSalonoraSection({
       <Container>
         <div className="relative z-10 mx-auto w-full max-w-[1080px]">
           <h2
-            className={`${REVEAL_ITEM} text-center text-[34px] font-semibold leading-tight tracking-[-0.04em] text-white sm:text-[40px] md:text-[48px] md:leading-[56px]`}
+            className={`${REVEAL_ITEM} text-center text-[34px] font-semibold leading-tight text-white sm:text-[40px] md:text-[48px] md:leading-[56px]`}
           >
             {title}
           </h2>
