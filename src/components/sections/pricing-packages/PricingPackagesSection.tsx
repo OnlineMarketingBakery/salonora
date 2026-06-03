@@ -212,13 +212,13 @@ export function PricingPackagesSection({
                             prose={false}
                             html={p.pricingParagraph}
                             className={[
-                              "text-left font-sans text-[16px] font-normal leading-[1.6] tracking-normal !text-navy-deep",
-                              "[&_p]:!m-0 [&_p]:!max-w-full [&_p]:!text-left [&_p]:!font-sans [&_p]:!text-[16px] [&_p]:!font-normal [&_p]:!leading-[1.6] [&_p]:!text-navy-deep",
-                              "[&_h1]:!m-0 [&_h1]:!font-sans [&_h1]:!text-[16px] [&_h1]:!font-normal [&_h1]:!text-navy-deep",
-                              "[&_h2]:!m-0 [&_h2]:!font-sans [&_h2]:!text-[16px] [&_h2]:!font-normal [&_h2]:!text-navy-deep",
-                              "[&_h3]:!m-0 [&_h3]:!font-sans [&_h3]:!text-[16px] [&_h3]:!font-normal [&_h3]:!text-navy-deep",
-                              "[&_div]:!font-sans [&_div]:!text-[16px] [&_div]:!font-normal [&_div]:!text-navy-deep",
-                              "[&_span]:!text-navy-deep [&_li]:!text-navy-deep [&_strong]:!font-semibold [&_strong]:!text-navy-deep",
+                              "text-left font-sans text-[16px] font-normal leading-[1.6] tracking-normal !text-muted",
+                              "[&_p]:!m-0 [&_p]:!max-w-full [&_p]:!text-left [&_p]:!font-sans [&_p]:!text-[16px] [&_p]:!font-normal [&_p]:!leading-[1.6] [&_p]:!text-muted",
+                              "[&_h1]:!m-0 [&_h1]:!font-sans [&_h1]:!text-[16px] [&_h1]:!font-normal [&_h1]:!text-muted",
+                              "[&_h2]:!m-0 [&_h2]:!font-sans [&_h2]:!text-[16px] [&_h2]:!font-normal [&_h2]:!text-muted",
+                              "[&_h3]:!m-0 [&_h3]:!font-sans [&_h3]:!text-[16px] [&_h3]:!font-normal [&_h3]:!text-muted",
+                              "[&_div]:!font-sans [&_div]:!text-[16px] [&_div]:!font-normal [&_div]:!text-muted",
+                              "[&_span]:!text-muted [&_li]:!text-muted [&_strong]:!font-semibold [&_strong]:!text-navy-deep",
                               "[&_a]:!font-medium [&_a]:!text-brand",
                             ].join(" ")}
                           />

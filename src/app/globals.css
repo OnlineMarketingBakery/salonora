@@ -31,6 +31,8 @@
   --foreground: var(--palette-navy-deep);
   --brand: var(--palette-brand);
   --brand-dark: var(--palette-navy-deep);
+  /* Body copy on light surfaces (#435780); dark bands override below */
+  --text-paragraph: var(--palette-muted);
 }
 
 /* Same-page anchors (e.g. post TOC): native smooth scroll; Next `<Link href="#…">` skips this. */
@@ -49,6 +51,7 @@
   --color-navy: var(--palette-navy);
   --color-navy-deep: var(--palette-navy-deep);
   --color-muted: var(--palette-muted);
+  --color-copy: var(--text-paragraph);
   --color-surface: var(--palette-surface);
   --color-card: var(--palette-card);
   --color-pill: var(--palette-pill);
@@ -64,11 +67,38 @@ body {
   color: var(--foreground);
 }
 
+/*
+ * Paragraph copy: #435780 on light backgrounds; on dark / inverted sections keep
+ * whatever colour the block already uses (usually inherited white).
+ */
+.text-white,
+.bg-navy-deep,
+.bg-navy,
+.surface-dark,
+[data-surface="dark"] {
+  --text-paragraph: currentColor;
+}
+
+.bg-white,
+.bg-background,
+.bg-surface,
+.bg-card,
+.bg-pill,
+.surface-light {
+  --text-paragraph: var(--palette-muted);
+}
+
+.prose {
+  --tw-prose-body: var(--text-paragraph);
+  --tw-prose-bullets: var(--text-paragraph);
+  --tw-prose-counters: var(--text-paragraph);
+}
+
 a {
   text-underline-offset: 2px;
 }
 
-/* Single post body — Figma 848:3514; n8n/HTML contract: see docs/n8n-blog-publishing.md */
+/* Single post body — Figma 1643:54; n8n/HTML contract: see docs/n8n-blog-publishing.md */
 .post-article-body.post-prose {
   --post-callout-bg: color-mix(in srgb, var(--palette-surface) 92%, var(--palette-white));
   font-size: 1rem;
@@ -183,6 +213,30 @@ a {
   font-weight: 600;
   line-height: 1.1;
   color: var(--palette-brand);
+}
+
+/*
+ * Gutenberg / n8n posts: headings with inline `style` carry their own layout (24px sections, 18px subs).
+ * Do not add theme counter pills or left padding — matches docs/n8n-blog-post-gutenberg-reference.html.
+ */
+.post-article-body.post-prose h2[style],
+.post-article-body.post-prose h3[style] {
+  padding-left: 0;
+}
+
+.post-article-body.post-prose h2[style] {
+  counter-increment: post-h2 0;
+  counter-reset: post-h3;
+}
+
+.post-article-body.post-prose h3[style] {
+  counter-increment: post-h3 0;
+}
+
+.post-article-body.post-prose h2[style]::before,
+.post-article-body.post-prose h3[style]::before {
+  content: none !important;
+  display: none !important;
 }
 
 /*
@@ -663,4 +717,57 @@ a {
 .post-article-body.post-prose ul > li::marker,
 .post-article-body.post-prose ol > li::marker {
   color: color-mix(in srgb, var(--palette-brand) 75%, var(--palette-navy));
+}
+
+/* Blog single tail — Figma 1643:54 (FAQ → conclusion → related) */
+.post-single-faq > section {
+  padding-top: 5rem;
+  padding-bottom: 2.5rem;
+}
+
+.post-single-faq > section > div > div.mx-auto.flex.flex-col.items-center {
+  gap: 38px;
+}
+
+.post-single-faq > section h2 {
+  max-width: 28.25rem;
+  margin-inline: auto;
+  color: var(--palette-navy-deep);
+  font-size: 3rem;
+  line-height: 1.167;
+  letter-spacing: -0.04em;
+}
+
+.post-single-faq > section > div > div.mx-auto.flex.flex-col.items-center > div.flex.w-full.flex-col {
+  gap: 28px;
+}
+
+.post-single-faq > section .flex.w-full.flex-col.gap-5 {
+  gap: 20px;
+}
+
+.post-single-faq .overflow-hidden.rounded-\[14px\].bg-card {
+  background: var(--palette-surface);
+}
+
+.post-single-faq .text-slate-900 {
+  color: var(--palette-navy);
+}
+
+.blog-single-conclusion {
+  padding-top: 0;
+}
+
+.blog-single-related {
+  padding-top: 0;
+}
+
+@media (min-width: 1024px) {
+  .post-single-faq > section > div > div.mx-auto.flex.flex-col.items-center > div.flex.w-full.flex-col.lg\:flex-row {
+    gap: 29px;
+  }
+
+  .post-single-faq .faq-split-contact-card:not(.lg\:min-h-0) {
+    min-height: 673px;
+  }
 }

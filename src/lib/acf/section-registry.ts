@@ -127,6 +127,14 @@ const ProblemSolutionSectionLazy = dynamic(
   { ssr: true }
 );
 
+const BlogConclusionPanelSectionLazy = dynamic(
+  () =>
+    import("@/components/sections/blog-conclusion-panel").then((mod) => ({
+      default: mod.BlogConclusionPanelSection,
+    })),
+  { ssr: true }
+);
+
 const TalkDualCardsSectionLazy = dynamic(
   () =>
     import("@/components/sections/talk-dual-cards").then((mod) => ({
@@ -264,6 +272,9 @@ export const sectionRegistry = {
     FreeDemoFormSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
   ),
   latest_posts: asSection(LatestPostsSection as (p: { section: never; lang: Locale }) => ReactNode),
+  blog_conclusion_panel: asSection(
+    BlogConclusionPanelSectionLazy as (p: { section: never; lang: Locale }) => ReactNode
+  ),
   blog_post_overview: asSection(
     BlogPostOverviewSection as (p: { section: never; lang: Locale }) => ReactNode
   ),

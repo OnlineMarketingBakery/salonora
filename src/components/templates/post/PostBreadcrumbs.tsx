@@ -40,28 +40,21 @@ export function PostBreadcrumbs({
           {breadcrumbParent.label}
         </a>
       ) : null}
-      <nav
-        aria-label="Breadcrumb"
-        className={breadcrumbParent ? "sr-only" : "text-[16px] leading-[1.4] text-[var(--palette-navy)]"}
-      >
-        <ol className="flex flex-wrap items-center gap-x-1 gap-y-1">
+      {/* Figma 1643:235+ hero has no visible "Blog / title" trail — keep for a11y only */}
+      <nav aria-label="Breadcrumb" className="sr-only">
+        <ol>
           <li>
-            <Link
-              href={buildLocalePath(lang, blogArchivePath)}
-              className="font-medium text-[var(--palette-brand)] transition hover:underline"
-            >
-              {t.blog}
-            </Link>
+            <Link href={buildLocalePath(lang, blogArchivePath)}>{t.blog}</Link>
           </li>
-          {breadcrumbParent ? (
+          {!breadcrumbParent ? (
+            <>
+              <CrumbSep />
+              <li aria-current="page">{titlePlain}</li>
+            </>
+          ) : (
             <li className="sr-only" aria-current="page">
               {titlePlain}
             </li>
-          ) : (
-            <>
-              <CrumbSep />
-              <li className="font-medium text-[var(--palette-navy)]">{titlePlain}</li>
-            </>
           )}
         </ol>
       </nav>

@@ -14,6 +14,8 @@ export type PageDocument = {
   isBlogArchive?: boolean;
   /** When true, `?page=` and `?s=` query params drive the Case study overview section (ACF: is_case_study_archive). */
   isCaseStudyArchive?: boolean;
+  /** When true, page supplies shared tail sections for all blog posts (ACF: is_blog_single_layout). */
+  isBlogSingleLayout?: boolean;
   sections: AnySectionT[];
   seo: SeoPayload;
 };
@@ -60,10 +62,15 @@ export type PostDocument = {
   excerpt: string;
   /** Optional ACF WYSIWYG intro; when null, template falls back to excerpt plain text */
   postLeadHtml: string | null;
+  /** Optional ACF line above the title (Figma 1643:234), e.g. category tags */
+  postEyebrow: string | null;
   featuredImage: string | null;
   featuredImageAlt: string;
   featuredFormId: number | null;
+  /** Per-post flexible sections. */
   sections: AnySectionT[];
+  /** Shared tail sections: global Templates options first, else layout page fallback. */
+  layoutSections: AnySectionT[];
   seo: SeoPayload;
   /** ISO8601 from WordPress `date` */
   publishedAt: string;

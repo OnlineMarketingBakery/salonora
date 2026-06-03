@@ -2,8 +2,158 @@ import { slugifyHeadingFragment, stripTags } from "@/lib/utils/strings";
 
 export type PostTocItem = { id: string; label: string; level: 2 | 3 };
 
+/**
+ * Remove Gutenberg/HTML paste artifacts that render as empty blocks above the article.
+ * WordPress sometimes turns file-header `<!-- … -->` into `<p><!-- … </p>` without `-->`,
+ * which makes the browser treat the entire article as one HTML comment (invisible).
+ */
+export function preparePostContentHtml(html: string): string {
+  if (!html) return html;
+  let out = html
+    .replace(/<p>\s*<!--[\s\S]*?<\/p>/gi, "")
+    .replace(/^(?:\s*<\/p>\s*)+/i, "")
+    .trim();
+
+  out = stripHtmlComments(out);
+  out = upgradeFigmaCalloutBands(out);
+  return out.trim();
+}
+
+const CALLOUT_BAND_FOOTER =
+  '<div class="salonora-band__footer" style="height:6px;background:#3990f0;line-height:0;font-size:0" aria-hidden="true"></div>';
+
+const CALLOUT_LABEL_RE =
+  /(?:antwoord\s+in\s+1\s+minuut|maak\s+je\s+salon|avond-proof|pro\s+tip)/i;
+const SURFACE_BG_RE = /#(?:ebf3fe|ecf4ff)\b/i;
+
+function wrapSalonoraBand(inner: string): string {
+  const bodyStyle = "background:#ebf3fe;padding:30px 32px 26px";
+  return `<div class="salonora-band" style="margin:28px 0;border-radius:12px;overflow:hidden"><div class="salonora-band__body" style="${bodyStyle}">${inner}</div>${CALLOUT_BAND_FOOTER}</div>`;
+}
+
+/** Figma 1800:2 — full-width brand footer strip; fixes legacy inner 6px “pill” bars. */
+export function upgradeFigmaCalloutBands(html: string): string {
+  if (!html) return html;
+  let out = html.replace(
+    /\s*<div[^>]*\bclass\s*=\s*["'][^"']*salonora-tinted[^"']*["'][^>]*style="[^"]*height:\s*6px[^"]*"[^>]*>\s*<\/div>/gi,
+    ""
+  );
+  out = out.replace(
+    /\s*<div[^>]*style="[^"]*height:\s*6px[^"]*(?:linear-gradient|#3990f0|#3d97ff|#2f86f5)[^"]*"[^>]*>\s*<\/div>/gi,
+    ""
+  );
+
+  const bandRe =
+    /<div(\s[^>]*style="[^"]*(?:background\s*:\s*#(?:ebf3fe|ecf4ff)|background:#(?:ebf3fe|ecf4ff))[^"]*border-bottom\s*:\s*6px\s+solid\s+#(?:3990f0|2f86f5)[^"]*"[^>]*)>([\s\S]*?)<\/div>/gi;
+  out = out.replace(bandRe, (_full, _attrs: string, inner: string) => wrapSalonoraBand(inner));
+
+  const legacyBandRe =
+    /<div(\s[^>]*style="[^"]*(?:background\s*:\s*#(?:ebf3fe|ecf4ff)|background:#(?:ebf3fe|ecf4ff))[^"]*border-radius:\s*(?:12|16)px[^"]*"[^>]*)>([\s\S]*?)<\/div>\s*(?=<\/div>|<!--|<hr)/gi;
+  out = out.replace(legacyBandRe, (full, _attrs: string, inner: string) => {
+    if (/\bsalonora-band\b/i.test(inner)) return full;
+    if (!CALLOUT_LABEL_RE.test(inner)) return full;
+    return wrapSalonoraBand(inner);
+  });
+
+  out = upgradePaleCalloutDivs(out);
+  return out;
+}
+
+/** WP paste: pale surface box (often already `salonora-tinted`) without a footer strip. */
+function upgradePaleCalloutDivs(html: string): string {
+  let result = html;
+  let searchFrom = 0;
+  for (let pass = 0; pass < 80; pass++) {
+    const re = /<div\b([^>]*)>/gi;
+    re.lastIndex = searchFrom;
+    const m = re.exec(result);
+    if (!m) break;
+    const attrs = m[1];
+    if (/\bsalonora-band(?:__body|__footer)?\b/i.test(attrs)) {
+      searchFrom = m.index + m[0].length;
+      continue;
+    }
+    const styleMatch = attrs.match(/\bstyle\s*=\s*(["'])((?:\\.|(?!\1).)*)\1/i);
+    if (!styleMatch) {
+      searchFrom = m.index + m[0].length;
+      continue;
+    }
+    const style = styleMatch[2];
+    const isTinted = /\bsalonora-tinted\b/i.test(attrs);
+    if (!isTinted && !SURFACE_BG_RE.test(style)) {
+      searchFrom = m.index + m[0].length;
+      continue;
+    }
+    const openEnd = m.index + m[0].length;
+    const closeEnd = findMatchingDivCloseIndex(result, openEnd);
+    if (closeEnd === -1) break;
+    const inner = result.slice(openEnd, closeEnd).replace(/<\/div>\s*$/i, "");
+    if (!CALLOUT_LABEL_RE.test(inner)) {
+      searchFrom = closeEnd;
+      continue;
+    }
+    const replacement = wrapSalonoraBand(inner);
+    result = result.slice(0, m.index) + replacement + result.slice(closeEnd);
+    searchFrom = m.index + replacement.length;
+  }
+  return result;
+}
+
+/** Legacy numbered rows: strip mistaken `salonora-tinted` on 28px badges; tag list wrappers. */
+export function upgradeNumberedRows(html: string): string {
+  if (!html) return html;
+  let out = html.replace(
+    /<div\s+class="salonora-tinted"(\s[^>]*style="[^"]*(?:flex:\s*0\s+0\s+28px|width:\s*28px)[^"]*"[^>]*)>/gi,
+    '<div class="salonora-num-badge"$1>'
+  );
+  out = out.replace(
+    /<div class="salonora-num-list"(\s[^>]*style="[^"]*display:\s*flex[^"]*gap:\s*(?:8|14)px[^"]*margin-bottom:\s*11px[^"]*"[^>]*)>/gi,
+    '<div class="salonora-num-row"$1>'
+  );
+  out = out.replace(
+    /<div(\s[^>]*style="[^"]*display:\s*flex[^"]*gap:\s*(?:8|14)px[^"]*margin-bottom:\s*11px[^"]*"[^>]*)>/gi,
+    (full, attrs: string) => {
+      if (/\bsalonora-num-row\b/i.test(attrs)) return full;
+      if (/\bclass\s*=/i.test(attrs)) {
+        return full.replace(/\bclass\s*=\s*(["'])([^"']*)\1/i, 'class=$1$2 salonora-num-row$1');
+      }
+      return `<div class="salonora-num-row"${attrs}>`;
+    }
+  );
+  out = out.replace(
+    /<div(\s[^>]*style="[^"]*flex:\s*0\s+0\s+28px[^"]*"[^>]*)>/gi,
+    (full, attrs: string) => {
+      if (/\bsalonora-num-badge\b/i.test(attrs)) return full;
+      if (/\bclass\s*=/i.test(attrs)) {
+        return full.replace(/\bclass\s*=\s*(["'])([^"']*)\1/i, 'class=$1$2 salonora-num-badge$1');
+      }
+      return `<div class="salonora-num-badge"${attrs}>`;
+    }
+  );
+  out = out.replace(
+    /<div(\s+style="margin:\s*18px\s+0")(\s*>)/gi,
+    (full, marginStyle: string, end: string) => {
+      if (/\bsalonora-num-list\b/i.test(marginStyle)) return full;
+      return `<div class="salonora-num-list"${marginStyle}${end}`;
+    }
+  );
+  return out;
+}
+
+/** Removes closed comments; truncates before any unclosed `<!--` so the rest of the article can render. */
+function stripHtmlComments(html: string): string {
+  let out = html;
+  for (;;) {
+    const start = out.indexOf("<!--");
+    if (start === -1) return out;
+    const end = out.indexOf("-->", start + 4);
+    if (end === -1) return out.slice(0, start);
+    out = out.slice(0, start) + out.slice(end + 3);
+  }
+}
+
 const SALONORA_WRAPPER_CLASS_RE =
-  /salonora-tip|salonora-callout|salonora-warn|salonora-checklist|salonora-inline-cta|salonora-cta-panel|salonora-tinted/i;
+  /salonora-tip|salonora-callout|salonora-warn|salonora-checklist|salonora-inline-cta|salonora-cta-panel|salonora-tinted|salonora-band/i;
 
 /**
  * Wrapper `class` substrings on `<div>`: entire subtree is removed before TOC extraction, so `h2`/`h3`
@@ -77,6 +227,15 @@ function cssColorValueLooksWhiteish(value: string): boolean {
   return false;
 }
 
+/** 28px brand circles in numbered lists — must not receive `salonora-tinted` card styles. */
+function isLikelyNumberBadge(style: string): boolean {
+  if (/\b(?:flex:\s*0\s+0\s+28px|width:\s*28px)\b/i.test(style) && /\bheight:\s*28px\b/i.test(style)) {
+    return true;
+  }
+  if (/\bwidth:\s*28px\b/i.test(style) && /\bheight:\s*28px\b/i.test(style)) return true;
+  return false;
+}
+
 /** True when inline `style` sets a visible non-(near-)white background (shorthand or background-color). */
 function styleDeclaresNonWhiteBackground(style: string): boolean {
   const bg = extractFirstCssDeclaration(style, "background");
@@ -97,13 +256,17 @@ function styleDeclaresNonWhiteBackground(style: string): boolean {
 export function markStyleTintedDivs(html: string): string {
   if (!html) return html;
   return html.replace(/<div(\s[^>]*)>/gi, (full, attrs: string) => {
-    if (/\bsalonora-tinted\b/i.test(attrs)) return full;
+    if (/\bsalonora-(?:tinted|band|band__body|band__footer|num-badge)\b/i.test(attrs)) return full;
     const classMatch = attrs.match(/\bclass\s*=\s*(["'])((?:\\.|(?!\1).)*)\1/i);
     if (classMatch && SALONORA_WRAPPER_CLASS_RE.test(classMatch[2])) return full;
 
     const styleMatch = attrs.match(/\bstyle\s*=\s*(["'])((?:\\.|(?!\1).)*)\1/i);
     if (!styleMatch) return full;
-    if (!styleDeclaresNonWhiteBackground(styleMatch[2])) return full;
+    const style = styleMatch[2];
+    if (/\bheight\s*:\s*6px\b/i.test(style)) return full;
+    if (/\bborder-bottom\s*:\s*6px\s+solid\b/i.test(style)) return full;
+    if (isLikelyNumberBadge(style)) return full;
+    if (!styleDeclaresNonWhiteBackground(style)) return full;
 
     if (classMatch) {
       const q = classMatch[1];
@@ -115,29 +278,44 @@ export function markStyleTintedDivs(html: string): string {
   });
 }
 
+const SAL_HEADING_ATTR_RE = /\bdata-sal-heading\s*=\s*(["'])([23])\1/i;
+
+function nextHeadingId(inner: string, used: Set<string>): string {
+  const base = slugifyHeadingFragment(inner);
+  let id = base;
+  let n = 2;
+  while (used.has(id)) {
+    id = `${base}-${n}`;
+    n += 1;
+  }
+  used.add(id);
+  return id;
+}
+
 /**
- * Adds stable `id` attributes to h2/h3 for TOC anchors when missing.
+ * Adds stable `id` attributes to h2/h3 and inline section titles (`data-sal-heading`) for TOC anchors.
  * Handles duplicate slugs by suffixing -2, -3, …
  */
 export function injectHeadingIds(html: string): string {
   if (!html) return html;
   const used = new Set<string>();
-  return html.replace(/<h([23])(\s[^>]*)?>([\s\S]*?)<\/h\1>/gi, (full, level: string, attrs: string | undefined, inner: string) => {
+  let result = html.replace(/<h([23])(\s[^>]*)?>([\s\S]*?)<\/h\1>/gi, (full, level: string, attrs: string | undefined, inner: string) => {
     const attrStr = attrs || "";
     if (/\bid\s*=\s*["'][^"']*["']/i.test(attrStr)) {
       return full;
     }
-    const base = slugifyHeadingFragment(inner);
-    let id = base;
-    let n = 2;
-    while (used.has(id)) {
-      id = `${base}-${n}`;
-      n += 1;
-    }
-    used.add(id);
+    const id = nextHeadingId(inner, used);
     const open = `<h${level}${attrStr} id="${id}">`;
     return `${open}${inner}</h${level}>`;
   });
+  result = result.replace(/<div(\s[^>]*)>([\s\S]*?)<\/div>/gi, (full, attrs: string, inner: string) => {
+    if (!SAL_HEADING_ATTR_RE.test(attrs)) return full;
+    if (/\bid\s*=\s*["'][^"']*["']/i.test(attrs)) return full;
+    const id = nextHeadingId(inner, used);
+    const spacer = attrs.endsWith(" ") ? "" : " ";
+    return `<div${attrs}${spacer}id="${id}">${inner}</div>`;
+  });
+  return result;
 }
 
 export function extractPostToc(html: string): PostTocItem[] {
@@ -150,5 +328,25 @@ export function extractPostToc(html: string): PostTocItem[] {
     if (level !== 2 && level !== 3) continue;
     items.push({ id: m[2], label: stripTags(m[3]).trim() || m[2], level });
   }
+  const salRe =
+    /<div[^>]*\bdata-sal-heading\s*=\s*["']([23])["'][^>]*\bid=["']([^"']+)["'][^>]*>([\s\S]*?)<\/div>/gi;
+  while ((m = salRe.exec(cleaned)) !== null) {
+    const level = Number(m[1]) as 2 | 3;
+    if (level !== 2 && level !== 3) continue;
+    items.push({ id: m[2], label: stripTags(m[3]).trim() || m[2], level });
+  }
   return items;
+}
+
+/** True for blog TOC rows: top-level sections (1., 2., …), not subsections (2.2, 1.3.4) or h3. */
+export function isBlogTocMainSectionItem(item: PostTocItem): boolean {
+  if (item.level === 3) return false;
+  const label = item.label.trim();
+  if (/^\d+(?:\.\d+)+/.test(label)) return false;
+  return true;
+}
+
+/** Blog single TOC — only main chapter headings; subsections stay in the article. */
+export function filterBlogPostTocItems(items: PostTocItem[]): PostTocItem[] {
+  return items.filter(isBlogTocMainSectionItem);
 }

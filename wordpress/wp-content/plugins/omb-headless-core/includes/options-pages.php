@@ -59,4 +59,11 @@ add_action('acf/init', function () {
         'parent_slug' => 'omb-global-settings',
         'menu_slug'   => 'omb-integrations',
     ]);
+
+    acf_add_options_sub_page([
+        'page_title'  => 'Templates',
+        'menu_title'  => 'Templates',
+        'parent_slug' => 'omb-global-settings',
+        'menu_slug'   => 'omb-templates-settings',
+    ]);
 });

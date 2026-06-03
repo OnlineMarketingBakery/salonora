@@ -148,12 +148,12 @@ export function TestimonialsCarousel({
                 {slideItems.map((t) => (
                   <blockquote
                     key={t.id}
-                    className={`${REVEAL_ITEM} relative flex h-full min-h-[200px] flex-col gap-[23px] rounded-[14px] bg-linear-to-b from-white to-[rgba(255,255,255,0.48)] p-6 shadow-[0px_18px_48px_0px_rgba(67,87,128,0.08)] sm:p-[34px]`}
+                    className={`surface-light ${REVEAL_ITEM} relative flex h-full min-h-[200px] flex-col gap-[23px] rounded-[14px] bg-linear-to-b from-white to-[rgba(255,255,255,0.48)] p-6 shadow-[0px_18px_48px_0px_rgba(67,87,128,0.08)] sm:p-[34px]`}
                   >
                     <QuoteGlyph />
                     <RichText
                       html={t.clientTestimonial}
-                      className="text-left text-sm font-normal leading-5 text-navy [&_p]:mb-3 [&_p:last-child]:mb-0"
+                      className="text-left text-sm font-normal leading-5 text-copy [&_p]:mb-3 [&_p:last-child]:mb-0"
                     />
                     <div className="h-px w-full shrink-0 bg-[rgba(21,41,81,0.12)]" aria-hidden />
                     <div className="flex items-center justify-between gap-3">

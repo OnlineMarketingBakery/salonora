@@ -98,6 +98,16 @@ export function getBlogPageSlug(lang: "nl" | "en"): string {
   return process.env[key]?.trim() || process.env.WORDPRESS_BLOG_PAGE_SLUG?.trim() || "blog";
 }
 
+/** Slug for the shared blog post layout page (FAQ etc.). Set `is_blog_single_layout` on that page in ACF. */
+export function getBlogSingleLayoutSlug(lang: "nl" | "en"): string {
+  const key = `WORDPRESS_BLOG_SINGLE_LAYOUT_SLUG_${lang.toUpperCase()}` as const;
+  return (
+    process.env[key]?.trim() ||
+    process.env.WORDPRESS_BLOG_SINGLE_LAYOUT_SLUG?.trim() ||
+    "blog-single-layout"
+  );
+}
+
 /** Single segment path for case study archive (breadcrumbs). Override per locale or fall back to `case-studies` (CPT rewrite slug). */
 export function getCaseStudyArchiveSlug(lang: "nl" | "en"): string {
   const key = `WORDPRESS_CASE_STUDY_PAGE_SLUG_${lang.toUpperCase()}` as const;

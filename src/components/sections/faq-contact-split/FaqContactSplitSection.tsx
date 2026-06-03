@@ -27,11 +27,11 @@ export function FaqContactSplitSection({ section, lang }: { section: FaqContactS
     <section
       className={`py-16 sm:py-20 md:py-24 ${navyBg ? "bg-navy-deep text-white" : "bg-white"}`}
     >
-      <Container className="!max-w-[85rem]">
-        <div className="mx-auto flex w-full max-w-[1156px] flex-col items-center gap-10 md:gap-12">
+      <Container>
+        <div className="mx-auto flex w-full max-w-[72.25rem] flex-col items-center gap-10 md:gap-12">
           {section.title && (
             <h2
-              className={`${REVEAL_ITEM} w-full text-center text-[32px] font-semibold leading-tight tracking-[-0.04em] sm:text-[40px] sm:leading-[1.15] lg:text-[48px] lg:leading-[56px] ${navyBg ? "text-white" : "text-navy-deep"}`}
+              className={`${REVEAL_ITEM} w-full text-center text-[32px] font-semibold leading-[1.1] tracking-[-0.04em] sm:text-[40px] lg:text-[48px] ${navyBg ? "text-white" : "text-navy"}`}
             >
               {section.title.split(/\r?\n+/).map((line, i) => {
                 const t = line.trim();
@@ -119,7 +119,7 @@ export function FaqContactSplitSection({ section, lang }: { section: FaqContactS
                 </div>
               ) : (
                 <div
-                  className={`flex min-h-0 w-full min-w-0 flex-col items-center justify-center gap-6 rounded-[14px] bg-gradient-to-b from-brand to-[#0569d7] p-8 shadow-[0_14px_40px_-12px_rgba(21,41,81,0.18)] sm:min-h-[520px] md:min-h-[580px] lg:gap-6 lg:p-[44px] ${hasPricing ? "lg:min-h-0 lg:flex-1" : "lg:min-h-[609px]"}`}
+                  className={`faq-split-contact-card flex min-h-0 w-full min-w-0 flex-col items-center justify-center gap-6 rounded-[14px] bg-gradient-to-b from-brand to-[#0569d7] p-8 shadow-[0_14px_40px_-12px_rgba(21,41,81,0.18)] sm:min-h-[520px] md:min-h-[580px] lg:gap-6 lg:p-[44px] ${hasPricing ? "lg:min-h-0 lg:flex-1" : "lg:min-h-[609px]"}`}
                 >
                   <div className="flex w-full min-w-0 max-w-[401px] flex-col items-center gap-6 text-center text-white">
                     {cardTitleLines.length > 0 && (

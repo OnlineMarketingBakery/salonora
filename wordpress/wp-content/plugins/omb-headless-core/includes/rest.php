@@ -101,6 +101,7 @@ function omb_rest_globals_option_slugs(): array {
         'site'           => 'omb-site-settings',
         'integrations'   => 'omb-integrations',
         'defaultSeo'     => 'omb-default-seo',
+        'templates'      => 'omb-templates-settings',
     ];
 }
 
@@ -169,6 +170,10 @@ function omb_rest_globals_field_keys_by_menu_slug(): array {
             'default_seo_description',
             'default_share_image',
             'allow_indexing_by_default',
+        ],
+        'omb-templates-settings' => [
+            'blog_single_sections',
+            'show_related_posts',
         ],
     ];
 }
@@ -355,7 +360,7 @@ function omb_rest_switch_polylang_lang(?string $lang): void {
 }
 
 /**
- * Settings → Reading: static front page slug for the active (switched) language.
+ * Settings Ã¢â€ â€™ Reading: static front page slug for the active (switched) language.
  *
  * @return array{show_on_front: string, homepage_slug: string|null}
  */
@@ -503,7 +508,7 @@ function omb_rest_acf_sync(WP_REST_Request $request): WP_REST_Response {
 }
 
 /**
- * Polylang (and similar) often stores translated “Biographical Info” in separate user-meta keys while
+ * Polylang (and similar) often stores translated Ã¢â‚¬Å“Biographical InfoÃ¢â‚¬Â in separate user-meta keys while
  * default `description` stays empty for another locale. Headless requests use `?lang=`; expose the
  * matching HTML in REST `description` so Next.js can render the author card.
  */
@@ -521,7 +526,7 @@ function omb_rest_author_social_url(string $raw): string {
     if (is_string($u) && $u !== '') {
         return $u;
     }
-    // esc_url_raw() drops fragment-only values (e.g. “#” placeholders in dev); keep them for headless UI stubs.
+    // esc_url_raw() drops fragment-only values (e.g. Ã¢â‚¬Å“#Ã¢â‚¬Â placeholders in dev); keep them for headless UI stubs.
     if ($t === '#') {
         return '#';
     }
@@ -579,7 +584,7 @@ function omb_rest_user_description_for_lang(int $user_id, string $lang_slug): st
     $suffixes = array_values(array_unique(array_filter($suffixes)));
 
     // Prefer locale-specific keys first: default `description` often holds English while Polylang
-    // stores Nederlands in `description_nl` / `description_nl_nl` — so `?lang=nl` must not stop at English.
+    // stores Nederlands in `description_nl` / `description_nl_nl` Ã¢â‚¬â€ so `?lang=nl` must not stop at English.
     foreach ($suffixes as $suffix) {
         foreach (['description_' . $suffix, 'description-' . $suffix, 'pll_description_' . $suffix] as $key) {
             $raw = $read($user_id, $key);
