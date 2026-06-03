@@ -62,11 +62,15 @@
   --font-sans: "Outfit", sans-serif;
 }
 
-/* Full-bleed tilted ribbons (announcement ticker) bleed past the viewport edge;
-   clip horizontal overflow at the root so they never trigger a horizontal scrollbar.
-   overflow-x: hidden keeps vertical scrolling (computes overflow-y to auto). */
-html {
-  overflow-x: hidden;
+/*
+ * Full-bleed tilted ribbons (announcement ticker ~125vw) and hero bleed (e.g. w-[110%])
+ * must not widen the document — otherwise the page scrolls horizontally and white
+ * body background shows on the right (common prod vs local gap when this rule is missing).
+ */
+html,
+body {
+  overflow-x: clip;
+  max-width: 100%;
 }
 
 body {

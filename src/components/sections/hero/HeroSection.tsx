@@ -388,7 +388,7 @@ export function HeroSection({
             // Slightly overflows the container on the right for a magazine feel
             // without being fully clipped — matches the desktop aesthetic.
             <div
-              className={`${REVEAL_ITEM} block lg:hidden w-[110%] -mr-[5%] mt-3`}
+              className={`${REVEAL_ITEM} relative -mx-4 mt-3 block w-[calc(100%+2rem)] max-w-none overflow-x-clip sm:-mx-6 sm:w-[calc(100%+3rem)] lg:hidden`}
             >
               <Media
                 image={section.behindImage}

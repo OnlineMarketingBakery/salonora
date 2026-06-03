@@ -51,10 +51,9 @@ export function HeroWaveDashboardSection({
       className="relative isolate overflow-x-clip text-white"
       style={panelBackground}
     >
-      {/* Bleed the navy up behind the floating, transparent site header so no white sliver shows at
-          the very top (the header is pulled up with a negative margin, exposing the white body). */}
+      {/* Bleed navy behind the transparent floating header (body is white; header overlap is ~6–7rem). */}
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-full z-0 h-4"
+        className="pointer-events-none absolute inset-x-0 bottom-full z-0 h-28 sm:h-32"
         style={{ background: "var(--palette-navy-deep)" }}
         aria-hidden
       />

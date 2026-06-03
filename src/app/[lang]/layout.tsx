@@ -49,7 +49,10 @@ export default async function LangLayout({ children, params }: Props) {
           {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', '${globals.integrations.ga4Id}');`}
         </Script>
       )}
-      <div className="flex min-h-screen flex-col" data-site={getSiteName(globals)}>
+      <div
+        className="flex min-h-screen min-w-0 flex-col overflow-x-clip"
+        data-site={getSiteName(globals)}
+      >
         <CtaBrandArrowProvider image={globals.site.defaultCtaBrandArrow}>
           <GlobalAnnouncementBar globals={globals} lang={lang} />
           <div className="relative flex min-h-0 flex-1 flex-col">
@@ -61,7 +64,7 @@ export default async function LangLayout({ children, params }: Props) {
               languageSwitcherPathname={pathname}
               languageSwitcherHrefs={languageSwitcherHrefs}
             />
-            <main className="relative z-0 flex-1">{children}</main>
+            <main className="relative z-0 min-w-0 flex-1 overflow-x-clip">{children}</main>
             <PageScrollAnimations />
           </div>
           <SiteFooter
