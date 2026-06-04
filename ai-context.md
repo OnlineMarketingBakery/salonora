@@ -94,6 +94,7 @@ npm run lint     # next lint
 
 ## Globals (footer)
 
+- **Per-page custom footer:** Page ACF **`use_custom_footer`** + **`page_footer_sections`** (flexible **max 1**, layout **`footer_section` only** — clones Footer settings fields). [`PageFooter`](src/components/layout/PageFooter.tsx) merges into [`SiteFooter`](src/components/layout/SiteFooter.tsx) via `merge-footer-settings.ts`. Normalizer: `normalize-page-footer-sections.ts`. Resolver: `resolve-page-footer.ts`.
 - **Footer surface** is pure CSS in [`SiteFooter.tsx`](src/components/layout/SiteFooter.tsx): **`bg-navy-deep`**, subtle grid overlay, bottom-center brand-blue radial glow, and the Figma notch (fixed-width SVG on mobile, radial-gradient mask on `sm+` when a footer logo exists). The Next app no longer reads or renders CMS footer background fields (`footer_background_image`, `footer_background_color`, `footer_background_gradient`, legacy `footer_top_shape_image`).
 - **OMB `/omb-headless/v1/globals`:** the WordPress plugin still merges `footer_*` keys into the `footer` object; the frontend maps copy, logo, CTAs, copyright, and language switcher only. Remove unused ACF fields in WP when convenient; they are ignored by this repo.
 

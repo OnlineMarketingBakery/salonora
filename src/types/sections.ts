@@ -969,6 +969,22 @@ export type TeamBehindSalonoraSectionT = CoreSection & {
   cornerLinesBottomRight?: WpImage | null;
 };
 
+/** Per-page footer (ACF layout `footer_section` only — not used in `page_sections`). */
+export type FooterSectionT = {
+  type: "footer_section";
+  id: string;
+  _key: string;
+  hasLanguageSwitcherOverride: boolean;
+  footerTitle: string;
+  footerText: string;
+  footerLogo: WpImage | null;
+  footerCopyright: string;
+  showFooterLanguageSwitcher: boolean;
+  footerCtaFootnote: string;
+  footerCtaPrimaryLink: WpAcfLink | null;
+  footerCtaSecondaryLink: WpAcfLink | null;
+};
+
 export type AnySectionT =
   | HeroSectionT
   | HeroWaveDashboardSectionT

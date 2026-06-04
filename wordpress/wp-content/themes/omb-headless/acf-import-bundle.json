@@ -1251,6 +1251,119 @@
         "ui_off_text": "No"
       },
       {
+        "key": "field_omb_use_custom_footer",
+        "label": "Use custom footer",
+        "name": "use_custom_footer",
+        "aria-label": "",
+        "type": "true_false",
+        "instructions": "When enabled, the site layout renders Page footer sections below the page content instead of the global footer (Footer settings). Leave off to use the default footer.",
+        "required": 0,
+        "conditional_logic": 0,
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "message": "",
+        "default_value": 0,
+        "ui": 1,
+        "ui_on_text": "Yes",
+        "ui_off_text": "No"
+      },
+      {
+        "key": "field_omb_page_footer_tab",
+        "label": "Page Footer",
+        "name": "",
+        "aria-label": "",
+        "type": "tab",
+        "instructions": "",
+        "required": 0,
+        "conditional_logic": [
+          [
+            {
+              "field": "field_omb_use_custom_footer",
+              "operator": "==",
+              "value": "1"
+            }
+          ]
+        ],
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "placement": "top",
+        "endpoint": 0,
+        "selected": 0
+      },
+      {
+        "key": "field_omb_page_footer_sections",
+        "label": "Page footer sections",
+        "name": "page_footer_sections",
+        "aria-label": "",
+        "type": "flexible_content",
+        "instructions": "Custom footer for this page. Add one Footer section to override copy, logo, and CTAs (menus still come from WordPress menus).",
+        "required": 0,
+        "conditional_logic": [
+          [
+            {
+              "field": "field_omb_use_custom_footer",
+              "operator": "==",
+              "value": "1"
+            }
+          ]
+        ],
+        "wrapper": {
+          "width": "",
+          "class": "",
+          "id": ""
+        },
+        "min": 0,
+        "max": 1,
+        "button_label": "Add footer",
+        "layouts": {
+          "layout_omb_footer_section": {
+            "key": "layout_omb_footer_section",
+            "name": "footer_section",
+            "label": "Footer",
+            "display": "block",
+            "sub_fields": [
+              {
+                "key": "field_omb_page_footer_content",
+                "label": "Footer content",
+                "name": "footer_content",
+                "aria-label": "",
+                "type": "clone",
+                "instructions": "Overrides global Footer settings for this page. Leave fields empty to keep the global default.",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "clone": [
+                  "field_omb_footer_title",
+                  "field_omb_footer_text",
+                  "field_omb_footer_logo",
+                  "field_omb_footer_cta_text",
+                  "field_omb_footer_cta_primary_link",
+                  "field_omb_footer_cta_secondary_link",
+                  "field_omb_footer_copyright",
+                  "field_omb_show_footer_language_switcher"
+                ],
+                "display": "group",
+                "layout": "block",
+                "prefix_label": 0,
+                "prefix_name": 0
+              }
+            ],
+            "min": "",
+            "max": ""
+          }
+        }
+      },
+      {
         "key": "field_omb_sections_tab",
         "label": "Flexible Sections",
         "name": "",
@@ -13066,7 +13179,7 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1779600000
+    "modified": 1780514878
   },
   {
     "key": "group_omb_post_settings",
