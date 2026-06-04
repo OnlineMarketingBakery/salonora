@@ -17,6 +17,8 @@ type Props = {
    * default `url` (often a small medium/thumbnail) — avoids a blurry up‑scale.
    */
   preferLargestSource?: boolean;
+  /** Skip `/_next/image` proxy — use for large CMS PNGs that time out in the optimizer. */
+  unoptimized?: boolean;
   priority?: boolean;
   width?: number;
   height?: number;
@@ -30,6 +32,7 @@ export function Media({
   sizes,
   quality,
   preferLargestSource = false,
+  unoptimized = false,
   priority,
   width = 800,
   height = 600,
@@ -50,6 +53,7 @@ export function Media({
         sizes={sizes}
         priority={priority}
         quality={quality}
+        unoptimized={unoptimized}
       />
     );
   }
@@ -64,6 +68,7 @@ export function Media({
       sizes={sizes}
       priority={priority}
       quality={quality}
+      unoptimized={unoptimized}
     />
   );
 }

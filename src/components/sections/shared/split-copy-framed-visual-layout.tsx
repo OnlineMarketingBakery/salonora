@@ -154,7 +154,7 @@ function FramedTiltedVisual({ image }: { image: WpImage }) {
           height={1046}
           className="h-full w-full object-contain object-center"
           sizes="(min-width: 1024px) 384px, 90vw"
-          preferLargestSource
+          unoptimized
         />
       </div>
     </div>
