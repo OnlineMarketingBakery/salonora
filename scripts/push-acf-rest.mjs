@@ -1,4 +1,4 @@
-﻿import { readFileSync, existsSync } from "node:fs";
+import { readFileSync, existsSync } from "node:fs";
 import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
 import { config } from "dotenv";
@@ -8,6 +8,18 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const envLocal = resolve(__dirname, "../.env.local");
 const envFallback = resolve(__dirname, "../.env");
 
+/** Full acf_import_field_group tolerates ~23 layouts (~97 KB) on production. */
+const MAX_IMPORT_BYTES = 95_000;
+const REQUEST_TIMEOUT_MS = 180_000;
+const CHUNK_FLEXIBLE_FIELD_NAMES = new Set(["page_sections", "page_footer_sections"]);
+const HEAVY_GROUP_KEYS = new Set(["group_omb_page_builder"]);
+
+const onlyArg = process.argv.find((a) => a.startsWith("--only="));
+const onlyKey = onlyArg ? onlyArg.slice("--only=".length).trim() : "";
+const fromChunkArg = process.argv.find((a) => a.startsWith("--from-chunk="));
+const fromChunk = fromChunkArg ? Math.max(1, parseInt(fromChunkArg.slice("--from-chunk=".length), 10) || 1) : 1;
+const forceBulk = process.argv.includes("--bulk");
+
 function readEnvFileText(absPath) {
   const buf = readFileSync(absPath);
   if (buf.length >= 2 && buf[0] === 0xff && buf[1] === 0xfe) {
@@ -16,12 +28,6 @@ function readEnvFileText(absPath) {
   return buf.toString("utf8").replace(/^\uFEFF/, "");
 }
 
-/**
- * @param {string} absPath
- * @param {{ override?: boolean }} [opts]
- * When `override` is false (default), only fills missing/empty keys — matches old behaviour for `.env`.
- * `.env.local` uses `override: true` so it always wins over Windows/shell env and stale values.
- */
 function mergeEnvFromFile(absPath, { override = false } = {}) {
   if (!existsSync(absPath)) return;
   let text;
@@ -51,7 +57,6 @@ function mergeEnvFromFile(absPath, { override = false } = {}) {
   }
 }
 
-// Base first, then local with override so REVALIDATION_SECRET in .env.local beats OS/User env (common 401 cause).
 config({ path: envFallback, quiet: true });
 config({ path: envLocal, override: true, quiet: true });
 mergeEnvFromFile(envFallback);
@@ -60,129 +65,313 @@ mergeEnvFromFile(envLocal, { override: true });
 const JSON_PATH = resolve(__dirname, "../acf-import-bundle.json");
 const WP_URL = process.env.WORDPRESS_API_URL?.trim();
 const SECRET = process.env.REVALIDATION_SECRET?.trim();
-
 const WP_BASE = WP_URL ? WP_URL.replace(/\/$/, "") : "";
 
 if (!WP_URL || !SECRET) {
   const missing = [!WP_URL && "WORDPRESS_API_URL", !SECRET && "REVALIDATION_SECRET"].filter(Boolean);
-  const hint = [
-    `Missing: ${missing.join(", ")}.`,
-    `Expected in ${envLocal} or ${envFallback} as:`,
-    "  WORDPRESS_API_URL=https://example.com/wp-json",
-    "  REVALIDATION_SECRET=your-secret",
-    existsSync(envLocal)
-      ? "(file exists - open it in an editor and save as UTF-8 if vars still fail)"
-      : `(create ${envLocal} - see .env.example)`,
-  ].join("\n");
-  console.error(`[acf:push] ${hint}`);
+  console.error(`[acf:push] Missing: ${missing.join(", ")}. See .env.example`);
   process.exit(1);
 }
 
 if (!WP_BASE.toLowerCase().endsWith("/wp-json")) {
-  console.error(
-    "[acf:push] WORDPRESS_API_URL must be the REST root ending in /wp-json with no trailing slash (e.g. https://example.com/wp-json).",
-  );
-  console.error(`   Got: ${WP_URL}`);
+  console.error("[acf:push] WORDPRESS_API_URL must end with /wp-json (no trailing slash).");
   process.exit(1);
 }
 
 syncAcfImportBundle({ quiet: true });
 
-const body = readFileSync(JSON_PATH, "utf8");
+function dedupeAcfBundleByKey(groups) {
+  const byKey = new Map();
+  for (const group of groups) {
+    if (group?.key) byKey.set(group.key, group);
+  }
+  return [...byKey.values()];
+}
+
+const bundle = JSON.parse(readFileSync(JSON_PATH, "utf8"));
+if (!Array.isArray(bundle)) {
+  console.error("[acf:push] Expected acf-import-bundle.json to be a JSON array.");
+  process.exit(1);
+}
+
+const dedupedAll = dedupeAcfBundleByKey(bundle);
+const deduped = onlyKey
+  ? dedupedAll.filter((g) => g?.key === onlyKey)
+  : dedupedAll;
+
+if (onlyKey && deduped.length === 0) {
+  console.error(`[acf:push] No field group with key "${onlyKey}" in acf-import-bundle.json.`);
+  process.exit(1);
+}
+
 const syncUrl = `${WP_BASE}/omb-headless/v1/acf-sync`;
+const headers = { "Content-Type": "application/json", "X-Sync-Secret": SECRET };
 
 function sleep(ms) {
   return new Promise((r) => setTimeout(r, ms));
 }
 
-const maxAttempts = 4;
-const pauseBeforeAttempt = [0, 4000, 10000, 20000];
+function payloadBytes(data) {
+  return JSON.stringify(data).length;
+}
 
-let res;
-let rawText = "";
-let data;
+function cloneGroup(group) {
+  return JSON.parse(JSON.stringify(group));
+}
 
-attempt: for (let attempt = 0; attempt < maxAttempts; attempt++) {
-  const pause = pauseBeforeAttempt[attempt] ?? 0;
-  if (pause > 0) {
-    console.warn(`[acf:push] Waiting ${pause / 1000}s before attempt ${attempt + 1}/${maxAttempts}...`);
-    await sleep(pause);
-  }
+function groupNeedsChunking(group) {
+  const key = group?.key ?? "";
+  if (HEAVY_GROUP_KEYS.has(key)) return true;
+  return payloadBytes([group]) > MAX_IMPORT_BYTES;
+}
 
-  try {
-    res = await fetch(syncUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Sync-Secret": SECRET,
-      },
-      body,
-    });
-  } catch (err) {
-    const msg = err?.cause?.message || err?.message || String(err);
-    if (attempt < maxAttempts - 1) {
-      console.warn(`[acf:push] Network error (${msg}). Will retry...`);
-      continue attempt;
+function getLayoutPools(group) {
+  const flexFields = (group.fields ?? []).filter(
+    (f) =>
+      f?.type === "flexible_content" &&
+      CHUNK_FLEXIBLE_FIELD_NAMES.has(f.name) &&
+      f.layouts &&
+      typeof f.layouts === "object"
+  );
+  return flexFields.map((f) => ({
+    name: f.name,
+    fieldKey: f.key,
+    entries: Object.entries(f.layouts),
+  }));
+}
+
+function buildGroupWithLayoutCount(group, layoutPools, primaryName, count) {
+  const g = cloneGroup(group);
+  for (const pool of layoutPools) {
+    const subset = pool.entries.slice(0, pool.name === primaryName ? count : pool.entries.length);
+    for (const field of g.fields ?? []) {
+      if (field?.name === pool.name && field?.type === "flexible_content") {
+        field.layouts = Object.fromEntries(subset);
+      }
     }
-    console.error(`[acf:push] Could not reach WordPress (${syncUrl}): ${msg}`);
-    console.error(
-      "   Set WORDPRESS_API_URL in .env.local to your real REST base, e.g. https://mysite.com/wp-json",
-    );
-    process.exit(1);
+  }
+  return g;
+}
+
+/**
+ * Replace imports up to ~23 layouts, then append one layout at a time (no full re-import).
+ */
+function chunkPageBuilder(group) {
+  const steps = [];
+  const layoutPools = getLayoutPools(group);
+  if (layoutPools.length === 0) {
+    return [{ mode: "replace", groups: [group], note: "full group" }];
   }
 
-  rawText = await res.text();
+  const primary = layoutPools.find((p) => p.name === "page_sections") ?? layoutPools[0];
+  const total = primary.entries.length;
+  const pageSectionsField = (group.fields ?? []).find((f) => f.name === primary.name);
+  const fieldKey = pageSectionsField?.key ?? "";
 
-  let parsed = null;
+  let offset = 0;
+
+  while (offset < total) {
+    let best = offset;
+    for (let tryCount = offset + 1; tryCount <= total; tryCount++) {
+      const trial = buildGroupWithLayoutCount(group, layoutPools, primary.name, tryCount);
+      if (payloadBytes([trial]) <= MAX_IMPORT_BYTES) {
+        best = tryCount;
+      } else {
+        break;
+      }
+    }
+    if (best === offset) {
+      break;
+    }
+    const g = buildGroupWithLayoutCount(group, layoutPools, primary.name, best);
+    steps.push({
+      mode: "replace",
+      groups: [g],
+      note: `replace layouts 1-${best}/${total}`,
+    });
+    offset = best;
+    if (best >= total) {
+      return steps;
+    }
+  }
+
+  while (offset < total) {
+    const [layoutKey, layoutDef] = primary.entries[offset];
+    steps.push({
+      mode: "append",
+      append: [
+        {
+          field_key: fieldKey,
+          layouts: { [layoutKey]: layoutDef },
+        },
+      ],
+      note: `append ${layoutDef?.name ?? layoutKey} (${offset + 1}/${total})`,
+    });
+    offset += 1;
+  }
+
+  return steps;
+}
+
+function chunkFieldGroup(group) {
+  if (group?.key === "group_omb_page_builder") {
+    return chunkPageBuilder(group);
+  }
+  if (payloadBytes([group]) <= MAX_IMPORT_BYTES) {
+    return [{ mode: "replace", groups: [group], note: "full group" }];
+  }
+  console.warn(`[acf:push] ${group.key} exceeds import limit.`);
+  return [{ mode: "replace", groups: [group], note: "full group (may 502)" }];
+}
+
+async function checkPageBuilderSyncSupport() {
   try {
-    parsed = rawText ? JSON.parse(rawText) : {};
+    const res = await fetch(`${WP_BASE}/omb-headless/v1/acf-sync-status`, {
+      signal: AbortSignal.timeout(15000),
+    });
+    if (!res.ok) return { append: false };
+    const data = await res.json();
+    return { append: data?.append_supported === true };
   } catch {
-    parsed = null;
+    return { append: false };
   }
-
-  const transient =
-    res.status === 502 || res.status === 504 || res.status === 429;
-
-  if (res.ok && parsed !== null) {
-    data = parsed;
-    break attempt;
-  }
-
-  if (transient && attempt < maxAttempts - 1) {
-    console.warn(
-      `[acf:push] WordPress returned ${res.status} (often a short-lived nginx/PHP issue). Retrying...`,
-    );
-    continue attempt;
-  }
-
-  const ct = res.headers.get("content-type") || "";
-  const preview = rawText.replace(/\s+/g, " ").slice(0, 600);
-  console.error("[acf:push] Push failed: expected usable JSON from WordPress, got status", res.status);
-  console.error("   Content-Type:", ct || "(none)");
-  if (preview) {
-    console.error("   Body preview:", preview + (rawText.length > 600 ? "..." : ""));
-  }
-  if (res.status === 502 || res.status === 504) {
-    console.error(
-      "   502/504: nginx upstream timeout or PHP crash (memory_limit, max_execution_time, proxy limits).",
-    );
-    console.error(
-      "   If this keeps happening: raise PHP/nginx limits, or import via WP Admin -> ACF -> Tools.",
-    );
-  }
-  process.exit(1);
 }
 
-if (!res.ok) {
-  console.error("[acf:push] Push failed:", data);
-  if (res.status === 404 && data?.code === "rest_no_route") {
-    console.error(
-      "\nTip: The server does not expose POST /omb-headless/v1/acf-sync.\n" +
-        "Deploy wordpress/wp-content/plugins/omb-headless-core/ and ensure the plugin is active.",
-    );
+async function postStep(step, { label, maxAttempts = 5 }) {
+  const isAppend = step.mode === "append";
+  const body = isAppend ? JSON.stringify({ append: step.append }) : JSON.stringify(step.groups);
+  const reqHeaders = { ...headers };
+  if (isAppend) reqHeaders["X-Acf-Append-Layouts"] = "1";
+
+  const pauseBeforeAttempt = [0, 3000, 8000, 15000, 25000];
+
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    const pause = pauseBeforeAttempt[attempt] ?? 0;
+    if (pause > 0) {
+      console.warn(`[acf:push] Waiting ${pause / 1000}s before retry (${label})...`);
+      await sleep(pause);
+    }
+
+    let res;
+    let rawText = "";
+    try {
+      res = await fetch(syncUrl, {
+        method: "POST",
+        headers: reqHeaders,
+        body,
+        signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+      });
+      rawText = await res.text();
+    } catch (err) {
+      const msg = err?.cause?.message || err?.message || String(err);
+      if (attempt < maxAttempts - 1) {
+        console.warn(`[acf:push] ${label}: ${msg}. Retrying...`);
+        continue;
+      }
+      console.error(`[acf:push] Could not reach WordPress (${label}): ${msg}`);
+      process.exit(1);
+    }
+
+    let parsed = null;
+    try {
+      parsed = rawText ? JSON.parse(rawText) : {};
+    } catch {
+      parsed = null;
+    }
+
+    const transient = res.status === 502 || res.status === 504 || res.status === 429;
+    if (res.ok && parsed !== null) {
+      if (isAppend && parsed.mode !== "append") {
+        console.error(
+          "[acf:push] Server missing append support. Deploy latest wordpress/.../includes/acf-sync.php, then retry."
+        );
+        process.exit(1);
+      }
+      return { failed: false };
+    }
+    if (transient && attempt < maxAttempts - 1) {
+      console.warn(`[acf:push] ${label}: HTTP ${res.status}. Retrying...`);
+      continue;
+    }
+    console.error(`[acf:push] ${label} failed: HTTP ${res.status}`);
+    const preview = rawText.replace(/\s+/g, " ").slice(0, 600);
+    if (preview) console.error("   Body preview:", preview);
+    return { failed: true };
   }
-  process.exit(1);
+  return { failed: true };
 }
 
-console.log(`[acf:push] Imported ${data.imported} field group(s)`);
+async function postAcfSync(groups, opts) {
+  return postStep({ mode: "replace", groups }, opts);
+}
 
+async function pushGroup(group) {
+  const key = group?.key ?? "(unknown)";
+
+  if (!groupNeedsChunking(group)) {
+    const kb = (payloadBytes([group]) / 1024).toFixed(0);
+    console.log(`[acf:push] ${key} (~${kb} KB)`);
+    const { failed } = await postAcfSync([group], { label: key });
+    if (failed) process.exit(1);
+    return;
+  }
+
+  const steps = chunkFieldGroup(group);
+  const needsAppend = steps.some((s) => s.mode === "append");
+
+  if (needsAppend) {
+    const { append } = await checkPageBuilderSyncSupport();
+    if (!append) {
+      console.error(
+        "[acf:push] Layout append requires updated acf-sync.php on WordPress (omb_rest_acf_append_layouts_to_field). Deploy the plugin, then retry."
+      );
+      process.exit(1);
+    }
+  }
+
+  console.log(`[acf:push] ${key} - ${steps.length} step(s)`);
+  const startIdx = Math.max(0, fromChunk - 1);
+  if (fromChunk > 1) {
+    console.log(`[acf:push] Resuming from step ${fromChunk}/${steps.length}`);
+  }
+
+  for (let i = startIdx; i < steps.length; i++) {
+    const step = steps[i];
+    const kb = (
+      step.mode === "append" ? payloadBytes({ append: step.append }) : payloadBytes(step.groups)
+    / 1024
+    ).toFixed(0);
+    const label = `${key} step ${i + 1}/${steps.length} (${step.note})`;
+    console.log(`[acf:push]   ${label} (~${kb} KB)`);
+    const { failed } = await postStep(step, { label });
+    if (failed) {
+      console.error(
+        `[acf:push] Stopped at step ${i + 1}. Resume: npm run acf:push -- --only=${key} --from-chunk=${i + 1}`
+      );
+      process.exit(1);
+    }
+    await sleep(step.mode === "append" ? 1200 : 800);
+  }
+}
+
+async function pushAll() {
+  const totalKb = (payloadBytes(deduped) / 1024).toFixed(0);
+  console.log(`[acf:push] ${deduped.length} field group(s), ~${totalKb} KB in bundle.`);
+
+  if (forceBulk) {
+    const { failed } = await postAcfSync(deduped, { label: "bulk" });
+    if (!failed) {
+      console.log(`[acf:push] Bulk sync OK.`);
+      return;
+    }
+    console.warn("[acf:push] Bulk failed - using stepped sync.");
+  }
+
+  for (const group of deduped) {
+    await pushGroup(group);
+  }
+
+  console.log(`[acf:push] Done. Synced ${deduped.length} field group(s).`);
+}
+
+await pushAll();

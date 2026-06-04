@@ -853,6 +853,13 @@ export type RichTextSectionT = CoreSection & {
   contentWidth: "default" | "narrow" | "wide";
 };
 
+/** Privacy / terms body — WYSIWYG with legal typography (ACF layout `legal_content`). */
+export type LegalContentSectionT = CoreSection & {
+  type: "legal_content";
+  body: string;
+  contentWidth: "default" | "narrow" | "wide";
+};
+
 /** Blog single closing panel — Global Templates only (pale blue band, title + WYSIWYG). */
 export type BlogConclusionPanelSectionT = CoreSection & {
   type: "blog_conclusion_panel";
@@ -1033,6 +1040,7 @@ export type AnySectionT =
   | ProblemSolutionSectionT
   | TalkDualCardsSectionT
   | RichTextSectionT
+  | LegalContentSectionT
   | BlogConclusionPanelSectionT
   | CaseStudyChapterSectionT
   | CaseStudyProductShotSectionT

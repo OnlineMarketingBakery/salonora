@@ -173,6 +173,7 @@ const PAGE_SECTION_ACF_LAYOUTS = {
   image_intro_split: true,
   is_demo_for_you: true,
   latest_posts: true,
+  legal_content: true,
   blog_post_overview: true,
   case_study_overview: true,
   origin_story_split: true,
@@ -1342,6 +1343,13 @@ function mapKnownPageSectionLayout(
         right_secondary_button_icon: asImage(row.right_secondary_button_icon),
         right_overlay_graphic: asImage(row.right_overlay_graphic),
       };
+    case "legal_content":
+      return {
+        ...base,
+        type: "legal_content",
+        body: asHtml(row.body),
+        contentWidth: (asString(row.content_width) as "default" | "narrow" | "wide") || "narrow",
+      };
     case "rich_text":
       return {
         ...base,
@@ -1406,7 +1414,7 @@ function mapKnownPageSectionLayout(
         items: Array.isArray(row.items)
           ? (row.items as { question?: unknown; answer?: unknown }[]).map((q) => ({
               question: asString(q.question),
-              answer: asString(q.answer),
+              answer: asHtml(q.answer),
             }))
           : [],
       };

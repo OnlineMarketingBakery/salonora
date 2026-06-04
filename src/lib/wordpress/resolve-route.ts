@@ -7,6 +7,12 @@ import type { ContentDocument, PageDocument } from "@/types/documents";
 import type { Locale } from "@/lib/i18n/locales";
 import { enrichSections, type BlogArchiveQuery } from "@/lib/acf/enrich-sections";
 import { fetchHomePage } from "./fetch-page";
+import { applyStaticLegalFallback, hasUsableLegalPageContent } from "@/lib/legal/page-content";
+import {
+  resolveLegalFetchSlug,
+  resolveLegalPageKey,
+} from "@/lib/legal/legal-slugs";
+import { tryBuildStaticLegalPage } from "@/lib/legal/static-pages";
 
 export type ResolveRouteArchiveQueries = {
   blog?: BlogArchiveQuery | null;
@@ -33,7 +39,9 @@ export async function resolveRoute(
   const last = slugParts[slugParts.length - 1];
   if (!last) return null;
   const pathJoined = slugParts.join("/");
-  const page = await fetchPageBySlug(lang, last, globals);
+  const legalKey = resolveLegalPageKey(lang, last);
+  const fetchSlug = resolveLegalFetchSlug(lang, last);
+  const page = await fetchPageBySlug(lang, fetchSlug, globals);
   if (page) {
     const sections = await enrichSections(page.doc.sections, {
       lang,
@@ -44,7 +52,22 @@ export async function resolveRoute(
         ? archiveQueries?.caseStudy ?? { page: 1, search: "" }
         : undefined,
     });
-    return { document: { ...page.doc, sections } };
+    let doc = { ...page.doc, sections, slug: last };
+    if (!doc.isLegalPage && legalKey && (legalKey === "privacy" || legalKey === "terms")) {
+      doc.isLegalPage = true;
+    }
+    if (legalKey && !hasUsableLegalPageContent(doc, lang, last)) {
+      doc = applyStaticLegalFallback(doc, lang, last);
+      const enriched = await enrichSections(doc.sections, { lang, globals, pageSlugPath: pathJoined });
+      doc = { ...doc, sections: enriched, slug: last };
+    }
+    return { document: doc };
+  }
+
+  const staticLegal = tryBuildStaticLegalPage(lang, last);
+  if (staticLegal) {
+    const sections = await enrichSections(staticLegal.sections, { lang, globals });
+    return { document: { ...staticLegal, slug: last, sections } };
   }
   const caseStudy = await fetchCaseStudyBySlug(lang, last, globals);
   if (caseStudy) {

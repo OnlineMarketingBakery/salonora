@@ -2,6 +2,7 @@
 if (!defined('ABSPATH')) {
     exit;
 }
+require_once __DIR__ . '/acf-sync.php';
 
 require_once __DIR__ . '/languages.php';
 
@@ -84,7 +85,11 @@ add_action('rest_api_init', function () {
             return new WP_REST_Response([
                 'route_loaded'  => true,
                 'secret_found'  => !empty($stored),
-                'secret_length' => strlen($stored),
+                'secret_length'     => strlen($stored),
+                'merge_supported'   => function_exists('omb_rest_acf_prepare_groups_for_import'),
+                'append_supported'  => function_exists('omb_rest_acf_append_layouts_to_field'),
+                'page_sections_layout_count' => count(omb_rest_acf_page_sections_layout_names()),
+                'page_sections_layouts'      => omb_rest_acf_page_sections_layout_names(),
             ], 200);
         },
     ]);
@@ -360,7 +365,7 @@ function omb_rest_switch_polylang_lang(?string $lang): void {
 }
 
 /**
- * Settings Ã¢â€ â€™ Reading: static front page slug for the active (switched) language.
+ * Settings ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢ Reading: static front page slug for the active (switched) language.
  *
  * @return array{show_on_front: string, homepage_slug: string|null}
  */
@@ -481,37 +486,6 @@ function omb_rest_resolve_route(WP_REST_Request $request): WP_REST_Response {
     ]);
 }
 
-function omb_rest_acf_sync(WP_REST_Request $request): WP_REST_Response {
-    if (!function_exists('acf_import_field_group')) {
-        return new WP_REST_Response(
-            ['error' => 'acf_inactive', 'message' => 'ACF is required.'],
-            503
-        );
-    }
-
-    $groups = $request->get_json_params();
-
-    if (!is_array($groups) || empty($groups)) {
-        return new WP_REST_Response(
-            ['error' => 'invalid_payload', 'message' => 'Expected a JSON array of field groups.'],
-            400
-        );
-    }
-
-    $imported = 0;
-    foreach ($groups as $group) {
-        acf_import_field_group($group);
-        $imported++;
-    }
-
-    return new WP_REST_Response(['success' => true, 'imported' => $imported], 200);
-}
-
-/**
- * Polylang (and similar) often stores translated Ã¢â‚¬Å“Biographical InfoÃ¢â‚¬Â in separate user-meta keys while
- * default `description` stays empty for another locale. Headless requests use `?lang=`; expose the
- * matching HTML in REST `description` so Next.js can render the author card.
- */
 function omb_rest_user_plain_bio(string $html): string {
     return trim(wp_strip_all_tags($html));
 }
@@ -526,7 +500,7 @@ function omb_rest_author_social_url(string $raw): string {
     if (is_string($u) && $u !== '') {
         return $u;
     }
-    // esc_url_raw() drops fragment-only values (e.g. Ã¢â‚¬Å“#Ã¢â‚¬Â placeholders in dev); keep them for headless UI stubs.
+    // esc_url_raw() drops fragment-only values (e.g. ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“#ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â placeholders in dev); keep them for headless UI stubs.
     if ($t === '#') {
         return '#';
     }
@@ -584,7 +558,7 @@ function omb_rest_user_description_for_lang(int $user_id, string $lang_slug): st
     $suffixes = array_values(array_unique(array_filter($suffixes)));
 
     // Prefer locale-specific keys first: default `description` often holds English while Polylang
-    // stores Nederlands in `description_nl` / `description_nl_nl` Ã¢â‚¬â€ so `?lang=nl` must not stop at English.
+    // stores Nederlands in `description_nl` / `description_nl_nl` ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â so `?lang=nl` must not stop at English.
     foreach ($suffixes as $suffix) {
         foreach (['description_' . $suffix, 'description-' . $suffix, 'pll_description_' . $suffix] as $key) {
             $raw = $read($user_id, $key);

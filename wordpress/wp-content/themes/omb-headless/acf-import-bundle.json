@@ -13144,6 +13144,139 @@
                 "delay": 0
               }
             ]
+          },
+          "layout_omb_legal_content": {
+            "key": "layout_omb_legal_content",
+            "name": "legal_content",
+            "label": "Legal content",
+            "display": "block",
+            "sub_fields": [
+              {
+                "key": "field_omb_legal_content_body",
+                "label": "Body",
+                "name": "body",
+                "type": "wysiwyg",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "tabs": "all",
+                "toolbar": "full",
+                "media_upload": 1,
+                "delay": 0
+              },
+              {
+                "key": "field_omb_legal_content_content_width",
+                "label": "Content width",
+                "name": "content_width",
+                "type": "select",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "choices": {
+                  "default": "Default",
+                  "narrow": "Narrow",
+                  "wide": "Wide"
+                },
+                "default_value": "narrow",
+                "return_format": "value",
+                "multiple": 0,
+                "allow_null": 0,
+                "ui": 1,
+                "ajax": 0,
+                "placeholder": ""
+              }
+            ]
+          },
+          "layout_omb_faq": {
+            "key": "layout_omb_faq",
+            "name": "faq",
+            "label": "FAQ",
+            "display": "block",
+            "sub_fields": [
+              {
+                "key": "field_omb_faq_title",
+                "label": "Title",
+                "name": "title",
+                "type": "text",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "default_value": "",
+                "maxlength": "",
+                "placeholder": ""
+              },
+              {
+                "key": "field_omb_faq_items",
+                "label": "Items",
+                "name": "items",
+                "aria-label": "",
+                "type": "repeater",
+                "instructions": "",
+                "required": 0,
+                "conditional_logic": 0,
+                "wrapper": {
+                  "width": "",
+                  "class": "",
+                  "id": ""
+                },
+                "layout": "row",
+                "pagination": 0,
+                "min": 0,
+                "max": 0,
+                "collapsed": "",
+                "button_label": "Add question",
+                "rows_per_page": 20,
+                "sub_fields": [
+                  {
+                    "key": "field_omb_faq_items_question",
+                    "label": "Question",
+                    "name": "question",
+                    "type": "text",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": ""
+                  },
+                  {
+                    "key": "field_omb_faq_items_answer",
+                    "label": "Answer",
+                    "name": "answer",
+                    "type": "wysiwyg",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                      "width": "",
+                      "class": "",
+                      "id": ""
+                    },
+                    "default_value": "",
+                    "tabs": "all",
+                    "toolbar": "full",
+                    "media_upload": 1,
+                    "delay": 0
+                  }
+                ]
+              }
+            ]
           }
         },
         "min": "",

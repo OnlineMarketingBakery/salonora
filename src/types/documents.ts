@@ -22,6 +22,10 @@ export type PageDocument = {
   isCaseStudyArchive?: boolean;
   /** When true, page supplies shared tail sections for all blog posts (ACF: is_blog_single_layout). */
   isBlogSingleLayout?: boolean;
+  /** Narrow legal prose layout (ACF: is_legal_page) or built-in privacy/terms pages. */
+  isLegalPage?: boolean;
+  /** Served from `src/lib/legal` when WordPress has no page for this slug. */
+  isStaticLegalPage?: boolean;
   /**
    * When true, layout renders `footerSections` instead of global Footer settings (ACF: `use_custom_footer`).
    */

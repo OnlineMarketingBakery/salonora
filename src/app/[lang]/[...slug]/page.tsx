@@ -6,6 +6,9 @@ import { fetchGlobals } from "@/lib/wordpress/fetch-globals";
 import { archiveQueryFromSearchParams } from "@/lib/wordpress/archive-search-params";
 import { resolveRoute } from "@/lib/wordpress/resolve-route";
 import { PageTemplate } from "@/components/templates/PageTemplate";
+import { LegalPageTemplate } from "@/components/templates/LegalPageTemplate";
+import { FaqPageTemplate } from "@/components/templates/FaqPageTemplate";
+import { isFaqPageSlug } from "@/lib/legal/faq-slugs";
 import { ServiceTemplate } from "@/components/templates/ServiceTemplate";
 import { PostTemplate } from "@/components/templates/PostTemplate";
 import { CaseStudyTemplate } from "@/components/templates/CaseStudyTemplate";
@@ -31,7 +34,14 @@ export default async function CatchAllPage({
   const resolved = await resolveRoute(lang, slug, globals, { blog: aq, caseStudy: aq });
   if (!resolved) notFound();
   const { document: doc } = resolved;
-  if (doc.kind === "page") return <PageTemplate document={doc} lang={lang} />;
+  const urlSlug = slug[slug.length - 1] ?? "";
+  if (doc.kind === "page") {
+    if (isFaqPageSlug(lang, urlSlug) || isFaqPageSlug(lang, doc.slug)) {
+      return <FaqPageTemplate document={doc} lang={lang} />;
+    }
+    if (doc.isLegalPage) return <LegalPageTemplate document={doc} lang={lang} />;
+    return <PageTemplate document={doc} lang={lang} />;
+  }
   if (doc.kind === "case_study") return <CaseStudyTemplate document={doc} lang={lang} />;
   if (doc.kind === "service") return <ServiceTemplate document={doc} lang={lang} />;
   return <PostTemplate document={doc} lang={lang} />;

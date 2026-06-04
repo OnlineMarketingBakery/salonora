@@ -23,6 +23,7 @@ import { CaseStudyOverviewSection } from "@/components/sections/case-study-overv
 import { CtaSection } from "@/components/sections/cta/CtaSection";
 import { PricingCtaSection } from "@/components/sections/pricing-cta/PricingCtaSection";
 import { RichTextSection } from "@/components/sections/rich-text/RichTextSection";
+import { LegalContentSection } from "@/components/sections/legal-content";
 import { CaseStudyChapterSection } from "@/components/sections/case-study-body/CaseStudyChapterSection";
 import { CaseStudyProductShotSection } from "@/components/sections/case-study-body/CaseStudyProductShotSection";
 import { CaseStudyClientReviewSection } from "@/components/sections/case-study-body/CaseStudyClientReviewSection";
@@ -299,6 +300,7 @@ export const sectionRegistry = {
   cta: asSection(CtaSection as (p: { section: never; lang: Locale }) => ReactNode),
   pricing_cta: asSection(PricingCtaSection as (p: { section: never; lang: Locale }) => ReactNode),
   rich_text: asSection(RichTextSection as (p: { section: never; lang: Locale }) => ReactNode),
+  legal_content: asSection(LegalContentSection as (p: { section: never; lang: Locale }) => ReactNode),
   case_study_chapter: asSection(CaseStudyChapterSection as (p: { section: never; lang: Locale }) => ReactNode),
   case_study_product_shot: asSection(CaseStudyProductShotSection as (p: { section: never; lang: Locale }) => ReactNode),
   case_study_client_review: asSection(CaseStudyClientReviewSection as (p: { section: never; lang: Locale }) => ReactNode),
