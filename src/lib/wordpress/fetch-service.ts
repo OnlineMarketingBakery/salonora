@@ -3,6 +3,10 @@ import { getCptRestBase } from "./config";
 import type { WpServiceRaw } from "@/types/wordpress";
 import type { Locale } from "@/lib/i18n/locales";
 import { normalizeServiceSections } from "@/lib/acf/normalize-service-sections";
+import {
+  extractPageFooterSectionRows,
+  normalizePageFooterSections,
+} from "@/lib/acf/normalize-page-footer-sections";
 import { asBool, asString } from "@/lib/acf/field-mappers";
 import { mapYoastToSeo } from "@/lib/seo/map-yoast-to-metadata";
 import type { GlobalSettings } from "@/types/globals";
@@ -19,6 +23,9 @@ function toDoc(p: WpServiceRaw, gs: GlobalSettings): { doc: ServiceDocument; raw
         .map((h) => h.text)
         .filter(Boolean)
     : [];
+  const footerSectionsRaw =
+    extractPageFooterSectionRows((acf as { page_footer_sections?: unknown }).page_footer_sections) ??
+    extractPageFooterSectionRows((acf as { footer_sections?: unknown }).footer_sections);
   const doc: ServiceDocument = {
     kind: "service",
     id: p.id,
@@ -28,6 +35,8 @@ function toDoc(p: WpServiceRaw, gs: GlobalSettings): { doc: ServiceDocument; raw
     excerpt: p.excerpt?.rendered || "",
     serviceIntro: asString((acf as { service_intro?: string }).service_intro),
     serviceHighlights: highlights,
+    useCustomFooter: asBool((acf as { use_custom_footer?: unknown }).use_custom_footer),
+    footerSections: normalizePageFooterSections(footerSectionsRaw),
     sections,
     seo: mapYoastToSeo(p, gs, { fallbackTitle: p.title?.rendered || "Service" }),
   };

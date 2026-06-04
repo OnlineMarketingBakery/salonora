@@ -41,6 +41,9 @@ export type ServiceDocument = {
   excerpt: string;
   serviceIntro: string;
   serviceHighlights: string[];
+  /** Same ACF as pages: `use_custom_footer` + `page_footer_sections` on the service post. */
+  useCustomFooter: boolean;
+  footerSections: FooterSectionT[];
   sections: AnySectionT[];
   seo: SeoPayload;
 };

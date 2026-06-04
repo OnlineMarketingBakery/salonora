@@ -15,7 +15,7 @@ type Props = {
 };
 
 /**
- * Renders the global footer or per-page flexible footer sections (ACF: `use_custom_footer`).
+ * Renders the global footer or per-page/service flexible footer sections (ACF: `use_custom_footer`).
  */
 export async function PageFooter(props: Props) {
   const resolved = await resolvePageFooter(
