@@ -10,7 +10,8 @@ import { getSiteUrl } from "@/lib/wordpress/config";
 import { buildLocalePath } from "@/lib/i18n/get-alternates";
 import { supportedLocales } from "@/lib/i18n/config";
 
-export const dynamic = "force-dynamic";
+/** ISR: reuse cached WordPress fetches between visitors (revalidate on-demand via /api/revalidate). */
+export const revalidate = 60;
 
 type P = { params: Promise<{ lang: string }> };
 

@@ -13,7 +13,8 @@ import { seoToMetadata, getSiteName } from "@/lib/seo/map-yoast-to-metadata";
 import { getSiteUrl } from "@/lib/wordpress/config";
 import { buildLocalePath } from "@/lib/i18n/get-alternates";
 
-export const dynamic = "force-dynamic";
+/** ISR for CMS pages; `searchParams` (?page=, ?s=) still render dynamically per request. */
+export const revalidate = 60;
 
 type P = { params: Promise<{ lang: string; slug: string[] }> };
 
