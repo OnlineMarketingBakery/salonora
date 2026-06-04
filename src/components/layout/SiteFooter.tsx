@@ -82,7 +82,7 @@ function FacebookIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
-      className="h-[15px] w-[15px] text-brand"
+      className="h-[17px] w-[17px] text-brand lg:h-[15px] lg:w-[15px]"
       fill="currentColor"
       aria-hidden
     >
@@ -95,7 +95,7 @@ function InstagramIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
-      className="h-[15px] w-[15px] text-brand"
+      className="h-[17px] w-[17px] text-brand lg:h-[15px] lg:w-[15px]"
       fill="currentColor"
       aria-hidden
     >
@@ -108,7 +108,7 @@ function YouTubeIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
-      className="h-[15px] w-[15px] text-brand"
+      className="h-[17px] w-[17px] text-brand lg:h-[15px] lg:w-[15px]"
       fill="currentColor"
       aria-hidden
     >
@@ -121,7 +121,7 @@ function LinkedinIcon() {
   return (
     <svg
       viewBox="0 0 24 24"
-      className="h-[15px] w-[15px] text-brand"
+      className="h-[17px] w-[17px] text-brand lg:h-[15px] lg:w-[15px]"
       fill="currentColor"
       aria-hidden
     >
@@ -160,13 +160,13 @@ export function SiteFooter({
   const fg = "text-white";
   /** Figma 597:6137 — short blue gradient accent under "Quick Links". */
   const ruleGradient =
-    "mt-[17px] h-[3px] w-full max-w-[131px] shrink-0 bg-[linear-gradient(90deg,transparent_6%,rgba(57,144,240,0.95)_50%,transparent_94%)]";
+    "mt-[17px] h-[3px] w-full max-w-[131px] shrink-0 bg-[linear-gradient(90deg,transparent_6%,rgba(57,144,240,0.95)_50%,transparent_94%)] [filter:drop-shadow(0_0_6px_rgba(57,144,240,0.7))]";
   /** Figma 597:6148 — slightly narrower accent under "Follow us". */
   const ruleGradientFollow =
-    "mt-[17px] h-[3px] w-full max-w-[111px] shrink-0 bg-[linear-gradient(90deg,transparent_6%,rgba(57,144,240,0.95)_50%,transparent_94%)]";
+    "mt-[17px] h-[3px] w-full max-w-[111px] shrink-0 bg-[linear-gradient(90deg,transparent_6%,rgba(57,144,240,0.95)_50%,transparent_94%)] [filter:drop-shadow(0_0_6px_rgba(57,144,240,0.7))]";
   /** Vertical separators — fade at top/bottom like Figma gradient rules (597:6134–6170). */
   const colHairline =
-    "bg-[linear-gradient(180deg,transparent_6%,rgba(57,144,240,0.95)_50%,transparent_94%)]";
+    "bg-[linear-gradient(180deg,transparent_6%,rgba(57,144,240,0.95)_50%,transparent_94%)] [filter:drop-shadow(0_0_5px_rgba(57,144,240,0.55))]";
   const showLegalMobile =
     legalMenu.length > 0 || g.footer.showFooterLanguageSwitcher;
 
@@ -190,12 +190,10 @@ export function SiteFooter({
         {/*
           Figma 597:6103 — panel is solid `--palette-navy-deep` (#002752) with a subtle grid
           decorating the upper corners. Top corner radius scales from 17px on mobile to 40px on
-          tablet/desktop to match the Figma curve. The previous bottom blue radial-glow has been
-          removed because the Figma reference is flat navy — the glow was making our render
-          look noticeably different from Figma's bottom half.
+          tablet/desktop to match the Figma curve.
         */}
         <div
-          className={`footer-notch relative z-2 overflow-hidden bg-navy-deep ${
+          className={`footer-notch relative z-2 overflow-x-clip bg-navy-deep ${
             useNotchMask
               ? "rounded-t-[17px] md:rounded-t-[40px]"
               : "sm:rounded-t-[17px] md:rounded-t-[40px]"
@@ -238,7 +236,7 @@ export function SiteFooter({
 
           <div
             className={[
-              "relative z-10 mx-auto w-full max-w-[1276px] px-6 pb-[24px] md:pb-[36px] lg:px-0",
+              "relative z-10 mx-auto w-full min-w-0 max-w-[1276px] overflow-x-clip px-6 pb-0 lg:px-0",
               g.footer.footerLogo
                 ? useNotchMask
                   ? "pt-[100px] md:pt-[120px]"
@@ -253,7 +251,7 @@ export function SiteFooter({
               stay side-by-side; at `xl+` we lock to the Figma-exact 625px width with the 183px
               gap, which is the design's intended desktop spec (1440 frame).
             */}
-            <div className="mb-0 flex flex-col gap-y-6 lg:flex-row lg:items-start lg:gap-y-0 lg:justify-between lg:gap-x-[40px] xl:justify-start xl:gap-x-[183px]">
+            <div className="mb-0 flex min-w-0 flex-col gap-y-0 lg:flex-row lg:items-start lg:gap-y-0 lg:justify-between lg:gap-x-[40px] xl:justify-start xl:gap-x-[183px]">
               <div
                 className={`${REVEAL_ITEM} w-full min-w-0 max-w-[625px] text-left lg:flex-1 lg:max-w-none xl:w-[625px] xl:flex-none xl:max-w-[625px]`}
               >
@@ -280,7 +278,7 @@ export function SiteFooter({
                   </p>
                 )}
 
-                <div className="mt-6 flex w-full min-w-0 max-w-[625px] flex-col flex-wrap items-start gap-[22px] lg:max-w-none lg:flex-row lg:flex-nowrap lg:items-center lg:gap-[10px]">
+                <div className="mt-6 flex w-full min-w-0 max-w-[625px] flex-col flex-wrap items-stretch gap-[22px] sm:items-start lg:max-w-none lg:flex-row lg:flex-nowrap lg:items-center lg:gap-[10px]">
                   {primaryCta && (
                     <Button
                       href={primaryCta.href}
@@ -290,7 +288,7 @@ export function SiteFooter({
                       ctaElevation="none"
                       ctaFullWidth={false}
                       arrowClassName="h-5 w-5 shrink-0"
-                      className="max-w-full gap-[15px] pl-[18px] pr-3.5 leading-[normal] [&_[data-cta-label]]:whitespace-normal lg:[&_[data-cta-label]]:whitespace-nowrap"
+                      className="w-full max-w-full gap-[15px] pl-[18px] pr-3.5 leading-[normal] sm:w-auto [&_[data-cta-label]]:whitespace-normal lg:[&_[data-cta-label]]:whitespace-nowrap"
                     >
                       {g.footer.footerCtaPrimaryLink?.title || primaryCta.label}
                     </Button>
@@ -304,7 +302,7 @@ export function SiteFooter({
                       ctaElevation="footerSecondary"
                       ctaFullWidth={false}
                       arrowClassName="h-5 w-5 shrink-0"
-                      className="text-navy-deep max-w-full gap-[17px] px-4 leading-[normal] [&_[data-cta-label]]:whitespace-normal lg:[&_[data-cta-label]]:whitespace-nowrap"
+                      className="text-navy-deep w-full max-w-full gap-[17px] px-4 leading-[normal] sm:w-auto [&_[data-cta-label]]:whitespace-normal lg:[&_[data-cta-label]]:whitespace-nowrap"
                     >
                       {g.footer.footerCtaSecondaryLink?.title ||
                         secondaryCta.label}
@@ -323,7 +321,7 @@ export function SiteFooter({
               </div>
 
               {showLegalMobile && (
-                <div className="flex w-full max-w-full flex-wrap items-center justify-start gap-x-[33px] gap-y-2 lg:hidden">
+                <div className="mt-6 flex w-full min-w-0 flex-row flex-wrap items-center gap-x-[33px] gap-y-2 lg:hidden">
                   {legalMenu.map((m) => (
                     <Link
                       key={m.id}
@@ -346,35 +344,31 @@ export function SiteFooter({
               )}
 
               <div
-                className={
-                  showMidDivider
-                    ? "mt-2 flex w-full min-w-0 flex-1 items-start justify-center gap-6 sm:mt-0 sm:justify-start sm:gap-8 lg:mt-0 lg:w-auto lg:flex-none lg:gap-[38px]"
-                    : "mt-2 flex w-full min-w-0 flex-1 flex-col justify-start gap-10 sm:mt-0 min-[500px]:flex-row min-[500px]:items-start min-[500px]:gap-8 min-[500px]:pl-0 sm:pl-0 lg:mt-0 lg:w-auto lg:flex-none lg:gap-[38px]"
-                }
+                className={`${showLegalMobile ? "mt-[51px]" : "mt-8"} flex w-full min-w-0 max-w-[430px] flex-row items-stretch gap-4 lg:mt-0 lg:max-w-none lg:w-auto lg:flex-none lg:gap-[38px]`}
               >
-                {/* Leading divider — visible at lg+ to match Figma right block (3 verticals total). */}
+                {/* Figma 807:4528 / 4539 / 4564 — three vertical dividers on mobile + desktop. */}
                 {(hasNav || hasFollow) && (
                   <div
-                    className={`hidden w-px shrink-0 self-stretch lg:block lg:min-h-[268.5px] ${colHairline}`}
+                    className={`w-px shrink-0 self-stretch lg:min-h-[268.5px] ${colHairline}`}
                     aria-hidden
                   />
                 )}
                 {hasNav && (
                   <div
-                    className={`${REVEAL_ITEM} w-auto min-w-0 sm:w-full sm:max-w-[8.2rem] sm:min-w-[6.5rem] sm:pl-0 md:pl-0 lg:w-[131px] lg:max-w-[131px] lg:min-w-0 lg:shrink-0`}
+                    className={`${REVEAL_ITEM} min-w-0 flex-1 lg:w-[131px] lg:max-w-[131px] lg:flex-none`}
                   >
                     <h3
-                      className={`text-2xl font-semibold leading-none lg:text-[24px] ${fg}`}
+                      className={`text-[28px] font-semibold leading-none lg:text-[24px] ${fg}`}
                     >
                       Quick Links
                     </h3>
                     <div className={ruleGradient} aria-hidden />
-                    <ul className="mt-[17px] space-y-2.5" role="list">
+                    <ul className="mt-[22px] space-y-4 lg:mt-[17px] lg:space-y-2.5" role="list">
                       {footerMenu.map((m) => (
                         <li key={m.id}>
                           <Link
                             href={m.href}
-                            className={`text-base font-medium leading-[normal] transition ${fg} hover:text-white/80`}
+                            className={`text-[17px] font-medium leading-[normal] transition lg:text-base ${fg} hover:text-white/80`}
                             target={m.target}
                           >
                             {m.label}
@@ -388,23 +382,23 @@ export function SiteFooter({
                 {/* Middle divider — visible whenever both columns are present. */}
                 {showMidDivider && (
                   <div
-                    className={`block w-px shrink-0 self-stretch min-h-[268px] sm:min-h-[200px] lg:min-h-[268.5px] ${colHairline}`}
+                    className={`w-px shrink-0 self-stretch lg:min-h-[268.5px] ${colHairline}`}
                     aria-hidden
                   />
                 )}
 
                 {hasFollow && (
                   <div
-                    className={`${REVEAL_ITEM} w-auto min-w-0 sm:w-full sm:max-w-[8.2rem] sm:min-w-[6.5rem] lg:w-[130px] lg:max-w-[130px] lg:min-w-0 lg:shrink-0`}
+                    className={`${REVEAL_ITEM} min-w-0 flex-1 lg:w-[130px] lg:max-w-[130px] lg:flex-none`}
                   >
                     <h3
-                      className={`text-2xl font-semibold leading-none lg:text-[24px] ${fg}`}
+                      className={`text-[28px] font-semibold leading-none lg:text-[24px] ${fg}`}
                     >
                       Follow us
                     </h3>
                     <div className={ruleGradientFollow} aria-hidden />
                     <ul
-                      className="mt-[17px] space-y-2.5"
+                      className="mt-[22px] space-y-4 lg:mt-[17px] lg:space-y-2.5"
                       aria-label="Social"
                       role="list"
                     >
@@ -414,12 +408,12 @@ export function SiteFooter({
                           <li key={s.label}>
                             <a
                               href={s.href}
-                              className={`group inline-flex min-h-0 items-center gap-1.5 text-base font-normal leading-[normal] transition ${fg} hover:text-white/80`}
+                              className={`group inline-flex min-h-0 items-center gap-2 text-[17px] font-normal leading-[normal] transition lg:gap-1.5 lg:text-base ${fg} hover:text-white/80`}
                               rel="noreferrer"
                               target="_blank"
                             >
                               {icon && (
-                                <span className="inline-flex h-[23px] w-[23px] shrink-0 items-center justify-center rounded-[11.5px] bg-white p-1 text-brand">
+                                <span className="inline-flex h-[28px] w-[28px] shrink-0 items-center justify-center rounded-[14px] bg-white p-1.5 text-brand lg:h-[23px] lg:w-[23px] lg:rounded-[11.5px] lg:p-1">
                                   {icon}
                                 </span>
                               )}
@@ -432,10 +426,9 @@ export function SiteFooter({
                   </div>
                 )}
 
-                {/* Trailing divider — visible at lg+ to match Figma (third vertical line after Follow us). */}
                 {(hasNav || hasFollow) && (
                   <div
-                    className={`hidden w-px shrink-0 self-stretch lg:block lg:min-h-[268.5px] ${colHairline}`}
+                    className={`w-px shrink-0 self-stretch lg:min-h-[268.5px] ${colHairline}`}
                     aria-hidden
                   />
                 )}
@@ -469,12 +462,52 @@ export function SiteFooter({
           </div>
 
           {/*
-            Figma 597:6115 — the wave shape is the BACKGROUND layer and the centred copyright
-            sits OVER it (overlay), not stacked below. Wave (child 1) defines the height; the
-            copyright (child 2) is absolutely centred over the wave.
+            Figma 597:6115 — gentle wave on top, copyright on the navy band below it.
+            Mobile: natural (gentle) wave at the top + solid navy band that covers behind the
+            copyright, which sits in flow below the wave with spacing.
+            Desktop: copyright overlaid + centred on the natural 54px wave (unchanged).
           */}
-          <div className="relative w-full">
-            <div className="mx-auto w-full max-w-[1300px] pointer-events-none relative [filter:drop-shadow(0_-10px_44px_rgba(57,144,240,0.22))_drop-shadow(0_-30px_100px_rgba(57,144,240,0.1))_drop-shadow(0_-56px_160px_rgba(57,144,240,0.04))]">
+          <div className="relative mt-8 w-full bg-navy-deep lg:mt-0 lg:bg-transparent">
+            {/* MOBILE wave — STROKE ONLY (no navy fill, so no fill-shadow seam). The band
+                container is already #002752, so the line just sits on continuous navy. viewBox is
+                tightened to the arc's bounding box, so with preserveAspectRatio="none" the height
+                IS the arc's rise (taller = more curve). non-scaling-stroke keeps a crisp 2px line.
+                Soft upward halo from drop-shadow, like desktop. */}
+            <div
+              className="relative z-1 w-full [filter:drop-shadow(0_-2px_6px_rgba(57,144,240,1))_drop-shadow(0_-6px_16px_rgba(57,144,240,0.8))_drop-shadow(0_-14px_38px_rgba(57,144,240,0.55))_drop-shadow(0_-30px_84px_rgba(57,144,240,0.3))] lg:hidden"
+              aria-hidden
+            >
+              <svg
+                viewBox="0 -17 1283 70"
+                preserveAspectRatio="none"
+                className="block h-9 w-full"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M2 52.9998C500.334 -16.1125 784.814 -17.2213 1302 52.9997"
+                  stroke="url(#footerWaveGradMobile)"
+                  strokeWidth="2"
+                  vectorEffect="non-scaling-stroke"
+                />
+                <defs>
+                  <linearGradient
+                    id="footerWaveGradMobile"
+                    x1="2"
+                    y1="26.8744"
+                    x2="1302"
+                    y2="26.8743"
+                    gradientUnits="userSpaceOnUse"
+                  >
+                    <stop stopColor="#3990F0" stopOpacity="0" />
+                    <stop offset="0.5" stopColor="#3990F0" />
+                    <stop offset="1" stopColor="#3990F0" stopOpacity="0" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+            {/* DESKTOP wave — natural image (unchanged). */}
+            <div className="pointer-events-none relative mx-auto hidden w-full max-w-[1300px] [filter:drop-shadow(0_-10px_44px_rgba(57,144,240,0.22))_drop-shadow(0_-30px_100px_rgba(57,144,240,0.1))_drop-shadow(0_-56px_160px_rgba(57,144,240,0.04))] lg:block">
               <img
                 src="/footer-shape-top.svg"
                 width={1283}
@@ -485,9 +518,9 @@ export function SiteFooter({
                 decoding="async"
               />
             </div>
-            <div className="absolute inset-0 z-10 flex items-center justify-center px-4 sm:px-6 md:px-8">
+            <div className="relative z-2 flex items-center justify-center px-5 pb-5 pt-2 md:px-8 lg:absolute lg:inset-0 lg:pb-0 lg:pt-0">
               <p
-                className={`text-center text-[16px] font-normal leading-[1.5] ${fg}`}
+                className={`whitespace-nowrap text-center text-[13px] font-normal leading-[1.5] lg:whitespace-normal lg:text-[16px] ${fg}`}
               >
                 {g.footer.footerCopyright ||
                   `Copyright ©${new Date().getFullYear()} Salonora all right reserved`}
