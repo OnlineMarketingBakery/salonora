@@ -79,6 +79,44 @@ body {
   letter-spacing: normal;
 }
 
+/*
+ * Branded scrollbar (dialed back) — navy track, soft brand thumb; no gradient or glow.
+ */
+html {
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--palette-brand) 48%, var(--palette-navy-deep))
+    color-mix(in srgb, var(--palette-navy-deep) 96%, var(--palette-brand) 4%);
+}
+
+html::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+html::-webkit-scrollbar-button {
+  display: none;
+  height: 0;
+  width: 0;
+}
+
+html::-webkit-scrollbar-track {
+  background: color-mix(in srgb, var(--palette-navy-deep) 96%, var(--palette-brand) 4%);
+}
+
+html::-webkit-scrollbar-thumb {
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--palette-brand) 42%, var(--palette-navy-deep));
+}
+
+html::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--palette-brand) 62%, var(--palette-navy-deep));
+}
+
+html::-webkit-scrollbar-corner {
+  background: color-mix(in srgb, var(--palette-navy-deep) 96%, var(--palette-brand) 4%);
+}
+
 /* No custom letter-spacing — overrides Tailwind tracking-* utilities (incl. prose/arbitrary variants) */
 [class*="tracking-"],
 [class*="tracking-"] :where(p, h1, h2, h3, h4, h5, h6, li, a, span, label, button) {
