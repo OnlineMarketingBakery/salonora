@@ -5,6 +5,7 @@ import { isLocale } from "@/lib/i18n/config";
 import type { Locale } from "@/lib/i18n/locales";
 import { fetchGlobals } from "@/lib/wordpress/fetch-globals";
 import { fetchMenu } from "@/lib/wordpress/fetch-menu";
+import { mergeLegalMenuItems } from "@/lib/legal/default-legal-menu";
 import { getLocaleHrefsForPathname } from "@/lib/wordpress/polylang-locale-hrefs";
 import { GlobalAnnouncementBar } from "@/components/layout/GlobalAnnouncementBar";
 import { SiteHeader } from "@/components/layout/SiteHeader";
@@ -23,12 +24,13 @@ export default async function LangLayout({ children, params }: Props) {
   const { lang: raw } = await params;
   if (!isLocale(raw)) notFound();
   const lang = raw as Locale;
-  const [globals, primary, footer, legal] = await Promise.all([
+  const [globals, primary, footer, legalRaw] = await Promise.all([
     fetchGlobals(lang),
     fetchMenu("primary", lang),
     fetchMenu("footer", lang),
     fetchMenu("legal", lang),
   ]);
+  const legal = mergeLegalMenuItems(legalRaw, lang);
   const h = await headers();
   const pathname = h.get("x-pathname") ?? `/${lang}/`;
   const [languageSwitcherHrefs, hidePrimaryMenu] = await Promise.all([

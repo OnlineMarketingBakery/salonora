@@ -67,7 +67,7 @@ salonora/
 ## Prerequisites
 
 - **WordPress** with the stack described in [`docs/wordpress-connection-guide.md`](docs/wordpress-connection-guide.md) (ACF Pro, Polylang `nl`/`en`, Yoast, CF7, custom post types `service`, `testimonial`, and `case_study`, option pages, menus).
-- ACF: **`acf-import-bundle.json` at the repo root** is the canonical bulk-import file (edit this when adding flexible layouts). **`npm run acf:sync-bundle`** copies it to `wordpress/wp-content/themes/omb-headless/acf-import-bundle.json`; **`npm run acf:push`** runs that sync automatically, then POSTs to WordPress. `acf-json/group_*.json` is generated with **`npm run acf:extract-local-json`** (one file per group, per ACF Local JSON). Layouts must match `src/lib/acf/` and `src/components/sections/`.
+- ACF: **`acf-import-bundle.json` at the repo root** is the canonical bulk-import file (~**750 KB** — mostly **`group_omb_page_builder`** with 53 flexible layouts, including **`legal_content`** and **`faq`**). **`npm run acf:sync-bundle`** copies it to the theme mirror; **`npm run acf:push`** POSTs to `POST /omb-headless/v1/acf-sync` (needs `REVALIDATION_SECRET`). The page builder syncs in steps: one **replace** import (up to ~23 layouts), then **append** (one layout per request via `acf_update_field`, no full re-import). To add only new layouts without re-importing the page builder: **`npm run acf:push-layouts`** (see [WORDPRESS-ACF-legal-content.md](WORDPRESS-ACF-legal-content.md)). Deploy **`wordpress/wp-content/plugins/omb-headless-core/includes/acf-sync.php`** and **`rest.php`** on WordPress (must be **UTF-8 without BOM** — a BOM breaks all REST JSON and Gutenberg saves). Resume: `npm run acf:push -- --only=group_omb_page_builder --from-chunk=3`. `acf-json/group_*.json` is generated with **`npm run acf:extract-local-json`**. Layouts must match `src/lib/acf/` and `src/components/sections/`.
 
 ## Setup & installation
 
@@ -128,6 +128,7 @@ If `WORDPRESS_BASE_URL` / `WORDPRESS_API_URL` are unset, **Next Image** runs in 
 ## Key workflows & features
 
 - **Localized routing:** `src/app/[lang]/` with `[...slug]` for inner pages; middleware sends `/` to the default locale.
+- **Legal & FAQ pages:** Manage in WordPress with ACF layouts **`legal_content`** (privacy/terms) and **`faq`**. See [WORDPRESS-ACF-legal-content.md](WORDPRESS-ACF-legal-content.md). Empty CMS pages fall back to copy in `src/lib/legal/`. Consolidated FAQ Q&A: `src/lib/legal/faq-data.json` (homepage + product questions). Import: `node src/lib/legal/seed-legal-pages.mjs --faq` (add `--force` to refresh). Privacy/terms use `LegalPageTemplate`; FAQ uses `PageTemplate` + `faq` section.
 - **Flexible sections:** WordPress ACF layouts are normalized in `src/lib/acf/` and rendered via `SectionRenderer` + `src/components/sections/*`.
 - **Services, posts & case studies:** Dedicated fetchers and templates (`PageTemplate`, `PostTemplate`, `CaseStudyTemplate`). Blog singles use **Global Templates** options (`blog_single_sections`) for shared FAQ; see [docs/blog-single-template.md](docs/blog-single-template.md).
 - **Testimonials:** Loaded by relationship IDs from section data.

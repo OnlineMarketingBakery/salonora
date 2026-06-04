@@ -1,0 +1,162 @@
+{
+  "nl": [
+    {
+      "id": "wat-is-salonora",
+      "category": "general",
+      "question": "Wat is Salonora?",
+      "answer": "Salonora is het platform voor kappers-, nagel-, barber- en beauty-salons: een professionele website met online boekingen, hosting en support — zonder technische kennis."
+    },
+    {
+      "id": "waarom-anders",
+      "category": "general",
+      "question": "Waarom zijn jullie anders dan andere webbureaus?",
+      "answer": "Wij werken alleen voor salons: kappers, nagelstudio's, barbershops en beauty. Wij kennen jouw branche en weten precies wat jouw klanten nodig hebben — geen generieke templates of losse plugins."
+    },
+    {
+      "id": "minimale-looptijd",
+      "category": "general",
+      "question": "Is er een minimale looptijd?",
+      "answer": "Ja, er geldt een minimale looptijd van één jaar. Daarna is het maandelijks opzegbaar. Eerlijk en duidelijk."
+    },
+    {
+      "id": "prijzen-laag",
+      "category": "pricing",
+      "question": "Blijven de prijzen zo laag?",
+      "answer": "Eerlijk gezegd: de prijzen gaan in de toekomst omhoog terwijl wij het platform verder uitbouwen. Wie nu instapt, behoudt zijn prijs — voor altijd."
+    },
+    {
+      "id": "wat-kost",
+      "category": "pricing",
+      "question": "Wat kost Salonora?",
+      "answer": "Het basistarief is €50 per maand, live binnen 48 uur, en u kunt maandelijks opzeggen. Het volledige pakket staat op de homepage onder <em>Wat zijn de kosten?</em>"
+    },
+    {
+      "id": "technisch",
+      "category": "technical",
+      "question": "Moet ik technisch zijn?",
+      "answer": "Nee, dat hoef je niet. De boekingsmodule stel je zelf in naar jouw wensen. Wij regelen setup, hosting en je website — zonder code."
+    },
+    {
+      "id": "live-tijd",
+      "category": "technical",
+      "question": "Hoe lang duurt het voordat mijn site live is?",
+      "answer": "In de regel binnen 48 uur na aanmelding, zodra we uw gegevens en wensen hebben ontvangen."
+    },
+    {
+      "id": "diensten",
+      "category": "features",
+      "question": "Kan ik al mijn diensten op de site zetten?",
+      "answer": "Ja. U kunt diensten, duur en prijzen instellen zodat klanten direct de juiste behandeling boeken."
+    },
+    {
+      "id": "meerdere-stylisten",
+      "category": "features",
+      "question": "Werkt dit met meerdere kappers of stylisten?",
+      "answer": "Ja. Klanten kunnen een voorkeur aangeven en u plant afspraken per medewerker met eigen agenda's."
+    },
+    {
+      "id": "terugkerend",
+      "category": "features",
+      "question": "Kunnen klanten terugkerende afspraken inplannen?",
+      "answer": "Waar uw salon dat aanbiedt, ondersteunt het systeem terugkerende boekingen volgens uw instellingen."
+    },
+    {
+      "id": "walk-ins",
+      "category": "features",
+      "question": "Kan ik walk-ins en online boekingen combineren?",
+      "answer": "Ja. Geblokkeerde tijden en handmatige afspraken kunnen naast online boekingen bestaan."
+    },
+    {
+      "id": "bestaande-website",
+      "category": "getting_started",
+      "question": "Wat als ik al een website heb?",
+      "answer": "We kunnen uw bestaande domein koppelen en u helpen overstappen zonder dat klanten uw URL hoeven te onthouden."
+    },
+    {
+      "id": "zelf-aanpassen",
+      "category": "getting_started",
+      "question": "Kan ik het zelf aanpassen? En heb je een kleine wijziging nodig?",
+      "answer": "Ja, dat kan — en dan kijken wij gewoon met je mee. Je kunt diensten, teksten en beschikbaarheid zelf bijwerken; voor grotere wijzigingen helpen wij graag."
+    }
+  ],
+  "en": [
+    {
+      "id": "what-is-salonora",
+      "category": "general",
+      "question": "What is Salonora?",
+      "answer": "Salonora is the platform for hair, nail, barber and beauty salons: a professional website with online booking, hosting and support — no technical knowledge required."
+    },
+    {
+      "id": "stand-out",
+      "category": "general",
+      "question": "How does Salonora stand out from other web agencies?",
+      "answer": "We only work for salons — hair, nails, barbers and beauty. We know your industry and what your clients need, not generic templates or disconnected plugins."
+    },
+    {
+      "id": "minimum-term",
+      "category": "general",
+      "question": "Is there a minimum contract term?",
+      "answer": "Yes. There is a minimum term of one year. After that you can cancel month to month. Clear and fair."
+    },
+    {
+      "id": "prices-low",
+      "category": "pricing",
+      "question": "Will prices stay this low?",
+      "answer": "Honestly, prices will increase over time as we grow the platform. Salons who join now keep their price — for good."
+    },
+    {
+      "id": "what-cost",
+      "category": "pricing",
+      "question": "What does Salonora cost?",
+      "answer": "From €50 per month, live within 48 hours, and you can cancel month to month. See the <em>What are the costs?</em> section on our homepage for everything included."
+    },
+    {
+      "id": "technical",
+      "category": "technical",
+      "question": "Do I need to be technical?",
+      "answer": "No. You configure the booking module to your preferences. We handle setup, hosting and your website — no code required."
+    },
+    {
+      "id": "live-time",
+      "category": "technical",
+      "question": "How long until my site is live?",
+      "answer": "Typically within 48 hours after sign-up, once we have your details and preferences."
+    },
+    {
+      "id": "list-services",
+      "category": "features",
+      "question": "Can I list all my services?",
+      "answer": "Yes. Set services, duration and pricing so clients book the right treatment."
+    },
+    {
+      "id": "multiple-stylists",
+      "category": "features",
+      "question": "Does it work with multiple stylists?",
+      "answer": "Yes. Clients can express a preference and you schedule per team member with separate calendars."
+    },
+    {
+      "id": "recurring",
+      "category": "features",
+      "question": "Can clients book recurring appointments?",
+      "answer": "Where your salon offers that, the system supports recurring bookings per your settings."
+    },
+    {
+      "id": "walk-ins",
+      "category": "features",
+      "question": "Can I combine walk-ins and online booking?",
+      "answer": "Yes. Blocked times and manual appointments work alongside online bookings."
+    },
+    {
+      "id": "existing-website",
+      "category": "getting_started",
+      "question": "What if I already have a website?",
+      "answer": "We can connect your existing domain and help you switch without confusing your clients."
+    },
+    {
+      "id": "change-yourself",
+      "category": "getting_started",
+      "question": "Can I change things myself? What if I only need a small tweak?",
+      "answer": "Yes — and we're happy to help with small changes. You can update services, copy and availability yourself; we're here for bigger updates too."
+    }
+  ]
+}

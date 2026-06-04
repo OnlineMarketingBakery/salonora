@@ -1,0 +1,103 @@
+{
+  "harvestedAt": "2026-06-04T19:04:07.397Z",
+  "report": [
+    {
+      "site": "live",
+      "requested": "https://salonora.eu/nl/faqs",
+      "finalUrl": "https://salonora.eu/nl/faqs",
+      "status": 404,
+      "lang": "nl",
+      "count": 0
+    },
+    {
+      "site": "live",
+      "requested": "https://salonora.eu/en/faqs",
+      "finalUrl": "https://salonora.eu/en/faqs",
+      "status": 404,
+      "lang": "en",
+      "count": 0
+    },
+    {
+      "site": "live",
+      "requested": "https://salonora.eu/faqs",
+      "finalUrl": "https://salonora.eu/faqs",
+      "status": 404,
+      "lang": "nl",
+      "count": 0
+    },
+    {
+      "site": "live",
+      "requested": "https://salonora.eu/nl/",
+      "finalUrl": "https://salonora.eu/nl/",
+      "status": 404,
+      "lang": "nl",
+      "count": 0
+    },
+    {
+      "site": "live",
+      "requested": "https://salonora.eu/en/",
+      "finalUrl": "https://salonora.eu/en/",
+      "status": 200,
+      "lang": "en",
+      "count": 0
+    },
+    {
+      "site": "live",
+      "requested": "https://salonora.eu/",
+      "finalUrl": "https://salonora.eu/",
+      "status": 200,
+      "lang": "nl",
+      "count": 0
+    },
+    {
+      "site": "staging",
+      "requested": "https://staging.salonora.eu/nl/faqs",
+      "finalUrl": "https://staging.salonora.eu/nl/faqs",
+      "status": 200,
+      "lang": "nl",
+      "count": 0
+    },
+    {
+      "site": "staging",
+      "requested": "https://staging.salonora.eu/en/faqs",
+      "finalUrl": "https://staging.salonora.eu/en/faqs",
+      "status": 200,
+      "lang": "en",
+      "count": 0
+    },
+    {
+      "site": "staging",
+      "requested": "https://staging.salonora.eu/faqs",
+      "finalUrl": "https://staging.salonora.eu/faqs",
+      "status": 404,
+      "lang": "nl",
+      "count": 0
+    },
+    {
+      "site": "staging",
+      "requested": "https://staging.salonora.eu/nl/",
+      "finalUrl": "https://staging.salonora.eu/nl",
+      "status": 200,
+      "lang": "nl",
+      "count": 0
+    },
+    {
+      "site": "staging",
+      "requested": "https://staging.salonora.eu/en/",
+      "finalUrl": "https://staging.salonora.eu/en",
+      "status": 200,
+      "lang": "en",
+      "count": 0
+    },
+    {
+      "site": "staging",
+      "requested": "https://staging.salonora.eu/",
+      "finalUrl": "https://staging.salonora.eu/nl",
+      "status": 200,
+      "lang": "nl",
+      "count": 0
+    }
+  ],
+  "nl": [],
+  "en": []
+}

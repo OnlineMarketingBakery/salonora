@@ -33,6 +33,7 @@ function pageToDoc(
     isBlogArchive: asBool((acf as { is_blog_archive?: unknown }).is_blog_archive),
     isCaseStudyArchive: asBool((acf as { is_case_study_archive?: unknown }).is_case_study_archive),
     isBlogSingleLayout: asBool((acf as { is_blog_single_layout?: unknown }).is_blog_single_layout),
+    isLegalPage: asBool((acf as { is_legal_page?: unknown }).is_legal_page),
     useCustomFooter: asBool((acf as { use_custom_footer?: unknown }).use_custom_footer),
     footerSections: normalizePageFooterSections(footerSectionsRaw),
     sections: pageSections,
