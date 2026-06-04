@@ -14,7 +14,8 @@ import { PageScrollAnimations } from "@/components/animations/PageScrollAnimatio
 import { getSiteName } from "@/lib/seo/map-yoast-to-metadata";
 import { CtaBrandArrowProvider } from "@/components/providers/CtaBrandArrowProvider";
 
-export const dynamic = "force-dynamic";
+/** Cache layout data fetches (globals, menus) across requests; on-demand via POST /api/revalidate. */
+export const revalidate = 60;
 
 type Props = { children: React.ReactNode; params: Promise<{ lang: string }> };
 
