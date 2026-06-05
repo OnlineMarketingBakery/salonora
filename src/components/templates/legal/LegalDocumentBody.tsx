@@ -26,7 +26,7 @@ export function LegalDocumentBody({ html, lang }: Props) {
 
   return (
     <section className="legal-page-main">
-      <Container padding="header" className="legal-page-main-wrap pt-4 md:pt-6">
+      <Container padding="header" className="legal-page-main-wrap">
         <LegalPageColumn>
           <div className="legal-page-card">
             <LegalMobileToc headings={headings} lang={lang} />

@@ -33,13 +33,32 @@
   --brand-dark: var(--palette-navy-deep);
   /* Body copy on light surfaces (#435780); dark bands override below */
   --text-paragraph: var(--palette-muted);
+  /* Floating SiteHeader overlap (-mb-24): clearance = overlap + pill height + gap */
+  --legal-header-clearance-base: 8rem;
+  --legal-header-clearance: var(--legal-header-clearance-base);
+}
+
+@media (min-width: 768px) {
+  :root {
+    --legal-header-clearance-base: 9.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --legal-header-clearance-base: 11rem;
+  }
+}
+
+[data-has-announcement] {
+  --legal-header-clearance: calc(var(--legal-header-clearance-base) + 1.5rem);
 }
 
 /* Same-page anchors (e.g. post TOC): native smooth scroll; Next `<Link href="#…">` skips this. */
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 7rem;
+    scroll-padding-top: var(--legal-header-clearance, 8rem);
   }
 }
 
@@ -874,20 +893,33 @@ a {
 }
 
 .legal-page-hero-inner {
-  /* Clear sticky floating header (matches pt-28 on other templates). */
-  padding-top: 7.25rem;
+  padding-top: var(--legal-header-clearance);
   padding-bottom: 3.75rem;
 }
 
 @media (min-width: 768px) {
   .legal-page-hero-inner {
-    padding-top: 8rem;
     padding-bottom: 5rem;
   }
 }
 
 .legal-page-main {
   background: var(--background);
+}
+
+.legal-page-main-wrap {
+  padding-top: 1rem;
+}
+
+@media (min-width: 768px) {
+  .legal-page-main-wrap {
+    padding-top: 1.5rem;
+  }
+}
+
+/* Privacy/terms when WP hides the page title — no hero band, only the card. */
+.legal-page-layout > .legal-page-main:first-child .legal-page-main-wrap {
+  padding-top: var(--legal-header-clearance);
 }
 
 .legal-page-card {
@@ -914,7 +946,7 @@ a {
 
 .legal-mobile-toc {
   position: sticky;
-  top: 7.25rem;
+  top: var(--legal-header-clearance);
   z-index: 20;
   margin-bottom: 1.25rem;
 }
@@ -938,11 +970,9 @@ a {
 
 .legal-desktop-toc {
   position: sticky;
-  top: 7.5rem;
+  top: calc(var(--legal-header-clearance) + 0.5rem);
   z-index: 10;
-  max-height: calc(100vh - 9rem);
-  overflow-y: auto;
-  overscroll-behavior: contain;
+  align-self: start;
 }
 
 .legal-sidebar-toc {
@@ -1090,7 +1120,7 @@ a {
 
 .legal-prose-document .legal-prose-body > h2,
 .legal-prose > h2 {
-  scroll-margin-top: 7rem;
+  scroll-margin-top: var(--legal-header-clearance, 8rem);
   margin: 0 0 0.375rem;
   padding: 0;
   border-top: none;
@@ -1109,7 +1139,7 @@ a {
 
 .legal-prose-document .legal-prose-body > h3,
 .legal-prose > h3 {
-  scroll-margin-top: 7rem;
+  scroll-margin-top: var(--legal-header-clearance, 8rem);
   margin: 1.5rem 0 0;
   font-size: 1.125rem;
   line-height: 1.35;
@@ -1252,7 +1282,7 @@ a {
 
 .legal-prose h2:target,
 .legal-prose h3:target {
-  scroll-margin-top: 7rem;
+  scroll-margin-top: var(--legal-header-clearance, 8rem);
 }
 
 @media (max-width: 639px) {

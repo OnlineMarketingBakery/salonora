@@ -1,26 +1,23 @@
-import Link from "next/link";
+import { ContactCtaPill } from "@/components/sections/faq-contact-split/ContactCtaPill";
 import type { ContactSocialSettings } from "@/types/globals";
 import type { Locale } from "@/lib/i18n/locales";
 
 const COPY = {
   nl: {
     title: "Nog vragen?",
-    text: "We reageren doorgaans dezelfde werkdag.",
-    emailLabel: "Mail ons",
-    phoneFallbackLabel: "Bel ons",
+    subtitle: "Stel je vraag!",
+    messageCta: "Stuur een bericht",
+    callCta: "Plan een gesprek",
   },
   en: {
     title: "More questions?",
-    text: "We usually reply the same business day.",
-    emailLabel: "Email us",
-    phoneFallbackLabel: "Call us",
+    subtitle: "Ask your question!",
+    messageCta: "Send a message",
+    callCta: "Schedule a call",
   },
 } as const;
 
 const FALLBACK_EMAIL = "hoi@salonora.nl";
-
-const BTN_CLASS =
-  "faq-cta-btn inline-flex min-h-12 w-full flex-1 items-center justify-center rounded-full bg-white px-5 text-base font-semibold text-slate-900 shadow-[0_8px_24px_-6px_rgba(21,41,81,0.35)] transition hover:brightness-[0.98]";
 
 function telHref(phone: string): string | null {
   const normalized = phone.replace(/[^\d+]/g, "");
@@ -36,52 +33,36 @@ export function FaqContactBanner({
 }) {
   const copy = COPY[lang];
   const email = contact.mainEmail.trim() || FALLBACK_EMAIL;
-  const phone = contact.mainPhone.trim();
-  const phoneHref = phone ? telHref(phone) : null;
-  const phoneLabel = phone || copy.phoneFallbackLabel;
+  const phoneHref = contact.mainPhone.trim() ? telHref(contact.mainPhone) : null;
 
   return (
     <aside className="faq-contact-banner w-full" aria-label={copy.title}>
-      <div className="flex w-full flex-col items-center gap-6 rounded-2xl bg-linear-to-br from-brand to-brand-strong px-5 py-10 text-center text-white shadow-[0_16px_48px_-14px_rgba(21,41,81,0.35)] sm:px-10 sm:py-12">
-        <div className="flex max-w-lg flex-col items-center gap-2">
-          <h2 className="flex items-center justify-center gap-3 text-2xl font-semibold leading-tight sm:text-3xl">
-            <span
-              className="flex size-11 shrink-0 items-center justify-center rounded-full bg-white/15 text-white ring-1 ring-white/25"
-              aria-hidden
-            >
-              <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none">
-                <path
-                  d="M4 7h16v10H4V7zm2 2 6 4 6-4"
-                  stroke="currentColor"
-                  strokeWidth="1.75"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </span>
-            <span>{copy.title}</span>
+      <div className="faq-split-contact-card flex w-full min-w-0 flex-col items-center justify-center gap-6 rounded-[14px] bg-gradient-to-b from-brand to-[#0569d7] p-8 shadow-[0_14px_40px_-12px_rgba(21,41,81,0.18)] sm:p-10 md:p-11">
+        <div className="flex w-full min-w-0 max-w-[401px] flex-col items-center gap-6 text-center text-white">
+          <h2 className="w-full text-[32px] font-medium leading-tight sm:text-[40px] sm:leading-[47px]">
+            {copy.title}
           </h2>
-          <p className="text-base font-medium leading-relaxed text-white/90 sm:text-lg">{copy.text}</p>
-        </div>
+          <p className="w-full text-lg font-semibold leading-[1.2] text-white sm:text-2xl">
+            {copy.subtitle}
+          </p>
 
-        <div
-          className={`faq-cta-actions grid w-full grid-cols-1 gap-3 ${phoneHref ? "sm:grid-cols-2" : ""}`}
-        >
-          <Link href={`mailto:${email}`} className={BTN_CLASS}>
-            {copy.emailLabel}
-          </Link>
-          {phoneHref ? (
-            <Link href={phoneHref} className={BTN_CLASS}>
-              {phoneLabel}
-            </Link>
-          ) : null}
+          <div className="flex w-full min-w-0 flex-col items-stretch gap-4">
+            <ContactCtaPill
+              href={`mailto:${email}`}
+              text={copy.messageCta}
+              icon={null}
+              iconFallback="mail"
+            />
+            {phoneHref ? (
+              <ContactCtaPill
+                href={phoneHref}
+                text={copy.callCta}
+                icon={null}
+                iconFallback="phone"
+              />
+            ) : null}
+          </div>
         </div>
-
-        <p className="text-sm font-medium text-white/85">
-          <a href={`mailto:${email}`} className="underline-offset-2 hover:underline">
-            {email}
-          </a>
-        </p>
       </div>
     </aside>
   );
