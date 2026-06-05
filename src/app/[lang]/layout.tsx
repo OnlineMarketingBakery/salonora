@@ -58,7 +58,12 @@ export default async function LangLayout({ children, params }: Props) {
       >
         <CtaBrandArrowProvider image={globals.site.defaultCtaBrandArrow}>
           <GlobalAnnouncementBar globals={globals} lang={lang} />
-          <div className="relative flex min-h-0 flex-1 flex-col">
+          <div
+            className="relative flex min-h-0 flex-1 flex-col"
+            data-has-announcement={
+              globals.site.enableAnnouncement && globals.site.announcementText ? "" : undefined
+            }
+          >
             <SiteHeader
               globals={globals}
               lang={lang}
