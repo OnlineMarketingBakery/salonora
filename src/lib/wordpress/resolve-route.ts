@@ -78,6 +78,9 @@ const resolveRouteCached = cache(
         const enriched = await enrichSections(doc.sections, { lang, globals, pageSlugPath: pathJoined });
         doc = { ...doc, sections: enriched, slug: last };
       }
+      if (legalKey === "privacy" || legalKey === "terms") {
+        doc.hidePageTitle = false;
+      }
       return { document: doc };
     }
 

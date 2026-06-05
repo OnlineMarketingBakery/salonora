@@ -27,9 +27,8 @@ export function LegalPageTemplate({ document: doc, lang }: { document: PageDocum
 
   return (
     <article className="legal-page legal-page-layout">
-      {!doc.hidePageTitle ? (
-        <LegalPageHero title={doc.title} slug={doc.slug} lang={lang} />
-      ) : null}
+      {/* Always show hero (breadcrumbs, title, GDPR badge) — WP hide_page_title must not strip legal layout. */}
+      <LegalPageHero title={doc.title} slug={doc.slug} lang={lang} />
 
       {hasBody || showEditorFallback ? (
         <LegalDocumentBody html={hasBody ? html : doc.content} lang={lang} />

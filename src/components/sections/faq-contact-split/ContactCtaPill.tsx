@@ -27,9 +27,9 @@ function PhoneGlyph({ className = "h-7 w-7" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
       <path
-        d="M8.5 4.5C8 4 6.5 3 4.5 5.5L6 7c.5.5.5 1.5 0 2.5-1.5 3-1 3.5 0L11 16c.5.5 1.5.5 2.5-1.5L15 19c-2.5 2-4-1-4-1-1-2-1-2.5h0c0-.5-1-2-1.5-2.5-1.5-1-2.5-2.5-3.5-3-2.5-2-4.5-3.5-6.5-5-2-2-2.5-3-2-4v0z"
+        d="M6.62 10.79a15.91 15.91 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.56.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.56 1 1 0 01-.24 1.01l-2.2 2.2z"
         stroke="white"
-        strokeWidth="1.25"
+        strokeWidth="1.75"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
