@@ -3,12 +3,12 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Container } from "@/components/ui/Container";
-import { buildLocalePath } from "@/lib/i18n/get-alternates";
 import { FaqBreadcrumbs } from "@/components/templates/faq/FaqBreadcrumbs";
 import { FaqContactBanner } from "@/components/templates/faq/FaqContactBanner";
 import { FaqPageInner } from "@/components/templates/faq/FaqPageColumn";
 import { FaqPageAccordion, faqEntriesToAccordionItems } from "@/components/templates/faq/FaqPageAccordion";
 import { filterFaqGroups, groupFaqItems, type FaqEntry } from "@/lib/legal/faq-items";
+import type { ContactSocialSettings } from "@/types/globals";
 import type { Locale } from "@/lib/i18n/locales";
 
 const COPY = {
@@ -17,7 +17,8 @@ const COPY = {
     searchPlaceholder: "Bijv. prijs, boeken, website…",
     emptyTitle: "Geen resultaten gevonden",
     emptyBody: "Probeer een andere zoekterm of neem contact met ons op.",
-    emptyContact: "Neem contact op",
+    emptyCall: "Bel ons",
+    emptyEmail: "Mail ons",
     subtitle: (n: number) =>
       `Alles over Salonora, je salonwebsite en online boekingen — ${n} antwoord${n === 1 ? "" : "en"}, helder en zonder jargon.`,
   },
@@ -26,24 +27,35 @@ const COPY = {
     searchPlaceholder: "e.g. price, booking, website…",
     emptyTitle: "No results found",
     emptyBody: "Try a different search term or get in touch with our team.",
-    emptyContact: "Contact us",
+    emptyCall: "Call us",
+    emptyEmail: "Email us",
     subtitle: (n: number) =>
       `Everything about Salonora, your salon website and online booking — ${n} answer${n === 1 ? "" : "s"}, clear and jargon-free.`,
   },
 } as const;
 
+function telHref(phone: string): string | null {
+  const normalized = phone.replace(/[^\d+]/g, "");
+  return normalized ? `tel:${normalized}` : null;
+}
+
 export function FaqPageShell({
   items,
   lang,
   title,
+  contact,
   showHero = true,
 }: {
   items: FaqEntry[];
   lang: Locale;
   title: string;
+  contact: ContactSocialSettings;
   showHero?: boolean;
 }) {
   const copy = COPY[lang];
+  const email = contact.mainEmail.trim() || "hoi@salonora.nl";
+  const phone = contact.mainPhone.trim();
+  const phoneHref = phone ? telHref(phone) : null;
   const [query, setQuery] = useState("");
   const [openId, setOpenId] = useState<string | null>(items[0]?.id ?? null);
 
@@ -103,12 +115,21 @@ export function FaqPageShell({
               <div className="faq-page-empty w-full min-w-0 rounded-2xl border border-surface bg-surface/50 px-5 py-10 text-center">
                 <p className="text-lg font-semibold text-navy-deep">{copy.emptyTitle}</p>
                 <p className="mt-2 text-base leading-[1.7] text-muted">{copy.emptyBody}</p>
-                <Link
-                  href={buildLocalePath(lang, "contact")}
-                  className="mt-5 inline-flex min-h-12 w-full items-center justify-center rounded-full bg-brand px-6 text-base font-semibold text-white transition hover:bg-brand-strong sm:w-auto"
-                >
-                  {copy.emptyContact}
-                </Link>
+                {phoneHref ? (
+                  <a
+                    href={phoneHref}
+                    className="mt-5 inline-flex min-h-12 w-full items-center justify-center rounded-full bg-brand px-6 text-base font-semibold text-white transition hover:bg-brand-strong sm:w-auto"
+                  >
+                    {phone || copy.emptyCall}
+                  </a>
+                ) : (
+                  <a
+                    href={`mailto:${email}`}
+                    className="mt-5 inline-flex min-h-12 w-full items-center justify-center rounded-full bg-brand px-6 text-base font-semibold text-white transition hover:bg-brand-strong sm:w-auto"
+                  >
+                    {copy.emptyEmail}
+                  </a>
+                )}
               </div>
             ) : (
               <div className="faq-page-categories flex w-full min-w-0 flex-col">
@@ -132,7 +153,7 @@ export function FaqPageShell({
             )}
 
             <div className="faq-page-cta-wrap w-full min-w-0 pt-2 sm:pt-4">
-              <FaqContactBanner lang={lang} />
+              <FaqContactBanner lang={lang} contact={contact} />
             </div>
           </FaqPageInner>
         </Container>

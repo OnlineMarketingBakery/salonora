@@ -37,7 +37,7 @@ export default async function CatchAllPage({
   const urlSlug = slug[slug.length - 1] ?? "";
   if (doc.kind === "page") {
     if (isFaqPageSlug(lang, urlSlug) || isFaqPageSlug(lang, doc.slug)) {
-      return <FaqPageTemplate document={doc} lang={lang} />;
+      return <FaqPageTemplate document={doc} lang={lang} contact={globals.contact} />;
     }
     if (doc.isLegalPage) return <LegalPageTemplate document={doc} lang={lang} />;
     return <PageTemplate document={doc} lang={lang} />;

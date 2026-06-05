@@ -874,13 +874,14 @@ a {
 }
 
 .legal-page-hero-inner {
-  padding-top: 5.5rem;
+  /* Clear sticky floating header (matches pt-28 on other templates). */
+  padding-top: 7.25rem;
   padding-bottom: 3.75rem;
 }
 
 @media (min-width: 768px) {
   .legal-page-hero-inner {
-    padding-top: 6rem;
+    padding-top: 8rem;
     padding-bottom: 5rem;
   }
 }
@@ -913,7 +914,7 @@ a {
 
 .legal-mobile-toc {
   position: sticky;
-  top: 5.25rem;
+  top: 7.25rem;
   z-index: 20;
   margin-bottom: 1.25rem;
 }
@@ -937,9 +938,9 @@ a {
 
 .legal-desktop-toc {
   position: sticky;
-  top: 6.5rem;
+  top: 7.5rem;
   z-index: 10;
-  max-height: calc(100vh - 8rem);
+  max-height: calc(100vh - 9rem);
   overflow-y: auto;
   overscroll-behavior: contain;
 }
@@ -1306,13 +1307,13 @@ a {
 }
 
 .faq-page-hero-inner {
-  padding-top: 5.5rem;
+  padding-top: 7.25rem;
   padding-bottom: 1rem;
 }
 
 @media (min-width: 768px) {
   .faq-page-hero-inner {
-    padding-top: 6rem;
+    padding-top: 8rem;
     padding-bottom: 1.25rem;
   }
 }
