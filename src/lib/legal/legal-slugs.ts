@@ -1,3 +1,5 @@
+import { buildLocalePath } from "@/lib/i18n/get-alternates";
+import { supportedLocales } from "@/lib/i18n/config";
 import type { Locale } from "@/lib/i18n/locales";
 import { getFaqUrlSlug, isFaqPageSlug, resolveFaqFetchSlug } from "./faq-slugs";
 
@@ -55,6 +57,15 @@ export function resolveLegalFetchSlug(lang: Locale, urlSlug: string): string {
   const key = resolveLegalPageKey(lang, urlSlug);
   if (key) return getLegalUrlSlug(lang, key);
   return urlSlug;
+}
+
+/** Static NL/EN paths for privacy, terms, and FAQ — no Polylang REST round-trips. */
+export function getLegalLocaleHrefs(lang: Locale, urlSlug: string): Record<Locale, string> | null {
+  const key = resolveLegalPageKey(lang, urlSlug);
+  if (!key) return null;
+  return Object.fromEntries(
+    supportedLocales.map((l) => [l, buildLocalePath(l, getLegalUrlSlug(l, key))])
+  ) as Record<Locale, string>;
 }
 
 export function getLegalLegacyRedirectPath(

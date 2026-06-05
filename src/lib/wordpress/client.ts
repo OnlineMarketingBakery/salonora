@@ -14,6 +14,25 @@ export type WpFetchInit = RequestInit & {
   logErrors?: boolean;
 };
 
+const WP_FETCH_TIMEOUT_MS = 20_000;
+
+function wpFetchTimeoutSignal(): AbortSignal | undefined {
+  if (typeof AbortSignal === "undefined" || !("timeout" in AbortSignal)) {
+    return undefined;
+  }
+  return AbortSignal.timeout(WP_FETCH_TIMEOUT_MS);
+}
+
+function withFetchTimeout(fetchInit: RequestInit): RequestInit {
+  const timeoutSignal = wpFetchTimeoutSignal();
+  if (!timeoutSignal) return fetchInit;
+  const userSignal = fetchInit.signal;
+  if (userSignal && typeof AbortSignal.any === "function") {
+    return { ...fetchInit, signal: AbortSignal.any([userSignal, timeoutSignal]) };
+  }
+  return { ...fetchInit, signal: userSignal ?? timeoutSignal };
+}
+
 /**
  * Fetches the WordPress REST API with optional Polylang `lang` query.
  */
@@ -27,7 +46,7 @@ export async function wpFetch<T>(path: string, init: WpFetchInit = {}): Promise<
   if (lang) {
     url.searchParams.set("lang", lang);
   }
-  const next: RequestInit = { ...fetchInit };
+  let next: RequestInit = { ...fetchInit };
   const headers = new Headers(fetchInit.headers);
   const wpAuth = getWordpressAuthorizationHeader();
   if (wpAuth && !headers.has("Authorization")) {
@@ -37,6 +56,7 @@ export async function wpFetch<T>(path: string, init: WpFetchInit = {}): Promise<
   if (revalidate !== undefined) {
     (next as { next?: { revalidate: number | false } }).next = { revalidate };
   }
+  next = withFetchTimeout(next);
   const res = await fetch(url.toString(), next);
   if (!res.ok) {
     const text = await res.text();
@@ -88,7 +108,7 @@ export async function wpFetchCollectionOptional<T>(
     if (revalidate !== undefined) {
       (next as { next?: { revalidate: number | false } }).next = { revalidate };
     }
-    const res = await fetch(url.toString(), next);
+    const res = await fetch(url.toString(), withFetchTimeout(next));
     if (!res.ok) {
       if (logErrors) {
         const text = await res.text();

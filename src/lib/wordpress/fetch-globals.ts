@@ -300,7 +300,7 @@ function fromDefaultSeo(o: Record<string, unknown> | null) {
   };
 }
 
-export async function fetchGlobals(lang: Locale): Promise<GlobalSettings> {
+export const fetchGlobals = cache(async (lang: Locale): Promise<GlobalSettings> => {
   const omb = await getOmbGlobalsPayload(lang);
   if (omb != null) {
     const siteUnwrapped = unwrapAcfOptionsPayload(omb.site ?? null);
@@ -339,4 +339,4 @@ export async function fetchGlobals(lang: Locale): Promise<GlobalSettings> {
     defaultSeo: fromDefaultSeo(unwrapAcfOptionsPayload(defaultSeoRaw)),
     reading: fromReading(readingRaw),
   };
-}
+});

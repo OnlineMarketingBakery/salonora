@@ -45,6 +45,7 @@ export function PrimaryNavMegaNavItem({ item }: Props) {
   const [hoverOpen, setHoverOpen] = useState(false);
   const [focusOpen, setFocusOpen] = useState(false);
   const pathname = usePathname();
+  const pathnameRef = useRef(pathname);
   const isOpen = hoverOpen || focusOpen;
 
   const closeMenu = useCallback(() => {
@@ -105,6 +106,8 @@ export function PrimaryNavMegaNavItem({ item }: Props) {
   }, []);
 
   useEffect(() => {
+    if (pathnameRef.current === pathname) return;
+    pathnameRef.current = pathname;
     closeMenu();
   }, [pathname, closeMenu]);
 

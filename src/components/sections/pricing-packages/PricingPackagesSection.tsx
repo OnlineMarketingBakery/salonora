@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
@@ -39,14 +40,14 @@ function CheckIconFallback() {
 
 function CrownIcon() {
   return (
-    <img
+    <Image
       src="/crown.svg"
       width={20}
       height={19}
       alt=""
+      unoptimized
       className="h-5 w-5 shrink-0 object-contain"
       aria-hidden
-      decoding="async"
     />
   );
 }

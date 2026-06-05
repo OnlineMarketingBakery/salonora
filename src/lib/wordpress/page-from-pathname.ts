@@ -1,3 +1,4 @@
+import { cache } from "react";
 import type { Locale } from "@/lib/i18n/locales";
 import type { GlobalSettings } from "@/types/globals";
 import type { PageDocument } from "@/types/documents";
@@ -15,11 +16,11 @@ export function slugPartsFromPathname(pathname: string, lang: Locale): string[] 
 }
 
 /** Cached page fetch for the current pathname (homepage or last slug segment). */
-export async function fetchPageDocumentForPathname(
+export const fetchPageDocumentForPathname = cache(async (
   globals: GlobalSettings,
   lang: Locale,
   pathname: string,
-): Promise<PageDocument | null> {
+): Promise<PageDocument | null> => {
   const parts = slugPartsFromPathname(pathname, lang);
   if (parts.length === 0) {
     const home = await fetchHomePage(lang, globals);
@@ -29,4 +30,4 @@ export async function fetchPageDocumentForPathname(
   if (!last) return null;
   const page = await fetchPageBySlug(lang, last, globals);
   return page?.doc ?? null;
-}
+});

@@ -174,7 +174,10 @@ export function SectionRenderer({ sections, lang }: { sections: AnySectionT[]; l
               <sectionRegistry.team_behind_salonora key={section.id} section={section} lang={lang} />
             );
           default:
-            assertNever(section);
+            if (process.env.NODE_ENV !== "production") {
+              assertNever(section);
+            }
+            return null;
         }
       })}
     </>

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { ReactNode } from "react";
 import { Media } from "@/components/ui/Media";
 import { getImageUrl, getLargestImageUrl } from "@/lib/utils/media";
@@ -69,14 +70,14 @@ export function ArrowInCircle({
       className={`inline-flex h-5 w-5 shrink-0 items-center justify-center ${className}`.trim()}
       aria-hidden
     >
-      <img
+      <Image
         src={ICON_BY_VARIANT[variant]}
         width={20}
         height={20}
         alt=""
+        unoptimized
         className="block h-full w-full min-h-0 min-w-0 object-contain"
         role="presentation"
-        decoding="async"
       />
     </span>
   );
