@@ -10,9 +10,10 @@ type Props = {
   items: MenuItem[];
   /** Parent nav label for `aria-label` on the menu surface */
   menuLabel: string;
+  onItemClick?: () => void;
 };
 
-export function PrimaryNavMegaDropdown({ items, menuLabel }: Props) {
+export function PrimaryNavMegaDropdown({ items, menuLabel, onItemClick }: Props) {
   const [active, setActive] = useState(0);
   const count = items.length;
   const safe = count > 0 ? Math.min(active, count - 1) : 0;
@@ -41,6 +42,7 @@ export function PrimaryNavMegaDropdown({ items, menuLabel }: Props) {
               href={c.href}
               target={c.target}
               role="menuitem"
+              onClick={() => onItemClick?.()}
               onMouseEnter={() => setActive(i)}
               onFocus={() => setActive(i)}
               className={
