@@ -82,15 +82,50 @@ add_action('rest_api_init', function () {
             if (empty($stored) && function_exists('get_field')) {
                 $stored = get_field('revalidation_secret', 'option') ?: '';
             }
+            $fg = function_exists('omb_rest_acf_field_group_stats') ? omb_rest_acf_field_group_stats() : [];
+            $entries = function_exists('omb_rest_acf_page_sections_layout_entries')
+                ? omb_rest_acf_page_sections_layout_entries()
+                : [];
             return new WP_REST_Response([
-                'route_loaded'  => true,
-                'secret_found'  => !empty($stored),
-                'secret_length'     => strlen($stored),
-                'merge_supported'   => function_exists('omb_rest_acf_prepare_groups_for_import'),
-                'append_supported'  => function_exists('omb_rest_acf_append_layouts_to_field'),
-                'page_sections_layout_count' => count(omb_rest_acf_page_sections_layout_names()),
-                'page_sections_layouts'      => omb_rest_acf_page_sections_layout_names(),
+                'route_loaded'                => true,
+                'secret_found'                => !empty($stored),
+                'secret_length'               => strlen($stored),
+                'merge_supported'               => function_exists('omb_rest_acf_prepare_groups_for_import'),
+                'append_supported'            => function_exists('omb_rest_acf_append_layouts_to_field'),
+                'layout_merge_supported'      => function_exists('omb_rest_acf_merge_layouts_into_flexible_field'),
+                'field_group_merge_supported' => function_exists('omb_rest_acf_import_field_group_safe'),
+                'field_group_total'           => (int) ($fg['field_group_total'] ?? 0),
+                'field_group_unique_keys'     => (int) ($fg['field_group_unique_keys'] ?? 0),
+                'field_group_active_total'    => (int) ($fg['field_group_active_total'] ?? 0),
+                'field_group_duplicate_posts' => (int) ($fg['field_group_duplicate_posts'] ?? 0),
+                'page_sections_layout_count'  => count($entries),
+                'page_sections_layouts'       => array_map(static fn($e) => $e['name'], $entries),
+                'page_sections_layout_entries'  => $entries,
+                'page_sections_layout_status'   => [
+                    'field_key' => 'field_omb_page_sections',
+                    'entries'   => $entries,
+                ],
             ], 200);
+        },
+    ]);
+
+    register_rest_route('omb-headless/v1', '/acf-sync-cleanup-duplicates', [
+        'methods'             => 'POST',
+        'permission_callback' => function (WP_REST_Request $request) {
+            $secret = $request->get_header('X-Sync-Secret');
+            $stored = get_option('omb_revalidation_secret', '');
+            if (empty($stored) && function_exists('get_field')) {
+                $stored = get_field('revalidation_secret', 'option') ?: '';
+            }
+            return !empty($secret) && !empty($stored) && hash_equals($stored, $secret);
+        },
+        'callback'            => function (WP_REST_Request $request) {
+            $body = $request->get_json_params();
+            $dry_run = is_array($body) && !empty($body['dry_run']);
+            if (!function_exists('omb_rest_acf_cleanup_duplicate_field_groups')) {
+                return new WP_REST_Response(['error' => 'cleanup_unavailable'], 503);
+            }
+            return new WP_REST_Response(omb_rest_acf_cleanup_duplicate_field_groups(['dry_run' => $dry_run]), 200);
         },
     ]);
 });

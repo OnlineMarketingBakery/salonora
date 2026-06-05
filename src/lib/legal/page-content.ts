@@ -7,7 +7,7 @@ import {
 } from "@/lib/legal/parse-legal-html";
 import { getGlobalFaqItems } from "./faq-items";
 import { shouldUseStaticLegalCopy, wpLegalTitleLooksEnglish } from "./legal-locale-guard";
-import { resolveLegalPageKey, type LegalPageKey } from "./legal-slugs";
+import { resolveLegalPageKey } from "./legal-slugs";
 import { buildStaticLegalPage } from "./static-pages";
 
 export function isLegalContentSection(s: AnySectionT): s is LegalContentSectionT {
