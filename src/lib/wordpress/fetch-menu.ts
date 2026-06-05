@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { getSiteUrl, getWordpressBaseUrl, getMenuId } from "./config";
 import { wpFetchOptional } from "./client";
 import type { MenuItem } from "@/types/menu";
@@ -77,10 +78,10 @@ type OmbMenuPayload = {
  *    menu ID server-side from the theme location (Polylang-aware). Add this only
  *    in `omb-headless-core` ≥ the version that registers `/menu`.
  */
-export async function fetchMenu(
+export const fetchMenu = cache(async (
   location: "primary" | "footer" | "legal",
   lang: Locale
-): Promise<MenuItem[]> {
+): Promise<MenuItem[]> => {
   const menuId = getMenuId(location, lang);
   if (menuId) {
     try {
@@ -109,4 +110,4 @@ export async function fetchMenu(
   }
 
   return [];
-}
+});

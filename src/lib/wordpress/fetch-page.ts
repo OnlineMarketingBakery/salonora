@@ -1,4 +1,5 @@
 import { cache } from "react";
+import { isLegalUrlSlug } from "@/lib/legal/legal-slugs";
 import { wpFetchOptional } from "./client";
 import { resolveHomepageSlug } from "./config";
 import type { WpPageRaw } from "@/types/wordpress";
@@ -46,10 +47,11 @@ function pageToDoc(
 const fetchPageRawBySlug = cache(async (lang: Locale, slug: string): Promise<WpPageRaw | null> => {
   const s = typeof slug === "string" && slug ? slug : undefined;
   const path = s
-    ? `/wp/v2/pages?slug=${encodeURIComponent(s)}&_embed=1&acf_format=standard`
+    ? `/wp/v2/pages?slug=${encodeURIComponent(s)}&acf_format=standard`
     : null;
-  if (!path) return null;
-  const list = await wpFetchOptional<WpPageRaw[]>(path, { lang, revalidate: 60 });
+  if (!path || !s) return null;
+  const revalidate = isLegalUrlSlug(lang, s) ? 3600 : 60;
+  const list = await wpFetchOptional<WpPageRaw[]>(path, { lang, revalidate });
   return list?.[0] ?? null;
 });
 

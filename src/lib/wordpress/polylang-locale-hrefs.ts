@@ -9,6 +9,7 @@ import { fetchServiceBySlug } from "./fetch-service";
 import { fetchCaseStudyBySlug } from "./fetch-case-study";
 import { getCptRestBase } from "./config";
 import type { WpPageRaw } from "@/types/wordpress";
+import { getLegalLocaleHrefs } from "@/lib/legal/legal-slugs";
 import { fetchGlobals } from "./fetch-globals";
 import { mapWordPressPermalinkToAppPathname } from "./wp-url-to-app-pathname";
 
@@ -172,6 +173,10 @@ async function fromPathname(
     return withSameSlugForAllLocales("");
   }
   const last = afterLocale[afterLocale.length - 1]!;
+  const legalHrefs = getLegalLocaleHrefs(currentLang, last);
+  if (legalHrefs) {
+    return legalHrefs;
+  }
   const page = await fetchPageBySlug(currentLang, last, globals);
   if (page) {
     return localeHrefsFromRestItem("page", page.raw, currentLang, afterLocale.join("/"));

@@ -6,6 +6,7 @@ import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
 import type { GlobalSettings } from "@/types/globals";
 import type { MenuItem } from "@/types/menu";
+import Image from "next/image";
 import Link from "next/link";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 
@@ -169,6 +170,11 @@ export function SiteFooter({
     "bg-[linear-gradient(180deg,transparent_6%,rgba(57,144,240,0.95)_50%,transparent_94%)] [filter:drop-shadow(0_0_5px_rgba(57,144,240,0.55))]";
   const showLegalMobile =
     legalMenu.length > 0 || g.footer.showFooterLanguageSwitcher;
+  const copyrightText =
+    g.footer.footerCopyright.trim() ||
+    (g.footer.isCustomFooter
+      ? ""
+      : `Copyright ©${new Date().getFullYear()} Salonora all right reserved`);
 
   /** Carve the Figma notch when a footer logo is present (SVG mobile, radial mask desktop). */
   const useNotchMask = Boolean(g.footer.footerLogo);
@@ -510,26 +516,25 @@ export function SiteFooter({
             </div>
             {/* DESKTOP wave — natural image (unchanged). */}
             <div className="pointer-events-none relative mx-auto hidden w-full max-w-[1300px] [filter:drop-shadow(0_-10px_44px_rgba(57,144,240,0.22))_drop-shadow(0_-30px_100px_rgba(57,144,240,0.1))_drop-shadow(0_-56px_160px_rgba(57,144,240,0.04))] lg:block">
-              <img
+              <Image
                 src="/footer-shape-top.svg"
                 width={1283}
                 height={54}
                 alt=""
+                unoptimized
                 className="block h-auto w-full"
                 role="presentation"
-                decoding="async"
               />
             </div>
-            <div className="relative z-2 flex items-center justify-center px-5 pb-5 pt-2 md:px-8 lg:absolute lg:inset-0 lg:pb-0 lg:pt-0">
-              <p
-                className={`whitespace-nowrap text-center text-[13px] font-normal leading-[1.5] lg:whitespace-normal lg:text-[16px] ${fg}`}
-              >
-                {g.footer.footerCopyright ||
-                  (!g.footer.isCustomFooter
-                    ? `Copyright ©${new Date().getFullYear()} Salonora all right reserved`
-                    : null)}
-              </p>
-            </div>
+            {copyrightText ? (
+              <div className="relative z-2 flex items-center justify-center px-5 pb-5 pt-2 md:px-8 lg:absolute lg:inset-0 lg:pb-0 lg:pt-0">
+                <p
+                  className={`whitespace-nowrap text-center text-[13px] font-normal leading-[1.5] lg:whitespace-normal lg:text-[16px] ${fg}`}
+                >
+                  {copyrightText}
+                </p>
+              </div>
+            ) : null}
           </div>
         </div>
 

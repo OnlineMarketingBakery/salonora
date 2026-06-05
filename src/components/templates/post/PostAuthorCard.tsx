@@ -34,14 +34,13 @@ const COPY = {
 /** Figma 902:819 — 18×18 SVG assets from design file (brand `#3990F0` fills) */
 function AuthorSocialGlyph({ kind }: { kind: "facebook" | "instagram" | "linkedin" }) {
   return (
-    <img
+    <Image
       src={`/images/author-social/${kind}.svg`}
       width={18}
       height={18}
       alt=""
+      unoptimized
       className="pointer-events-none block size-[18px] shrink-0 select-none"
-      loading="lazy"
-      decoding="async"
     />
   );
 }

@@ -1,3 +1,4 @@
+import { isLegalUrlSlug } from "@/lib/legal/legal-slugs";
 import type { FooterSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 import type { GlobalSettings } from "@/types/globals";
@@ -46,6 +47,10 @@ export async function resolvePageFooter(
 
   const last = parts[parts.length - 1];
   if (!last) return { mode: "default" };
+
+  if (isLegalUrlSlug(lang, last)) {
+    return { mode: "default" };
+  }
 
   const page = await fetchPageBySlug(lang, last, globals);
   if (page) {
