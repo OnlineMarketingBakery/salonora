@@ -1,22 +1,23 @@
 import type { FooterSectionT } from "@/types/sections";
 import type { FooterSettings } from "@/types/globals";
 
-/** Per-page footer section overrides global Footer settings; empty strings fall back to globals. */
+/** Per-page footer replaces global Footer settings; blank custom fields stay blank. */
 export function mergeFooterSettings(
   base: FooterSettings,
   section: FooterSectionT,
 ): FooterSettings {
   const overrides = section;
   return {
-    footerTitle: overrides.footerTitle.trim() || base.footerTitle,
-    footerText: overrides.footerText.trim() || base.footerText,
-    footerLogo: overrides.footerLogo ?? base.footerLogo,
-    footerCopyright: overrides.footerCopyright.trim() || base.footerCopyright,
+    isCustomFooter: true,
+    footerTitle: overrides.footerTitle.trim(),
+    footerText: overrides.footerText.trim(),
+    footerLogo: overrides.footerLogo,
+    footerCopyright: overrides.footerCopyright.trim(),
     showFooterLanguageSwitcher: section.hasLanguageSwitcherOverride
       ? overrides.showFooterLanguageSwitcher
       : base.showFooterLanguageSwitcher,
-    footerCtaFootnote: overrides.footerCtaFootnote.trim() || base.footerCtaFootnote,
-    footerCtaPrimaryLink: overrides.footerCtaPrimaryLink ?? base.footerCtaPrimaryLink,
-    footerCtaSecondaryLink: overrides.footerCtaSecondaryLink ?? base.footerCtaSecondaryLink,
+    footerCtaFootnote: overrides.footerCtaFootnote.trim(),
+    footerCtaPrimaryLink: overrides.footerCtaPrimaryLink,
+    footerCtaSecondaryLink: overrides.footerCtaSecondaryLink,
   };
 }

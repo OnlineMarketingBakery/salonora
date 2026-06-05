@@ -11,6 +11,8 @@ export type HeaderSettings = {
 };
 
 export type FooterSettings = {
+  /** Per-page/service footer: blank fields must not inherit global Footer settings. */
+  isCustomFooter?: boolean;
   footerTitle: string;
   footerText: string;
   footerLogo: WpImage | null;

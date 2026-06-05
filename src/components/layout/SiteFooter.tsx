@@ -270,7 +270,9 @@ export function SiteFooter({
                     />
                   </div>
                 )}
-                {!g.footer.footerText && g.site.defaultTagline && (
+                {!g.footer.footerText &&
+                  !g.footer.isCustomFooter &&
+                  g.site.defaultTagline && (
                   <p
                     className={`mt-6 text-base font-normal leading-[1.6] ${fg}`}
                   >
@@ -523,7 +525,9 @@ export function SiteFooter({
                 className={`whitespace-nowrap text-center text-[13px] font-normal leading-[1.5] lg:whitespace-normal lg:text-[16px] ${fg}`}
               >
                 {g.footer.footerCopyright ||
-                  `Copyright ©${new Date().getFullYear()} Salonora all right reserved`}
+                  (!g.footer.isCustomFooter
+                    ? `Copyright ©${new Date().getFullYear()} Salonora all right reserved`
+                    : null)}
               </p>
             </div>
           </div>
