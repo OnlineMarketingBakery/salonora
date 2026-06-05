@@ -3,6 +3,7 @@ import { FaqPageContent } from "@/components/templates/faq/FaqPageContent";
 import { getGlobalFaqItems, getGlobalFaqTitle } from "@/lib/legal/faq-items";
 import type { PageDocument } from "@/types/documents";
 import type { FaqSectionT } from "@/types/sections";
+import type { ContactSocialSettings } from "@/types/globals";
 import type { Locale } from "@/lib/i18n/locales";
 
 /** Dedicated FAQ shell only — never render WP page_sections (prevents duplicate breadcrumbs/heroes). */
@@ -21,14 +22,28 @@ function resolveFaqItems(doc: PageDocument, lang: Locale) {
   return catalog;
 }
 
-export function FaqPageTemplate({ document: doc, lang }: { document: PageDocument; lang: Locale }) {
+export function FaqPageTemplate({
+  document: doc,
+  lang,
+  contact,
+}: {
+  document: PageDocument;
+  lang: Locale;
+  contact: ContactSocialSettings;
+}) {
   const items = resolveFaqItems(doc, lang);
   const title = getGlobalFaqTitle(lang);
 
   return (
     <article className="faq-page overflow-visible bg-background">
       <FaqJsonLd items={items} lang={lang} pageTitle={title} />
-      <FaqPageContent items={items} lang={lang} title={title} showHero={!doc.hidePageTitle} />
+      <FaqPageContent
+        items={items}
+        lang={lang}
+        title={title}
+        contact={contact}
+        showHero={!doc.hidePageTitle}
+      />
     </article>
   );
 }
