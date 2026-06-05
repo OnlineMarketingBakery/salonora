@@ -5,6 +5,7 @@ import { SubmenuChevronIcon } from "@/components/layout/nav-submenu-chevron";
 import { prefetchWhoWeServeMegaPreviews } from "@/components/layout/who-we-serve-mega-previews";
 import type { MenuItem } from "@/types/menu";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   useCallback,
   useEffect,
@@ -18,6 +19,11 @@ const SHELL_SELECTOR = "[data-site-header-shell]";
 const MEGA_MENU_GAP_PX = -4;
 /** Max mega width (px); panel stays centered under the header shell when the shell is wider. */
 const MEGA_MENU_MAX_WIDTH_PX = 850;
+
+const PANEL_OPEN =
+  "pointer-events-auto visible opacity-100";
+const PANEL_CLOSED =
+  "pointer-events-none invisible opacity-0";
 
 type Align = {
   megaLeft: number;
@@ -36,6 +42,21 @@ type Props = {
 export function PrimaryNavMegaNavItem({ item }: Props) {
   const rootRef = useRef<HTMLDivElement>(null);
   const [align, setAlign] = useState<Align | null>(null);
+  const [hoverOpen, setHoverOpen] = useState(false);
+  const [focusOpen, setFocusOpen] = useState(false);
+  const pathname = usePathname();
+  const isOpen = hoverOpen || focusOpen;
+
+  const closeMenu = useCallback(() => {
+    setHoverOpen(false);
+    setFocusOpen(false);
+    const root = rootRef.current;
+    if (!root) return;
+    const active = document.activeElement;
+    if (active instanceof HTMLElement && root.contains(active)) {
+      active.blur();
+    }
+  }, []);
 
   const measure = useCallback(() => {
     const root = rootRef.current;
@@ -83,13 +104,51 @@ export function PrimaryNavMegaNavItem({ item }: Props) {
     prefetchWhoWeServeMegaPreviews();
   }, []);
 
+  useEffect(() => {
+    closeMenu();
+  }, [pathname, closeMenu]);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeMenu();
+    };
+    const onPointerDown = (event: PointerEvent) => {
+      const root = rootRef.current;
+      if (root && !root.contains(event.target as Node)) {
+        closeMenu();
+      }
+    };
+    document.addEventListener("keydown", onKeyDown);
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("pointerdown", onPointerDown);
+    };
+  }, [isOpen, closeMenu]);
+
+  const panelClass = isOpen ? PANEL_OPEN : PANEL_CLOSED;
+
   return (
-    <div ref={rootRef} className="group relative">
+    <div
+      ref={rootRef}
+      className="relative"
+      onMouseEnter={() => setHoverOpen(true)}
+      onMouseLeave={() => setHoverOpen(false)}
+      onFocusCapture={() => setFocusOpen(true)}
+      onBlurCapture={(event) => {
+        const next = event.relatedTarget as Node | null;
+        if (!next || !rootRef.current?.contains(next)) {
+          setFocusOpen(false);
+        }
+      }}
+    >
       <Link
         href={item.href}
         className="relative flex items-center gap-2 whitespace-nowrap py-1 text-[16px] font-medium text-navy transition-opacity duration-200 hover:opacity-85"
         target={item.target}
         aria-haspopup="menu"
+        aria-expanded={isOpen}
         onPointerEnter={prefetchWhoWeServeMegaPreviews}
       >
         <span>{item.label}</span>
@@ -103,7 +162,7 @@ export function PrimaryNavMegaNavItem({ item }: Props) {
       {align ? (
         <div
           aria-hidden
-          className="pointer-events-none fixed z-59 group-hover:pointer-events-auto group-focus-within:pointer-events-auto"
+          className={`fixed z-59 transition-[opacity,visibility] duration-300 ease-out ${panelClass}`}
           style={{
             left: align.bridgeLeft,
             top: align.bridgeTop,
@@ -113,11 +172,7 @@ export function PrimaryNavMegaNavItem({ item }: Props) {
         />
       ) : null}
       <div
-        className={
-          align
-            ? "pointer-events-none invisible fixed z-60 opacity-0 transition-[opacity,visibility] duration-300 ease-out group-focus-within:pointer-events-auto group-focus-within:visible group-focus-within:opacity-100 group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100"
-            : "pointer-events-none invisible fixed z-60 opacity-0"
-        }
+        className={`fixed z-60 transition-[opacity,visibility] duration-300 ease-out ${panelClass}`}
         role="presentation"
         style={
           align
@@ -129,7 +184,11 @@ export function PrimaryNavMegaNavItem({ item }: Props) {
             : undefined
         }
       >
-        <PrimaryNavMegaDropdown items={item.children} menuLabel={item.label} />
+        <PrimaryNavMegaDropdown
+          items={item.children}
+          menuLabel={item.label}
+          onItemClick={closeMenu}
+        />
       </div>
     </div>
   );
