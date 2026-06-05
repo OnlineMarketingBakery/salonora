@@ -2,12 +2,16 @@
 
 These layouts are in **repo-root** `acf-import-bundle.json` (`layout_omb_legal_content`, `layout_omb_faq`).
 
-**Recommended (append only — does not reset existing page-builder layouts):**
+**Recommended (safe merge — does not reset existing page-builder layouts):**
 
 ```bash
 npm run acf:sync-bundle
-npm run acf:push-layouts
+npm run acf:push
 ```
+
+Or push only new layouts by name: `npm run acf:push -- --only=legal_content`
+
+**Warning:** Do not use chunked partial imports on production. Always use `npm run acf:push` (merge-only). If duplicates accumulate in ACF admin, run `npm run acf:cleanup-duplicates` first.
 
 Uses **merge import** (`X-Acf-Merge-Layouts`) so layouts appear in the WP admin picker (append-only `acf_update_field` is not enough).
 

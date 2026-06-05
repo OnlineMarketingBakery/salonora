@@ -25,7 +25,7 @@ export function isFaqPageSlug(lang: Locale, slug: string): boolean {
 }
 
 /** WordPress REST slug to fetch for this URL segment. */
-export function resolveFaqFetchSlug(lang: Locale, _urlSlug?: string): string {
+export function resolveFaqFetchSlug(lang: Locale): string {
   return getFaqUrlSlug(lang);
 }
 

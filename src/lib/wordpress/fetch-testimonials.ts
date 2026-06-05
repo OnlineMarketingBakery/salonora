@@ -40,6 +40,26 @@ function toDoc(raw: WpTestimonialRaw, mediaUrlById: Map<number, string>): Testim
   };
 }
 
+function isEmptyShell(doc: TestimonialDocument): boolean {
+  return !doc.clientName.trim() && !doc.clientTestimonial.trim();
+}
+
+async function rowsToDocs(rows: WpTestimonialRaw[], lang: Locale): Promise<TestimonialDocument[]> {
+  const numericAvatarIds = new Set<number>();
+  for (const r of rows) {
+    const av = r.acf?.avatar;
+    if (typeof av === "number" && av > 0) numericAvatarIds.add(av);
+  }
+  const mediaUrlById = new Map<number, string>();
+  await Promise.all(
+    [...numericAvatarIds].map(async (id) => {
+      const u = await fetchMediaSourceUrl(id, lang);
+      if (u) mediaUrlById.set(id, u);
+    })
+  );
+  return rows.map((r) => toDoc(r, mediaUrlById));
+}
+
 export async function fetchTestimonialsByIds(
   ids: number[],
   lang: Locale
@@ -47,28 +67,26 @@ export async function fetchTestimonialsByIds(
   if (!ids.length) return [];
   const rest = getCptRestBase("testimonial");
   const include = ids.map(String).join(",");
+  const path = `/wp/v2/${rest}?per_page=100&include=${include}&acf_format=standard`;
   try {
-    const rows = await wpFetch<WpTestimonialRaw[]>(
-      `/wp/v2/${rest}?per_page=100&include=${include}&acf_format=standard`,
-      { lang, revalidate: 60 }
-    );
+    let rows = await wpFetch<WpTestimonialRaw[]>(path, { lang, revalidate: 60 });
     if (!Array.isArray(rows)) return [];
 
-    const numericAvatarIds = new Set<number>();
-    for (const r of rows) {
-      const av = r.acf?.avatar;
-      if (typeof av === "number" && av > 0) numericAvatarIds.add(av);
-    }
-    const mediaUrlById = new Map<number, string>();
-    await Promise.all(
-      [...numericAvatarIds].map(async (id) => {
-        const u = await fetchMediaSourceUrl(id, lang);
-        if (u) mediaUrlById.set(id, u);
-      })
-    );
+    let docs = await rowsToDocs(rows, lang);
+    const byId = new Map(docs.map((d) => [d.id, d]));
+    let ordered = ids.map((id) => byId.get(id)).filter((x): x is TestimonialDocument => x != null);
 
-    const byId = new Map(rows.map((r) => [r.id, toDoc(r, mediaUrlById)]));
-    return ids.map((id) => byId.get(id)).filter((x): x is TestimonialDocument => x != null);
+    // Retry without ISR cache when WordPress briefly returned empty ACF (e.g. after field-group sync).
+    if (ordered.length > 0 && ordered.every(isEmptyShell)) {
+      rows = await wpFetch<WpTestimonialRaw[]>(path, { lang, revalidate: false });
+      if (Array.isArray(rows) && rows.length) {
+        docs = await rowsToDocs(rows, lang);
+        const retryById = new Map(docs.map((d) => [d.id, d]));
+        ordered = ids.map((id) => retryById.get(id)).filter((x): x is TestimonialDocument => x != null);
+      }
+    }
+
+    return ordered;
   } catch (e) {
     logger.warn("fetchTestimonialsByIds", e);
     return [];

@@ -8,12 +8,7 @@ import { FaqBreadcrumbs } from "@/components/templates/faq/FaqBreadcrumbs";
 import { FaqContactBanner } from "@/components/templates/faq/FaqContactBanner";
 import { FaqPageInner } from "@/components/templates/faq/FaqPageColumn";
 import { FaqPageAccordion, faqEntriesToAccordionItems } from "@/components/templates/faq/FaqPageAccordion";
-import {
-  countFaqItemsInGroups,
-  filterFaqGroups,
-  groupFaqItems,
-  type FaqEntry,
-} from "@/lib/legal/faq-items";
+import { filterFaqGroups, groupFaqItems, type FaqEntry } from "@/lib/legal/faq-items";
 import type { Locale } from "@/lib/i18n/locales";
 
 const COPY = {

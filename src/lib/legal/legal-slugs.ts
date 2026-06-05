@@ -51,7 +51,7 @@ export function isLegalUrlSlug(lang: Locale, slug: string): boolean {
 
 /** WordPress REST slug to fetch for this URL segment. */
 export function resolveLegalFetchSlug(lang: Locale, urlSlug: string): string {
-  if (isFaqPageSlug(lang, urlSlug)) return resolveFaqFetchSlug(lang, urlSlug);
+  if (isFaqPageSlug(lang, urlSlug)) return resolveFaqFetchSlug(lang);
   const key = resolveLegalPageKey(lang, urlSlug);
   if (key) return getLegalUrlSlug(lang, key);
   return urlSlug;
