@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Container } from "@/components/ui/Container";
 import { FaqBreadcrumbs } from "@/components/templates/faq/FaqBreadcrumbs";
