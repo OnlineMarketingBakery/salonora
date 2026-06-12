@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: OMB Forms
- * Plugin URI: https://onlinemarketingbakery.com
- * Description: Drag-and-drop form builder by Online Marketing Bakery.
+ * Plugin URI: https://onlinemarketingbakery.nl
+ * Description: Drag-and-drop form builder for headless WordPress sites by Online Marketing Bakery.
  * Version: 1.0.0
  * Author: Rubin Koot
- * Author URI: https://onlinemarketingbakery.com
+ * Author URI: https://onlinemarketingbakery.nl
  * Text Domain: custom-form-builder
  * Domain Path: /languages
  * Requires at least: 5.8

@@ -162,26 +162,26 @@ export function ProblemSolutionSection({
   void lang;
   const listIcon = section.solution_list_icon;
   const cardShell =
-    "relative flex min-h-0 w-full flex-col overflow-hidden rounded-[24px] px-8 py-10 sm:px-10 sm:py-11 lg:min-h-[668px] lg:max-h-none lg:px-[46px] lg:py-[46px]";
+    "relative flex h-full min-h-0 w-full flex-col overflow-hidden rounded-[24px] px-8 py-10 sm:px-10 sm:py-11 lg:px-[46px] lg:py-[46px]";
 
   return (
     <section className="bg-[var(--palette-white)] py-12 md:py-16">
       <Container className="!max-w-[81.25rem]">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-6">
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-stretch lg:gap-6">
           <article
             className={`${REVEAL_ITEM} ${cardShell}`}
             style={PROBLEM_CARD_BG}
           >
             <CardGridWash />
             <div
-              className={`relative z-[1] flex min-h-0 w-full min-w-0 flex-col gap-[22px] self-stretch [overflow-wrap:anywhere] lg:flex-1 ${section.problem_image ? PROBLEM_CONTENT_PB : ""}`}
+              className={`relative z-[1] flex min-h-0 w-full min-w-0 flex-col gap-[22px] self-stretch [overflow-wrap:anywhere] ${section.problem_image ? PROBLEM_CONTENT_PB : ""}`}
             >
               {section.problem_title ? (
                 <h2 className="w-full font-sans text-[clamp(1.5rem,3.5vw,2.125rem)] font-semibold leading-[0.98] text-[var(--palette-white)]">
                   {section.problem_title}
                 </h2>
               ) : null}
-              <div className="relative min-h-0 w-full min-w-0 self-stretch lg:flex-1 lg:block lg:flow-root lg:min-h-0">
+              <div className="relative min-h-0 w-full min-w-0 self-stretch lg:block lg:flow-root">
                 {section.problem_text ? (
                   <RichText
                     html={section.problem_text}
@@ -218,14 +218,14 @@ export function ProblemSolutionSection({
           >
             <CardGridWash />
             <div
-              className={`relative z-[1] flex min-h-0 w-full min-w-0 flex-col gap-[22px] self-stretch [overflow-wrap:anywhere] lg:flex-1 ${section.solution_image ? SOLUTION_CONTENT_PB : ""}`}
+              className={`relative z-[1] flex min-h-0 w-full min-w-0 flex-col gap-[22px] self-stretch [overflow-wrap:anywhere] ${section.solution_image ? SOLUTION_CONTENT_PB : ""}`}
             >
               {section.solution_title ? (
                 <h2 className="w-full font-sans text-[clamp(1.5rem,3.5vw,2.125rem)] font-semibold leading-[0.98] text-[var(--palette-white)]">
                   {section.solution_title}
                 </h2>
               ) : null}
-              <div className="relative min-h-0 w-full min-w-0 self-stretch lg:flex-1 lg:block lg:flow-root lg:min-h-0">
+              <div className="relative min-h-0 w-full min-w-0 self-stretch lg:block lg:flow-root">
                 {section.solution_text ? (
                   <RichText
                     html={section.solution_text}

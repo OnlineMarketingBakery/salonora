@@ -1,6 +1,6 @@
 ---
 description: Salonora — ACF normalizer rules, field mappers, registry conventions, and ACF JSON structure.
-globs: ["src/lib/acf/**", "acf-import-bundle.json"]
+globs: ["src/lib/acf/**", "wordpress/wp-content/themes/omb-headless/acf-json/**"]
 alwaysApply: false
 ---
 
@@ -95,7 +95,7 @@ The **exact same** `snake_case` string must appear in:
 4. `type: "..."` literal in `AnySectionT`
 5. `sectionRegistry` object key
 6. `case "..."` in `SectionRenderer.tsx`
-7. ACF JSON `"name"` field of the layout in `acf-import-bundle.json`
+7. ACF JSON `"name"` field of the layout in `group_omb_page_builder.json` (or relevant `acf-json/group_*.json`)
 
 A mismatch at any point silently drops the section (no runtime error).
 
@@ -130,7 +130,7 @@ export const sectionRegistry = {
 
 ## ACF JSON field key pattern
 
-All field keys in `acf-import-bundle.json` must follow:
+All field keys in theme ACF Local JSON must follow:
 ```
 field_omb_<layout_name>_<field_name>
 ```
@@ -148,22 +148,18 @@ Unique keys prevent collisions across layouts. Never reuse a key from another la
 
 ## ACF JSON structure
 
-### Import bundle
-**Canonical file:** `acf-import-bundle.json` at the **repository root** (this is what agents and PRs should edit).
+### Local JSON (canonical)
+**Canonical source:** `wordpress/wp-content/themes/omb-headless/acf-json/group_*.json` — one file per field group ([ACF Local JSON](https://www.advancedcustomfields.com/resources/local-json/)).
 
-**Theme mirror:** `wordpress/wp-content/themes/omb-headless/acf-import-bundle.json` — kept identical to the root file. Run **`npm run acf:sync-bundle`** to copy root → theme without pushing; **`npm run acf:push`** runs that sync first, then POSTs the canonical JSON to `POST /omb-headless/v1/acf-sync`. The mirror exists so the WordPress tree always carries the same bundle as the repo.
-
-`npm run validate:sections` fails if root and theme JSON differ (normalized), so CI catches drift early.
-
-### Local JSON
-`wordpress/wp-content/themes/omb-headless/acf-json/group_*.json` — one file per field group, used by ACF Local JSON sync. Regenerate with `npm run acf:extract-local-json`.
+Deploy to WordPress with **`npm run plugins:deploy -- --with-theme`** (ACF JSON lives in the theme), then sync in WP Admin → **Custom Fields → Sync available** when ACF shows pending changes. Plugin PHP changes only: **`npm run plugins:deploy`**.
 
 ### Page builder group
-All flexible layout sections live inside the `group_omb_page_builder` field group, under the `page_builder` flexible content field. When adding a new layout:
-1. Add a new `layout` entry to the `layouts` **object** on `page_builder` in **`acf-import-bundle.json` at the repo root** (canonical). (`layouts` is keyed by `layout_omb_*`, not a JSON array.)
+All flexible layout sections live inside the `group_omb_page_builder` field group, under the `page_sections` flexible content field. When adding a new layout:
+1. Add a new `layout` entry to the `layouts` **object** on `page_sections` in **`group_omb_page_builder.json`**. (`layouts` is keyed by `layout_omb_*`, not a JSON array.)
 2. Set `"name": "my_new_section"` (must match `acf_fc_layout` everywhere).
 3. Add all sub-fields with keys following `field_omb_my_new_section_*`.
-4. Run **`npm run acf:sync-bundle`** (updates the theme mirror) and **`npm run acf:push`** to sync to WordPress (push runs sync automatically).
+4. Bump the field group's `"modified"` unix timestamp.
+5. Run **`npm run validate:sections`**, then **`npm run plugins:deploy -- --with-theme`**.
 
 ### `pricing_packages` — package repeater (`items`)
 

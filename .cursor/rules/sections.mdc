@@ -94,7 +94,7 @@ Sections registered as **`next/dynamic` lazy** (`ssr: true`): most newer section
 4. Add dynamic import + registry entry in `section-registry.ts`.
 5. Add `case "layout_key":` to `SectionRenderer.tsx` switch.
 6. Create `src/components/sections/<kebab-layout-name>/index.tsx`.
-7. Add layout to **repo-root** `acf-import-bundle.json` (under `group_omb_page_builder`) with field keys `field_omb_<layout>_*`, then run `npm run acf:sync-bundle` or `npm run acf:push` so the theme mirror stays in sync.
+7. Add layout to **`wordpress/wp-content/themes/omb-headless/acf-json/group_omb_page_builder.json`** (under `page_sections`) with field keys `field_omb_<layout>_*`, bump `"modified"`, then run **`npm run plugins:deploy -- --with-theme`** and sync in WP Admin if needed.
 8. Update `ai-context.md` section registry key list.
 9. Run `npm run build` to catch assertNever compile errors.
 

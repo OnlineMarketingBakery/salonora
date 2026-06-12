@@ -7,7 +7,7 @@ Read **`general.mdc`** before doing anything. Do not read `ai-context.md` direct
 
 Scoped rules (Cursor loads these automatically by glob):
 - **`sections.mdc`** — section pipeline, all 52 keys, per-section Figma notes, component rules (`src/components/sections/**`, `src/types/sections.ts`)
-- **`acf.mdc`** — normalizer, field mappers, registry, ACF JSON (`src/lib/acf/**`, `acf-import-bundle.json`)
+- **`acf.mdc`** — normalizer, field mappers, registry, ACF Local JSON (`src/lib/acf/**`, `wordpress/wp-content/themes/omb-headless/acf-json/**`)
 - **`wordpress.mdc`** — wpFetch, REST fetchers, Polylang, CF7, ISR (`src/lib/wordpress/**`, `src/app/api/**`)
 - **`types.mdc`** — discriminated union, CoreSection, AnySectionT, no-any rule (`src/types/**`)
 

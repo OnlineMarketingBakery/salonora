@@ -1,10 +1,13 @@
 <?php
 /**
  * Plugin Name: OMB Headless Core
- * Description: Headless core plugin for CPTs, taxonomies, options pages, Polylang support, and REST helpers.
+ * Plugin URI: https://onlinemarketingbakery.nl/
+ * Description: Headless WordPress backend for OMB Next.js sites - custom post types, ACF option pages, Polylang helpers, REST endpoints, and Contact Form 7 integration.
  * Version: 1.0.0
+ * Requires at least: 6.5
  * Requires PHP: 8.1
- * Author: OpenAI
+ * Author: Online Marketing Bakery
+ * Author URI: https://onlinemarketingbakery.nl/
  * Text Domain: omb-headless-core
  */
 
