@@ -1,6 +1,7 @@
 import { cache } from "react";
-import { isLocale, supportedLocales } from "@/lib/i18n/config";
+import { supportedLocales } from "@/lib/i18n/config";
 import { buildLocalePath } from "@/lib/i18n/get-alternates";
+import { localeFromPathname, pathAfterLocale } from "@/lib/i18n/locale-url";
 import type { Locale } from "@/lib/i18n/locales";
 import { wpFetchOptional } from "./client";
 import { fetchPageBySlug } from "./fetch-page";
@@ -162,36 +163,35 @@ async function localeHrefsFromRestItem(
 async function fromPathname(
   pathname: string
 ): Promise<Record<Locale, string> | null> {
-  const segments = pathname.split("/").filter(Boolean);
-  if (segments.length < 1 || !isLocale(segments[0]!)) {
-    return null;
-  }
-  const currentLang = segments[0] as Locale;
-  const afterLocale = segments.slice(1);
+  const currentLang = localeFromPathname(pathname);
+  const afterLocale = pathAfterLocale(pathname);
   const globals = await fetchGlobals(currentLang);
-  if (afterLocale.length === 0) {
+  if (!afterLocale) {
     return withSameSlugForAllLocales("");
   }
-  const last = afterLocale[afterLocale.length - 1]!;
+  const last = afterLocale.split("/").filter(Boolean).pop();
+  if (!last) {
+    return withSameSlugForAllLocales("");
+  }
   const legalHrefs = getLegalLocaleHrefs(currentLang, last);
   if (legalHrefs) {
     return legalHrefs;
   }
   const page = await fetchPageBySlug(currentLang, last, globals);
   if (page) {
-    return localeHrefsFromRestItem("page", page.raw, currentLang, afterLocale.join("/"));
+    return localeHrefsFromRestItem("page", page.raw, currentLang, afterLocale);
   }
   const service = await fetchServiceBySlug(currentLang, last, globals);
   if (service) {
-    return localeHrefsFromRestItem("service", service.raw, currentLang, afterLocale.join("/"));
+    return localeHrefsFromRestItem("service", service.raw, currentLang, afterLocale);
   }
   const caseStudy = await fetchCaseStudyBySlug(currentLang, last, globals);
   if (caseStudy) {
-    return localeHrefsFromRestItem("case_study", caseStudy.raw, currentLang, afterLocale.join("/"));
+    return localeHrefsFromRestItem("case_study", caseStudy.raw, currentLang, afterLocale);
   }
   const post = await fetchPostBySlug(currentLang, last, globals);
   if (post) {
-    return localeHrefsFromRestItem("post", post.raw, currentLang, afterLocale.join("/"));
+    return localeHrefsFromRestItem("post", post.raw, currentLang, afterLocale);
   }
   return null;
 }
@@ -204,8 +204,11 @@ async function fromPathname(
  * `translations` is missing or a translation is not linked in WordPress.
  */
 export const getLocaleHrefsForPathname = cache(async (pathname: string) => {
-  if (!pathname || pathname === "/") {
+  if (!pathname) {
     return null;
+  }
+  if (pathname === "/") {
+    return withSameSlugForAllLocales("");
   }
   return fromPathname(pathname);
 });

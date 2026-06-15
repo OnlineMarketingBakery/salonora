@@ -1,0 +1,54 @@
+---
+description: Salonora — run WPvivid backup before risky WordPress/CMS changes
+alwaysApply: true
+---
+
+## Pre-change WPvivid backup (mandatory)
+
+Before starting work that can break production WordPress, routing, plugins, ACF, Polylang, menus, or bulk CMS updates, **run a WPvivid backup first** and prune the oldest backup:
+
+```bash
+npm run backup:wp
+```
+
+Dry-run (no backup, only reports what would happen):
+
+```bash
+npm run backup:wp -- --dry-run
+```
+
+### When to run
+
+Run `npm run backup:wp` **before** any of these (non-exhaustive):
+
+- `npm run plugins:deploy` (with or without `--with-theme` / `--with-mu-plugin`)
+- SSH/PHP changes on the live WordPress server (ACF options, Polylang pairs, post meta, menus, slugs)
+- Bulk CMS link/menu fixes (`fix:links:apply`)
+- WordPress plugin/theme/ACF JSON changes that get deployed
+- Middleware, locale routing, or primary-language-at-root changes that need coordinated WP + Next deploy
+- Database-affecting operations on production
+
+### When you may skip
+
+- Read-only investigation (grep, fetch, audit without apply)
+- Pure Next.js frontend changes with **no** WordPress deploy or CMS edits
+- User explicitly says to skip backup for this task
+
+If backup fails (SSH, WPvivid busy, disk full), **stop** and report the error. Do not proceed with risky changes unless the user explicitly accepts the risk.
+
+### What the script does
+
+1. SSH to Ploi (`PLOI_SSH_HOST`, `PLOI_SSH_USER` from `.env.local`)
+2. Delete the **oldest** WPvivid backup (if any)
+3. Create a new **files + database** local backup via WPvivid API
+4. Exit non-zero on failure
+
+Requires `PLOI_PLUGINS_PATH` in `.env.local` (used to derive WordPress root). Optional `PLOI_WP_ROOT` overrides WP root path.
+
+### Agent workflow
+
+1. Recognize risky task from user request
+2. Run `npm run backup:wp` (or `--dry-run` only if user asked for a dry run)
+3. Confirm success in the terminal output
+4. Proceed with the requested change
+5. Mention in the summary that a pre-change backup was created (unless skipped with user consent)

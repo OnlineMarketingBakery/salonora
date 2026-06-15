@@ -59,7 +59,7 @@ src/types/               # sections, acf, globals, seo, wordpress, testimonials,
 wordpress/wp-content/    # omb-headless theme, omb-headless-core plugin, mu-plugins
 public/                  # static assets (SVGs, PNGs, hero-gradiant.png)
 docs/                    # wordpress-connection-guide, n8n-blog-publishing, acf-field-group-recovery
-scripts/                 # push-acf-rest.mjs, extract-all-acf-local-json.mjs
+scripts/                 # deploy-plugins.mjs, validate-sections.mjs, strip-php-bom.mjs
 ```
 
 ---
@@ -173,10 +173,10 @@ npm run dev      # next dev --turbopack
 npm run build    # production build
 npm run start    # next start (NODE_ENV=production)
 npm run lint     # next lint
-npm run acf:sync-bundle # copy repo-root acf-import-bundle.json → theme mirror (also runs inside acf:push)
-npm run acf:push # sync bundle mirror, then push canonical acf-import-bundle.json to WordPress via REST
-npm run acf:extract-local-json   # regenerate acf-json/group_*.json from WP
-npm run acf:extract-page-builder # extract page builder group only
+npm run validate:sections  # section pipeline sync check
+npm run strip:php-bom      # strip UTF-8 BOM from wordpress PHP
+npm run plugins:package    # zip plugins + theme + mu-plugin → dist/
+npm run plugins:deploy     # SSH deploy omb-headless-core + omb-form-builder (add -- --with-theme for acf-json)
 ```
 
 ---
@@ -191,7 +191,8 @@ npm run acf:extract-page-builder # extract page builder group only
 `WORDPRESS_APPLICATION_USER`, `WORDPRESS_APPLICATION_PASSWORD`,
 `REVALIDATION_SECRET`, `NEXT_PUBLIC_DEFAULT_CF7_FORM_ID`, `NEXT_PUBLIC_DEFAULT_CTA_BRAND_ARROW_URL`,
 `WORDPRESS_SERVICE_REST_BASE`, `WORDPRESS_TESTIMONIAL_REST_BASE`,
-`WORDPRESS_CASE_STUDY_REST_BASE`, `DEFAULT_LOCALE`, `SUPPORTED_LOCALES`.
+`WORDPRESS_CASE_STUDY_REST_BASE`, `DEFAULT_LOCALE`, `SUPPORTED_LOCALES`,
+`PLOI_SSH_HOST`, `PLOI_SSH_USER`, `PLOI_PLUGINS_PATH`, `PLOI_THEMES_PATH`, `PLOI_MU_PLUGINS_PATH`.
 
 Authoritative list: `.env.example`. When adding a new env var, also update `.env.example`, `ai-context.md`, and `README.md`.
 
@@ -224,7 +225,7 @@ Authoritative list: `.env.example`. When adding a new env var, also update `.env
 ## File Indexing
 A .cursorignore file is present at the root.
 Do NOT reference or scan: .next/, node_modules/, wordpress/wp-content/,
-public/, docs/, scripts/, acf-import-bundle.json (unless explicitly needed).
+public/, docs/, scripts/ (unless explicitly needed).
 Always use explicit @file references — never @Codebase.
 
 ## Section Validation

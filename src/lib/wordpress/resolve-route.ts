@@ -8,6 +8,7 @@ import type { ContentDocument, PageDocument } from "@/types/documents";
 import type { Locale } from "@/lib/i18n/locales";
 import { enrichSections, type BlogArchiveQuery } from "@/lib/acf/enrich-sections";
 import { fetchHomePage } from "./fetch-page";
+import { fetchSiteConfig, type SiteConfig } from "./fetch-site-config";
 import { applyStaticLegalFallback, hasUsableLegalPageContent } from "@/lib/legal/page-content";
 import {
   resolveLegalFetchSlug,
@@ -38,6 +39,15 @@ function archiveCacheKey(archiveQueries?: ResolveRouteArchiveQueries | null): st
   ].join("|");
 }
 
+function enrichCtx(
+  lang: Locale,
+  globals: GlobalSettings,
+  siteConfig: SiteConfig,
+  extra?: Partial<Parameters<typeof enrichSections>[1]>
+) {
+  return { lang, globals, siteConfig, ...extra };
+}
+
 const resolveRouteCached = cache(
   async (
     lang: Locale,
@@ -45,6 +55,7 @@ const resolveRouteCached = cache(
     globals: GlobalSettings,
     archiveKey: string,
   ): Promise<ResolvedRoute> => {
+    const siteConfig = await fetchSiteConfig();
     const slugParts = slugPath ? slugPath.split("/").filter(Boolean) : [];
     const last = slugParts[slugParts.length - 1];
     if (!last) return null;
@@ -60,22 +71,20 @@ const resolveRouteCached = cache(
     const fetchSlug = resolveLegalFetchSlug(lang, last);
     const page = await fetchPageBySlug(lang, fetchSlug, globals);
     if (page) {
-      const sections = await enrichSections(page.doc.sections, {
-        lang,
-        globals: globals,
+      const sections = await enrichSections(page.doc.sections, enrichCtx(lang, globals, siteConfig, {
         pageSlugPath: pathJoined,
         blogArchive: page.doc.isBlogArchive ? archiveQueries?.blog ?? { page: 1, search: "" } : undefined,
         caseStudyArchive: page.doc.isCaseStudyArchive
           ? archiveQueries?.caseStudy ?? { page: 1, search: "" }
           : undefined,
-      });
+      }));
       let doc = { ...page.doc, sections, slug: last };
       if (!doc.isLegalPage && legalKey && (legalKey === "privacy" || legalKey === "terms")) {
         doc.isLegalPage = true;
       }
       if (legalKey && !hasUsableLegalPageContent(doc, lang, last)) {
         doc = applyStaticLegalFallback(doc, lang, last);
-        const enriched = await enrichSections(doc.sections, { lang, globals, pageSlugPath: pathJoined });
+        const enriched = await enrichSections(doc.sections, enrichCtx(lang, globals, siteConfig, { pageSlugPath: pathJoined }));
         doc = { ...doc, sections: enriched, slug: last };
       }
       if (legalKey === "privacy" || legalKey === "terms") {
@@ -86,22 +95,22 @@ const resolveRouteCached = cache(
 
     const staticLegal = tryBuildStaticLegalPage(lang, last);
     if (staticLegal) {
-      const sections = await enrichSections(staticLegal.sections, { lang, globals });
+      const sections = await enrichSections(staticLegal.sections, enrichCtx(lang, globals, siteConfig));
       return { document: { ...staticLegal, slug: last, sections } };
     }
     const caseStudy = await fetchCaseStudyBySlug(lang, last, globals);
     if (caseStudy) {
-      const sections = await enrichSections(caseStudy.doc.sections, { lang, globals: globals });
+      const sections = await enrichSections(caseStudy.doc.sections, enrichCtx(lang, globals, siteConfig));
       return { document: { ...caseStudy.doc, sections } };
     }
     const service = await fetchServiceBySlug(lang, last, globals);
     if (service) {
-      const sections = await enrichSections(service.doc.sections, { lang, globals: globals });
+      const sections = await enrichSections(service.doc.sections, enrichCtx(lang, globals, siteConfig));
       return { document: { ...service.doc, sections } };
     }
     const post = await fetchPostBySlug(lang, last, globals);
     if (post) {
-      const sections = await enrichSections(post.doc.sections, { lang, globals: globals });
+      const sections = await enrichSections(post.doc.sections, enrichCtx(lang, globals, siteConfig));
       return { document: { ...post.doc, sections } };
     }
     return null;
@@ -122,8 +131,8 @@ export async function resolveRoute(
 }
 
 export async function resolveHome(lang: Locale, globals: GlobalSettings): Promise<ResolvedHome> {
-  const home = await fetchHomePage(lang, globals);
+  const [home, siteConfig] = await Promise.all([fetchHomePage(lang, globals), fetchSiteConfig()]);
   if (!home) return null;
-  const sections = await enrichSections(home.doc.sections, { lang, globals: globals });
+  const sections = await enrichSections(home.doc.sections, enrichCtx(lang, globals, siteConfig));
   return { document: { ...home.doc, sections } };
 }

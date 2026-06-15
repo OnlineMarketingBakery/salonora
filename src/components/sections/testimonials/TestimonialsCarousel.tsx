@@ -143,21 +143,22 @@ export function TestimonialsCarousel({
                 ref={(el) => {
                   slideRefs.current[slideIdx] = el;
                 }}
-                className={`grid w-full gap-6 ${gridColsClass(perView)}`}
+                className={`grid w-full items-stretch gap-6 ${gridColsClass(perView)}`}
               >
                 {slideItems.map((t) => (
                   <blockquote
                     key={t.id}
-                    className={`surface-light ${REVEAL_ITEM} relative flex h-full min-h-[200px] flex-col gap-[23px] rounded-[14px] bg-linear-to-b from-white to-[rgba(255,255,255,0.48)] p-6 shadow-[0px_18px_48px_0px_rgba(67,87,128,0.08)] sm:p-[34px]`}
+                    className={`surface-light ${REVEAL_ITEM} relative flex h-full min-h-[200px] flex-col rounded-[14px] bg-linear-to-b from-white to-[rgba(255,255,255,0.48)] p-6 shadow-[0px_18px_48px_0px_rgba(67,87,128,0.08)] sm:p-[34px]`}
                   >
-                    <QuoteGlyph />
+                    <QuoteGlyph className="mb-[23px] shrink-0" />
                     <RichText
                       html={t.clientTestimonial}
-                      className="text-left text-sm font-normal leading-5 text-copy [&_p]:mb-3 [&_p:last-child]:mb-0"
+                      className="flex-1 text-left text-sm font-normal leading-5 text-copy [&_p]:mb-3 [&_p:last-child]:mb-0"
                     />
-                    <div className="h-px w-full shrink-0 bg-[rgba(21,41,81,0.12)]" aria-hidden />
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="flex min-w-0 flex-1 items-center gap-2">
+                    <div className="mt-[23px] w-full shrink-0">
+                      <div className="h-px w-full bg-[rgba(21,41,81,0.12)]" aria-hidden />
+                      <div className="mt-[23px] flex items-center justify-between gap-3">
+                        <div className="flex min-w-0 flex-1 items-center gap-2">
                         {t.avatar ? (
                           <Media
                             image={t.avatar}
@@ -186,8 +187,9 @@ export function TestimonialsCarousel({
                           <p className="line-clamp-2 text-base font-medium leading-[1.6] text-navy">{t.clientName}</p>
                           <p className="line-clamp-2 text-xs font-normal leading-[1.4] text-[#475569]">{t.clientRole}</p>
                         </div>
+                        </div>
+                        {typeof t.rating === "number" && t.rating > 0 && <RatingPill rating={t.rating} />}
                       </div>
-                      {typeof t.rating === "number" && t.rating > 0 && <RatingPill rating={t.rating} />}
                     </div>
                   </blockquote>
                 ))}

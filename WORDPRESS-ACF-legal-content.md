@@ -1,27 +1,22 @@
 # WordPress ACF: `legal_content` and `faq` layouts
 
-These layouts are in **repo-root** `acf-import-bundle.json` (`layout_omb_legal_content`, `layout_omb_faq`).
+These layouts live in **`wordpress/wp-content/themes/omb-headless/acf-json/group_omb_page_builder.json`** (`layout_omb_legal_content`, `layout_omb_faq`).
 
-**Recommended (safe merge — does not reset existing page-builder layouts):**
+**Deploy to WordPress:**
 
 ```bash
-npm run acf:sync-bundle
-npm run acf:push
+npm run plugins:deploy -- --with-theme
 ```
 
-Or push only new layouts by name: `npm run acf:push -- --only=legal_content`
+Then in WP Admin → **Custom Fields → Sync available** (if ACF shows pending sync for the page builder group).
 
-**Warning:** Do not use chunked partial imports on production. Always use `npm run acf:push` (merge-only). If duplicates accumulate in ACF admin, run `npm run acf:cleanup-duplicates` first.
-
-Uses **merge import** (`X-Acf-Merge-Layouts`) so layouts appear in the WP admin picker (append-only `acf_update_field` is not enough).
-
-Requires deployed `omb-headless-core` (`acf-sync.php`, `rest.php` — UTF-8 **without BOM**). Check: open `/wp-json/omb-headless/v1/acf-sync-status` — should list `page_sections_layouts` including `legal_content` and `faq`.
+PHP must be **UTF-8 without BOM** — a BOM breaks REST JSON and Gutenberg saves. `npm run plugins:deploy` runs `strip:php-bom` before packaging.
 
 In the page editor: **OMB Page Builder → Flexible Sections** (field `page_sections`), not Page footer sections.
 
-After push: **Ctrl+F5** in WP admin. If still missing: **ACF → Field Groups → OMB Page Builder → Sync** (if offered).
+After deploy: **Ctrl+F5** in WP admin.
 
-**Manual:** add the layouts below to **Page sections** in ACF if you cannot run the push script.
+**Manual:** add the layouts below to **Page sections** in ACF if you cannot run the deploy script.
 
 | Setting | Value |
 |---------|--------|

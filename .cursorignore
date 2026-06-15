@@ -22,7 +22,7 @@ docs/
 scripts/
 
 # ACF JSON (large file — reference explicitly only when needed)
-acf-import-bundle.json
+wordpress/wp-content/themes/omb-headless/acf-json/
 
 # Logs and locks
 *.log

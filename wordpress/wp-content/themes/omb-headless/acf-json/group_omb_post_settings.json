@@ -437,6 +437,339 @@
                     "min": "",
                     "max": ""
                 },
+                "layout_omb_is_demo_for_you": {
+                    "key": "layout_omb_is_demo_for_you",
+                    "name": "is_demo_for_you",
+                    "label": "Is demo for you",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_omb_is_demo_for_you_title",
+                            "label": "Section title",
+                            "name": "title",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "Centered headline (Figma 696:4046).",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "allow_in_bindings": 0,
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
+                        },
+                        {
+                            "key": "field_omb_is_demo_for_you_for_you_heading",
+                            "label": "“For you” card heading",
+                            "name": "for_you_heading",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "Heading above the checklist with brand check icons.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "allow_in_bindings": 0,
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
+                        },
+                        {
+                            "key": "field_omb_is_demo_for_you_for_you_list_icon",
+                            "label": "“For you” list icon",
+                            "name": "for_you_list_icon",
+                            "aria-label": "",
+                            "type": "image",
+                            "instructions": "One icon for all rows in this card (optional; default check glyph).",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "return_format": "array",
+                            "library": "all",
+                            "min_width": "",
+                            "min_height": "",
+                            "min_size": "",
+                            "max_width": "",
+                            "max_height": "",
+                            "max_size": "",
+                            "mime_types": "png,jpg,jpeg,webp,svg",
+                            "allow_in_bindings": 0,
+                            "preview_size": "thumbnail"
+                        },
+                        {
+                            "key": "field_omb_is_demo_for_you_for_you_list",
+                            "label": "“For you” lines",
+                            "name": "for_you_list",
+                            "aria-label": "",
+                            "type": "repeater",
+                            "instructions": "Each row shows a brand check icon in the front end.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "layout": "row",
+                            "pagination": 0,
+                            "min": 0,
+                            "max": 0,
+                            "collapsed": "",
+                            "button_label": "Add line",
+                            "rows_per_page": 20,
+                            "sub_fields": [
+                                {
+                                    "key": "field_omb_is_demo_for_you_for_you_list_item",
+                                    "label": "Line",
+                                    "name": "item",
+                                    "aria-label": "",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": "",
+                                    "maxlength": "",
+                                    "allow_in_bindings": 0,
+                                    "placeholder": "",
+                                    "prepend": "",
+                                    "append": "",
+                                    "parent_repeater": "field_omb_is_demo_for_you_for_you_list"
+                                }
+                            ]
+                        },
+                        {
+                            "key": "field_omb_is_demo_for_you_not_for_you_heading",
+                            "label": "“Not for you” card heading",
+                            "name": "not_for_you_heading",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "Heading above the list with rose X icons.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "allow_in_bindings": 0,
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
+                        },
+                        {
+                            "key": "field_omb_is_demo_for_you_not_for_you_list_icon",
+                            "label": "“Not for you” list icon",
+                            "name": "not_for_you_list_icon",
+                            "aria-label": "",
+                            "type": "image",
+                            "instructions": "One icon for all rows in this card (optional; default X glyph).",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "return_format": "array",
+                            "library": "all",
+                            "min_width": "",
+                            "min_height": "",
+                            "min_size": "",
+                            "max_width": "",
+                            "max_height": "",
+                            "max_size": "",
+                            "mime_types": "png,jpg,jpeg,webp,svg",
+                            "allow_in_bindings": 0,
+                            "preview_size": "thumbnail"
+                        },
+                        {
+                            "key": "field_omb_is_demo_for_you_not_for_you_list",
+                            "label": "“Not for you” lines",
+                            "name": "not_for_you_list",
+                            "aria-label": "",
+                            "type": "repeater",
+                            "instructions": "Each row shows a rose X icon in the front end.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "layout": "row",
+                            "pagination": 0,
+                            "min": 0,
+                            "max": 0,
+                            "collapsed": "",
+                            "button_label": "Add line",
+                            "rows_per_page": 20,
+                            "sub_fields": [
+                                {
+                                    "key": "field_omb_is_demo_for_you_not_for_you_list_item",
+                                    "label": "Line",
+                                    "name": "item",
+                                    "aria-label": "",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "default_value": "",
+                                    "maxlength": "",
+                                    "allow_in_bindings": 0,
+                                    "placeholder": "",
+                                    "prepend": "",
+                                    "append": "",
+                                    "parent_repeater": "field_omb_is_demo_for_you_not_for_you_list"
+                                }
+                            ]
+                        },
+                        {
+                            "key": "field_omb_is_demo_for_you_portrait_image",
+                            "label": "Portrait image",
+                            "name": "portrait_image",
+                            "aria-label": "",
+                            "type": "image",
+                            "instructions": "Right column photo over the brand gradient.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "return_format": "array",
+                            "library": "all",
+                            "min_width": "",
+                            "min_height": "",
+                            "min_size": "",
+                            "max_width": "",
+                            "max_height": "",
+                            "max_size": "",
+                            "mime_types": "png,jpg,jpeg,webp,svg",
+                            "allow_in_bindings": 0,
+                            "preview_size": "medium"
+                        },
+                        {
+                            "key": "field_omb_is_demo_for_you_panel_overlay",
+                            "label": "Panel overlay (optional)",
+                            "name": "panel_overlay",
+                            "aria-label": "",
+                            "type": "image",
+                            "instructions": "Optional texture or rings over the gradient (e.g. Figma decorative layer).",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "return_format": "array",
+                            "library": "all",
+                            "min_width": "",
+                            "min_height": "",
+                            "min_size": "",
+                            "max_width": "",
+                            "max_height": "",
+                            "max_size": "",
+                            "mime_types": "png,jpg,jpeg,webp,svg",
+                            "allow_in_bindings": 0,
+                            "preview_size": "medium"
+                        },
+                        {
+                            "key": "field_omb_is_demo_for_you_footer_message",
+                            "label": "Footer message",
+                            "name": "footer_message",
+                            "aria-label": "",
+                            "type": "wysiwyg",
+                            "instructions": "Left copy in the navy footer band.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "allow_in_bindings": 0,
+                            "tabs": "all",
+                            "toolbar": "basic",
+                            "media_upload": 0,
+                            "delay": 0
+                        },
+                        {
+                            "key": "field_omb_is_demo_for_you_cta_link",
+                            "label": "Footer CTA link",
+                            "name": "cta_link",
+                            "aria-label": "",
+                            "type": "link",
+                            "instructions": "White pill button (use link title for the label).",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "return_format": "array",
+                            "allow_in_bindings": 0
+                        },
+                        {
+                            "key": "field_omb_is_demo_for_you_cta_trailing_icon",
+                            "label": "Footer CTA trailing icon",
+                            "name": "cta_trailing_icon",
+                            "aria-label": "",
+                            "type": "image",
+                            "instructions": "Optional; defaults to circled arrow when empty.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "return_format": "array",
+                            "library": "all",
+                            "min_width": "",
+                            "min_height": "",
+                            "min_size": "",
+                            "max_width": "",
+                            "max_height": "",
+                            "max_size": "",
+                            "mime_types": "png,jpg,jpeg,webp,svg",
+                            "allow_in_bindings": 0,
+                            "preview_size": "thumbnail"
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
                 "layout_omb_latest_posts": {
                     "key": "layout_omb_latest_posts",
                     "name": "latest_posts",
@@ -569,5 +902,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1779300100
+    "modified": 1781264867
 }

@@ -67,7 +67,7 @@ salonora/
 ## Prerequisites
 
 - **WordPress** with the stack described in [`docs/wordpress-connection-guide.md`](docs/wordpress-connection-guide.md) (ACF Pro, Polylang `nl`/`en`, Yoast, CF7, custom post types `service`, `testimonial`, and `case_study`, option pages, menus).
-- ACF: **`acf-import-bundle.json` at the repo root** is the canonical bulk-import file (~**750 KB** — mostly **`group_omb_page_builder`** with 53 flexible layouts, including **`legal_content`** and **`faq`**). **`npm run acf:sync-bundle`** copies it to the theme mirror; **`npm run acf:push`** POSTs to `POST /omb-headless/v1/acf-sync` (needs `REVALIDATION_SECRET`). The page builder syncs in steps: one **replace** import (up to ~23 layouts), then **append** (one layout per request via `acf_update_field`, no full re-import). To add only new layouts without re-importing the page builder: **`npm run acf:push-layouts`** (see [WORDPRESS-ACF-legal-content.md](WORDPRESS-ACF-legal-content.md)). Deploy **`wordpress/wp-content/plugins/omb-headless-core/includes/acf-sync.php`** and **`rest.php`** on WordPress (must be **UTF-8 without BOM** — a BOM breaks all REST JSON and Gutenberg saves). Resume: `npm run acf:push -- --only=group_omb_page_builder --from-chunk=3`. `acf-json/group_*.json` is generated with **`npm run acf:extract-local-json`**. Layouts must match `src/lib/acf/` and `src/components/sections/`.
+- ACF: flexible layouts are defined in **`wordpress/wp-content/themes/omb-headless/acf-json/group_*.json`** (Local JSON). Deploy theme JSON with **`npm run plugins:deploy -- --with-theme`**, then sync field groups in WP Admin → **Custom Fields → Sync available** if prompted. Plugin-only changes use **`npm run plugins:deploy`** (core + form builder). Layouts must match `src/lib/acf/` and `src/components/sections/`. Run **`npm run validate:sections`** after pipeline changes.
 
 ## Setup & installation
 
@@ -113,6 +113,7 @@ All keys are documented in **`.env.example`** at the repo root. Summary:
 | `NEXT_PUBLIC_DEFAULT_CTA_BRAND_ARROW_URL` | Optional | Absolute image URL for blue CTA trailing icon when WordPress Site Options image is unset |
 | `WORDPRESS_SERVICE_REST_BASE` / `WORDPRESS_TESTIMONIAL_REST_BASE` / `WORDPRESS_CASE_STUDY_REST_BASE` | Rare | Override REST base if CPT slug differs |
 | `DEFAULT_LOCALE` / `SUPPORTED_LOCALES` | Optional | Default redirect locale; comma list (default `nl,en`) |
+| `PLOI_SSH_HOST` / `PLOI_SSH_USER` / `PLOI_PLUGINS_PATH` / `PLOI_THEMES_PATH` / `PLOI_MU_PLUGINS_PATH` | For `plugins:deploy` | Ploi SSH deploy (`PLOI_PLUGINS_PATH` required; theme/mu paths only for `--with-theme` / `--with-mu-plugin`) |
 
 If `WORDPRESS_BASE_URL` / `WORDPRESS_API_URL` are unset, **Next Image** runs in `unoptimized` mode (handy for quick local tries).
 
@@ -124,6 +125,11 @@ If `WORDPRESS_BASE_URL` / `WORDPRESS_API_URL` are unset, **Next Image** runs in 
 | `npm run build` | Production build |
 | `npm run start` | Serve production build (`NODE_ENV=production`) |
 | `npm run lint` | ESLint |
+| `npm run validate:sections` | Verify section pipeline (types, normalizer, registry, renderer) |
+| `npm run strip:php-bom` | Strip UTF-8 BOM from PHP under `wordpress/` |
+| `npm run plugins:package` | Zip OMB plugins into `dist/` (add `-- --with-theme` or `--with-mu-plugin` when needed) |
+| `npm run plugins:deploy` | Deploy **omb-headless-core** + **omb-form-builder** via SSH (add `-- --with-theme` for ACF JSON / theme changes) |
+| `npm run backup:wp` | WPvivid full backup on Ploi (deletes oldest backup first). Use before risky CMS/plugin deploys. Add `-- --dry-run` to preview. |
 
 ## Key workflows & features
 

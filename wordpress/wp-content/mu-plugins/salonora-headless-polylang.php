@@ -1,5 +1,12 @@
 <?php
 /**
+ * Plugin Name: Salonora Headless Polylang
+ * Plugin URI: https://onlinemarketingbakery.nl/
+ * Description: Exposes Polylang per-language path segments for headless Next.js routing (REST headless/v1/polylang-paths).
+ * Version: 1.0.0
+ * Author: Online Marketing Bakery
+ * Author URI: https://onlinemarketingbakery.nl/
+ *
  * Headless: expose per-language path segments (after language prefix) for a post, using Polylang.
  * Install: wp-content/mu-plugins/salonora-headless-polylang.php
  *

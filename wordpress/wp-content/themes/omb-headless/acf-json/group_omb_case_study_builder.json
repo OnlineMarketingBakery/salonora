@@ -30,7 +30,11 @@
                             "type": "text",
                             "instructions": "Shown as H2 and in the Inhoudsopgave (e.g. Probleem, Resultaat).",
                             "required": 1,
-                            "wrapper": { "width": "", "class": "", "id": "" },
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
                             "default_value": "",
                             "maxlength": "",
                             "allow_in_bindings": 1
@@ -262,5 +266,5 @@
     "description": "",
     "show_in_rest": 1,
     "display_title": "",
-    "modified": 1715610000
+    "modified": 1781264867
 }

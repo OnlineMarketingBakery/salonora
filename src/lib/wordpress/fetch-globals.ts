@@ -1,5 +1,6 @@
 import { cache } from "react";
 import { asBool, asImage, asLink, asString } from "@/lib/acf/field-mappers";
+import type { WpAcfLink } from "@/types/wordpress";
 import { acfPick, mapFooterFieldsFromAcfRow } from "@/lib/acf/map-footer-fields";
 import { defaultCtaBrandArrowFallback } from "@/lib/ui/default-cta-brand-arrow";
 import type { Locale } from "@/lib/i18n/locales";
@@ -136,6 +137,23 @@ export const fetchAcfOptions = cache(async (path: string, lang: Locale): Promise
   return null;
 });
 
+const CHECKOUT_URL =
+  "https://salonora.plugandpay.com/checkout/professionele-salon-boekingssysteem";
+
+/** CMS fallback when header CTA still points at removed /contact or placeholder #. */
+function repairBrokenHeaderCta(link: WpAcfLink | null): WpAcfLink | null {
+  if (!link?.url) return link;
+  const url = link.url.trim();
+  if (url === "#" || url === "/contact" || url === "/contact/") {
+    return {
+      ...link,
+      url: CHECKOUT_URL,
+      target: link.target || "_blank",
+    };
+  }
+  return link;
+}
+
 function fromHeader(o: Record<string, unknown> | null) {
   if (!o) {
     return {
@@ -156,7 +174,7 @@ function fromHeader(o: Record<string, unknown> | null) {
     headerSticky: asBool(acfPick(o, "header_sticky", "headerSticky")),
     showLanguageSwitcher: asBool(acfPick(o, "show_language_switcher", "showLanguageSwitcher")),
     showHeaderCta: asBool(acfPick(o, "show_header_cta", "showHeaderCta")),
-    headerCtaLink: asLink(acfPick(o, "header_cta_link", "headerCtaLink")),
+    headerCtaLink: repairBrokenHeaderCta(asLink(acfPick(o, "header_cta_link", "headerCtaLink"))),
   };
 }
 

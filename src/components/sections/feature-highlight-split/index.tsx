@@ -1,5 +1,6 @@
 /** Figma **346:5623** — badge/heading/CTA **597:5386**, phone **597:5432**, cards **597:5396**. */
-import { Button } from "@/components/ui/Button";
+import Link from "next/link";
+import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
@@ -65,7 +66,8 @@ const ACCENT_PATH =
   "M0 0C5.79402 6.4378 9 14.7924 9 23.4536V26.5464C9 35.2076 5.79402 43.5622 0 50V0Z";
 
 function CardAccent({ variant }: { variant: "brand" | "rose" }) {
-  const fill = variant === "brand" ? "#3990F0" : "#D27E91";
+  const fill =
+    variant === "brand" ? "var(--palette-brand)" : "var(--palette-rose)";
 
   return (
     <svg
@@ -74,7 +76,7 @@ function CardAccent({ variant }: { variant: "brand" | "rose" }) {
       viewBox="0 0 9 50"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      className="pointer-events-none absolute top-1/2 left-0 z-[1] block h-[50px] w-[9px] min-w-[9px] shrink-0 -translate-y-1/2"
+      className="pointer-events-none absolute left-0 top-1/2 z-20 block h-[50px] w-[9px] min-w-[9px] shrink-0 -translate-y-1/2"
       aria-hidden
     >
       <path d={ACCENT_PATH} fill={fill} />
@@ -95,21 +97,24 @@ function PromiseCard({
   const longCardProse = " [&_p]:max-w-none [&_p]:whitespace-normal lg:[&_p]:max-w-[275px]";
 
   return (
-    <div
-      className={`surface-light relative flex w-full shrink-0 items-center rounded-[14px] px-6 sm:px-[32px] ${
-        isLongCard ? "min-h-[121px] py-4 lg:h-[121px] lg:py-0" : "min-h-[80px] py-3 lg:h-[80px] lg:py-0"
-      }`}
-      style={cardFace}
-    >
+    <article className="relative isolate w-full shrink-0 overflow-visible">
       <CardAccent variant={index % 2 === 0 ? "brand" : "rose"} />
-      <RichText
-        html={html}
-        className={`relative z-[2] w-full max-w-none ${cardProse}${isLongCard ? longCardProse : shortCardProse}`}
-      />
-    </div>
+      <div
+        className={`surface-light relative flex w-full items-center overflow-hidden rounded-[14px] px-8 sm:px-[32px] ${
+          isLongCard ? "min-h-[121px] py-4 lg:h-[121px] lg:py-0" : "min-h-[80px] py-3 lg:h-[80px] lg:py-0"
+        }`}
+        style={cardFace}
+      >
+        <RichText
+          html={html}
+          className={`relative z-[2] w-full max-w-none text-navy-deep ${cardProse}${isLongCard ? longCardProse : shortCardProse}`}
+        />
+      </div>
+    </article>
   );
 }
 
+/** Figma **597:5391** — 252×63 pill; inner row gap 36px; icon **597:5394** 27×27. */
 function LeftCta({
   ctaHref,
   ctaLabel,
@@ -124,19 +129,23 @@ function LeftCta({
   if (!ctaHref || !ctaLabel?.trim()) return null;
 
   return (
-    <Button
+    <Link
       href={ctaHref}
       target={ctaTarget}
-      variant="ctaBrand"
-      ctaSize="package"
-      ctaElevation="none"
-      ctaFullWidth={false}
-      ctaJustify="center"
-      className={`!h-[63px] !min-h-[63px] w-full max-w-[252px] gap-9 !rounded-[31.5px] !px-[22px] !py-[18px] !text-base !font-normal !leading-normal [box-shadow:0_6px_10px_rgba(57,144,240,0.54)] sm:!text-xl sm:!w-[252px] ${className}`.trim()}
-      arrowClassName="size-[27px] shrink-0"
+      rel={ctaTarget === "_blank" ? "noopener noreferrer" : undefined}
+      className={`flex h-[63px] w-full shrink-0 items-center justify-between rounded-[31.5px] bg-brand pl-[22px] pr-5 text-[20px] font-normal leading-normal text-white shadow-[0px_6px_10px_color-mix(in_srgb,var(--palette-brand)_54%,transparent)] transition-opacity hover:opacity-95 lg:inline-flex lg:w-[252px] lg:max-w-full lg:justify-start lg:gap-9 lg:self-start ${className}`.trim()}
     >
-      {ctaLabel.trim()}
-    </Button>
+      <span className="shrink-0 whitespace-nowrap">{ctaLabel.trim()}</span>
+      <Image
+        src="/button-icon-primary.svg"
+        width={27}
+        height={27}
+        alt=""
+        unoptimized
+        className="size-[27px] shrink-0"
+        aria-hidden
+      />
+    </Link>
   );
 }
 
@@ -163,7 +172,7 @@ function LeftColumn({
     <div className={`flex flex-col gap-7 lg:gap-[28px] ${className}`} style={style}>
       <div className="flex flex-col gap-[19px]">
         {badge?.trim() ? (
-          <span className="inline-flex h-[42px] w-[146px] items-center justify-center rounded-[21px] bg-[#fefeff] px-5 text-base font-medium leading-[1.6] text-brand">
+          <span className="inline-flex h-[42px] w-[146px] items-center justify-center rounded-[21px] bg-white px-5 text-base font-medium leading-[1.6] text-brand">
             {badge.trim()}
           </span>
         ) : null}

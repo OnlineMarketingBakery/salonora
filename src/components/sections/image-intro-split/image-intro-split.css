@@ -1,0 +1,15 @@
+@media (max-width: 768px) {
+  .image-intro-split {
+    padding-bottom: 2.5rem !important;
+  }
+
+  .image-intro-split__visual {
+    justify-content: center;
+  }
+
+  .image-intro-split__visual-frame {
+    width: 85% !important;
+    max-width: 340px !important;
+    margin-inline: auto;
+  }
+}

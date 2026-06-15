@@ -182,7 +182,7 @@ export function HowItWorksStepsSection({
 
           {ctas.length > 0 ? (
             <div
-              className={`${REVEAL_ITEM} flex w-full flex-col items-center gap-4`}
+              className={`${REVEAL_ITEM} flex w-full flex-col items-center gap-[14px] sm:flex-row sm:items-center sm:justify-center sm:gap-[14px]`}
             >
               {ctas.map((c, i) => {
                 const l = resolveLink(c.url, lang);

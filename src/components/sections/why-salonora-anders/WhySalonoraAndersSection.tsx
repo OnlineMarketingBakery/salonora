@@ -35,7 +35,7 @@ export function WhySalonoraAndersSection({
           >
             <div className="flex flex-col gap-[14px]">
               {titleLines.length > 0 ? (
-                <h2 className="font-sans text-[32px] font-semibold leading-tight text-[#002752] sm:text-[40px] sm:leading-[1.1] lg:text-[48px] lg:leading-[56px]">
+                <h2 className="font-sans text-[32px] font-semibold leading-tight text-navy-deep sm:text-[40px] sm:leading-[1.1] lg:text-[48px] lg:leading-[56px]">
                   {titleLines.map((line, i) => (
                     <span key={i} className="block">
                       {line}
@@ -46,13 +46,13 @@ export function WhySalonoraAndersSection({
               {section.paragraph1 ? (
                 <RichText
                   html={section.paragraph1}
-                  className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:text-base !prose-p:font-normal !prose-p:leading-[1.4] !prose-p:text-[#435780] [&_p+_p]:!mt-0"
+                  className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:text-base !prose-p:font-normal !prose-p:leading-[1.4] !prose-p:text-muted [&_p+_p]:!mt-0"
                 />
               ) : null}
               {section.paragraph2 ? (
                 <RichText
                   html={section.paragraph2}
-                  className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:text-base !prose-p:font-normal !prose-p:leading-[1.4] !prose-p:text-[#435780] [&_p+_p]:!mt-0"
+                  className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:text-base !prose-p:font-normal !prose-p:leading-[1.4] !prose-p:text-muted [&_p+_p]:!mt-0"
                 />
               ) : null}
             </div>
