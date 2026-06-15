@@ -5,6 +5,11 @@ import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { TestimonialDocument } from "@/types/testimonials";
+import "./testimonials-carousel.css";
+
+const MOBILE_MQ = "(max-width: 767px)";
+const SWIPE_THRESHOLD_PX = 48;
+const VIEWPORT_HEIGHT_BUFFER_PX = 8;
 
 function chunk<T>(arr: T[], size: number): T[][] {
   if (size < 1) return [];
@@ -71,6 +76,76 @@ function gridColsClass(perView: 1 | 2 | 3): string {
   }
 }
 
+function useMobileCarousel(): boolean {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia(MOBILE_MQ);
+    const sync = () => setIsMobile(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
+  return isMobile;
+}
+
+function TestimonialCard({ testimonial }: { testimonial: TestimonialDocument }) {
+  return (
+    <blockquote
+      className={`testimonials-carousel__card surface-light ${REVEAL_ITEM} relative flex h-full min-h-[200px] flex-col overflow-hidden rounded-[14px] bg-linear-to-b from-white to-[rgba(255,255,255,0.48)] p-6 shadow-[0px_18px_48px_0px_rgba(67,87,128,0.08)] sm:p-[34px]`}
+    >
+      <QuoteGlyph className="mb-[23px] shrink-0" />
+      <RichText
+        html={testimonial.clientTestimonial}
+        className="flex-1 text-left text-sm font-normal leading-5 text-copy [&_p]:mb-3 [&_p:last-child]:mb-0"
+      />
+      <div className="mt-[23px] w-full shrink-0">
+        <div className="h-px w-full bg-[rgba(21,41,81,0.12)]" aria-hidden />
+        <div className="mt-[23px] flex items-center justify-between gap-3">
+          <div className="flex min-w-0 flex-1 items-center gap-2">
+            {testimonial.avatar ? (
+              <Media
+                image={testimonial.avatar}
+                width={48}
+                height={48}
+                className="size-12 shrink-0 rounded-full object-cover"
+                preferLargestSource
+                sizes="48px"
+                quality={90}
+              />
+            ) : (
+              <div
+                className="flex size-12 shrink-0 items-center justify-center rounded-full bg-surface text-sm font-semibold text-navy ring-1 ring-navy-deep/10"
+                aria-hidden
+              >
+                {testimonial.clientName
+                  .split(/\s+/)
+                  .filter(Boolean)
+                  .slice(0, 2)
+                  .map((w) => w[0])
+                  .join("")
+                  .toUpperCase() || "?"}
+              </div>
+            )}
+            <div className="testimonials-carousel__author-meta min-w-0">
+              <p className="testimonials-carousel__author-name line-clamp-2 text-base font-medium leading-[1.6] text-navy">
+                {testimonial.clientName}
+              </p>
+              <p className="testimonials-carousel__author-role line-clamp-2 text-xs font-normal leading-[1.4] text-muted">
+                {testimonial.clientRole}
+              </p>
+            </div>
+          </div>
+          {typeof testimonial.rating === "number" && testimonial.rating > 0 ? (
+            <RatingPill rating={testimonial.rating} />
+          ) : null}
+        </div>
+      </div>
+    </blockquote>
+  );
+}
+
 export function TestimonialsCarousel({
   items,
   perView,
@@ -83,29 +158,47 @@ export function TestimonialsCarousel({
   /** When only one testimonial exists, constrain card width like legacy grid. */
   narrowSingleTotal?: boolean;
 }) {
-  const slides = useMemo(() => chunk(items, perView), [items, perView]);
+  const isMobile = useMobileCarousel();
+  const effectivePerView = isMobile ? 1 : perView;
+  const slides = useMemo(() => chunk(items, effectivePerView), [items, effectivePerView]);
   const [active, setActive] = useState(0);
   const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [slideHeights, setSlideHeights] = useState<number[]>([]);
   const [viewportHeight, setViewportHeight] = useState<number | null>(null);
+  const touchStartX = useRef<number | null>(null);
 
   useEffect(() => {
     setActive((a) => (slides.length === 0 ? 0 : Math.min(a, slides.length - 1)));
   }, [slides.length]);
 
   useLayoutEffect(() => {
-    // Measure each slide so we can animate the viewport height between slides.
-    const heights = slides.map((_, idx) => {
+    const observers: ResizeObserver[] = [];
+
+    slides.forEach((_, idx) => {
       const el = slideRefs.current[idx];
-      if (!el) return 0;
-      return Math.ceil(el.getBoundingClientRect().height);
+      if (!el) return;
+
+      const measure = () => {
+        const h = Math.ceil(el.getBoundingClientRect().height);
+        setSlideHeights((prev) => {
+          const next = [...prev];
+          next[idx] = h;
+          return next;
+        });
+      };
+
+      measure();
+      const ro = new ResizeObserver(measure);
+      ro.observe(el);
+      observers.push(ro);
     });
-    setSlideHeights(heights);
+
+    return () => observers.forEach((ro) => ro.disconnect());
   }, [slides]);
 
   useEffect(() => {
     const h = slideHeights[active] ?? 0;
-    if (h > 0) setViewportHeight(h);
+    if (h > 0) setViewportHeight(h + VIEWPORT_HEIGHT_BUFFER_PX);
   }, [active, slideHeights]);
 
   const go = useCallback(
@@ -113,7 +206,23 @@ export function TestimonialsCarousel({
       if (i < 0 || i >= slides.length) return;
       setActive(i);
     },
-    [slides.length]
+    [slides.length],
+  );
+
+  const onTouchStart = useCallback((clientX: number) => {
+    touchStartX.current = clientX;
+  }, []);
+
+  const onTouchEnd = useCallback(
+    (clientX: number) => {
+      if (touchStartX.current == null) return;
+      const dx = clientX - touchStartX.current;
+      touchStartX.current = null;
+      if (Math.abs(dx) < SWIPE_THRESHOLD_PX) return;
+      if (dx < 0) go(active + 1);
+      else go(active - 1);
+    },
+    [active, go],
   );
 
   if (!items.length) return null;
@@ -121,13 +230,19 @@ export function TestimonialsCarousel({
   const slideFractionPct = slides.length ? 100 / slides.length : 100;
 
   return (
-    <div className={narrowSingleTotal ? "mx-auto w-full max-w-[637px]" : "w-full"}>
+    <div
+      className={
+        narrowSingleTotal && !isMobile ? "mx-auto w-full max-w-[637px]" : "w-full"
+      }
+    >
       <div
-        className="relative w-full overflow-hidden will-change-[height] [transition-property:height] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
+        className={`testimonials-carousel__viewport relative w-full overflow-hidden will-change-[height] [transition-property:height] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none`}
         style={viewportHeight != null ? { height: viewportHeight } : undefined}
+        onTouchStart={(e) => onTouchStart(e.touches[0]?.clientX ?? 0)}
+        onTouchEnd={(e) => onTouchEnd(e.changedTouches[0]?.clientX ?? 0)}
       >
         <div
-          className="flex will-change-transform [transition-property:transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
+          className="testimonials-carousel__track flex will-change-transform [transition-property:transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none"
           style={{
             width: `${slides.length * 100}%`,
             transform: `translate3d(-${active * slideFractionPct}%, 0, 0)`,
@@ -143,55 +258,10 @@ export function TestimonialsCarousel({
                 ref={(el) => {
                   slideRefs.current[slideIdx] = el;
                 }}
-                className={`grid w-full items-stretch gap-6 ${gridColsClass(perView)}`}
+                className={`grid w-full items-stretch gap-6 ${gridColsClass(effectivePerView)}`}
               >
                 {slideItems.map((t) => (
-                  <blockquote
-                    key={t.id}
-                    className={`surface-light ${REVEAL_ITEM} relative flex h-full min-h-[200px] flex-col rounded-[14px] bg-linear-to-b from-white to-[rgba(255,255,255,0.48)] p-6 shadow-[0px_18px_48px_0px_rgba(67,87,128,0.08)] sm:p-[34px]`}
-                  >
-                    <QuoteGlyph className="mb-[23px] shrink-0" />
-                    <RichText
-                      html={t.clientTestimonial}
-                      className="flex-1 text-left text-sm font-normal leading-5 text-copy [&_p]:mb-3 [&_p:last-child]:mb-0"
-                    />
-                    <div className="mt-[23px] w-full shrink-0">
-                      <div className="h-px w-full bg-[rgba(21,41,81,0.12)]" aria-hidden />
-                      <div className="mt-[23px] flex items-center justify-between gap-3">
-                        <div className="flex min-w-0 flex-1 items-center gap-2">
-                        {t.avatar ? (
-                          <Media
-                            image={t.avatar}
-                            width={48}
-                            height={48}
-                            className="size-12 shrink-0 rounded-full object-cover"
-                            preferLargestSource
-                            sizes="48px"
-                            quality={90}
-                          />
-                        ) : (
-                          <div
-                            className="flex size-12 shrink-0 items-center justify-center rounded-full bg-surface text-sm font-semibold text-navy ring-1 ring-navy-deep/10"
-                            aria-hidden
-                          >
-                            {t.clientName
-                              .split(/\s+/)
-                              .filter(Boolean)
-                              .slice(0, 2)
-                              .map((w) => w[0])
-                              .join("")
-                              .toUpperCase() || "?"}
-                          </div>
-                        )}
-                        <div className="flex min-w-0 flex-col gap-[10px]">
-                          <p className="line-clamp-2 text-base font-medium leading-[1.6] text-navy">{t.clientName}</p>
-                          <p className="line-clamp-2 text-xs font-normal leading-[1.4] text-[#475569]">{t.clientRole}</p>
-                        </div>
-                        </div>
-                        {typeof t.rating === "number" && t.rating > 0 && <RatingPill rating={t.rating} />}
-                      </div>
-                    </div>
-                  </blockquote>
+                  <TestimonialCard key={t.id} testimonial={t} />
                 ))}
               </div>
             </div>
@@ -199,8 +269,12 @@ export function TestimonialsCarousel({
         </div>
       </div>
 
-      {slides.length > 1 && (
-        <div className="mt-10 flex justify-center md:mt-12" role="tablist" aria-label="Testimonial slides">
+      {slides.length > 1 ? (
+        <div
+          className="testimonials-carousel__dots flex justify-center"
+          role="tablist"
+          aria-label="Testimonial slides"
+        >
           <div className="flex flex-wrap items-center justify-center gap-[3px]">
             {slides.map((_, i) => (
               <button
@@ -219,7 +293,7 @@ export function TestimonialsCarousel({
             ))}
           </div>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }

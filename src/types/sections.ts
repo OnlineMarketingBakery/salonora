@@ -415,14 +415,19 @@ export type SalonValueCardT = {
   checklistItems: SalonValueCardChecklistItemT[];
 };
 
-/** `simple` = section title + intro + compact top-accent cards (body per card). `featured` = eyebrow + intro + checklist cards + optional split visual / footer CTA (current behaviour). */
+/** `simple` = section title + intro + compact cards (body per card). `featured` = eyebrow + intro + checklist cards + optional split visual / footer CTA (current behaviour). */
 export type SalonValuePropositionLayoutT = "simple" | "featured";
+
+/** ACF select `card_accent_placement`: colored strip on feature cards. */
+export type SalonValueAccentPlacementT = "top" | "bottom";
 
 /** Figma: eyebrow + headline + intro, blue gradient visual, three accent cards. When no panel visual (empty `visualImage`), render centered headline + optional footer CTA pill (597:2910-style). */
 export type SalonValuePropositionSectionT = CoreSection & {
   type: "salon_value_proposition";
   /** ACF select `section_layout`: compact intro row vs full featured block. */
   sectionLayout: SalonValuePropositionLayoutT;
+  /** ACF select `card_accent_placement`: top or bottom accent strip on cards (default bottom). */
+  cardAccentPlacement: SalonValueAccentPlacementT;
   /** ACF `white_background`: full-width white band (overrides default surface split). */
   whiteBackground?: boolean;
   eyebrow: string;
@@ -789,6 +794,8 @@ export type PricingDualCardsFeatureItemT = {
 export type PricingDualCardsCardItemT = {
   /** White elevated card vs tinted panel (surface bg + inverted pills). */
   panel_style?: "white" | "tinted";
+  /** Figma **1714:1183** ribbon on tinted cards — defaults per locale when empty. */
+  badge?: string;
   title?: string;
   description?: string;
   features?: PricingDualCardsFeatureItemT[];

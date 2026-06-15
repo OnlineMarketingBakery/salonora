@@ -1,23 +1,24 @@
-/** @see Figma **696:4046** — qualification split: “voor jou” / “niet voor jou” cards, gradient portrait column, footer CTA band. */
-import { ArrowInCircle } from "@/components/ui/ArrowInCircle";
+/** @see Figma **696:4046** â€” qualification split: â€œvoor jouâ€ / â€œniet voor jouâ€ cards, gradient portrait column, footer CTA band. */
+import { Button } from "@/components/ui/Button";
+import { CtaTrailingIcon } from "@/components/ui/CtaTrailingIcon";
 import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
 import type { IsDemoForYouSectionT } from "@/types/sections";
 import type { WpImage } from "@/types/wordpress";
 import Image from "next/image";
-import Link from "next/link";
 import type { CSSProperties } from "react";
 
-/** Figma 696:4123 — vertical brand gradient on the portrait column. */
+/** Figma 696:4123 â€” vertical brand gradient on the portrait column. */
 const panelGradient: CSSProperties = {
   background: "linear-gradient(180deg, var(--palette-brand) 0%, #0079ff 100%)",
 };
 
-/** Figma 696:4124 — all three ring strokes, exported as one RGBA overlay (576×677). */
+/** Figma 696:4124 â€” all three ring strokes, exported as one RGBA overlay (576Ã—677). */
 const PORTRAIT_PANEL_RINGS_SRC = "/is-demo-for-you/portrait-panel-rings.png";
 
 function PortraitPanelRings() {
@@ -176,14 +177,14 @@ export function IsDemoForYouSection({
 
   return (
     <section className="py-8 md:py-12 lg:py-14">
-      <Container className="!max-w-[85rem]">
+      <Container>
         <div className="flex flex-col gap-10 md:gap-12">
           {title ? (
-            <h2
+            <SectionHeading
+              as="h2"
+              text={section.title}
               className={`${REVEAL_ITEM} m-0 text-center font-sans text-3xl font-semibold leading-tight text-navy sm:text-4xl lg:text-[48px] lg:leading-[56px]`}
-            >
-              {title}
-            </h2>
+            />
           ) : null}
 
           {(hasLists || hasPortrait) && (
@@ -216,7 +217,7 @@ export function IsDemoForYouSection({
                   >
                     <PortraitPanelRings />
                   </div>
-                  {/* Figma 696:4128 — portrait starts ~56px from panel top (8.3%). */}
+                  {/* Figma 696:4128 â€” portrait starts ~56px from panel top (8.3%). */}
                   <div className="relative z-10 flex min-h-0 flex-1 flex-col justify-end px-2 pt-[8.3%] sm:px-4 lg:px-0">
                     <div className="relative mx-auto w-full max-w-[34.125rem]">
                       <Media
@@ -258,34 +259,24 @@ export function IsDemoForYouSection({
                   <div className="flex-1" />
                 )}
                 {cta?.href ? (
-                  <Link
+                  <Button
                     href={cta.href}
                     target={cta.target}
-                    className="inline-flex min-h-16 w-full shrink-0 items-center justify-between gap-6 rounded-full border border-white bg-white px-5 py-3 font-sans text-base font-normal leading-6 text-navy-deep shadow-sm transition hover:bg-surface sm:px-6 sm:text-lg lg:w-auto lg:min-w-[26rem] lg:max-w-md xl:max-w-lg"
+                    variant="ctaWhite"
+                    ctaSize="default"
+                    ctaFullWidth
+                    ctaJustify="spread"
+                    ctaElevation="none"
+                    arrowContent={
+                      section.cta_trailing_icon ? (
+                        <CtaTrailingIcon image={section.cta_trailing_icon} />
+                      ) : undefined
+                    }
+                    className="min-h-16 w-full border border-white sm:w-auto [&_[data-cta-label]]:text-pretty"
                   >
-                    <span className="min-w-0 text-pretty text-left">
-                      {(section.cta_link?.title || cta.label).trim() ||
-                        "Demo aanvragen"}
-                    </span>
-                    <span
-                      className="flex h-8 w-8 shrink-0 items-center justify-center sm:h-9 sm:w-9"
-                      aria-hidden
-                    >
-                      {section.cta_trailing_icon ? (
-                        <Media
-                          image={section.cta_trailing_icon}
-                          width={32}
-                          height={32}
-                          className="h-8 w-8 object-contain"
-                        />
-                      ) : (
-                        <ArrowInCircle
-                          variant="on-light"
-                          className="!h-8 !w-8 sm:!h-9 sm:!w-9"
-                        />
-                      )}
-                    </span>
-                  </Link>
+                    {(section.cta_link?.title || cta.label).trim() ||
+                      "Demo aanvragen"}
+                  </Button>
                 ) : null}
               </div>
             </div>

@@ -2,6 +2,7 @@
 import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
+import { formatHeadingLines } from "@/lib/i18n/format-heading";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { Locale } from "@/lib/i18n/locales";
 import type { OurPromisesSectionT, WhoWeAreForItemAccentT } from "@/types/sections";
@@ -36,10 +37,7 @@ export function OurPromisesSection({
   section: OurPromisesSectionT;
   lang: Locale;
 }) {
-  const titleLines = section.title
-    .split(/\r?\n+/)
-    .map((l) => l.trim())
-    .filter(Boolean);
+  const titleLines = formatHeadingLines(section.title ?? "");
 
   const items = section.items.filter(
     (item) =>
@@ -50,7 +48,7 @@ export function OurPromisesSection({
 
   return (
     <section lang={lang} className="bg-white py-16 md:py-20 lg:py-[4.5rem]">
-      <Container className="!max-w-[85rem]">
+      <Container>
         <div
           className={`${REVEAL_ITEM} mx-auto flex w-full max-w-[76.8125rem] flex-col items-center gap-10 sm:gap-14 lg:gap-[4.8125rem]`}
         >

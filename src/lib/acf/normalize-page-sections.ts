@@ -790,10 +790,16 @@ function mapKnownPageSectionLayout(
         layoutRaw === "simple" || layoutRaw === "layout_1"
           ? "simple"
           : "featured";
+      const accentPlacementRaw = asString(
+        (row as Record<string, unknown>).card_accent_placement,
+      );
+      const cardAccentPlacement =
+        accentPlacementRaw === "top" ? "top" : "bottom";
       return {
         ...base,
         type: "salon_value_proposition",
         sectionLayout,
+        cardAccentPlacement,
         whiteBackground: asBool(row.white_background),
         eyebrow: asString(row.eyebrow),
         title: asString(row.title),
@@ -1293,6 +1299,7 @@ function mapKnownPageSectionLayout(
               const panel_style = ps === "tinted" ? "tinted" : "white";
               return {
                 panel_style,
+                badge: asString(c.badge),
                 title: asString(c.title),
                 description: asHtml(c.description),
                 features: Array.isArray(c.features)

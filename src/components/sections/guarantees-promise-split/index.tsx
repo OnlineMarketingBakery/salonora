@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/Button";
+import { CtaTrailingIcon } from "@/components/ui/CtaTrailingIcon";
 import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
+import { formatHeadingLines } from "@/lib/i18n/format-heading";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
+import { SECTION_SHELL_GUARANTEE_TIGHT_BOTTOM } from "@/lib/layout/section-spacing";
 import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
 import type { GuaranteesPromiseSplitSectionT } from "@/types/sections";
@@ -113,29 +116,26 @@ export function GuaranteesPromiseSplitSection({
   section: GuaranteesPromiseSplitSectionT;
   lang: Locale;
 }) {
-  const titleLines = section.title
-    .split(/\r?\n+/)
-    .map((l) => l.trim())
-    .filter(Boolean);
+  const titleLines = formatHeadingLines(section.title ?? "");
 
   const dl = resolveLink(section.downloadLink, lang);
 
   return (
-    <section className="bg-[var(--palette-white)] py-16 md:py-24">
-      <Container className="!max-w-[85rem]">
-        <div className="grid items-center lg:grid-cols-2 lg:items-start lg:gap-[53px]">
-          <div className={`${REVEAL_ITEM} relative min-w-0`}>
+    <section className={`bg-[var(--palette-white)] ${SECTION_SHELL_GUARANTEE_TIGHT_BOTTOM}`}>
+      <Container>
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2 lg:items-start lg:gap-[53px]">
+          <div className={`${REVEAL_ITEM} relative order-1 min-w-0 lg:order-1`}>
             {/*
               Figma Group 584: 612×624 — pale surface slab, emphasis on rounded bottom;
               portrait + ripples centered; pills overlay.
             */}
-            <div className="relative mx-auto w-full max-w-[612px] pb-2 lg:mx-0">
+            <div className="relative mx-auto w-full max-w-[612px] lg:mx-0">
               {/*
                 overflow-visible so floating pills aren’t clipped; extra bottom padding
                 matches Figma space below the lower badge.
               */}
               <div
-                className="relative overflow-visible rounded-t-2xl rounded-b-[40px] px-4 pt-10 pb-14 sm:px-6 sm:pt-12 sm:pb-[4.25rem]"
+                className="relative overflow-visible rounded-t-2xl rounded-b-[40px] px-4 pt-8 pb-6 sm:px-6 sm:pt-12 sm:pb-[4.25rem]"
                 style={
                   {
                     /*
@@ -210,7 +210,7 @@ export function GuaranteesPromiseSplitSection({
           </div>
 
           <div
-            className={`${REVEAL_ITEM} flex min-w-0 max-w-[625px] flex-col gap-[31px]`}
+            className={`${REVEAL_ITEM} order-2 flex min-w-0 max-w-[625px] flex-col items-start gap-5 lg:order-2 lg:gap-[31px]`}
           >
             <div className="flex min-w-0 flex-col gap-5 lg:gap-5">
               {section.badge ? (
@@ -222,7 +222,7 @@ export function GuaranteesPromiseSplitSection({
               ) : null}
 
               {titleLines.length ? (
-                <h2 className="max-w-[574px] font-sans text-[48px] font-semibold leading-[56px] text-[var(--palette-navy)]">
+                <h2 className="max-w-[574px] font-sans text-[32px] font-semibold leading-[1.15] text-[var(--palette-navy)] sm:text-[40px] sm:leading-[1.1] lg:text-[48px] lg:leading-[56px]">
                   {titleLines.map((l, i) => (
                     <span key={i} className="block">
                       {l}
@@ -241,37 +241,21 @@ export function GuaranteesPromiseSplitSection({
             ) : null}
 
             {dl?.href ? (
-              <div className="w-full max-w-[min(100%,453px)] sm:max-w-[453px]">
-                <Button
-                  href={dl.href}
-                  target={dl.target}
-                  variant="ctaBrand"
-                  ctaElevation="default"
-                  ctaJustify="between"
-                  showArrow={Boolean(section.cta_trailing_icon)}
-                  arrowContent={
-                    section.cta_trailing_icon ? (
-                      <span
-                        className="inline-flex shrink-0 items-center justify-center [&_img]:object-contain"
-                        aria-hidden
-                      >
-                        <Media
-                          image={section.cta_trailing_icon}
-                          width={21}
-                          height={21}
-                          className="h-[28px] w-[28px]"
-                          sizes="(max-width: 640px) 28px"
-                          preferLargestSource
-                        />
-                      </span>
-                    ) : undefined
-                  }
-                  className="h-auto min-h-12 w-full gap-3 px-4 py-3.5 text-left text-[15px] leading-snug shadow-[0px_6px_10px_color-mix(in_srgb,var(--palette-brand)_54%,transparent)] sm:h-12 sm:min-h-12 sm:gap-[26px] sm:px-[19px] sm:py-0 sm:text-base sm:leading-normal [&_[data-cta-label]]:min-w-0 [&_[data-cta-label]]:flex-1 [&_[data-cta-label]]:pr-1"
-                >
-                  {dl.label ||
-                    "Download onze volledige garanties en voorwaarden"}
-                </Button>
-              </div>
+              <Button
+                href={dl.href}
+                target={dl.target}
+                variant="ctaBrand"
+                ctaFullWidth={false}
+                className="w-fit self-start"
+                arrowContent={
+                  section.cta_trailing_icon ? (
+                    <CtaTrailingIcon image={section.cta_trailing_icon} />
+                  ) : undefined
+                }
+              >
+                {dl.label ||
+                  "Download onze volledige garanties en voorwaarden"}
+              </Button>
             ) : null}
           </div>
         </div>

@@ -3,12 +3,16 @@ import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
 import { StarRating } from "@/components/ui/StarRating";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { Locale } from "@/lib/i18n/locales";
 import { ctaVariantAt } from "@/lib/ui/ctaAlternation";
 import { resolveLink } from "@/lib/utils/links";
 import type { HeroSectionT } from "@/types/sections";
 import React from "react";
+
+/** Default hero band height on lg+ (About-style split hero and all `type: "hero"` pages). */
+const HERO_BAND_MIN_HEIGHT_LG = 650;
 
 export function HeroSection({
   section,
@@ -63,8 +67,13 @@ export function HeroSection({
   const behindWidthClass = behindOnly ? "w-[85%]" : "w-1/2";
 
   // ─── Title size ──────────────────────────────────────────────────────────────
-  const titleSizeClass = isCompact
-    ? "text-[1.75rem] font-semibold leading-tight text-navy sm:text-[2.25rem] md:text-[2.75rem] lg:text-[3.25rem] lg:leading-[3.75rem]"
+  // Foreground-image heroes (phone/person beside the copy) and behind-image guarded
+  // layouts share the copy column with the visual, so 64px over-wraps the headline
+  // (4 lines instead of Figma's 3). Use the compact scale for those layouts.
+  const useCompactTitleScale =
+    isCompact || foregroundOnly || behindTextOverlapGuard;
+  const titleSizeClass = useCompactTitleScale
+    ? "text-[1.75rem] font-semibold leading-tight text-navy sm:text-[2.25rem] md:text-[2.75rem] lg:text-[3rem] lg:leading-[3.5rem] xl:text-[3.25rem] xl:leading-[3.75rem]"
     : "text-[1.875rem] font-semibold leading-tight text-navy sm:text-4xl md:text-5xl lg:text-[4rem] lg:leading-[4.625rem]";
 
   // ─── Offer text size ─────────────────────────────────────────────────────────
@@ -77,6 +86,14 @@ export function HeroSection({
         : "text-xl sm:text-2xl lg:text-[36px]";
 
   const heroId = `hero-${section.id ?? "main"}`;
+
+  const containerClassName = [
+    bothHeroImages ? "px-0 sm:px-4 lg:px-8" : "",
+    foregroundOnly ? "relative max-w-340! w-full" : "",
+    "lg:flex lg:flex-1 lg:items-center",
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   // Explicit px breakpoint overrides — match the Tailwind pt-* values exactly.
   // pt-32=128  pt-36=144  pt-40=160  pt-44=176  pt-48=192  pt-52=208  pt-56=224
@@ -112,7 +129,7 @@ export function HeroSection({
   return (
     <section
       id={heroId}
-      className={`relative overflow-hidden ${sectionVerticalClass}`}
+      className={`relative flex flex-col overflow-hidden ${sectionVerticalClass}`}
       style={{ paddingTop: `${MOBILE_TOP_PAD}px` }}
     >
       {/*
@@ -127,7 +144,7 @@ export function HeroSection({
            Inline styles beat Tailwind classes, so we need explicit px values here. */
         @media (min-width: 640px)  { #${heroId} { padding-top: ${smPt}px; } }
         @media (min-width: 768px)  { #${heroId} { padding-top: ${mdPt}px; } }
-        @media (min-width: 1024px) { #${heroId} { padding-top: ${lgPt}px; } }
+        @media (min-width: 1024px) { #${heroId} { padding-top: ${lgPt}px; min-height: ${HERO_BAND_MIN_HEIGHT_LG}px; } }
         @media (min-width: 1280px) { #${heroId} { padding-top: ${xlPt}px; } }
         ${
           bothHeroImages
@@ -153,12 +170,31 @@ export function HeroSection({
         aria-hidden
       />
 
-      <Container className={bothHeroImages ? "px-0 sm:px-4 lg:px-8" : ""}>
+      <Container className={containerClassName}>
+        {/* Phone hero: bottom-right inside the content column, not full viewport */}
+        {foregroundOnly && section.image ? (
+          <div
+            className={`${REVEAL_ITEM} pointer-events-none absolute bottom-0 right-0 z-[5] hidden lg:block`}
+            aria-hidden
+          >
+            <Media
+              image={section.image}
+              className="hero-phone-img h-[min(630px,calc(100%-0.5rem))] w-auto max-w-[min(100%,620px)] object-contain object-bottom object-right"
+              width={900}
+              height={1120}
+              sizes="(min-width: 1024px) 620px"
+              preferLargestSource
+            />
+          </div>
+        ) : null}
+
         <div
-          className={`grid min-w-0 items-stretch ${
+          className={`hero-grid grid w-full min-w-0 items-stretch lg:items-center ${
             useHeroVisualColumn
               ? useLooseHeroLayout
-                ? "lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] lg:gap-x-12 xl:gap-x-16 2xl:gap-x-24"
+                ? foregroundOnly
+                  ? "lg:grid-cols-1"
+                  : "lg:grid-cols-[minmax(0,1.08fr)_minmax(0,0.92fr)] lg:gap-x-12 xl:gap-x-16 2xl:gap-x-24"
                 : "lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.8fr)]"
               : "lg:grid-cols-1"
           } ${
@@ -177,10 +213,10 @@ export function HeroSection({
                   // pt-5: breathing room between image bottom and copy.
                   "order-2 lg:order-1 px-4 sm:px-0 pt-5 sm:pt-0 pb-8 sm:pb-6 lg:self-center lg:pb-0"
                 : foregroundOnly
-                  ? "self-start py-8 sm:py-14"
+                  ? "self-start py-8 sm:py-14 lg:self-center lg:py-0"
                   : behindOnly
-                    ? "self-start py-8 lg:py-14"
-                    : `self-start py-8 lg:py-14 ${useLooseHeroLayout ? "lg:pb-14" : "lg:pb-[60px]"}`
+                    ? "self-start py-8 lg:self-center lg:py-0"
+                    : "self-start py-8 lg:self-center lg:py-0"
             } ${
               behindTextOverlapGuard
                 ? "lg:max-w-[min(100%,38rem)] xl:max-w-[min(100%,40rem)]"
@@ -201,9 +237,16 @@ export function HeroSection({
                 {section.tagline?.trim()}
               </p>
             )}
-            <h1 className={`${REVEAL_ITEM} ${titleSizeClass}`}>
-              {section.title}
-            </h1>
+            <SectionHeading
+              as="h1"
+              text={section.title}
+              className={`${REVEAL_ITEM} ${titleSizeClass}${
+                foregroundOnly ? " lg:max-w-[37rem] xl:max-w-[38rem]" : ""
+              }`}
+              lineClassName={
+                isCompact ? "max-lg:whitespace-normal lg:whitespace-nowrap" : ""
+              }
+            />
             {section.text && (
               <RichText
                 html={section.text}
@@ -217,9 +260,9 @@ export function HeroSection({
               />
             )}
             {section.ctas.length > 0 && (
-              // Mobile: full-width stacked buttons. sm+: auto-width inline row.
+              // Mobile: content-width stacked buttons, centered. sm+: auto-width inline row.
               <div
-                className={`${REVEAL_ITEM} mt-6 flex w-full min-w-0 flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5`}
+                className={`${REVEAL_ITEM} mt-6 flex w-full min-w-0 flex-col items-center gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5`}
               >
                 {section.ctas.map((cta, i) => {
                   const r = resolveLink(cta.url, lang);
@@ -232,7 +275,7 @@ export function HeroSection({
                       variant={ctaVariantAt(i)}
                       ctaSize="hero"
                       ctaFullWidth={false}
-                      className="w-full justify-center sm:w-auto"
+                      className="self-start"
                     >
                       {cta.text || r.label}
                     </Button>
@@ -334,16 +377,20 @@ export function HeroSection({
             <div
               className={`relative flex w-full min-w-0 items-end self-stretch lg:h-full lg:pt-2 ${
                 bothHeroImages
-                  ? // order-1: image first on mobile. lg:order-2: right column on desktop.
-                    // No REVEAL_ITEM on mobile — image is above fold, instant render feels better.
-                    "order-1 lg:order-2"
-                  : `${REVEAL_ITEM} ${!useLooseHeroLayout ? "" : "justify-end"}`
+                  ? "order-1 lg:order-2"
+                  : foregroundOnly
+                    ? `${REVEAL_ITEM} justify-end lg:hidden`
+                    : `${REVEAL_ITEM} ${!useLooseHeroLayout ? "" : "justify-end"}`
               }`}
             >
               {section.image && (
                 <Media
                   image={section.image}
-                  className={`hero-person-img relative z-10 h-auto w-full max-w-none object-contain ${
+                  className={`hero-person-img relative z-10 object-contain lg:max-h-full ${
+                    foregroundOnly
+                      ? "ml-auto h-auto w-[min(100%,560px)] max-w-none object-bottom object-right sm:w-[min(100%,640px)]"
+                      : "h-auto w-full max-w-none"
+                  } ${
                     bothHeroImages
                       ? "object-top lg:object-bottom"
                       : "object-bottom"

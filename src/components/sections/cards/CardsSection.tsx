@@ -1,3 +1,4 @@
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Container } from "@/components/ui/Container";
 import { Card } from "@/components/ui/Card";
 import { Media } from "@/components/ui/Media";
@@ -21,11 +22,11 @@ export function CardsSection({ section, lang }: { section: CardsSectionT; lang: 
     <section className="bg-white py-20 md:py-24">
       <Container>
         {section.title && (
-          <h2
+          <SectionHeading
+            as="h2"
+            text={section.title}
             className={`${REVEAL_ITEM} mb-10 text-center text-3xl font-semibold leading-tight text-navy sm:text-4xl lg:mb-12 lg:text-[48px] lg:leading-[56px]`}
-          >
-            {section.title}
-          </h2>
+          />
         )}
         <div className={`grid w-full auto-rows-[minmax(0,1fr)] justify-items-center gap-6 ${g}`}>
           {section.items.map((c, i) => {

@@ -1,8 +1,10 @@
 /** @see Figma **597:3503** (“Frame 2147228620”) — two-column audience card: stacked media + copy, checklist, accent pricing line, brand CTA. */
 import { Button } from "@/components/ui/Button";
+import { CtaTrailingIcon } from "@/components/ui/CtaTrailingIcon";
 import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
@@ -143,9 +145,11 @@ export function MediaTextChecklistSection({
   const titleBlock = hasTitleBlock ? (
     <div className="flex flex-col gap-3.5">
       {section.title ? (
-        <h2 className="font-sans text-[32px] font-semibold leading-[1.17] text-[var(--palette-navy)] sm:text-[40px] lg:text-[48px] lg:leading-[56px]">
-          {section.title}
-        </h2>
+        <SectionHeading
+          as="h2"
+          text={section.title}
+          className="font-sans text-[32px] font-semibold leading-[1.17] text-[var(--palette-navy)] sm:text-[40px] lg:text-[48px] lg:leading-[56px]"
+        />
       ) : null}
       {section.subtitle ? (
         <p className="font-sans text-base font-normal leading-[1.4] text-[var(--palette-muted)]">
@@ -262,25 +266,13 @@ export function MediaTextChecklistSection({
               href={ctaHref}
               target={resolved?.target}
               variant="ctaBrand"
-              ctaSize="default"
               ctaFullWidth={false}
-              ctaElevation="none"
-              ctaJustify="between"
+              className="shrink-0 self-start"
               arrowContent={
                 section.button_trailing_icon ? (
-                  <span className="inline-flex size-5 shrink-0 items-center justify-center [&_img]:object-contain">
-                    <Media
-                      image={section.button_trailing_icon}
-                      width={20}
-                      height={20}
-                      className="h-5 w-5"
-                      sizes="20px"
-                      preferLargestSource
-                    />
-                  </span>
+                  <CtaTrailingIcon image={section.button_trailing_icon} />
                 ) : undefined
               }
-              className="h-12 min-h-12 w-[290px] max-w-full shrink-0 self-start px-5 shadow-[0px_6px_10px_rgba(57,144,240,0.54)]"
             >
               {ctaLabel}
             </Button>
@@ -289,10 +281,9 @@ export function MediaTextChecklistSection({
       ) : null}
     </div>
   );
-
   return (
     <section lang={lang} className="bg-[var(--palette-white)] py-7 md:py-8">
-      <Container className="!max-w-[85rem]">
+      <Container>
         <div
           className={`${REVEAL_ITEM} grid gap-10 rounded-[20px] p-6 sm:p-10 md:gap-12 lg:items-start lg:gap-15 lg:p-14 ${hasMedia ? "lg:grid-cols-2" : ""} ${outerCard}`}
         >

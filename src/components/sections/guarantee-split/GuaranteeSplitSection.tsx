@@ -4,6 +4,7 @@ import { Media } from "@/components/ui/Media";
 import { Button } from "@/components/ui/Button";
 import { resolveLink } from "@/lib/utils/links";
 import { ctaVariantAt } from "@/lib/ui/ctaAlternation";
+import { formatHeadingLines } from "@/lib/i18n/format-heading";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { GuaranteeSplitSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
@@ -48,10 +49,7 @@ function GuaranteePoint({ icon, text }: { icon: WpImage | null; text: string }) 
 
 export function GuaranteeSplitSection({ section, lang }: { section: GuaranteeSplitSectionT; lang: Locale }) {
   const imageFirst = section.mediaPosition === "left";
-  const titleLines = section.title
-    .split(/\r?\n+/)
-    .map((l) => l.trim())
-    .filter(Boolean);
+  const titleLines = formatHeadingLines(section.title ?? "");
 
   const body = (
     <div className={`${REVEAL_ITEM} flex w-full min-w-0 max-w-[552px] flex-col gap-6`}>
@@ -96,8 +94,8 @@ export function GuaranteeSplitSection({ section, lang }: { section: GuaranteeSpl
                 ctaElevation={i === 0 ? "none" : "default"}
                 className={
                   i === 0
-                    ? "!h-12 w-full !max-w-[392px] !min-w-0 !gap-[35px] !rounded-[24px]"
-                    : "h-12 w-full max-w-md rounded-[24px]"
+                    ? "w-full !max-w-[392px] !min-w-0"
+                    : "w-full max-w-md"
                 }
               >
                 {t}
@@ -130,7 +128,7 @@ export function GuaranteeSplitSection({ section, lang }: { section: GuaranteeSpl
 
   return (
     <section className="bg-white py-20 md:py-24">
-      <Container className="!max-w-[85rem]">
+      <Container>
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:items-center lg:gap-[53px]">
           {imageFirst ? (
             <>

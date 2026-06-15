@@ -1,4 +1,6 @@
 /** @see Figma **866:4217** — featured strip right column: title `#1a2b4b` bold, body `#4a5568`, accent `#3182ce`, rules `#cbd5e1`, CTA `#3b82f6` + white disc; single `text-left` axis. */
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import { buildLocalePath } from "@/lib/i18n/get-alternates";
@@ -224,9 +226,11 @@ export function CaseStudyOverviewSection({
         <Container className="relative z-10">
           <header className={`max-w-[65rem] ${REVEAL_ITEM}`}>
             {section.title ? (
-              <h1 className="text-[2rem] font-semibold leading-[1.1] text-[var(--palette-navy)] sm:text-[2.5rem] md:text-[3rem] lg:text-[60px] lg:leading-[1.05]">
-                {section.title}
-              </h1>
+              <SectionHeading
+                as="h1"
+                text={section.title}
+                className="text-[2rem] font-semibold leading-[1.1] text-[var(--palette-navy)] sm:text-[2.5rem] md:text-[3rem] lg:text-[60px] lg:leading-[1.05]"
+              />
             ) : null}
             {section.intro ? (
               <p className="mt-4 max-w-2xl text-base font-normal leading-[1.41] text-[var(--palette-muted)] md:mt-6">
@@ -306,18 +310,16 @@ export function CaseStudyOverviewSection({
                   </>
                 ) : null}
                 <div className="w-full">
-                  <Link
+                  <Button
                     href={featured.href}
-                    className="inline-flex h-12 w-fit min-w-[10.5rem] items-center justify-center gap-3 rounded-full bg-[#3b82f6] py-1.5 pl-7 pr-1.5 text-base font-normal leading-none text-white shadow-[0_8px_24px_rgba(59,130,246,0.35),0_2px_8px_rgba(59,130,246,0.22)] transition hover:bg-[#2563eb]"
+                    variant="ctaBrand"
+                    ctaSize="default"
+                    ctaFullWidth={false}
+                    ctaJustify="center"
+                    className="min-w-[10.5rem]"
                   >
-                    <span>{readLabel}</span>
-                    <span
-                      className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-white text-[#3b82f6] shadow-[0_1px_2px_rgba(15,23,42,0.08)]"
-                      aria-hidden
-                    >
-                      <ArrowRightIcon className="size-4" />
-                    </span>
-                  </Link>
+                    {readLabel}
+                  </Button>
                 </div>
               </div>
             </div>

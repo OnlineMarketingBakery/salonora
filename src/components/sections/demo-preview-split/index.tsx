@@ -2,17 +2,23 @@
 import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
+import { formatHeadingLines } from "@/lib/i18n/format-heading";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { Locale } from "@/lib/i18n/locales";
 import type { DemoPreviewSplitSectionT } from "@/types/sections";
 import type { CSSProperties } from "react";
 
+const HTML_TAG_RE = /<[a-z][\s\S]*>/i;
+
 function linesFromTitle(raw: string): string[] {
-  return raw
-    .replace(/<br\s*\/?>/gi, "\n")
-    .split(/\r?\n+/)
-    .map((l) => l.replace(/<[^>]+>/g, "").trim())
-    .filter(Boolean);
+  if (HTML_TAG_RE.test(raw)) {
+    return raw
+      .replace(/<br\s*\/?>/gi, "\n")
+      .split(/\r?\n+/)
+      .map((l) => l.replace(/<[^>]+>/g, "").trim())
+      .filter(Boolean);
+  }
+  return formatHeadingLines(raw);
 }
 
 /** Deep navy base (Figma panel). */
@@ -127,7 +133,7 @@ export function DemoPreviewSplitSection({
 
   return (
     <section className="py-8 md:py-12 lg:py-14">
-      <Container className="!max-w-[85rem]">
+      <Container>
         <div
           className={`${REVEAL_ITEM} relative isolate min-h-0 overflow-hidden rounded-[14px] shadow-[0_24px_60px_-20px_color-mix(in_srgb,var(--palette-navy-deep)_55%,transparent)]`}
         >

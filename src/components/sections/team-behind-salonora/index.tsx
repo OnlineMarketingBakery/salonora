@@ -2,6 +2,8 @@ import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
+import { SECTION_SHELL_DARK } from "@/lib/layout/section-spacing";
+import { formatHeadingCase } from "@/lib/i18n/format-heading";
 import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
 import type { TeamBehindSalonoraSectionT } from "@/types/sections";
@@ -144,22 +146,22 @@ function MemberCard({
   return (
     <div className="relative flex w-full flex-col overflow-hidden rounded-[20px] bg-white shadow-[0_18px_44px_color-mix(in_srgb,var(--palette-muted)_18%,transparent)] md:block md:h-[340px]">
       {/* Photo section: circular crop on mobile, original rectangle on desktop */}
-      <div className="relative order-1 flex shrink-0 flex-col items-center pt-5 md:pointer-events-none md:absolute md:order-0 md:bottom-0 md:right-0 md:h-full md:w-[263px] md:justify-end md:pt-0">
-        <div className="relative mx-auto max-w-full shrink-0 max-md:flex max-md:h-[180px] max-md:w-[180px] max-md:items-center max-md:justify-center md:mx-0 md:h-full md:w-[min(100%,263px)]">
+      <div className="relative order-1 flex shrink-0 flex-col items-center pt-8 md:pointer-events-none md:absolute md:order-0 md:bottom-0 md:right-0 md:h-full md:w-[263px] md:justify-end md:pt-0">
+        <div className="relative mx-auto max-w-full shrink-0 max-md:flex max-md:h-[192px] max-md:w-[192px] max-md:items-center max-md:justify-center md:mx-0 md:h-full md:w-[min(100%,263px)]">
           {/* Orb: larger than photo on mobile so it peeks out as a soft ring */}
           <div
-            className="absolute rounded-full opacity-30 max-md:left-1/2 max-md:top-1/2 max-md:h-[200px] max-md:w-[200px] max-md:-translate-x-1/2 max-md:-translate-y-1/2 md:bottom-0 md:left-auto md:right-[-6px] md:top-auto md:mb-[-85px] md:mr-[-15px] md:h-[250px] md:w-[250px] md:translate-x-0 md:translate-y-0"
+            className="absolute rounded-full opacity-30 max-md:bottom-0 max-md:left-1/2 max-md:h-[200px] max-md:w-[200px] max-md:-translate-x-1/2 md:bottom-0 md:left-auto md:right-[-6px] md:top-auto md:mb-[-85px] md:mr-[-15px] md:h-[250px] md:w-[250px] md:translate-x-0 md:translate-y-0"
             style={{ backgroundColor: bg }}
             aria-hidden
           />
           {/* Photo: circular on mobile, original rectangle on desktop */}
-          <div className="absolute overflow-hidden max-md:left-1/2 max-md:top-1/2 max-md:h-[168px] max-md:w-[168px] max-md:-translate-x-1/2 max-md:-translate-y-1/2 max-md:rounded-full md:bottom-0 md:left-auto md:right-0 md:top-auto md:h-[286px] md:w-[255px] md:translate-x-0 md:translate-y-0 md:rounded-br-[14px] md:rounded-tl-none md:rounded-tr-none md:rounded-bl-none">
+          <div className="absolute overflow-hidden max-md:bottom-0 max-md:left-1/2 max-md:h-[192px] max-md:w-[192px] max-md:-translate-x-1/2 max-md:rounded-full md:bottom-0 md:left-auto md:right-0 md:top-auto md:h-[286px] md:w-[255px] md:translate-x-0 md:translate-y-0 md:rounded-br-[14px] md:rounded-tl-none md:rounded-tr-none md:rounded-bl-none">
             {member.photo ? (
               <Media
                 image={member.photo}
                 fill
                 preferLargestSource
-                className="object-cover object-top"
+                className="object-cover object-top max-md:origin-top max-md:scale-[1.3]"
                 sizes="(max-width: 767px) 168px, 255px"
               />
             ) : null}
@@ -167,8 +169,8 @@ function MemberCard({
         </div>
       </div>
 
-      {/* ▼ MOBILE FIX 5: Reduced top padding from pt-4 → pt-2 and bottom padding from pb-6 → pb-5 */}
-      <div className="relative z-10 order-2 px-6 pb-5 pt-2 text-center md:absolute md:inset-0 md:order-0 md:text-left md:px-[38px] md:pb-0 md:pl-[38px] md:pr-[200px] md:pt-[38px]">
+      {/* Mobile: small top padding keeps the name close under the photo circle. */}
+      <div className="relative z-10 order-2 px-6 pb-5 pt-3 text-center md:absolute md:inset-0 md:order-0 md:text-left md:px-[38px] md:pb-0 md:pl-[38px] md:pr-[200px] md:pt-[38px]">
         <div className="flex flex-col md:h-full">
           <div className="min-w-0 max-md:mx-auto max-md:max-w-[40ch] md:text-left">
             {/* ▼ MOBILE FIX 6: Name clamped tighter 20px–22px on mobile */}
@@ -202,9 +204,9 @@ export function TeamBehindSalonoraSection({
   section: TeamBehindSalonoraSectionT;
   lang: Locale;
 }) {
-  const title = section.title?.trim() || "Het Team Achter Salonora";
+  const title = formatHeadingCase(section.title?.trim() || "Het Team Achter Salonora");
   return (
-    <section className="relative overflow-hidden bg-navy-deep py-20 text-white sm:py-24 md:py-28">
+    <section className={`relative overflow-hidden bg-navy-deep text-white ${SECTION_SHELL_DARK}`}>
       {/* Background stack (must be ABOVE section background paint) */}
       <div className="pointer-events-none absolute inset-0 z-0">
         {section.backgroundOverlay ? (
@@ -344,7 +346,7 @@ export function TeamBehindSalonoraSection({
       <Container>
         <div className="relative z-10 mx-auto w-full max-w-[1080px]">
           <h2
-            className={`${REVEAL_ITEM} text-center text-[34px] font-semibold leading-tight text-white sm:text-[40px] md:text-[48px] md:leading-[56px]`}
+            className={`${REVEAL_ITEM} text-center text-[32px] font-semibold leading-tight text-white sm:text-[40px] md:text-[48px] md:leading-[56px]`}
           >
             {title}
           </h2>

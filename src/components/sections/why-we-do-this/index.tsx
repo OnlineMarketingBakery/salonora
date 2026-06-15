@@ -2,6 +2,8 @@ import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
+import { SECTION_SHELL_AFTER_HERO } from "@/lib/layout/section-spacing";
+import { formatHeadingLines } from "@/lib/i18n/format-heading";
 import type { Locale } from "@/lib/i18n/locales";
 import type { WhyWeDoThisSectionT } from "@/types/sections";
 
@@ -11,8 +13,10 @@ export function WhyWeDoThisSection({
   section: WhyWeDoThisSectionT;
   lang: Locale;
 }) {
+  const titleText = formatHeadingLines(section.title ?? "").join(" ");
+
   return (
-    <section className="bg-white py-16 md:py-24">
+    <section className={`bg-white ${SECTION_SHELL_AFTER_HERO}`}>
       <Container className="max-w-340!">
         <div className="relative">
           <div className="relative overflow-hidden rounded-[14px] bg-[linear-gradient(180deg,var(--palette-brand),var(--palette-brand-strong))]">
@@ -32,7 +36,7 @@ export function WhyWeDoThisSection({
               </div>
             ) : null}
 
-            <div className="relative flex flex-col gap-10 px-6 pt-12 sm:px-10 sm:pt-14 lg:min-h-[415px] lg:justify-center lg:pb-16 lg:pl-[650px] lg:pr-16 lg:pt-16">
+            <div className="relative flex flex-col gap-8 px-6 pt-10 sm:px-10 sm:pt-12 lg:min-h-[415px] lg:justify-center lg:py-12 lg:pl-[650px] lg:pr-14">
               {section.behindGraphic ? (
                 <div
                   aria-hidden
@@ -50,7 +54,7 @@ export function WhyWeDoThisSection({
               ) : null}
 
               <div
-                className={`${REVEAL_ITEM} relative z-10 flex w-full flex-col items-start gap-6 lg:w-[535px]`}
+                className={`${REVEAL_ITEM} relative z-10 flex w-full flex-col items-start gap-5 lg:w-[560px]`}
               >
                 {section.eyebrow ? (
                   <div className="inline-flex h-[42px] w-[200px] items-center justify-center rounded-[21px] bg-white px-3 text-base font-medium leading-[1.6] text-brand">
@@ -58,10 +62,10 @@ export function WhyWeDoThisSection({
                   </div>
                 ) : null}
 
-                <div className="flex w-full flex-col items-start gap-[19px] text-white">
-                  {section.title ? (
-                    <h2 className="w-full font-sans text-[40px] font-semibold leading-[48px] text-white sm:text-[48px] sm:leading-[56px]">
-                      {section.title}
+                <div className="flex w-full min-w-0 flex-col items-start gap-[19px] text-white">
+                  {titleText ? (
+                    <h2 className="w-full min-w-0 font-sans text-[32px] font-semibold leading-tight text-white sm:text-[40px] lg:text-[48px] lg:leading-[56px] lg:whitespace-nowrap">
+                      {titleText}
                     </h2>
                   ) : null}
 
@@ -113,20 +117,20 @@ export function WhyWeDoThisSection({
             </div>
           </div>
 
+          {/* Figma 597:2909 — person 366×436, bottom-aligned to the 415px card,
+              cropped to head→hands (source is a tall full-body cutout), ~21px above card top. */}
           {section.image ? (
             <div
-              className={`${REVEAL_ITEM} pointer-events-none absolute left-0 top-0 z-20 hidden h-full w-[650px] lg:block`}
+              className={`${REVEAL_ITEM} pointer-events-none absolute bottom-0 left-[120px] z-20 hidden h-[436px] w-[366px] overflow-hidden lg:block`}
             >
-              <div className="absolute left-16 bottom-[-8px] translate-y-[-9px]">
-                <Media
-                  image={section.image}
-                  width={1300}
-                  height={830}
-                  preferLargestSource
-                  className="h-auto w-[420px] max-w-none object-contain object-bottom"
-                  sizes="560px"
-                />
-              </div>
+              <Media
+                image={section.image}
+                width={451}
+                height={982}
+                preferLargestSource
+                className="h-auto w-full max-w-none object-top"
+                sizes="366px"
+              />
             </div>
           ) : null}
         </div>

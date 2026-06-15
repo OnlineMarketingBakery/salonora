@@ -1,4 +1,5 @@
 import { Container } from "@/components/ui/Container";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { RichText } from "@/components/ui/RichText";
 import { Button } from "@/components/ui/Button";
 import { resolveLink } from "@/lib/utils/links";
@@ -25,13 +26,15 @@ const cardCtaClassName =
 export function PricingCtaSection({ section, lang }: { section: PricingCtaSectionT; lang: Locale }) {
   return (
     <section className="surface-light bg-[#F0F7FF] py-16 sm:py-20 md:py-24">
-      <Container className="!max-w-[85rem]">
+      <Container>
         <div className="mx-auto flex w-full max-w-[1100px] flex-col items-center gap-6">
           <div className={`${REVEAL_ITEM} w-full max-w-[826px] text-center`}>
             {section.title && (
-              <h2 className="text-[40px] font-semibold leading-tight text-navy-deep sm:text-[48px] sm:leading-[56px] [text-wrap:balance]">
-                {section.title}
-              </h2>
+              <SectionHeading
+                as="h2"
+                text={section.title}
+                className="text-[40px] font-semibold leading-tight text-navy-deep sm:text-[48px] sm:leading-[56px] [text-wrap:balance]"
+              />
             )}
             {section.intro && (
               <div className={section.title ? "mt-6" : ""}>
@@ -73,7 +76,6 @@ export function PricingCtaSection({ section, lang }: { section: PricingCtaSectio
                           variant="ctaBrand"
                           ctaSize="card"
                           ctaElevation="none"
-                          ctaJustify="between"
                           className={cardCtaClassName}
                         >
                           {x.text || link.label}

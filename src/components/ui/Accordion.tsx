@@ -3,19 +3,12 @@
 import { useId, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { FaqAccordionPlusIcon } from "@/components/ui/FaqAccordionPlusIcon";
 import { RichText } from "@/components/ui/RichText";
 import { registerGsapClient } from "@/lib/gsap/register";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 
 type Item = { id: string; title: string; content: string };
-
-function PlusIcon({ className = "" }: { className?: string }) {
-  return (
-    <svg className={className} width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-    </svg>
-  );
-}
 
 function usePanelHeight(
   panelRef: React.RefObject<HTMLDivElement | null>,
@@ -101,7 +94,7 @@ function AccordionRowSplit({
       >
         <span className="flex size-[51px] shrink-0 items-center justify-center rounded-lg bg-white p-[15px] text-brand">
           <span ref={iconRef} className="inline-flex will-change-transform">
-            <PlusIcon className="h-[21px] w-[21px]" />
+            <FaqAccordionPlusIcon className="h-[21px] w-[21px]" />
           </span>
         </span>
         <span className="min-w-0 text-xl font-normal leading-[1.1] text-slate-900">{item.title}</span>

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { Media } from "@/components/ui/Media";
+import { CTA_ARROW_CLASS, CTA_ARROW_SVG_SIZE } from "@/lib/ui/cta-tokens";
 import { isBuiltInCtaBrandArrow } from "@/lib/ui/default-cta-brand-arrow";
 import { getImageUrl, getLargestImageUrl } from "@/lib/utils/media";
 import type { WpImage } from "@/types/wordpress";
@@ -20,6 +21,10 @@ const ICON_BY_VARIANT: Record<NonNullable<Props["variant"]>, string> = {
   "on-dark": "/button-icon-light.svg",
 };
 
+function arrowShellClass(className: string): string {
+  return `inline-flex items-center justify-center ${className || CTA_ARROW_CLASS}`.trim();
+}
+
 export function ArrowInCircle({
   className = "",
   children,
@@ -36,10 +41,7 @@ export function ArrowInCircle({
           ? "border border-brand/30"
           : "border border-white/80");
     return (
-      <span
-        className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${ring} ${className}`}
-        aria-hidden
-      >
+      <span className={`flex ${CTA_ARROW_CLASS} items-center justify-center rounded-full ${ring} ${className}`} aria-hidden>
         {children}
       </span>
     );
@@ -49,15 +51,12 @@ export function ArrowInCircle({
     const src = getLargestImageUrl(brandImage) || getImageUrl(brandImage);
     if (src) {
       return (
-        <span
-          className={`inline-flex h-5 w-5 shrink-0 items-center justify-center ${className}`.trim()}
-          aria-hidden
-        >
+        <span className={arrowShellClass(className)} aria-hidden>
           <Media
             image={brandImage}
             width={40}
             height={40}
-            className="block h-full w-full min-h-0 min-w-0 object-contain"
+            className="block size-full min-h-0 min-w-0 object-contain"
             sizes="20px"
             preferLargestSource
           />
@@ -67,14 +66,11 @@ export function ArrowInCircle({
   }
 
   return (
-    <span
-      className={`inline-flex shrink-0 items-center justify-center ${className}`.trim()}
-      aria-hidden
-    >
+    <span className={arrowShellClass(className)} aria-hidden>
       <Image
         src={ICON_BY_VARIANT[variant]}
-        width={27}
-        height={27}
+        width={CTA_ARROW_SVG_SIZE}
+        height={CTA_ARROW_SVG_SIZE}
         alt=""
         unoptimized
         className="block size-full min-h-0 min-w-0 object-contain"

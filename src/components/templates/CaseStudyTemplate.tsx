@@ -1,3 +1,4 @@
+import { formatHeadingCase } from "@/lib/i18n/format-heading";
 import Image from "next/image";
 import { SectionRenderer } from "@/components/sections/SectionRenderer";
 import { RichText } from "@/components/ui/RichText";
@@ -52,7 +53,7 @@ export async function CaseStudyTemplate({
                 <p className="text-2xl font-medium leading-[1.6] text-[var(--palette-brand)]">{doc.projectLabel}</p>
               ) : null}
               <h1 className="text-[2rem] font-semibold leading-[1.1] text-[var(--palette-navy)] sm:text-[2.375rem] md:text-[2.75rem] lg:text-[48px] lg:leading-[1.1]">
-                {toPlainText(doc.title)}
+                {formatHeadingCase(toPlainText(doc.title))}
               </h1>
               {doc.featuredImage ? (
                 <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[14px] bg-[var(--palette-surface)]">

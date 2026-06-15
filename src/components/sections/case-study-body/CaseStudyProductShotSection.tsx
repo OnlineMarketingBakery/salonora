@@ -1,3 +1,4 @@
+import { formatHeadingCase } from "@/lib/i18n/format-heading";
 import Image from "next/image";
 import { RichText } from "@/components/ui/RichText";
 import type { CaseStudyProductShotSectionT } from "@/types/sections";
@@ -9,7 +10,7 @@ const descriptionProse =
 export function CaseStudyProductShotSection({ section, lang }: { section: CaseStudyProductShotSectionT; lang: Locale }) {
   void lang;
   if (!section.image?.url) return null;
-  const title = section.title.trim();
+  const title = formatHeadingCase(section.title.trim());
   const dividerClass = section.showDivider
     ? "border-b border-[color-mix(in_srgb,var(--palette-navy)_12%,transparent)] pb-8"
     : "";

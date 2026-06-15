@@ -1,3 +1,4 @@
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Container } from "@/components/ui/Container";
 import { Accordion } from "@/components/ui/Accordion";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
@@ -9,11 +10,11 @@ export function FaqSection({ section }: { section: FaqSectionT; lang: Locale }) 
     <section className="py-12 md:py-16">
       <Container>
         {section.title && (
-          <h2
+          <SectionHeading
+            as="h2"
+            text={section.title}
             className={`${REVEAL_ITEM} text-3xl font-semibold leading-tight text-navy sm:text-4xl lg:text-[48px] lg:leading-[56px]`}
-          >
-            {section.title}
-          </h2>
+          />
         )}
         <div className="mt-6">
           <Accordion

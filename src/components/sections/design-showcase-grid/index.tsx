@@ -1,7 +1,9 @@
 import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
+import { SECTION_SHELL_WHITE } from "@/lib/layout/section-spacing";
 import type { Locale } from "@/lib/i18n/locales";
 import type {
   DesignShowcaseGridCardTint,
@@ -55,7 +57,7 @@ function gridColsClass(cols: 1 | 2 | 3): string {
 function mediaSizesForCols(cols: 1 | 2 | 3): string {
   switch (cols) {
     case 1:
-      return "(max-width: 640px) 100vw, min(82rem, 100vw)";
+      return "(max-width: 640px) 100vw, min(81.25rem, 100vw)";
     case 2:
       return "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 41rem";
     default:
@@ -76,18 +78,18 @@ export function DesignShowcaseGridSection({
 
   return (
     <section
-      className={`py-16 md:py-24 ${section.whiteBackground ? "bg-white" : ""}`}
+      className={`${SECTION_SHELL_WHITE} ${section.whiteBackground ? "bg-white" : ""}`}
       id="design-showcase-grid"
     >
       <Container>
         {(section.title || section.intro) && (
           <header className="mx-auto max-w-4xl text-center">
             {section.title ? (
-              <h2
+              <SectionHeading
+                as="h2"
+                text={section.title}
                 className={`${REVEAL_ITEM} text-3xl font-semibold leading-tight text-navy-deep sm:text-4xl lg:text-[48px] lg:leading-[56px]`}
-              >
-                {section.title}
-              </h2>
+              />
             ) : null}
             {section.intro ? (
               <RichText

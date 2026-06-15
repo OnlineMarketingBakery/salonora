@@ -25,7 +25,7 @@ export function WhoWeAreForSection({
 
   return (
     <section lang={lang} className="bg-white py-16 md:py-24">
-      <Container className="!max-w-[85rem]">
+      <Container>
         <div
           className={`${REVEAL_ITEM} mx-auto flex w-full max-w-[81.375rem] flex-col items-center gap-[52px]`}
         >

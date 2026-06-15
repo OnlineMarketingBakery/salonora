@@ -11,6 +11,7 @@ import type { GlobalSettings } from "@/types/globals";
 import type { MenuItem } from "@/types/menu";
 import type { Locale } from "@/lib/i18n/locales";
 import { buildLocalePath } from "@/lib/i18n/get-alternates";
+import { SITE_CONTENT_MAX_WIDTH_CLASS, SITE_CONTENT_PADDING_CLASS } from "@/lib/layout/site-content-width";
 
 type Props = {
   globals: GlobalSettings;
@@ -51,11 +52,11 @@ export function SiteHeader({
     <header
       className={
         sticky
-          ? `sticky top-0 z-50 w-full bg-transparent px-6 py-2 sm:px-6 md:px-8 lg:px-10 xl:px-12 ${overlapPull}`
-          : `relative z-50 w-full bg-transparent px-6 pt-5 sm:px-6 sm:pt-6 md:px-8 md:pt-5 lg:px-10 lg:pt-5 xl:px-12 ${overlapPull}`
+          ? `sticky top-0 z-50 w-full bg-transparent ${SITE_CONTENT_PADDING_CLASS} py-2 ${overlapPull}`
+          : `relative z-50 w-full bg-transparent ${SITE_CONTENT_PADDING_CLASS} pt-5 sm:pt-6 md:pt-5 lg:pt-5 ${overlapPull}`
       }
     >
-      <div className="mx-auto w-full max-w-[82rem]">
+      <div className={`mx-auto w-full ${SITE_CONTENT_MAX_WIDTH_CLASS}`}>
         <div
           className="rounded-[40px] border border-[rgba(57,144,240,0.14)] p-1.5 sm:p-1.5"
           data-site-header-shell

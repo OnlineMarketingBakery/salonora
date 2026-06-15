@@ -1,4 +1,5 @@
 import { Container } from "@/components/ui/Container";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { RichText } from "@/components/ui/RichText";
 import { Media } from "@/components/ui/Media";
 import { Button } from "@/components/ui/Button";
@@ -38,9 +39,11 @@ export function BenefitsGridSection({ section, lang }: { section: BenefitsGridSe
               <p className="text-sm font-semibold text-brand sm:text-base">{section.eyebrow}</p>
             )}
             {section.title && (
-              <h2 className="text-3xl font-semibold leading-tight sm:text-4xl lg:text-[48px] lg:leading-[56px]">
-                {section.title}
-              </h2>
+              <SectionHeading
+                as="h2"
+                text={section.title}
+                className="text-3xl font-semibold leading-tight sm:text-4xl lg:text-[48px] lg:leading-[56px]"
+              />
             )}
             {section.intro && (
               <RichText

@@ -1389,21 +1389,13 @@ a {
 }
 
 .faq-accordion-icon-box {
-  color: var(--palette-brand-strong);
+  color: var(--palette-brand);
 }
 
 .faq-accordion-icon-box svg {
-  width: 1.25rem;
-  height: 1.25rem;
-  stroke: var(--palette-brand-strong);
-  color: var(--palette-brand-strong);
-}
-
-@media (min-width: 640px) {
-  .faq-accordion-icon-box svg {
-    width: 1.5rem;
-    height: 1.5rem;
-  }
+  width: 21px;
+  height: 21px;
+  color: var(--palette-brand);
 }
 
 .faq-accordion-trigger {

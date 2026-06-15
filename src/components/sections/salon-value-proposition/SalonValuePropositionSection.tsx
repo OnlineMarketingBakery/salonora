@@ -2,12 +2,18 @@ import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
+import { formatHeadingCase, formatHeadingLines } from "@/lib/i18n/format-heading";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
+import {
+  SECTION_SHELL_SALON_VALUE_FEATURED,
+  SECTION_SHELL_SALON_VALUE_SIMPLE,
+} from "@/lib/layout/section-spacing";
 import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
 import { getImageUrl, getLargestImageUrl } from "@/lib/utils/media";
 import { stripTags } from "@/lib/utils/strings";
 import type {
+  SalonValueAccentPlacementT,
   SalonValueCardAccentT,
   SalonValueCardT,
   SalonValuePropositionSectionT,
@@ -18,10 +24,6 @@ const CARD_SHADOW_CENTERED = "shadow-[0px_2px_12px_rgba(67,87,128,0.12)]";
 
 function accentBarClass(accent: SalonValueCardAccentT) {
   return accent === "rose" ? "bg-rose" : "bg-brand";
-}
-
-function iconTileClass(accent: SalonValueCardAccentT) {
-  return accent === "rose" ? "bg-rose-soft" : "bg-brand";
 }
 
 function SalonValueCheckIcon({ accent }: { accent: SalonValueCardAccentT }) {
@@ -111,12 +113,11 @@ function cardHasVisibleBody(html: string): boolean {
 function ValueCard({
   card,
   cardMode,
-  accentPlacement = "top",
+  accentPlacement = "bottom",
 }: {
   card: SalonValuePropositionSectionT["cards"][number];
   cardMode: SalonValueCardMode;
-  /** Split panel cards: top strip. Centered featured: bottom strip. */
-  accentPlacement?: "top" | "bottom";
+  accentPlacement?: SalonValueAccentPlacementT;
 }) {
   const figmaCentered = cardMode === "featured_centered";
   const isSimple = cardMode === "simple";
@@ -134,31 +135,19 @@ function ValueCard({
     />
   );
 
-  const titleLines = card.title
-    .split(/\r?\n+/)
-    .map((l) => l.trim())
-    .filter(Boolean);
+  const titleLines = formatHeadingLines(card.title ?? "");
 
   const iconBlock = card.icon ? (
-    <div
-      className={`flex shrink-0 rounded-[10px] ${iconTileClass(card.accent)} ${figmaCentered ? "size-[72px] items-start justify-center p-[15px]" : "size-12 items-center justify-center p-2.5"}`}
-    >
-      <Media
-        image={card.icon}
-        width={figmaCentered ? 84 : 56}
-        height={figmaCentered ? 84 : 56}
-        className={
-          figmaCentered ? "size-[42px] object-contain" : "size-7 object-contain"
-        }
-        sizes={figmaCentered ? "42px" : "48px"}
-        preferLargestSource
-      />
-    </div>
-  ) : (
-    <div
-      className={`shrink-0 rounded-[10px] ${iconTileClass(card.accent)} ${figmaCentered ? "size-[72px]" : "size-12"}`}
-      aria-hidden
+    <Media
+      image={card.icon}
+      width={112}
+      height={112}
+      className="size-14 shrink-0 object-contain"
+      sizes="56px"
+      preferLargestSource
     />
+  ) : (
+    <div className="size-14 shrink-0" aria-hidden />
   );
 
   const titleEl =
@@ -166,15 +155,19 @@ function ValueCard({
       <h3
         className={
           figmaCentered
-            ? "font-sans text-2xl font-semibold leading-[1.1] text-navy"
+            ? "font-sans text-[24px] font-semibold leading-[26px] text-navy"
             : "text-xl font-medium leading-[1.1] text-navy sm:text-2xl"
         }
       >
-        {titleLines.map((line, i) => (
-          <span key={i} className="block">
-            {line}
-          </span>
-        ))}
+        {figmaCentered ? (
+          titleLines.join(" ")
+        ) : (
+          titleLines.map((line, i) => (
+            <span key={i} className="block">
+              {line}
+            </span>
+          ))
+        )}
       </h3>
     ) : null;
 
@@ -202,15 +195,15 @@ function ValueCard({
   ) : null;
 
   const body = figmaCentered ? (
-    <div className="flex min-h-0 flex-1 flex-col gap-3 p-[34px] pb-[34px]">
-      <div className="flex shrink-0 min-w-0 flex-col gap-[34px]">
+    <div className="flex min-h-0 flex-1 flex-col gap-6 p-[34px] pb-[34px]">
+      <div className="flex shrink-0 min-w-0 flex-col gap-5">
         {iconBlock}
         {titleEl}
       </div>
       <div className="flex min-h-0 flex-1 flex-col">{copyEl}</div>
     </div>
   ) : (
-    <div className="flex min-h-0 flex-1 flex-col gap-7 px-7 py-8 sm:gap-[34px] sm:px-[34px] sm:pb-[34px] sm:pt-8">
+    <div className="flex min-h-0 flex-1 flex-col gap-5 px-6 py-6 sm:gap-7 sm:px-7 sm:pb-7 sm:pt-7">
       {iconBlock}
       <div className="flex min-h-0 min-w-0 flex-1 flex-col gap-3 sm:gap-6">
         {titleEl}
@@ -219,10 +212,8 @@ function ValueCard({
     </div>
   );
 
-  const showTopAccent =
-    isSimple || (!figmaCentered && accentPlacement === "top");
-  const showBottomAccent =
-    figmaCentered || (!isSimple && !figmaCentered && accentPlacement === "bottom");
+  const showTopAccent = accentPlacement === "top";
+  const showBottomAccent = accentPlacement === "bottom";
 
   return (
     <article
@@ -273,6 +264,7 @@ function SimpleCardsLayout({
               key={`${section.id}-simple-card-${i}`}
               card={card}
               cardMode="simple"
+              accentPlacement={section.cardAccentPlacement}
             />
           ))}
         </div>
@@ -349,6 +341,7 @@ function SplitPanelLayout({
               key={`${section.id}-card-${i}`}
               card={card}
               cardMode="featured_compact"
+              accentPlacement={section.cardAccentPlacement}
             />
           ))}
         </div>
@@ -368,6 +361,7 @@ function CenteredFooterLayout({
   cards: SalonValuePropositionSectionT["cards"];
   lang: Locale;
 }) {
+  const titleText = titleLines.join(" ");
   const footerResolved = section.footerCtaLink
     ? resolveLink(section.footerCtaLink, lang)
     : null;
@@ -381,7 +375,7 @@ function CenteredFooterLayout({
   return (
     <div className="flex flex-col items-center gap-10 sm:gap-10 lg:gap-10">
       <div
-        className={`${REVEAL_ITEM} flex w-full max-w-[687px] flex-col items-center gap-[27px] text-center`}
+        className={`${REVEAL_ITEM} flex w-full max-w-[755px] flex-col items-center gap-[18px] text-center`}
       >
         {section.eyebrow ? (
           <span className="inline-flex h-[42px] shrink-0 items-center justify-center rounded-[21px] bg-brand/10 px-3 py-3 text-base font-medium leading-[1.6] text-brand">
@@ -389,13 +383,9 @@ function CenteredFooterLayout({
           </span>
         ) : null}
         <div className="flex w-full flex-col items-center gap-[18px]">
-          {titleLines.length > 0 ? (
-            <h2 className="font-sans text-[32px] font-semibold leading-tight text-navy sm:text-[40px] sm:leading-[1.1] md:text-[44px] lg:text-[48px] lg:leading-[56px]">
-              {titleLines.map((line, i) => (
-                <span key={i} className="block">
-                  {line}
-                </span>
-              ))}
+          {titleText ? (
+            <h2 className="w-full min-w-0 font-sans text-[32px] font-semibold leading-tight text-navy sm:text-[40px] sm:leading-[48px] md:text-[48px] md:leading-[56px] md:whitespace-nowrap">
+              {titleText}
             </h2>
           ) : null}
           {section.intro ? (
@@ -414,7 +404,11 @@ function CenteredFooterLayout({
               key={`${section.id}-card-${i}`}
               className="flex min-h-0 w-full max-w-[418px] flex-col lg:shrink-0"
             >
-              <ValueCard card={card} cardMode="featured_centered" />
+              <ValueCard
+                card={card}
+                cardMode="featured_centered"
+                accentPlacement={section.cardAccentPlacement}
+              />
             </div>
           ))}
         </div>
@@ -422,28 +416,41 @@ function CenteredFooterLayout({
 
       {showFooterBlock ? (
         <div
-          className={`${REVEAL_ITEM} flex w-full max-w-[418px] flex-col items-center gap-[18px]`}
+          className={`${REVEAL_ITEM} flex w-full flex-col items-center gap-6 px-2 sm:px-0`}
         >
           {hasFooterCopy ? (
-            <p className="text-center font-sans text-xl font-medium leading-[1.1] text-navy sm:text-2xl">
-              {section.footerTitle}
+            <p className="max-w-none text-center font-sans text-[24px] font-semibold leading-[26px] text-navy">
+              {formatHeadingCase(section.footerTitle ?? "")}
             </p>
           ) : null}
           {hasFooterCta ? (
-            <div className="flex w-full justify-center">
-              <Button
-                href={footerHref}
-                target={footerResolved?.target}
-                variant="ctaBrand"
-                ctaSize="compact"
-                ctaJustify="between"
-                ctaFullWidth
-                arrowClassName="h-5 w-5 shrink-0"
-                className="!px-4 sm:!px-[17px]"
-              >
-                {footerLabel}
-              </Button>
-            </div>
+            <Button
+              href={footerHref}
+              target={footerResolved?.target}
+              variant="ctaBrand"
+              ctaSize="compact"
+              ctaJustify="center"
+              ctaFullWidth={false}
+              ctaElevation="none"
+              showArrow={false}
+              leadingContent={
+                section.footerCtaIcon ? (
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-white p-1.5 sm:size-10 sm:p-1.5">
+                    <Media
+                      image={section.footerCtaIcon}
+                      width={44}
+                      height={44}
+                      className="size-full object-contain"
+                      sizes="44px"
+                      preferLargestSource
+                    />
+                  </span>
+                ) : undefined
+              }
+              className="!h-[56px] !min-h-[56px] max-w-full shrink-0 !rounded-full border-2 border-brand/35 !bg-gradient-to-b !from-brand !to-brand-strong !px-4 !pl-4 !pr-5 text-base shadow-[0px_6px_20px_rgba(57,144,240,0.45)] sm:!h-[63px] sm:!min-h-[63px] sm:text-[20px]"
+            >
+              {formatHeadingCase(footerLabel)}
+            </Button>
           ) : null}
         </div>
       ) : null}
@@ -458,10 +465,7 @@ export function SalonValuePropositionSection({
   section: SalonValuePropositionSectionT;
   lang: Locale;
 }) {
-  const titleLines = section.title
-    .split(/\r?\n+/)
-    .map((l) => l.trim())
-    .filter(Boolean);
+  const titleLines = formatHeadingLines(section.title ?? "");
 
   const cards = section.cards.filter((c) => {
     const hasCopy =
@@ -485,8 +489,8 @@ export function SalonValuePropositionSection({
 
   if (isSimpleLayout) {
     return (
-      <section className={`py-16 md:py-24 ${sectionSurfaceClass}`}>
-        <Container className="!max-w-[85rem]">
+      <section className={`${SECTION_SHELL_SALON_VALUE_SIMPLE} ${sectionSurfaceClass}`}>
+        <Container>
           <SimpleCardsLayout
             section={section}
             titleLines={titleLines}
@@ -498,8 +502,8 @@ export function SalonValuePropositionSection({
   }
 
   return (
-    <section className={`py-16 md:py-24 ${sectionSurfaceClass}`}>
-      <Container className="!max-w-[85rem]">
+    <section className={`${SECTION_SHELL_SALON_VALUE_FEATURED} ${sectionSurfaceClass}`}>
+      <Container>
         {showSplitPanelLayout ? (
           <SplitPanelLayout
             section={section}

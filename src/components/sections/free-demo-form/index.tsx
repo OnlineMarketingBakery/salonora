@@ -1,3 +1,4 @@
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Container } from "@/components/ui/Container";
 import { RichText } from "@/components/ui/RichText";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
@@ -35,11 +36,11 @@ export function FreeDemoFormSection({
             <div className="flex w-full max-w-[35.375rem] flex-col items-center gap-6 text-center">
               <div className="flex w-full flex-col items-center gap-3">
                 {section.title ? (
-                  <h2
+                  <SectionHeading
+                    as="h2"
+                    text={section.title}
                     className={`${REVEAL_ITEM} w-full max-w-[34.25rem] text-3xl font-semibold leading-tight text-navy sm:text-4xl md:text-[2.75rem] md:leading-[1.12] lg:text-[3rem] lg:leading-[56px]`}
-                  >
-                    {section.title}
-                  </h2>
+                  />
                 ) : null}
                 {section.subtitle ? (
                   <RichText

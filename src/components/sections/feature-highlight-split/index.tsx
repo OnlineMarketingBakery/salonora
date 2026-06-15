@@ -1,9 +1,9 @@
 /** Figma **346:5623** — badge/heading/CTA **597:5386**, phone **597:5432**, cards **597:5396**. */
-import Link from "next/link";
-import Image from "next/image";
+import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
+import { formatHeadingLines } from "@/lib/i18n/format-heading";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
@@ -21,13 +21,19 @@ const LG_PHONE_H = 618;
 const LG_CARDS_L = 788;
 const LG_CARDS_W = 368;
 
+const HTML_TAG_RE = /<[a-z][\s\S]*>/i;
+
 /** Figma 946:34 — heading supports manual line breaks; strip tags only when splitting. */
 function linesFromHeading(raw: string | undefined): string[] {
-  return (raw ?? "")
-    .replace(/<br\s*\/?>/gi, "\n")
-    .split(/\r?\n+/)
-    .map((l) => l.replace(/<[^>]+>/g, "").trim())
-    .filter(Boolean);
+  const text = raw ?? "";
+  if (HTML_TAG_RE.test(text)) {
+    return text
+      .replace(/<br\s*\/?>/gi, "\n")
+      .split(/\r?\n+/)
+      .map((l) => l.replace(/<[^>]+>/g, "").trim())
+      .filter(Boolean);
+  }
+  return formatHeadingLines(text);
 }
 
 const heroBgImageStyle: Pick<CSSProperties, "backgroundImage"> = {
@@ -114,41 +120,6 @@ function PromiseCard({
   );
 }
 
-/** Figma **597:5391** — 252×63 pill; inner row gap 36px; icon **597:5394** 27×27. */
-function LeftCta({
-  ctaHref,
-  ctaLabel,
-  ctaTarget,
-  className = "",
-}: {
-  ctaHref?: string;
-  ctaLabel?: string;
-  ctaTarget?: string;
-  className?: string;
-}) {
-  if (!ctaHref || !ctaLabel?.trim()) return null;
-
-  return (
-    <Link
-      href={ctaHref}
-      target={ctaTarget}
-      rel={ctaTarget === "_blank" ? "noopener noreferrer" : undefined}
-      className={`flex h-[63px] w-full shrink-0 items-center justify-between rounded-[31.5px] bg-brand pl-[22px] pr-5 text-[20px] font-normal leading-normal text-white shadow-[0px_6px_10px_color-mix(in_srgb,var(--palette-brand)_54%,transparent)] transition-opacity hover:opacity-95 lg:inline-flex lg:w-[252px] lg:max-w-full lg:justify-start lg:gap-9 lg:self-start ${className}`.trim()}
-    >
-      <span className="shrink-0 whitespace-nowrap">{ctaLabel.trim()}</span>
-      <Image
-        src="/button-icon-primary.svg"
-        width={27}
-        height={27}
-        alt=""
-        unoptimized
-        className="size-[27px] shrink-0"
-        aria-hidden
-      />
-    </Link>
-  );
-}
-
 function LeftColumn({
   badge,
   titleLines,
@@ -189,8 +160,18 @@ function LeftColumn({
           </h2>
         ) : null}
       </div>
-      {showCta ? (
-        <LeftCta ctaHref={ctaHref} ctaLabel={ctaLabel} ctaTarget={ctaTarget} />
+      {showCta && ctaHref && ctaLabel?.trim() ? (
+        <Button
+          href={ctaHref}
+          target={ctaTarget}
+          variant="ctaBrand"
+          ctaSize="default"
+          ctaFullWidth={false}
+          ctaElevation="none"
+          className="self-start"
+        >
+          {ctaLabel.trim()}
+        </Button>
       ) : null}
     </div>
   );
@@ -292,7 +273,7 @@ export function FeatureHighlightSplitSection({
         <div className="absolute inset-0" style={brandColorBlendLayer} aria-hidden />
       </div>
 
-      <Container className="relative z-10 !max-w-[90rem]">
+      <Container className="relative z-10">
         {/* Mobile: badge/title → phone → CTA → cards (desktop unchanged below) */}
         <div
           className={`mx-auto flex w-full max-w-[1156px] flex-col gap-10 ${
@@ -313,13 +294,18 @@ export function FeatureHighlightSplitSection({
           {hasVisual && mockup ? (
             <PhoneColumn mockup={mockup} className={REVEAL_ITEM} />
           ) : null}
-          {hasLeft ? (
-            <LeftCta
-              className={REVEAL_ITEM}
-              ctaHref={ctaHref}
-              ctaLabel={ctaLabel}
-              ctaTarget={ctaLink?.target}
-            />
+          {hasLeft && ctaHref && ctaLabel.trim() ? (
+            <Button
+              href={ctaHref}
+              target={ctaLink?.target}
+              variant="ctaBrand"
+              ctaSize="default"
+              ctaFullWidth={false}
+              ctaElevation="none"
+              className={`${REVEAL_ITEM} w-fit self-start`}
+            >
+              {ctaLabel}
+            </Button>
           ) : null}
           {hasPromises ? (
             <PromiseCards promises={promises} className={REVEAL_ITEM} />

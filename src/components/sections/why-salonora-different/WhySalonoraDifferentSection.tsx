@@ -2,6 +2,7 @@ import { Container } from "@/components/ui/Container";
 import { RichText } from "@/components/ui/RichText";
 import { Button } from "@/components/ui/Button";
 import { resolveLink } from "@/lib/utils/links";
+import { formatHeadingLines } from "@/lib/i18n/format-heading";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { WhySalonoraDifferentSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
@@ -14,10 +15,7 @@ export function WhySalonoraDifferentSection({
   section: WhySalonoraDifferentSectionT;
   lang: Locale;
 }) {
-  const titleLines = section.title
-    .split(/\r?\n+/)
-    .map((l) => l.trim())
-    .filter(Boolean);
+  const titleLines = formatHeadingLines(section.title ?? "");
 
   const insightCards = section.insightCards.filter((c) => c.text.trim());
   const primaryCta = section.ctas[0];
@@ -27,10 +25,10 @@ export function WhySalonoraDifferentSection({
 
   return (
     <section className="bg-surface py-16 sm:py-20 md:pt-[88px] md:pb-[85px]">
-      <Container className="max-w-[1300px]!">
-        <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between lg:gap-5">
+      <Container>
+        <div className="grid w-full grid-cols-1 gap-10 lg:grid-cols-[382fr_898fr] lg:items-center lg:gap-5">
           <div
-            className={`${REVEAL_ITEM} flex w-full max-w-[382px] shrink-0 flex-col gap-6`}
+            className={`${REVEAL_ITEM} flex min-w-0 w-full flex-col gap-6`}
           >
             <div className="flex flex-col gap-[14px]">
               {titleLines.length > 0 ? (
@@ -60,20 +58,15 @@ export function WhySalonoraDifferentSection({
                 href={ctaHref}
                 target={ctaLink?.target}
                 variant="ctaBrand"
-                ctaElevation="none"
                 ctaFullWidth={false}
-                ctaSize="compact"
-                className="!h-12 w-full max-w-[273px] self-start !rounded-[24px] !px-[17px] shadow-[0px_6px_10px_rgba(57,144,240,0.54)] lg:!w-[273px] lg:!min-w-[273px]"
-                arrowClassName="h-5 w-5"
+                className="self-start"
               >
                 {ctaLabel}
               </Button>
             ) : null}
           </div>
 
-          <div
-            className={`${REVEAL_ITEM} w-full min-w-0 lg:w-[898px] lg:max-w-[898px] lg:shrink-0`}
-          >
+          <div className={`${REVEAL_ITEM} min-w-0 w-full`}>
             <WhySalonoraInsightPanel
               sectionId={section.id}
               insightHeading={section.insightHeading}

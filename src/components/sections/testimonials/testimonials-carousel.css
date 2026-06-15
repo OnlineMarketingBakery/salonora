@@ -1,0 +1,46 @@
+@media (max-width: 767px) {
+  .testimonials-carousel__track {
+    align-items: flex-start;
+  }
+
+  .testimonials-carousel__card {
+    padding: 34px;
+  }
+
+  .testimonials-carousel__dots {
+    margin-top: 1.5rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .testimonials-carousel__dots {
+    margin-top: 3rem;
+  }
+}
+
+/* Figma 1714:773 — 10px gap between trimmed name/role cap boxes */
+.testimonials-carousel__author-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.testimonials-carousel__author-name,
+.testimonials-carousel__author-role {
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
+}
+
+@supports not (text-box-trim: trim-both) {
+  .testimonials-carousel__author-meta {
+    gap: 4px;
+  }
+
+  .testimonials-carousel__author-name {
+    line-height: 1.25;
+  }
+
+  .testimonials-carousel__author-role {
+    line-height: 1.3;
+  }
+}

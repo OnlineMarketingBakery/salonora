@@ -2,6 +2,9 @@ import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
+import { formatHeadingLines } from "@/lib/i18n/format-heading";
+import { SITE_CONTENT_WIDTH_STEPS_FRAME } from "@/lib/layout/site-content-width";
+import { SECTION_SHELL_SURFACE } from "@/lib/layout/section-spacing";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { Locale } from "@/lib/i18n/locales";
 import { ctaVariantAt } from "@/lib/ui/ctaAlternation";
@@ -13,16 +16,16 @@ import type {
 } from "@/types/sections";
 import { Fragment, type CSSProperties } from "react";
 
-/** Figma 346:6584 — full-width frame, fixed height, horizontal padding only (border drawn by overlay) */
+/** Figma 346:6584 â€” full-width frame, fixed height, horizontal padding only (border drawn by overlay) */
 const STEPS_FRAME_CLASS =
   "relative w-full rounded-[24px] pl-5 pr-[21px] max-md:py-5 md:h-[297px]";
 
-/** Figma 346:6585 — columns fill the frame evenly, bottom-aligned, full-height dividers */
+/** Figma 346:6585 â€” columns fill the frame evenly, bottom-aligned, full-height dividers */
 const STEPS_ROW_CLASS =
   "flex w-full flex-col gap-5 md:h-full md:flex-row md:items-end md:gap-5";
 
 /**
- * Figma 346:6584 stroke — 1px linear gradient border (brand #3990F0 → surface #EBF3FE)
+ * Figma 346:6584 stroke â€” 1px linear gradient border (brand #3990F0 â†’ surface #EBF3FE)
  * at 50% opacity, masked so it follows the rounded corners and leaves the fill transparent.
  */
 const STEPS_BORDER_STYLE: CSSProperties = {
@@ -37,7 +40,7 @@ const STEPS_BORDER_STYLE: CSSProperties = {
 };
 
 /**
- * Figma 346:6593 — 1px divider with a vertical gradient from brand (top) to
+ * Figma 346:6593 â€” 1px divider with a vertical gradient from brand (top) to
  * surface #EBF3FE (bottom) at 50% opacity, spanning the full frame height.
  */
 function StepDivider() {
@@ -145,18 +148,15 @@ export function HowItWorksStepsSection({
   section: HowItWorksStepsSectionT;
   lang: Locale;
 }) {
-  const titleLines = (section.title ?? "")
-    .split(/\r?\n+/)
-    .map((l) => l.trim())
-    .filter(Boolean);
+  const titleLines = formatHeadingLines(section.title ?? "");
 
   const steps = section.steps ?? [];
   const ctas = section.ctas ?? [];
 
   return (
-    <section className="bg-surface py-16 md:py-24">
-      <Container className="max-w-[1300px]!">
-        <div className="flex w-full flex-col items-center gap-[30px]">
+    <section className={`bg-surface ${SECTION_SHELL_SURFACE}`}>
+      <Container>
+        <div className={`mx-auto flex w-full ${SITE_CONTENT_WIDTH_STEPS_FRAME} flex-col items-center gap-[30px]`}>
           <div className="flex w-full flex-col items-center gap-7">
             <header
               className={`${REVEAL_ITEM} flex w-full max-w-[417px] flex-col items-center gap-6 text-center`}
@@ -197,13 +197,11 @@ export function HowItWorksStepsSection({
                     variant={v}
                     ctaSize="compact"
                     ctaElevation="none"
-                    ctaJustify="between"
                     ctaFullWidth={false}
-                    arrowClassName="size-6 shrink-0"
                     className={
                       v === "ctaBrand"
-                        ? "h-12 min-h-12 w-full max-w-[196px] shrink-0 gap-2 rounded-[24px] border border-white px-3.5 text-base font-medium leading-normal! text-white shadow-[0px_6px_10px_rgba(57,144,240,0.54)] sm:w-[196px] sm:pl-[17px] sm:pr-3"
-                        : "w-fit max-w-full gap-4 text-lg leading-6"
+                        ? "shrink-0 rounded-[24px] border border-white text-white shadow-[0px_6px_10px_rgba(57,144,240,0.54)]"
+                        : "w-fit max-w-full text-lg leading-6"
                     }
                   >
                     {t}

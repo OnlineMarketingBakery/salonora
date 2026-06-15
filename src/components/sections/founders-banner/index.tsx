@@ -2,6 +2,9 @@ import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
+import {
+  SECTION_SHELL_WHITE_TIGHT_TOP,
+} from "@/lib/layout/section-spacing";
 import type { Locale } from "@/lib/i18n/locales";
 import { decodeHtmlEntitiesPlain } from "@/lib/utils/decode-html-entities-plain";
 import { resolveLink } from "@/lib/utils/links";
@@ -10,7 +13,8 @@ import type { WpAcfLink } from "@/types/wordpress";
 import Link from "next/link";
 import type { CSSProperties } from "react";
 
-/** Soft fade so portraits blend into the blue panel (Figma bottom dissolve). */
+/** Slightly inset vs full growth row (1087px) — widened from 1000px. */
+const BANNER_MAX_WIDTH_CLASS = "max-w-[65rem]";
 const PORTRAIT_MASK: CSSProperties = {
   maskImage:
     "linear-gradient(180deg, black 0%, black min(52%, 12rem), transparent 100%)",
@@ -129,10 +133,10 @@ export function FoundersBannerSection({
   const pillLabel = rawPillLabel ? decodeHtmlEntitiesPlain(rawPillLabel) : "";
 
   return (
-    <section className="bg-[var(--palette-white)] py-16 md:py-24">
-      <Container className="!max-w-[85rem]">
+    <section className={`bg-[var(--palette-white)] ${SECTION_SHELL_WHITE_TIGHT_TOP}`}>
+      <Container>
         <div
-          className={`${REVEAL_ITEM} relative isolate flex min-h-[260px] flex-col justify-center overflow-hidden rounded-[24px] bg-[linear-gradient(148deg,var(--palette-brand)_0%,var(--palette-brand-strong)_42%,var(--palette-navy-deep)_100%)] lg:min-h-[314px]`}
+          className={`${REVEAL_ITEM} relative isolate mx-auto flex w-full ${BANNER_MAX_WIDTH_CLASS} min-h-[260px] flex-col justify-center overflow-hidden rounded-[24px] bg-[linear-gradient(148deg,var(--palette-brand)_0%,var(--palette-brand-strong)_42%,var(--palette-navy-deep)_100%)] lg:min-h-[314px]`}
         >
           <RippleRings />
 
