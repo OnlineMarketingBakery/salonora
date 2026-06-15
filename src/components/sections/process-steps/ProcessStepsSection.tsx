@@ -3,6 +3,7 @@ import { RichText } from "@/components/ui/RichText";
 import { Button } from "@/components/ui/Button";
 import { resolveLink } from "@/lib/utils/links";
 import { ctaVariantAt } from "@/lib/ui/ctaAlternation";
+import { formatHeadingLines } from "@/lib/i18n/format-heading";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { ProcessStepsSectionT, ProcessStepItemT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
@@ -86,11 +87,9 @@ function getStepWidthClass(i: number): string {
 }
 
 export function ProcessStepsSection({ section, lang }: { section: ProcessStepsSectionT; lang: Locale }) {
-  const titleLines = section.title
-    .split(/\r?\n+/)
-    .map((l) => l.trim())
-    .filter(Boolean);
+  const titleLines = formatHeadingLines(section.title ?? "");
 
+  // Figma exception: hero overlap — asymmetric top padding for navy band under hero.
   return (
     <section className="relative overflow-hidden bg-navy-deep pb-8 pt-20 text-white sm:pb-10 sm:pt-24 md:pt-32 lg:pb-10 lg:pt-[100px] xl:pt-[140px]">
       <div
@@ -102,7 +101,7 @@ export function ProcessStepsSection({ section, lang }: { section: ProcessStepsSe
         aria-hidden
       />
       <div className="pointer-events-none absolute inset-0 opacity-40" style={gridStyle} aria-hidden />
-      <Container className="relative z-[1] !max-w-[85rem]">
+      <Container className="relative z-[1]">
         <div className="mx-auto flex w-full max-w-[1087px] flex-col items-center gap-8 md:gap-[34px]">
           {titleLines.length > 0 && (
             <h2
@@ -153,12 +152,11 @@ export function ProcessStepsSection({ section, lang }: { section: ProcessStepsSe
                       variant={v}
                       ctaSize="promo"
                       ctaElevation="none"
-                      ctaJustify="between"
-                      arrowClassName="!h-6 !w-6 shrink-0"
+                      ctaJustify="spread"
                       className={
                         v === "ctaBrand"
-                          ? "w-full !max-w-none !gap-2 !text-lg !leading-6 sm:!gap-8"
-                          : "w-full min-w-0 max-w-full gap-4 !text-lg !leading-6 hover:brightness-[0.99]"
+                          ? "w-full !max-w-none"
+                          : "w-full min-w-0 max-w-full hover:brightness-[0.99]"
                       }
                     >
                       {t}

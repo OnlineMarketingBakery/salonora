@@ -3,6 +3,7 @@
 import { useId, useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { FaqAccordionPlusIcon } from "@/components/ui/FaqAccordionPlusIcon";
 import { RichText } from "@/components/ui/RichText";
 import { registerGsapClient } from "@/lib/gsap/register";
 import { formatFaqAnswer } from "@/lib/legal/format-faq-answer";
@@ -12,14 +13,6 @@ export type FaqAccordionItem = {
   title: string;
   content: string;
 };
-
-function PlusIcon({ className = "" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-    </svg>
-  );
-}
 
 function FaqAccordionRow({
   item,
@@ -81,7 +74,7 @@ function FaqAccordionRow({
             }`}
             aria-hidden
           >
-            <PlusIcon className="h-5 w-5 sm:h-6 sm:w-6" />
+            <FaqAccordionPlusIcon className="h-[21px] w-[21px] sm:h-[21px] sm:w-[21px]" />
           </span>
         </span>
         <span className="min-w-0 flex-1 text-[1.0625rem] font-semibold leading-snug text-navy-deep">

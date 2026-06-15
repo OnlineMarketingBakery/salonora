@@ -1,3 +1,4 @@
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Container } from "@/components/ui/Container";
 import { RichText } from "@/components/ui/RichText";
 import { Button } from "@/components/ui/Button";
@@ -12,7 +13,7 @@ export function CtaSection({ section, lang }: { section: CtaSectionT; lang: Loca
   const isCenter = section.alignment !== "left";
 
   return (
-    <section className="relative py-12 sm:py-16 md:py-20 bg-white">
+    <section className="relative pt-4 pb-12 sm:pt-6 sm:pb-16 md:pt-8 md:pb-20 bg-white">
       {hasBg && (
         <div
           className="absolute inset-0 bg-cover bg-center opacity-25"
@@ -20,8 +21,8 @@ export function CtaSection({ section, lang }: { section: CtaSectionT; lang: Loca
           aria-hidden
         />
       )}
-      <Container className="!max-w-[85rem]">
-        <div className="relative mx-auto w-full max-w-[min(100%,1301px)]">
+      <Container className="max-w-340!">
+        <div className="relative mx-auto w-full max-w-full">
           <div
             className="pointer-events-none absolute left-1/2 top-1/2 -z-0 hidden h-[485px] w-full -translate-x-1/2 -translate-y-1/2 rotate-[-1.73deg] rounded-[14px] bg-gradient-to-b from-brand to-[#0569d7] sm:block"
             aria-hidden
@@ -38,16 +39,16 @@ export function CtaSection({ section, lang }: { section: CtaSectionT; lang: Loca
                 ].join(" ")}
               >
                 {section.title && (
-                  <h2
+                  <SectionHeading
+                    as="h2"
+                    text={section.title}
                     className={[
                       "w-full min-w-0 text-[40px] font-semibold leading-tight text-navy sm:text-[48px] sm:leading-[56px] [text-wrap:balance]",
                       !isCenter && "!text-left",
                     ]
                       .filter(Boolean)
                       .join(" ")}
-                  >
-                    {section.title}
-                  </h2>
+                  />
                 )}
                 {section.text && (
                   <RichText
@@ -97,16 +98,15 @@ export function CtaSection({ section, lang }: { section: CtaSectionT; lang: Loca
                           target={l.target}
                           variant={ctaVariantAt(i, "brand", "ctaNavyDeep")}
                           ctaSize={isPromoRow ? "promo" : "default"}
-                          ctaJustify={isPromoRow ? "between" : undefined}
                           ctaElevation="default"
                           className={
                             isPromoRow
                               ? [
                                   "w-full min-w-0 max-w-full",
-                                  "sm:w-auto sm:max-w-none sm:shrink-0 sm:!px-10 md:!px-12 lg:!px-14",
+                                  "sm:w-auto sm:max-w-none sm:shrink-0",
                                   isCenter ? "sm:self-center" : "sm:self-start",
                                 ].join(" ")
-                              : "h-12 w-full min-w-0 max-w-sm rounded-3xl sm:max-w-none"
+                              : "w-full min-w-0 max-w-sm sm:max-w-none"
                           }
                         >
                           {t}

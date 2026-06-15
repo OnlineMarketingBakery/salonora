@@ -1,12 +1,14 @@
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
+import { SECTION_SHELL_DUAL_CARDS_TIGHT_TOP } from "@/lib/layout/section-spacing";
 import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
 import type { TalkDualCardsSectionT } from "@/types/sections";
-import type { WpImage } from "@/types/wordpress";
+import { CtaTrailingIcon } from "@/components/ui/CtaTrailingIcon";
 import type { CSSProperties } from "react";
 
 /**
@@ -19,25 +21,6 @@ const NAVY_CARD_BACKGROUND_STYLE: CSSProperties = {
     "linear-gradient(158deg, var(--palette-navy) 0%, var(--palette-navy-deep) 88%, var(--palette-navy-deep) 100%)",
   ].join(", "),
 };
-
-function CtaTrailingIcon({ image }: { image: WpImage | null }) {
-  if (!image) return null;
-  return (
-    <span
-      className="inline-flex size-[22px] shrink-0 items-center justify-center [&_img]:object-contain"
-      aria-hidden
-    >
-      <Media
-        image={image}
-        width={22}
-        height={22}
-        className="h-[22px] w-[22px]"
-        sizes="22px"
-        preferLargestSource
-      />
-    </span>
-  );
-}
 
 export function TalkDualCardsSection({
   section,
@@ -55,15 +38,15 @@ export function TalkDualCardsSection({
     "relative flex h-full min-h-[314px] flex-col overflow-hidden rounded-[24px] p-12";
 
   return (
-      <section className="bg-[var(--palette-white)] py-16 md:pt-4 md:pb-24">
-      <Container className="!max-w-[81.25rem]">
+      <section className={`bg-[var(--palette-white)] ${SECTION_SHELL_DUAL_CARDS_TIGHT_TOP}`}>
+      <Container>
         <div className="flex flex-col items-center gap-[54px]">
           {section.title ? (
-            <h2
-              className={`${REVEAL_ITEM} text-center font-sans text-[clamp(1.75rem,4vw,3rem)] font-semibold leading-[1.17] text-[var(--palette-navy)] md:text-[48px] md:leading-[56px]`}
-            >
-              {section.title}
-            </h2>
+            <SectionHeading
+              as="h2"
+              text={section.title}
+              className={`${REVEAL_ITEM} text-center font-sans text-[32px] font-semibold leading-[1.17] text-[var(--palette-navy)] sm:text-[40px] md:text-[48px] md:leading-[56px]`}
+            />
           ) : null}
 
           <div className="grid w-full grid-cols-1 items-stretch gap-6 lg:grid-cols-2 lg:gap-6">
@@ -101,23 +84,21 @@ export function TalkDualCardsSection({
                 ) : null}
 
                 {left?.href ? (
-                  <div className="w-full max-w-[209px]">
-                    <Button
-                      href={left.href}
-                      target={left.target}
-                      variant="ctaWhite"
-                      ctaElevation="footerSecondary"
-                      ctaJustify="between"
-                      ctaFullWidth
-                      showArrow={Boolean(section.left_button_icon)}
-                      arrowContent={
+                  <Button
+                    href={left.href}
+                    target={left.target}
+                    variant="ctaWhite"
+                    ctaElevation="footerSecondary"
+                    ctaFullWidth={false}
+                    className="self-start max-w-full"
+                    arrowContent={
+                      section.left_button_icon ? (
                         <CtaTrailingIcon image={section.left_button_icon} />
-                      }
-                      className="min-h-12 border-0 px-3 text-[16px] font-normal text-[var(--palette-navy)] shadow-[0px_6px_10px_color-mix(in_srgb,var(--palette-brand)_54%,transparent)]"
-                    >
-                      {left.label}
-                    </Button>
-                  </div>
+                      ) : undefined
+                    }
+                  >
+                    {left.label}
+                  </Button>
                 ) : null}
               </div>
             </div>
@@ -154,16 +135,15 @@ export function TalkDualCardsSection({
                         href={rightPrimary.href}
                         target={rightPrimary.target}
                         variant="ctaBrand"
-                        ctaElevation="none"
-                        ctaJustify="between"
                         ctaFullWidth={false}
-                        showArrow={Boolean(section.right_primary_button_icon)}
                         arrowContent={
-                          <CtaTrailingIcon
-                            image={section.right_primary_button_icon}
-                          />
+                          section.right_primary_button_icon ? (
+                            <CtaTrailingIcon
+                              image={section.right_primary_button_icon}
+                            />
+                          ) : undefined
                         }
-                        className="min-h-12 w-full max-w-[209px] shrink-0 border-0 px-3 text-[16px] font-normal !bg-[linear-gradient(135deg,var(--palette-brand)_0%,var(--palette-brand-strong)_100%)] text-white shadow-[0px_6px_10px_color-mix(in_srgb,var(--palette-brand)_54%,transparent)] sm:w-[209px]"
+                        className="shrink-0"
                       >
                         {rightPrimary.label}
                       </Button>
@@ -174,15 +154,15 @@ export function TalkDualCardsSection({
                         target={rightSecondary.target}
                         variant="ctaWhite"
                         ctaElevation="footerSecondary"
-                        ctaJustify="between"
                         ctaFullWidth={false}
-                        showArrow={Boolean(section.right_secondary_button_icon)}
                         arrowContent={
-                          <CtaTrailingIcon
-                            image={section.right_secondary_button_icon}
-                          />
+                          section.right_secondary_button_icon ? (
+                            <CtaTrailingIcon
+                              image={section.right_secondary_button_icon}
+                            />
+                          ) : undefined
                         }
-                        className="min-h-12 w-full max-w-[283px] shrink-0 border-0 px-4 text-[16px] font-normal text-[var(--palette-navy)] sm:w-[283px]"
+                        className="shrink-0"
                       >
                         {rightSecondary.label}
                       </Button>

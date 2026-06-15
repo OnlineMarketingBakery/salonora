@@ -1,17 +1,15 @@
-import { Container } from "@/components/ui/Container";
+﻿import { Container } from "@/components/ui/Container";
 import { RichText } from "@/components/ui/RichText";
 import { Media } from "@/components/ui/Media";
 import { Button } from "@/components/ui/Button";
 import { resolveLink } from "@/lib/utils/links";
+import { formatHeadingLines } from "@/lib/i18n/format-heading";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { StorySplitSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 
 export function StorySplitSection({ section, lang }: { section: StorySplitSectionT; lang: Locale }) {
-  const titleLines = section.title
-    .split(/\r?\n+/)
-    .map((l) => l.trim())
-    .filter(Boolean);
+  const titleLines = formatHeadingLines(section.title ?? "");
 
   const primaryCta = section.ctas[0];
   const ctaLink = primaryCta ? resolveLink(primaryCta.url, lang) : null;
@@ -74,7 +72,6 @@ export function StorySplitSection({ section, lang }: { section: StorySplitSectio
           ctaElevation="none"
           ctaFullWidth={false}
           className="!h-12 max-w-full self-start whitespace-normal shadow-[0px_6px_10px_rgba(57,144,240,0.54)] sm:whitespace-nowrap"
-          arrowClassName="h-6 w-6"
         >
           {ctaLabel}
         </Button>
@@ -84,7 +81,7 @@ export function StorySplitSection({ section, lang }: { section: StorySplitSectio
 
   return (
     <section className="bg-white py-20 md:py-24">
-      <Container className="!max-w-[85rem]">
+      <Container>
         <div className="flex flex-col items-center gap-10 lg:flex-row lg:items-center lg:gap-[37px]">
           {imageBlock}
           {copy}

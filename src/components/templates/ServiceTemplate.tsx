@@ -1,3 +1,4 @@
+import { formatHeadingCase } from "@/lib/i18n/format-heading";
 import { SectionRenderer } from "@/components/sections/SectionRenderer";
 import { Container } from "@/components/ui/Container";
 import type { ServiceDocument } from "@/types/documents";
@@ -8,7 +9,7 @@ export function ServiceTemplate({ document: doc, lang }: { document: ServiceDocu
     <article className="overflow-visible">
       {!doc.hidePageTitle && (
         <Container className="pt-10">
-          <h1 className="text-3xl font-semibold text-foreground md:text-4xl">{doc.title}</h1>
+          <h1 className="text-3xl font-semibold text-foreground md:text-4xl">{formatHeadingCase(doc.title)}</h1>
           {doc.excerpt && <div className="mt-2 text-muted" dangerouslySetInnerHTML={{ __html: doc.excerpt }} />}
           {doc.serviceIntro && <p className="mt-6 text-lg text-muted">{doc.serviceIntro}</p>}
           {doc.serviceHighlights.length > 0 && (

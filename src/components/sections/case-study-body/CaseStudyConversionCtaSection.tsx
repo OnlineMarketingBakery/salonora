@@ -1,22 +1,9 @@
-import Link from "next/link";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { Button } from "@/components/ui/Button";
 import { RichText } from "@/components/ui/RichText";
 import { resolveLink } from "@/lib/utils/links";
 import type { CaseStudyConversionCtaSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
-
-function ArrowRightIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 16 16" fill="none" aria-hidden>
-      <path
-        d="M3 8h10M9 4l4 4-4 4"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
 
 /** Figma 879:27 / 892:544 — navy CTA band, radial glow, 34px title, 16px subtitle, brand pill + white disc arrow. */
 export function CaseStudyConversionCtaSection({
@@ -59,7 +46,11 @@ export function CaseStudyConversionCtaSection({
       </div>
       <div className="relative z-10 mx-auto flex min-h-0 w-full max-w-[53.6875rem] flex-col items-center text-center">
         {section.title.trim() ? (
-          <h2 className="text-[34px] font-semibold leading-[1.1] text-white">{section.title.trim()}</h2>
+          <SectionHeading
+            as="h2"
+            text={section.title}
+            className="text-[34px] font-semibold leading-[1.1] text-white"
+          />
         ) : null}
         {section.subtitle ? (
           <div className={section.title.trim() ? "mt-4 w-full" : "w-full"}>
@@ -70,20 +61,17 @@ export function CaseStudyConversionCtaSection({
           </div>
         ) : null}
         {resolved ? (
-          <Link
+          <Button
             href={resolved.href}
             target={resolved.target}
-            rel={resolved.target === "_blank" ? "noopener noreferrer" : undefined}
-            className="mt-5 inline-flex h-[42px] min-w-[10rem] shrink-0 items-center justify-center gap-[18px] rounded-[24px] bg-[var(--palette-brand)] pl-5 pr-3 text-base font-normal text-white shadow-[0px_6px_10px_rgba(57,144,240,0.54)] transition hover:brightness-105"
+            variant="ctaBrand"
+            ctaSize="default"
+            ctaFullWidth={false}
+            ctaJustify="center"
+            className="mt-5 min-w-[10rem] shrink-0"
           >
-            <span>{resolved.label}</span>
-            <span
-              className="inline-flex size-6 shrink-0 items-center justify-center rounded-full bg-white text-[var(--palette-brand)]"
-              aria-hidden
-            >
-              <ArrowRightIcon className="size-3.5" />
-            </span>
-          </Link>
+            {resolved.label}
+          </Button>
         ) : null}
       </div>
     </section>

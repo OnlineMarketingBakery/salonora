@@ -166,7 +166,7 @@ export function ProblemSolutionSection({
 
   return (
     <section className="bg-[var(--palette-white)] py-12 md:py-16">
-      <Container className="!max-w-[81.25rem]">
+      <Container>
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-stretch lg:gap-6">
           <article
             className={`${REVEAL_ITEM} ${cardShell}`}

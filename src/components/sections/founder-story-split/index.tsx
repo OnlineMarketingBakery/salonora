@@ -2,71 +2,38 @@ import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
+import { SparkMark } from "@/components/ui/SparkMark";
+import { formatHeadingLines } from "@/lib/i18n/format-heading";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
+import { SECTION_SHELL_SPLIT_TIGHT_TOP } from "@/lib/layout/section-spacing";
 import type { Locale } from "@/lib/i18n/locales";
 import type { FounderStorySplitSectionT } from "@/types/sections";
 
 /** Figma `597:2281` — soft wash behind `597:2282` (`mix-blend-color`). */
 const CARD_BG_SRC = "/founder-story-card-bg.png";
-/** Card width / grid — Figma 1083:46 */
+/** Figma `1083:46` / `597:2279` — card 1298×756, r20 */
 const CARD_MAX = 1298;
-
-/**
- * Figma `597:2283` (Group 111) — three stroked bars (~27.37px).
- * Inline SVG + `currentColor` avoids blurry PNG / wrong contrast on the gradient wash.
- */
-function FounderStorySparkMark({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 28 28"
-      width={28}
-      height={28}
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden
-    >
-      <path
-        d="M22.25 5v17.5"
-        stroke="currentColor"
-        strokeWidth={2.35}
-        strokeLinecap="round"
-      />
-      <path
-        d="M5.75 7.25 L14 14.25"
-        stroke="currentColor"
-        strokeWidth={2.35}
-        strokeLinecap="round"
-      />
-      <path
-        d="M5.25 21.25h13.25"
-        stroke="currentColor"
-        strokeWidth={2.35}
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
+const CARD_HEIGHT_LG = 756;
 
 export function FounderStorySplitSection(props: {
   section: FounderStorySplitSectionT;
   lang: Locale;
 }) {
   const { section } = props;
-  const titleLines = section.title
-    .split(/\r?\n+/)
-    .map((l) => l.trim())
-    .filter(Boolean);
+  const titleLines = formatHeadingLines(section.title ?? "");
 
   return (
-    <section className="bg-[var(--palette-white)] py-16 md:py-24">
-      <Container className="max-w-[90rem]">
+    <section className={`bg-[var(--palette-white)] ${SECTION_SHELL_SPLIT_TIGHT_TOP}`}>
+      <Container className="max-w-340!">
         <div className="mx-auto w-full max-w-[1298px]">
           <div
-            className={`${REVEAL_ITEM} isolate relative min-h-0 overflow-hidden rounded-[20px] lg:min-h-[756px]`}
+            className={`${REVEAL_ITEM} relative isolate min-h-0 rounded-[20px] lg:h-[756px]`}
           >
-            {/* Figma `597:2280` — texture + brand wash (`z-0` below copy + accent) */}
-            <div className="pointer-events-none absolute inset-0 z-0" aria-hidden>
+            {/* Figma `597:2280` — texture + brand wash (clip only the background) */}
+            <div
+              className="pointer-events-none absolute inset-0 z-0 overflow-hidden rounded-[20px]"
+              aria-hidden
+            >
               <Image
                 src={CARD_BG_SRC}
                 alt=""
@@ -86,9 +53,9 @@ export function FounderStorySplitSection(props: {
               />
             </div>
 
-            <div className="relative z-[1] flex flex-col gap-10 px-6 pb-12 pt-11 sm:px-10 lg:grid lg:grid-cols-[528px_460px] lg:gap-x-[118px] lg:gap-y-0 lg:px-[102px] lg:pb-[166px] lg:pt-[157px]">
-              {/* Figma `597:2954`: col gap 24; header block internal gap 27; paragraphs gap 18 */}
-              <div className="flex min-w-0 flex-col gap-[24px] lg:w-[528px] lg:max-w-[528px]">
+            {/* Figma `1701:80` — pl102 pr118; copy 528; gap90; image460 (+14px offset) */}
+            <div className="relative z-[1] overflow-visible px-6 py-10 sm:px-10 sm:py-12 lg:grid lg:h-full lg:grid-cols-[528px_460px] lg:items-start lg:gap-x-[90px] lg:px-[102px] lg:pr-[118px] lg:py-0">
+              <div className="flex min-w-0 flex-col gap-[24px] lg:w-[528px] lg:max-w-[528px] lg:pt-[157px]">
                 <div className="flex flex-col gap-[27px]">
                   <div className="flex flex-wrap items-center gap-[10px]">
                     {section.avatar ? (
@@ -107,9 +74,9 @@ export function FounderStorySplitSection(props: {
                     ) : null}
 
                     {titleLines.length > 0 ? (
-                      <h2 className="min-w-0 font-sans text-[30px] font-semibold leading-none text-navy sm:text-[40px] lg:text-[48px] lg:leading-[56px]">
+                      <h2 className="min-w-0 font-sans text-[32px] font-semibold leading-none tracking-[-0.04em] text-navy sm:text-[40px] lg:text-[48px] lg:leading-[56px]">
                         {titleLines.map((line, i) => (
-                          <span key={i} className="block">
+                          <span key={i} className="block lg:whitespace-nowrap">
                             {line}
                           </span>
                         ))}
@@ -138,26 +105,24 @@ export function FounderStorySplitSection(props: {
                 ) : null}
               </div>
 
-              {/* Figma `597:2287` + `597:2288`: panel 460×524, −4.13°; photo 460×523, r14, offset */}
+              {/* Figma `597:2287` blue 460×524 −4.13°; `597:2290` photo offset; `597:2283` spark top-left */}
               {section.main_image ? (
                 <div
-                  className={`${REVEAL_ITEM} relative mx-auto w-full max-w-[460px] shrink-0 lg:mx-0 lg:w-[460px]`}
+                  className={`${REVEAL_ITEM} relative mx-auto mt-8 w-full max-w-[460px] shrink-0 overflow-visible sm:mt-10 lg:mx-0 lg:mt-[112px] lg:w-[460px]`}
                 >
-                  {/* Figma `597:2283` — mobile/tablet: anchor to photo stack (stacked layout has no 714px gutter) */}
                   <div
                     aria-hidden
-                    className="pointer-events-none absolute left-6 top-2 z-[25] text-brand drop-shadow-[0_1px_2px_color-mix(in_srgb,var(--palette-navy-deep)_14%,transparent)] mix-blend-normal lg:hidden"
+                    className="pointer-events-none absolute -left-2 -top-3 z-30 text-brand lg:-left-[18px] lg:-top-[16px]"
                   >
-                    <div className="size-[27.372px] rotate-180">
-                      <FounderStorySparkMark className="block size-[27.372px] shrink-0" />
-                    </div>
+                    <SparkMark />
                   </div>
 
                   <div
                     aria-hidden
-                    className="pointer-events-none absolute left-[10px] top-[13px] z-0 h-[524px] w-[460px] rotate-[-4.13deg] rounded-[14px] bg-brand sm:left-[12px]"
+                    className="pointer-events-none absolute inset-0 z-0 rotate-[-4.13deg] rounded-[14px] bg-brand lg:inset-auto lg:left-0 lg:top-0 lg:h-[524px] lg:w-[460px]"
                   />
-                  <div className="relative z-10 aspect-[460/523] w-full translate-x-[22px] overflow-hidden rounded-[14px]">
+
+                  <div className="relative z-10 aspect-[460/523] w-full translate-x-[2%] overflow-hidden rounded-[14px] sm:translate-x-[14px] lg:translate-x-[14px]">
                     <Media
                       image={section.main_image}
                       width={920}
@@ -170,18 +135,6 @@ export function FounderStorySplitSection(props: {
                 </div>
               ) : null}
             </div>
-
-            {/* Figma `597:2283` — desktop: Group 111 x≈741.37, y≈112.37 in 1298-wide card (not 714/85). Paint last + high z so `isolate` / blends never bury it. */}
-            {section.main_image ? (
-              <div
-                aria-hidden
-                className="pointer-events-none absolute left-[calc(741.372*100%/1298)] top-[112px] z-[40] hidden text-brand drop-shadow-[0_1px_2px_color-mix(in_srgb,var(--palette-navy-deep)_14%,transparent)] mix-blend-normal lg:block"
-              >
-                <div className="size-[27.372px] rotate-180">
-                  <FounderStorySparkMark className="block size-[27.372px] shrink-0" />
-                </div>
-              </div>
-            ) : null}
           </div>
         </div>
       </Container>

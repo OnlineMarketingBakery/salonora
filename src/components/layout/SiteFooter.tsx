@@ -286,7 +286,7 @@ export function SiteFooter({
                   </p>
                 )}
 
-                <div className="mt-6 flex w-full min-w-0 max-w-[625px] flex-col flex-wrap items-stretch gap-[22px] sm:items-start lg:max-w-none lg:flex-row lg:flex-nowrap lg:items-center lg:gap-[10px]">
+                <div className="mt-6 flex w-full min-w-0 max-w-[625px] flex-col flex-wrap items-start gap-[22px] lg:max-w-none lg:flex-row lg:flex-nowrap lg:items-center lg:gap-[10px]">
                   {primaryCta && (
                     <Button
                       href={primaryCta.href}
@@ -296,7 +296,7 @@ export function SiteFooter({
                       ctaElevation="none"
                       ctaFullWidth={false}
                       arrowClassName="h-5 w-5 shrink-0"
-                      className="w-full max-w-full gap-[15px] pl-[18px] pr-3.5 leading-[normal] sm:w-auto [&_[data-cta-label]]:whitespace-normal lg:[&_[data-cta-label]]:whitespace-nowrap"
+                      className="max-w-full self-start gap-[15px] pl-[18px] pr-3.5 leading-[normal] [&_[data-cta-label]]:whitespace-normal lg:[&_[data-cta-label]]:whitespace-nowrap"
                     >
                       {g.footer.footerCtaPrimaryLink?.title || primaryCta.label}
                     </Button>
@@ -310,7 +310,7 @@ export function SiteFooter({
                       ctaElevation="footerSecondary"
                       ctaFullWidth={false}
                       arrowClassName="h-5 w-5 shrink-0"
-                      className="text-navy-deep w-full max-w-full gap-[17px] px-4 leading-[normal] sm:w-auto [&_[data-cta-label]]:whitespace-normal lg:[&_[data-cta-label]]:whitespace-nowrap"
+                      className="text-navy-deep max-w-full self-start gap-[17px] px-4 leading-[normal] [&_[data-cta-label]]:whitespace-normal lg:[&_[data-cta-label]]:whitespace-nowrap"
                     >
                       {g.footer.footerCtaSecondaryLink?.title ||
                         secondaryCta.label}

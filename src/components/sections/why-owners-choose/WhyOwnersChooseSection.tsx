@@ -2,7 +2,9 @@ import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
+import { formatHeadingCase, formatHeadingLines } from "@/lib/i18n/format-heading";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
+import { SECTION_SHELL_SPLIT } from "@/lib/layout/section-spacing";
 import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
 import type {
@@ -56,6 +58,36 @@ function OwnersChooseCard({
 }: {
   card: WhyOwnersChooseSectionT["cards"][number];
 }) {
+  const iconBlock = (
+    <div
+      className={`flex size-[62px] shrink-0 items-center justify-center rounded-[10px] p-4 ${iconTileClass(card.accent)}`}
+    >
+      {card.icon ? (
+        <Media
+          image={card.icon}
+          width={64}
+          height={64}
+          className="size-[30px] object-contain"
+          sizes="48px"
+          preferLargestSource
+        />
+      ) : null}
+    </div>
+  );
+
+  const titleEl = card.title ? (
+    <h3 className="min-w-0 text-xl font-semibold leading-[1.1] text-navy">
+      {formatHeadingCase(card.title)}
+    </h3>
+  ) : null;
+
+  const textEl = card.text ? (
+    <RichText
+      html={card.text}
+      className="min-w-0 !prose-p:mb-0 !prose-p:mt-0 !prose-p:text-sm !prose-p:font-normal !prose-p:leading-[1.4] !prose-p:text-muted [&_p+_p]:!mt-2 [&_strong]:font-semibold [&_strong]:text-navy"
+    />
+  ) : null;
+
   return (
     <article
       className={`${REVEAL_ITEM} group relative flex w-full min-w-0 items-center pr-[18px]`}
@@ -64,36 +96,12 @@ function OwnersChooseCard({
         className={`mr-[-18px] h-[85px] w-[23px] shrink-0 rounded-[10px] ${accentBarClass(card.accent)}`}
         aria-hidden
       />
-      <div
-        className="mr-[-18px] flex min-h-[127px] min-w-0 flex-1 flex-col justify-center gap-2.5 rounded-[10px] border border-white/50 bg-gradient-to-b from-white to-white/[0.4] p-6 backdrop-blur-[11px] transition-[background-color,box-shadow,border-color] duration-200 group-hover:border-transparent group-hover:bg-white group-hover:shadow-[0px_6px_24px_rgba(21,41,81,0.24)] sm:p-6"
-      >
-        <div className="flex min-w-0 items-center gap-5">
-          <div
-            className={`flex size-[62px] shrink-0 items-center justify-center rounded-[10px] p-4 ${iconTileClass(card.accent)}`}
-          >
-            {card.icon ? (
-              <Media
-                image={card.icon}
-                width={64}
-                height={64}
-                className="size-[30px] object-contain"
-                sizes="48px"
-                preferLargestSource
-              />
-            ) : null}
-          </div>
+      <div className="mr-[-18px] flex min-w-0 flex-1 items-center rounded-[10px] border border-white/50 bg-gradient-to-b from-white to-white/[0.4] p-6 backdrop-blur-[11px] transition-[background-color,box-shadow,border-color] duration-200 group-hover:border-transparent group-hover:bg-white group-hover:shadow-[0px_6px_24px_rgba(21,41,81,0.24)] min-h-[127px]">
+        <div className="flex min-w-0 w-full items-center gap-5">
+          {iconBlock}
           <div className="flex min-w-0 flex-1 flex-col gap-2">
-            {card.title ? (
-              <h3 className="text-lg font-semibold leading-[1.1] text-navy sm:text-xl">
-                {card.title}
-              </h3>
-            ) : null}
-            {card.text ? (
-              <RichText
-                html={card.text}
-                className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:text-sm !prose-p:font-normal !prose-p:leading-[1.33] !prose-p:text-muted [&_p+_p]:!mt-2 [&_strong]:font-semibold [&_strong]:text-navy"
-              />
-            ) : null}
+            {titleEl}
+            {textEl}
           </div>
         </div>
       </div>
@@ -148,10 +156,7 @@ export function WhyOwnersChooseSection({
   section: WhyOwnersChooseSectionT;
   lang: Locale;
 }) {
-  const titleLines = section.title
-    .split(/\r?\n+/)
-    .map((l) => l.trim())
-    .filter(Boolean);
+  const titleLines = formatHeadingLines(section.title ?? "");
 
   const cards = section.cards.filter(
     (c) => c.title.trim() || c.text.trim() || c.icon,
@@ -164,8 +169,8 @@ export function WhyOwnersChooseSection({
     primaryCta?.text || ctaLink?.label || (ctaHref ? "Lees meer" : "");
 
   return (
-    <section className="bg-white py-16 sm:py-20 md:py-24">
-      <Container className="!max-w-[85rem]">
+    <section className={`bg-white ${SECTION_SHELL_SPLIT}`}>
+      <Container>
         <div className="flex flex-col items-center gap-10 sm:gap-12">
           <header
             className={`${REVEAL_ITEM} flex max-w-[min(100%,705px)] flex-col items-center gap-6 text-center`}
@@ -189,10 +194,10 @@ export function WhyOwnersChooseSection({
           <div className="grid w-full grid-cols-1 items-stretch gap-8 lg:grid-cols-2 lg:gap-10">
             {/* Figma 1714:1118 — 638×668, p-48, absolute bg 1714:1119 behind cards */}
             <div
-              className={`${REVEAL_ITEM} relative isolate order-2 flex min-h-[min(560px,100%)] flex-col justify-center overflow-hidden rounded-[14px] p-6 sm:p-10 lg:order-1 lg:min-h-[668px] lg:p-12`}
+              className={`${REVEAL_ITEM} relative isolate order-2 flex min-h-0 flex-col justify-center overflow-hidden rounded-[14px] p-6 sm:min-h-[min(560px,100%)] sm:p-10 lg:order-1 lg:min-h-[668px] lg:p-12`}
             >
               <WhyOwnersChooseCardsPanelBackdrop />
-              <div className="relative z-10 flex flex-col gap-[20px]">
+              <div className="relative z-10 flex flex-col gap-5 sm:gap-[20px]">
                 {cards.map((card, i) => (
                   <OwnersChooseCard
                     key={`${section.id}-woc-${i}`}
@@ -243,12 +248,10 @@ export function WhyOwnersChooseSection({
                       href={ctaHref}
                       target={ctaLink?.target}
                       variant="ctaBrand"
+                      ctaSize="default"
                       ctaElevation="none"
                       ctaFullWidth={false}
-                      ctaJustify="between"
-                      showArrow
-                      className="inline-flex h-12 min-h-12 w-[196px] max-w-full shrink-0 items-center justify-start gap-[26px] rounded-[24px] bg-brand pl-[17px] pr-5 text-base font-normal leading-normal text-white shadow-[0px_6px_10px_color-mix(in_srgb,var(--palette-brand)_54%,transparent)]"
-                      arrowClassName="size-5 shrink-0"
+                      className="shrink-0"
                     >
                       {ctaLabel}
                     </Button>

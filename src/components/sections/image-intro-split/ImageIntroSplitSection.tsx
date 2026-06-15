@@ -3,7 +3,9 @@ import "./image-intro-split.css";
 import { Container } from "@/components/ui/Container";
 import { RichText } from "@/components/ui/RichText";
 import { Media } from "@/components/ui/Media";
+import { formatHeadingLines } from "@/lib/i18n/format-heading";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
+import { SECTION_SHELL_AFTER_HERO } from "@/lib/layout/section-spacing";
 import type { ImageIntroSplitSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 import type { WpImage } from "@/types/wordpress";
@@ -80,10 +82,7 @@ function ImageTextRow({ icon, text }: { icon: WpImage | null; text: string }) {
 }
 
 export function ImageIntroSplitSection({ section }: { section: ImageIntroSplitSectionT; lang: Locale }) {
-  const titleLines = section.title
-    .split(/\r?\n+/)
-    .map((l) => l.trim())
-    .filter(Boolean);
+  const titleLines = formatHeadingLines(section.title ?? "");
 
   const featureRows = section.imageTextRows.filter((r) => r.text.trim());
   const showLowerBlock = featureRows.length > 0;
@@ -92,8 +91,8 @@ export function ImageIntroSplitSection({ section }: { section: ImageIntroSplitSe
     "font-sans text-[32px] font-semibold text-navy sm:text-[40px] sm:leading-[1.18] lg:text-[48px] lg:leading-[59px]";
 
   return (
-    <section className="image-intro-split bg-white pt-10 pb-16 sm:pt-12 sm:pb-20 md:pt-14 md:pb-24">
-      <Container className="!max-w-[85rem]">
+    <section className={`image-intro-split bg-white ${SECTION_SHELL_AFTER_HERO}`}>
+      <Container>
         {/* Figma split: 490px visual + 74px gutter + 535px copy, geometric centers aligned */}
         <div className="image-intro-split__grid mx-auto grid w-full max-w-[1099px] grid-cols-1 items-center gap-10 lg:grid-cols-[490px_535px] lg:gap-x-[74px] lg:gap-y-0">
           <div

@@ -1,3 +1,4 @@
+import { formatHeadingCase } from "@/lib/i18n/format-heading";
 import { SectionRenderer } from "@/components/sections/SectionRenderer";
 import { RichText } from "@/components/ui/RichText";
 import { Container } from "@/components/ui/Container";
@@ -9,7 +10,7 @@ export function PageTemplate({ document: doc, lang }: { document: PageDocument; 
     <article className="overflow-visible">
       {!doc.hidePageTitle && (
         <Container className="pt-28 md:pt-32">
-          <h1 className="text-3xl font-semibold text-foreground md:text-4xl">{doc.title}</h1>
+          <h1 className="text-3xl font-semibold text-foreground md:text-4xl">{formatHeadingCase(doc.title)}</h1>
         </Container>
       )}
       {doc.content && !doc.sections.length && (

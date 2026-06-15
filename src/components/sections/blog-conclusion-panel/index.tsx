@@ -1,3 +1,4 @@
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Container } from "@/components/ui/Container";
 import { RichText } from "@/components/ui/RichText";
 import { BlogSingleTailWidth } from "@/components/templates/post/BlogSingleTailWidth";
@@ -19,9 +20,11 @@ export function BlogConclusionPanelSection({
         <BlogSingleTailWidth>
           <div className="rounded-t-[12px] bg-surface px-6 py-10 sm:px-10 sm:py-12 md:px-[70px] md:py-16">
             {section.title?.trim() ? (
-              <h2 className="max-w-[65.5rem] text-[2rem] font-semibold leading-[1.1] text-navy sm:text-[2.375rem] md:text-[3rem]">
-                {section.title}
-              </h2>
+              <SectionHeading
+                as="h2"
+                text={section.title}
+                className="max-w-[65.5rem] text-[2rem] font-semibold leading-[1.1] text-navy sm:text-[2.375rem] md:text-[3rem]"
+              />
             ) : null}
             {section.body?.trim() ? (
               <RichText

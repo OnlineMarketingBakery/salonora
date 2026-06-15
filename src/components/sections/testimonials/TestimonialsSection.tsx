@@ -1,14 +1,17 @@
 import { Button } from "@/components/ui/Button";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Container } from "@/components/ui/Container";
 import { RichText } from "@/components/ui/RichText";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
+import { SITE_CONTENT_WIDTH_TESTIMONIALS } from "@/lib/layout/site-content-width";
+import { SECTION_SHELL_TESTIMONIALS } from "@/lib/layout/section-spacing";
 import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
 import type { TestimonialsSectionT } from "@/types/sections";
 import type { CSSProperties } from "react";
 import { TestimonialsCarousel } from "./TestimonialsCarousel";
 
-/** Same mesh + blend as Figma testimonials frame (`346:5621`…`346:5622` under `974:30`); matches `feature-highlight-split`. */
+/** Same mesh + blend as Figma testimonials frame (`346:5621`â€¦`346:5622` under `974:30`); matches `feature-highlight-split`. */
 const HERO_BG_SRC = "/feature-highlight-split-hero-bg.png";
 
 const heroBgImageLayer: CSSProperties = {
@@ -41,7 +44,7 @@ export function TestimonialsSection({
   const narrowSingleTotal = items.length === 1;
 
   return (
-    <section className="relative isolate overflow-hidden py-16 md:py-24">
+    <section className={`relative isolate overflow-hidden ${SECTION_SHELL_TESTIMONIALS}`}>
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden>
         <div
           className="absolute inset-0"
@@ -52,13 +55,13 @@ export function TestimonialsSection({
         <div style={heroBgImageLayer} />
         <div className="absolute inset-0" style={brandColorBlendLayer} />
       </div>
-      <Container className="relative z-10 max-w-[1314px]">
+      <Container className={`relative z-10 ${SITE_CONTENT_WIDTH_TESTIMONIALS}`}>
         {section.title ? (
-          <h2
+          <SectionHeading
+            as="h2"
+            text={section.title}
             className={`${REVEAL_ITEM} mx-auto max-w-[min(100%,477px)] text-center text-3xl font-semibold leading-tight text-navy-deep sm:text-4xl lg:leading-[56px]`}
-          >
-            {section.title}
-          </h2>
+          />
         ) : null}
         {section.intro ? (
           <RichText
@@ -100,9 +103,7 @@ export function TestimonialsSection({
                   ctaSize="promo"
                   ctaElevation="default"
                   ctaFullWidth={false}
-                  ctaJustify="between"
-                  className="!h-12 !min-h-12 shrink-0 !rounded-[24px] !gap-[19px] px-3 text-base font-normal text-white"
-                  arrowClassName="!h-6 !w-6 shrink-0"
+                  className="shrink-0"
                 >
                   {t}
                 </Button>

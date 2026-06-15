@@ -1,6 +1,8 @@
 /** @see Figma **830:2196** — blog index; grid cards match **892:617** (surface card, 14px radii, 369/260 media, 16/12px vertical rhythm). */
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import Image from "next/image";
 import Link from "next/link";
+import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import { buildLocalePath } from "@/lib/i18n/get-alternates";
@@ -236,9 +238,11 @@ export function BlogPostOverviewSection({
         <Container className="relative z-10">
           <header className={`max-w-4xl ${REVEAL_ITEM}`}>
             {section.title ? (
-              <h1 className="text-[2rem] font-semibold leading-[1.1] text-[var(--palette-navy)] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.75rem] lg:leading-[1.1]">
-                {section.title}
-              </h1>
+              <SectionHeading
+                as="h1"
+                text={section.title}
+                className="text-[2rem] font-semibold leading-[1.1] text-[var(--palette-navy)] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.75rem] lg:leading-[1.1]"
+              />
             ) : null}
             {section.intro ? (
               <p className="mt-4 max-w-2xl text-base font-normal leading-[1.6] text-[var(--palette-muted)] md:mt-[18px]">
@@ -305,13 +309,16 @@ export function BlogPostOverviewSection({
                 <MetaRow card={featured} lang={lang} variant="featured" />
               </div>
               <div>
-                <Link
+                <Button
                   href={featured.href}
-                  className="inline-flex h-12 min-w-[10rem] items-center justify-center gap-[18px] rounded-[24px] bg-[var(--palette-brand)] px-3 text-base font-normal text-[var(--palette-white)] shadow-[0_6px_10px_rgba(57,144,240,0.54)] transition hover:opacity-95"
+                  variant="ctaBrand"
+                  ctaSize="default"
+                  ctaFullWidth={false}
+                  ctaJustify="center"
+                  className="min-w-[10rem]"
                 >
                   {readLabel}
-                  <ArrowRightIcon className="size-6 shrink-0" />
-                </Link>
+                </Button>
               </div>
             </div>
           </article>

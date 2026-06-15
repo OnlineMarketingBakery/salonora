@@ -1,3 +1,4 @@
+import { formatHeadingCase } from "@/lib/i18n/format-heading";
 import { Container } from "@/components/ui/Container";
 import { LegalBreadcrumbs } from "@/components/templates/legal/LegalBreadcrumbs";
 import { LegalPageColumn } from "@/components/templates/legal/LegalPageColumn";
@@ -52,7 +53,7 @@ export function LegalPageHero({
   showTrustMeta?: boolean;
 }) {
   const lastUpdated = showTrustMeta ? getLegalLastUpdated(lang, slug) : null;
-  const displayTitle = decodeHtmlEntitiesPlain(title);
+  const displayTitle = formatHeadingCase(decodeHtmlEntitiesPlain(title));
   const breadcrumbs = getLegalBreadcrumbs(lang, slug, displayTitle);
 
   return (

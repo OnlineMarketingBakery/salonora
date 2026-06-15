@@ -1,7 +1,9 @@
 import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
+import { formatHeadingLines } from "@/lib/i18n/format-heading";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
+import { SECTION_SHELL_WHITE_TIGHT_TOP } from "@/lib/layout/section-spacing";
 import type { Locale } from "@/lib/i18n/locales";
 import type {
   CombinedStrengthsCardAccentT,
@@ -10,37 +12,15 @@ import type {
 import { Fragment, type CSSProperties } from "react";
 
 /**
- * “Border” in Figma for these cards is not a uniform stroke: it’s **two soft hotspots**
- * on the anti-diagonal — strongest at **top-right** and **bottom-left**, fading toward the
- * other corners. Implemented as **two radial gradients** clipped to a **2px border box**
- * (plus solid white fill clipped to padding), not `border-image`.
+ * Figma `597:2271`/`2272`/`2273` — the card "border" is a same-size colored panel
+ * placed **behind** the white card and rotated **−1.13°**, so its corners peek out as
+ * thin slanted colored slivers (top + bottom). Not a uniform stroke. Colors keep the
+ * CMS accent (brand | rose).
  */
-function storyCardShellStyle(
-  accent: CombinedStrengthsCardAccentT,
-): CSSProperties {
-  const tint =
-    accent === "rose" ? "var(--palette-rose)" : "var(--palette-brand)";
-  return {
-    // Figma-style: corner-emphasis stroke (TR + BL), not a uniform outline.
-    border: "3px solid transparent",
-    borderRadius: "20px",
-    backgroundImage: `
-      linear-gradient(var(--palette-white), var(--palette-white)),
-      conic-gradient(from 180deg at 100% 0%,
-        ${tint} 0deg,
-        color-mix(in srgb, ${tint} 70%, transparent) 26deg,
-        transparent 72deg
-      ),
-      conic-gradient(from 0deg at 0% 100%,
-        ${tint} 0deg,
-        color-mix(in srgb, ${tint} 70%, transparent) 26deg,
-        transparent 72deg
-      )
-    `,
-    backgroundOrigin: "padding-box, border-box, border-box",
-    backgroundClip: "padding-box, border-box, border-box",
-    boxShadow: "0px 6px 20px rgba(129, 154, 205, 0.26)",
-  };
+function storyCardAccentBg(accent: CombinedStrengthsCardAccentT): string {
+  return accent === "rose"
+    ? "bg-[var(--palette-rose)]"
+    : "bg-[var(--palette-brand)]";
 }
 
 /** Footer strip (Figma `597:3051` comp): **dark navy** field with **brand blue glow** on left & right, thin light top rim — not a light/white center. */
@@ -66,15 +46,12 @@ export function CombinedStrengthsSection({
   section: CombinedStrengthsSectionT;
   lang: Locale;
 }) {
-  const titleLines = section.title
-    .split(/\r?\n+/)
-    .map((l) => l.trim())
-    .filter(Boolean);
+  const titleLines = formatHeadingLines(section.title ?? "");
 
   return (
-    <section lang={lang} className="bg-[var(--palette-surface)] py-16 md:py-24">
-      <Container className="!max-w-[81.25rem]">
-        <div className="mx-auto flex w-full max-w-[1300px] flex-col gap-6">
+    <section lang={lang} className={`bg-[var(--palette-white)] ${SECTION_SHELL_WHITE_TIGHT_TOP}`}>
+      <Container className="max-w-340!">
+        <div className="mx-auto flex w-full flex-col gap-6">
           {/* Top: equal-height columns, 24px gutter — matches Figma 732 − (70+638) */}
           <div className="grid grid-cols-1 items-stretch gap-6 lg:grid-cols-2 lg:gap-6">
             <div
@@ -82,7 +59,7 @@ export function CombinedStrengthsSection({
             >
               <div className="flex w-full max-w-[33.6875rem] flex-col gap-8 sm:gap-[51px]">
                 {titleLines.length > 0 ? (
-                  <h2 className="font-sans text-[28px] font-semibold leading-[1.15] text-[var(--palette-white)] sm:text-[40px] lg:text-[48px]">
+                  <h2 className="font-sans text-[32px] font-semibold leading-[1.15] text-[var(--palette-white)] sm:text-[40px] lg:text-[48px]">
                     {titleLines.map((line, i) => (
                       <span key={i} className="block sm:leading-[56px]">
                         {line}
@@ -130,22 +107,27 @@ export function CombinedStrengthsSection({
               {section.content_cards.map((card, i) => {
                 const titleBodyGap = i === 0 ? "gap-[14px]" : "gap-[15px]";
                 return (
-                  <div
-                    key={i}
-                    style={storyCardShellStyle(card.accent)}
-                    className={`flex w-full flex-col justify-center px-[34px] py-[34px] lg:min-h-[184px] ${titleBodyGap}`}
-                  >
-                    {card.title ? (
-                      <h3 className="font-sans text-2xl font-semibold leading-[1.1] text-navy-deep">
-                        {card.title}
-                      </h3>
-                    ) : null}
-                    {card.text ? (
-                      <RichText
-                        html={card.text}
-                        className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:text-base !prose-p:font-normal !prose-p:leading-[1.4] !prose-p:text-[var(--palette-muted)] [&_p]:!text-[var(--palette-muted)] [&_strong]:font-semibold [&_strong]:!text-[var(--palette-navy-deep)]"
-                      />
-                    ) : null}
+                  <div key={i} className="relative w-full lg:min-h-[184px]">
+                    {/* Figma 597:2271/2272/2273 — slanted colored backing peeks out top + bottom */}
+                    <div
+                      aria-hidden
+                      className={`pointer-events-none absolute inset-0 -rotate-[1.13deg] rounded-[20px] ${storyCardAccentBg(card.accent)}`}
+                    />
+                    <div
+                      className={`relative flex h-full w-full flex-col justify-center rounded-[20px] bg-[var(--palette-white)] px-[34px] py-[34px] shadow-[0px_6px_20px_rgba(129,154,205,0.26)] lg:min-h-[184px] ${titleBodyGap}`}
+                    >
+                      {card.title ? (
+                        <h3 className="font-sans text-2xl font-semibold leading-[1.1] text-navy-deep">
+                          {card.title}
+                        </h3>
+                      ) : null}
+                      {card.text ? (
+                        <RichText
+                          html={card.text}
+                          className="!prose-p:mb-0 !prose-p:mt-0 !prose-p:text-base !prose-p:font-normal !prose-p:leading-[1.4] !prose-p:text-[var(--palette-muted)] [&_p]:!text-[var(--palette-muted)] [&_strong]:font-semibold [&_strong]:!text-[var(--palette-navy-deep)]"
+                        />
+                      ) : null}
+                    </div>
                   </div>
                 );
               })}

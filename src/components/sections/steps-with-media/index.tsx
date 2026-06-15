@@ -1,8 +1,9 @@
-/** @see Figma **1322:32** — brand disc + CMS browser mockup image; heading, three steps, pill CTA. */
+/** @see Figma **1322:32** â€” brand disc + CMS browser mockup image; heading, three steps, pill CTA. */
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
+import { formatHeadingLines } from "@/lib/i18n/format-heading";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
@@ -25,10 +26,7 @@ export function StepsWithMediaSection({
     resolvedCta?.label?.trim() || section.cta_link?.title?.trim() || "";
   const ctaHref = resolvedCta?.href;
 
-  const titleLines = section.title
-    .split(/\r?\n+/)
-    .map((l) => l.trim())
-    .filter(Boolean);
+  const titleLines = formatHeadingLines(section.title ?? "");
 
   const steps = section.steps.filter(
     (s) => s.title.trim() !== "" || s.description.trim() !== "" || s.number.trim() !== "",
@@ -113,12 +111,10 @@ export function StepsWithMediaSection({
           href={ctaHref}
           target={resolvedCta?.target}
           variant="ctaBrand"
-          ctaSize="default"
+          ctaSize="promo"
           ctaFullWidth={false}
           ctaElevation="none"
-          ctaJustify="center"
-          arrowClassName="size-6 shrink-0"
-          className="!h-[54px] !min-h-[54px] !w-[212px] shrink-0 !gap-[34px] !rounded-[27px] !p-3 text-[18px] font-normal leading-6"
+          className="shrink-0 self-start"
         >
           {ctaLabel}
         </Button>
@@ -131,7 +127,7 @@ export function StepsWithMediaSection({
       lang={lang}
       className="bg-[var(--palette-white)] pt-20 pb-14 md:py-24 lg:py-[103px]"
     >
-      <Container className="!max-w-[85rem]">
+      <Container>
         <div className="grid items-center gap-y-12 gap-x-12 lg:grid-cols-2 lg:gap-x-[57px] lg:gap-y-0">
           <div className={`${REVEAL_ITEM} order-1 min-w-0`}>{visual}</div>
           <div className={`${REVEAL_ITEM} order-2 min-w-0`}>{copy}</div>

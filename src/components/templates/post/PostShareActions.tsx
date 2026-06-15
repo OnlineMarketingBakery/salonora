@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useState } from "react";
+import { Button } from "@/components/ui/Button";
 import type { Locale } from "@/lib/i18n/locales";
 
 const COPY = {
@@ -56,14 +57,18 @@ export function PostShareActions({
 
   return (
     <div className="flex items-center gap-3">
-      <button
+      <Button
         type="button"
         onClick={onShare}
-        className="inline-flex h-[47px] min-w-[111px] shrink-0 items-center justify-center gap-[18px] rounded-[24px] bg-brand p-3 text-[16px] font-normal leading-normal text-white transition hover:opacity-[0.94]"
+        variant="ctaBrand"
+        ctaSize="default"
+        ctaFullWidth={false}
+        ctaJustify="center"
+        arrowContent={<ShareIcon className="size-[24px] shrink-0 text-white" />}
+        className="min-w-[111px]"
       >
         {t.share}
-        <ShareIcon className="size-[24px] shrink-0 text-white" />
-      </button>
+      </Button>
       {hint ? <span className="text-xs text-[var(--palette-muted)]">{hint}</span> : null}
     </div>
   );

@@ -1,3 +1,4 @@
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Container } from "@/components/ui/Container";
 import { RichText } from "@/components/ui/RichText";
 import { CF7Form } from "@/components/forms/CF7Form";
@@ -12,11 +13,11 @@ export function FormEmbedSection({ section, lang }: { section: FormEmbedSectionT
     <section className="py-16 md:py-24">
       <Container>
         {section.title && (
-          <h2
+          <SectionHeading
+            as="h2"
+            text={section.title}
             className={`${REVEAL_ITEM} text-3xl font-semibold leading-tight text-navy sm:text-4xl lg:text-[48px] lg:leading-[56px]`}
-          >
-            {section.title}
-          </h2>
+          />
         )}
         {section.intro && <RichText html={section.intro} className={`${REVEAL_ITEM} mt-4 text-muted`} />}
         <div className={`${REVEAL_ITEM} mt-8 max-w-lg`}>

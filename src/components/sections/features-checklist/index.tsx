@@ -1,8 +1,10 @@
-/** Content: Figma **597:4037** (“Frame 2147228715”). Decorative shell: **597:3568** (same as **1714:244**). */
+/** Content: Figma **597:4037** (â€œFrame 2147228715â€). Decorative shell: **597:3568** (same as **1714:244**). */
 import { Button } from "@/components/ui/Button";
+import { CtaTrailingIcon } from "@/components/ui/CtaTrailingIcon";
 import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { NavyStarfieldBackdrop } from "@/components/sections/shared/NavyStarfieldBackdrop";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { Locale } from "@/lib/i18n/locales";
@@ -12,7 +14,7 @@ import type { WpImage } from "@/types/wordpress";
 import type { CSSProperties } from "react";
 
 /**
- * Figma 597:4079 “Mask group”: 528×382 rounded photo **minus** 201×60 rect at (327, 322) → L-shape + BR notch.
+ * Figma 597:4079 â€œMask groupâ€: 528Ã—382 rounded photo **minus** 201Ã—60 rect at (327, 322) â†’ L-shape + BR notch.
  * Percentages are of the media box; CTA sits in the notch on the same navy as the section.
  */
 const FC_MASKED_IMAGE_CLIP: CSSProperties = {
@@ -76,16 +78,8 @@ export function FeaturesChecklistSection({
     resolved?.label?.trim() || section.button?.title?.trim() || "";
   const ctaHref = resolved?.href;
 
-  /** CMS icon (e.g. circled arrow); slightly smaller than default slot; white on brand pill. */
   const trailing = section.button_trailing_icon ? (
-    <Media
-      image={section.button_trailing_icon}
-      width={28}
-      height={28}
-      className="h-7 w-7 shrink-0 object-contain brightness-0 invert"
-      sizes="28px"
-      preferLargestSource
-    />
+    <CtaTrailingIcon image={section.button_trailing_icon} imageClassName="brightness-0 invert" />
   ) : undefined;
 
   const hasBody =
@@ -96,7 +90,6 @@ export function FeaturesChecklistSection({
 
   if (!hasBody) return null;
 
-  /** Vertical padding: Figma shell **1714:244** (~151px inset) → nearest scale steps. */
   const sectionPad = "py-36 md:py-40";
 
   return (
@@ -108,9 +101,11 @@ export function FeaturesChecklistSection({
           {(section.title || section.description) && (
             <header className="mx-auto flex w-full max-w-[800px] flex-col items-center gap-3.5 text-center text-[var(--palette-white)] sm:gap-4">
               {section.title ? (
-                <h2 className="w-full max-w-[720px] text-pretty font-sans text-[clamp(1.75rem,5vw,3rem)] font-semibold leading-[1.12] text-[var(--palette-white)] lg:text-[48px] lg:leading-[1.1]">
-                  {section.title}
-                </h2>
+                <SectionHeading
+                  as="h2"
+                  text={section.title}
+                  className="w-full max-w-[720px] text-pretty font-sans text-[clamp(1.75rem,5vw,3rem)] font-semibold leading-[1.12] text-[var(--palette-white)] lg:text-[48px] lg:leading-[1.1]"
+                />
               ) : null}
               {section.description ? (
                 <RichText
@@ -179,8 +174,7 @@ export function FeaturesChecklistSection({
                             target={resolved?.target}
                             showArrow
                             arrowContent={trailing}
-                            arrowClassName={trailing ? undefined : "h-4 w-4 shrink-0"}
-                            className="min-w-[min(100%,17.5rem)] px-6 shadow-[0px_10px_28px_color-mix(in_srgb,var(--palette-brand)_45%,transparent)] sm:min-w-[18.5rem] sm:px-7"
+                            className="shadow-[0px_10px_28px_color-mix(in_srgb,var(--palette-brand)_45%,transparent)]"
                           >
                             {ctaLabel}
                           </Button>

@@ -157,6 +157,7 @@ export function ScrollingTickerSection({
 
   const copies = Array.from({ length: MARQUEE_MIN_COPIES }, (_, i) => i);
 
+  // Figma exception: -mb-16 overlap with adjacent section; padding unchanged.
   return (
     <section
       className={`${REVEAL_ITEM} relative z-10 -mb-16 w-full overflow-hidden bg-transparent py-10 sm:py-8`}

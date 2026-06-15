@@ -11,7 +11,9 @@ export function mergeFooterSettings(
     isCustomFooter: true,
     footerTitle: overrides.footerTitle.trim(),
     footerText: overrides.footerText.trim(),
-    footerLogo: overrides.footerLogo,
+    // Per-page footers rarely set their own badge; keep the global footer logo so the
+    // notch + centered logo badge still render instead of collapsing to the flat top.
+    footerLogo: overrides.footerLogo ?? base.footerLogo,
     footerCopyright: overrides.footerCopyright.trim(),
     showFooterLanguageSwitcher: section.hasLanguageSwitcherOverride
       ? overrides.showFooterLanguageSwitcher

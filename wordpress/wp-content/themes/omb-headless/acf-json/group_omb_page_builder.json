@@ -5873,6 +5873,37 @@
                             "allow_in_bindings": 0
                         },
                         {
+                            "key": "field_omb_salon_value_proposition_card_accent_placement",
+                            "label": "Card accent border",
+                            "name": "card_accent_placement",
+                            "aria-label": "",
+                            "type": "select",
+                            "instructions": "Colored strip on each feature card - top or bottom edge.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "bottom": "Bottom (default)",
+                                "top": "Top"
+                            },
+                            "default_value": "bottom",
+                            "return_format": "value",
+                            "multiple": 0,
+                            "allow_null": 0,
+                            "ui": 1,
+                            "ajax": 0,
+                            "placeholder": "",
+                            "allow_custom": 0,
+                            "search_placeholder": "",
+                            "allow_in_bindings": 0,
+                            "create_options": 0,
+                            "save_options": 0
+                        },
+                        {
                             "key": "field_svp_eyebrow",
                             "label": "Eyebrow",
                             "name": "eyebrow",
@@ -12194,5 +12225,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1781264867
+    "modified": 1781539200
 }

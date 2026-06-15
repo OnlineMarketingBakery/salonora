@@ -1,10 +1,13 @@
-import { Button } from "@/components/ui/Button";
+﻿import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
+import { formatHeadingLines } from "@/lib/i18n/format-heading";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
+import { SECTION_SHELL_SPLIT } from "@/lib/layout/section-spacing";
 import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
+import { SparkMark } from "@/components/ui/SparkMark";
 import type { OriginStorySplitSectionT } from "@/types/sections";
 
 export function OriginStorySplitSection({
@@ -20,17 +23,15 @@ export function OriginStorySplitSection({
   const ctaLabel =
     primaryCta?.text || ctaLink?.label || (ctaHref ? "Meer informatie" : "");
 
-  const titleLines = section.title
-    .split(/\r?\n+/)
-    .map((l) => l.trim())
-    .filter(Boolean);
+  const titleLines = formatHeadingLines(section.title ?? "");
 
   return (
-    <section className="bg-white py-16 md:py-24">
-      <Container className="max-w-340!">
-        <div className="flex flex-col items-start gap-10 lg:flex-row lg:items-center lg:gap-[60px]">
+    <section className={`overflow-visible bg-white ${SECTION_SHELL_SPLIT}`}>
+      <Container className="max-w-340! overflow-visible">
+        {/* Figma `1063:27` — 626px copy + 54px gutter + 460px image (+22px photo offset) = 1162px */}
+        <div className="mx-auto grid w-full max-w-[1162px] grid-cols-1 items-center gap-10 overflow-visible lg:grid-cols-[626px_482px] lg:gap-x-[54px]">
           <div
-            className={`${REVEAL_ITEM} flex w-full min-w-0 flex-col gap-6 lg:max-w-[626px]`}
+            className={`${REVEAL_ITEM} flex w-full min-w-0 flex-col gap-6 lg:w-[626px] lg:max-w-[626px]`}
           >
             {section.eyebrow ? (
               <div className="inline-flex h-[42px] self-start items-center justify-center rounded-[21px] bg-pill px-[21px] text-base font-medium leading-[1.6] text-brand">
@@ -39,7 +40,7 @@ export function OriginStorySplitSection({
             ) : null}
 
             {titleLines.length > 0 ? (
-              <h2 className="font-sans text-[40px] font-semibold leading-tight text-navy sm:text-[48px] sm:leading-[56px]">
+              <h2 className="font-sans text-[32px] font-semibold leading-tight text-navy sm:text-[40px] lg:text-[48px] lg:leading-[56px]">
                 {titleLines.map((line, i) => (
                   <span key={i} className="block">
                     {line}
@@ -63,7 +64,6 @@ export function OriginStorySplitSection({
                 ctaElevation="none"
                 ctaFullWidth={false}
                 className="h-12! max-w-full self-start whitespace-normal shadow-[0px_6px_10px_rgba(57,144,240,0.54)] sm:whitespace-nowrap"
-                arrowClassName="h-6 w-6"
               >
                 {ctaLabel}
               </Button>
@@ -72,21 +72,32 @@ export function OriginStorySplitSection({
 
           {section.image ? (
             <div
-              className={`${REVEAL_ITEM} relative mx-auto w-full max-w-[460px] shrink-0 lg:mx-0`}
+              className={`${REVEAL_ITEM} relative mx-auto w-full max-w-[482px] overflow-visible pt-7 lg:mx-0 lg:w-[482px] lg:pt-[27px]`}
             >
+              {/* Figma `597:2971` — ~7px left of photo; sits in top padding so it is not clipped */}
               <div
                 aria-hidden
-                className="pointer-events-none absolute left-0 top-2 z-0 aspect-460/523 w-[min(100%,460px)] origin-center rotate-[-4.13deg] rounded-[14px] bg-brand sm:top-3"
-              />
-              <div className="relative z-10 aspect-460/523 w-full max-w-[460px] translate-x-[5%] translate-y-3 overflow-hidden rounded-[14px] sm:translate-x-[22px] sm:translate-y-4">
-                <Media
-                  image={section.image}
-                  width={920}
-                  height={1046}
-                  className="h-full w-full object-cover object-center "
-                  sizes="(min-width: 1024px) 460px, 90vw"
-                  preferLargestSource
+                className="pointer-events-none absolute -left-2 -top-1 z-30 text-brand lg:-left-[18px] lg:top-[10px]"
+              >
+                <SparkMark />
+              </div>
+
+              <div className="relative mx-auto w-full max-w-[460px]">
+                {/* Blue backing tracks the photo's aspect ratio on mobile; fixed Figma size at lg. */}
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 z-0 rotate-[-4.13deg] rounded-[14px] bg-brand lg:inset-auto lg:left-0 lg:top-0 lg:h-[524px] lg:w-[460px]"
                 />
+                <div className="relative z-10 aspect-460/523 w-full translate-x-[2%] overflow-hidden rounded-[14px] sm:translate-x-[22px]">
+                  <Media
+                    image={section.image}
+                    width={920}
+                    height={1046}
+                    className="h-full w-full object-cover object-center "
+                    sizes="(min-width: 1024px) 460px, 90vw"
+                    preferLargestSource
+                  />
+                </div>
               </div>
             </div>
           ) : null}

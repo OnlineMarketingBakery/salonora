@@ -7,8 +7,10 @@ import {
   SplitCopyFramedVisualLayout,
 } from "@/components/sections/shared/split-copy-framed-visual-layout";
 import { Button } from "@/components/ui/Button";
-import { Media } from "@/components/ui/Media";
+import { CtaTrailingIcon } from "@/components/ui/CtaTrailingIcon";
 import { RichText } from "@/components/ui/RichText";
+import { formatHeadingLines } from "@/lib/i18n/format-heading";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
@@ -30,10 +32,7 @@ export function SplitCopyFramedSection({
     .filter((r) => r.text);
 
   const isCard = section.layout_mode === "card_grid";
-  const titleLines = section.title
-    .split(/\r?\n+/)
-    .map((l) => l.trim())
-    .filter(Boolean);
+  const titleLines = formatHeadingLines(section.title ?? "");
 
   const hasFlushCopy =
     Boolean(section.title.trim()) ||
@@ -79,9 +78,7 @@ export function SplitCopyFramedSection({
       </>
     ) : null;
 
-  const trailingIconClass = section.cta_trailing_icon_invert
-    ? "h-6 w-6 brightness-0 invert"
-    : "h-6 w-6";
+  const trailingImageClass = section.cta_trailing_icon_invert ? "brightness-0 invert" : undefined;
 
   const ctaButton =
     ctaHref && ctaLabel ? (
@@ -89,29 +86,13 @@ export function SplitCopyFramedSection({
         href={ctaHref}
         target={resolved?.target}
         variant="ctaBrand"
-        ctaSize="default"
         ctaFullWidth={false}
-        ctaElevation="none"
-        ctaJustify="between"
         arrowContent={
           section.button_trailing_icon ? (
-            <span className="inline-flex size-6 shrink-0 items-center justify-center [&_img]:object-contain">
-              <Media
-                image={section.button_trailing_icon}
-                width={24}
-                height={24}
-                className={trailingIconClass}
-                sizes="24px"
-                preferLargestSource
-              />
-            </span>
+            <CtaTrailingIcon image={section.button_trailing_icon} imageClassName={trailingImageClass} />
           ) : undefined
         }
-        className={
-          isCard
-            ? "h-12 min-h-12 w-full max-w-[325px] shrink-0 self-start px-[18px] py-3 shadow-[0px_6px_10px_color-mix(in_srgb,var(--palette-brand)_54%,transparent)] sm:w-auto"
-            : "h-12 min-h-12 w-full max-w-[13.25rem] shrink-0 self-start px-3 py-3 shadow-[0px_6px_10px_color-mix(in_srgb,var(--palette-brand)_54%,transparent)] sm:w-auto sm:px-[14px]"
-        }
+        className="self-start"
       >
         {ctaLabel}
       </Button>
@@ -156,9 +137,11 @@ export function SplitCopyFramedSection({
         {(section.title.trim() || section.subtitle.trim()) && (
           <div className="flex max-w-[20.875rem] flex-col gap-2.5">
             {section.title.trim() ? (
-              <h2 className="font-sans text-[clamp(2rem,4vw,3rem)] font-semibold leading-[1.15] text-[var(--palette-navy)]">
-                {section.title.trim()}
-              </h2>
+              <SectionHeading
+                as="h2"
+                text={section.title}
+                className="font-sans text-[clamp(2rem,4vw,3rem)] font-semibold leading-[1.15] text-[var(--palette-navy)]"
+              />
             ) : null}
             {section.subtitle.trim() ? (
               <p className="font-sans text-xl font-normal leading-[1.4] text-[var(--palette-muted)] sm:text-2xl">
@@ -193,7 +176,6 @@ export function SplitCopyFramedSection({
           ? "bg-[var(--palette-white)] py-7 md:py-8"
           : "bg-[var(--palette-white)] py-16 md:py-24"
       }
-      containerClassName="!max-w-[85rem]"
       innerClassName={isCard ? REVEAL_ITEM : undefined}
       visualInnerClassName={!isCard && section.image != null ? REVEAL_ITEM : undefined}
       copy={copy}

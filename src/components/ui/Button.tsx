@@ -8,6 +8,7 @@ import { useGSAP } from "@gsap/react";
 import { ArrowInCircle } from "@/components/ui/ArrowInCircle";
 import { useCtaBrandArrowImage } from "@/components/providers/CtaBrandArrowProvider";
 import { registerGsapClient } from "@/lib/gsap/register";
+import { CTA_ARROW_CLASS, CTA_CARD_ARROW_CLASS, CTA_GAP_CLASS, CTA_PX_DEFAULT } from "@/lib/ui/cta-tokens";
 
 const textBody = "text-base font-normal font-sans leading-normal";
 const textWhite = "text-white";
@@ -42,14 +43,37 @@ function isCtaVariant(v: ButtonVariant): v is keyof typeof ctaSurface {
 }
 
 const ctaSizeClass = {
-  default: "h-12 min-h-12 rounded-[24px] gap-[17px] px-3.5 text-base leading-normal",
-  hero: "h-12 min-h-12 rounded-[24px] gap-[17px] px-3.5 text-lg leading-6",
-  promo:
-    "h-[54px] min-h-[54px] rounded-[27px] gap-2 px-6 text-lg font-normal leading-6 sm:gap-8 sm:px-8 md:gap-10 md:px-10",
-  compact: "h-12 min-h-12 rounded-[24px] gap-2 px-3.5 sm:px-4 text-[16px]",
-  card: "h-[42px] min-h-[42px] rounded-[24px] gap-0 pl-[18px] pr-3.5 text-sm leading-6",
-  package: "h-[55px] min-h-[55px] rounded-[31.5px] gap-2 px-4 text-base leading-normal",
-  drawer: "h-12 min-h-12 rounded-full gap-2.5 px-4 text-[16px]",
+  default: `h-12 min-h-12 rounded-[24px] ${CTA_GAP_CLASS} ${CTA_PX_DEFAULT}`,
+  hero: `h-12 min-h-12 rounded-[24px] ${CTA_GAP_CLASS} ${CTA_PX_DEFAULT}`,
+  promo: `h-[54px] min-h-[54px] rounded-[27px] ${CTA_GAP_CLASS} px-6 sm:px-8 md:px-10`,
+  compact: `h-12 min-h-12 rounded-[24px] ${CTA_GAP_CLASS} ${CTA_PX_DEFAULT}`,
+  card: "h-[42px] min-h-[42px] rounded-[24px] gap-0 pl-[18px] pr-3.5",
+  package: `h-[55px] min-h-[55px] rounded-[31.5px] ${CTA_GAP_CLASS} px-4`,
+  feature: `h-[63px] min-h-[63px] rounded-[31.5px] ${CTA_GAP_CLASS} pl-[22px] pr-5`,
+  drawer: `h-12 min-h-12 rounded-full ${CTA_GAP_CLASS} px-4`,
+} as const;
+
+/** Applied on `[data-cta-label]` / char spans — not the pill root (avoids Tailwind conflicts). */
+const ctaLabelTypographyClass = {
+  default: "text-base font-normal leading-normal",
+  hero: "text-base font-normal leading-normal",
+  promo: "text-lg font-normal leading-6",
+  compact: "text-base font-normal leading-normal",
+  card: "text-sm font-normal leading-6",
+  package: "text-base font-normal leading-normal",
+  feature: "text-xl font-normal leading-normal",
+  drawer: "text-base font-normal leading-normal",
+} as const;
+
+const ctaArrowSizeClass = {
+  default: CTA_ARROW_CLASS,
+  hero: CTA_ARROW_CLASS,
+  promo: CTA_ARROW_CLASS,
+  compact: CTA_ARROW_CLASS,
+  card: CTA_CARD_ARROW_CLASS,
+  package: CTA_ARROW_CLASS,
+  feature: CTA_ARROW_CLASS,
+  drawer: CTA_ARROW_CLASS,
 } as const;
 
 export type ButtonCtaSize = keyof typeof ctaSizeClass;
@@ -77,14 +101,15 @@ type Props = {
   onClick?: () => void;
   target?: string;
   disabled?: boolean;
-  /** Layout for CTA pills: between (footer, package rows) vs center (default). */
-  ctaJustify?: "center" | "between";
+  /** `center` (default) groups label + arrow; `spread` pushes arrow to the far edge on full-width pills only. */
+  ctaJustify?: "center" | "spread";
   ctaSize?: ButtonCtaSize;
   ctaElevation?: CtaElevation;
   /** Full-width CTAs in stacked layouts; set false for inline slots (e.g. header). */
   ctaFullWidth?: boolean;
   showArrow?: boolean;
-  arrowClassName?: string;
+  /** Optional leading slot (e.g. brand logo disc) — hides trailing arrow by default. */
+  leadingContent?: ReactNode;
   /** Replace default circled-arrow image (brand CTAs, etc.). Hover animation still targets `[data-cta-arrow]`. */
   arrowContent?: ReactNode;
 };
@@ -95,14 +120,18 @@ const standardBase =
 const ctaLabelClass =
   "min-w-0 overflow-hidden text-ellipsis whitespace-nowrap";
 
-function ctaLabelLayoutClass(ctaJustify: "center" | "between", hasArrow: boolean): string {
-  const align = ctaJustify === "between" ? "text-left" : "text-center";
-  const width = ctaJustify === "between" && hasArrow ? "flex-1" : "max-w-full";
-  return `${ctaLabelClass} ${width} ${align}`;
+function ctaLabelLayoutClass(ctaJustify: "center" | "spread", ctaFullWidth: boolean): string {
+  const align = ctaJustify === "spread" && ctaFullWidth ? "text-left" : "text-center";
+  return `${ctaLabelClass} max-w-full shrink ${align}`;
+}
+
+function ctaJustifyClass(ctaJustify: "center" | "spread", ctaFullWidth: boolean): string {
+  if (ctaJustify === "spread" && ctaFullWidth) return "justify-between";
+  return "justify-center";
 }
 
 const ctaBaseShared =
-  "group inline-flex shrink-0 items-center font-sans font-normal transition-all duration-400 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand";
+  "group inline-flex shrink-0 items-center font-sans transition-all duration-400 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-brand";
 
 function plainTextLabel(children: ReactNode): string | null {
   if (typeof children === "string" || typeof children === "number") {
@@ -112,13 +141,26 @@ function plainTextLabel(children: ReactNode): string | null {
   return null;
 }
 
-function CtaLabel({ children, layoutClass }: { children: ReactNode; layoutClass: string }) {
+function CtaLabel({
+  children,
+  layoutClass,
+  typographyClass,
+}: {
+  children: ReactNode;
+  layoutClass: string;
+  typographyClass: string;
+}) {
   const plain = plainTextLabel(children);
+  const labelClass = `${layoutClass} ${typographyClass}`.trim();
   if (plain) {
     return (
-      <span className={layoutClass} aria-hidden="true" data-cta-label>
+      <span className={labelClass} aria-hidden="true" data-cta-label>
         {Array.from(plain).map((ch, i) => (
-          <span key={i} data-cta-char className="inline-block will-change-[transform,opacity]">
+          <span
+            key={i}
+            data-cta-char
+            className={`inline-block will-change-[transform,opacity] ${typographyClass}`}
+          >
             {ch === " " ? "\u00a0" : ch}
           </span>
         ))}
@@ -126,14 +168,14 @@ function CtaLabel({ children, layoutClass }: { children: ReactNode; layoutClass:
     );
   }
   return (
-    <span className={layoutClass} data-cta-label>
+    <span className={labelClass} data-cta-label>
       {children}
     </span>
   );
 }
 
 const ctaWidthFull = "w-full min-w-0 max-w-full";
-const ctaWidthInline = "w-auto max-w-full min-w-0";
+const ctaWidthInline = "w-fit max-w-full shrink-0";
 
 function useButtonHover(
   rootRef: React.RefObject<HTMLElement | null>,
@@ -246,41 +288,51 @@ export function Button({
   onClick,
   target,
   disabled,
-  ctaJustify = "between",
+  ctaJustify = "center",
   ctaSize = "default",
   ctaElevation = "default",
   ctaFullWidth = true,
   showArrow,
-  arrowClassName,
+  leadingContent,
   arrowContent,
 }: Props) {
   const rootRef = useRef<HTMLElement | null>(null);
   const ctaBrandArrowImage = useCtaBrandArrowImage();
   const dis = disabled ? "pointer-events-none opacity-60" : "";
   const isCta = isCtaVariant(variant);
-  const useArrow = isCta && (showArrow ?? true);
+  const useArrow = isCta && (showArrow ?? !leadingContent);
 
   useButtonHover(rootRef, { disabled, hasArrow: Boolean(useArrow), enabled: isCta });
 
   if (isCta) {
-    const justify = ctaJustify === "between" ? "justify-between" : "justify-center";
+    const justify = ctaJustifyClass(ctaJustify, ctaFullWidth);
     const shadow = ctaShadowClass(variant, ctaElevation);
     const sizeCls = ctaSizeClass[ctaSize];
+    const labelTypography = ctaLabelTypographyClass[ctaSize];
     const ctaWidth = ctaFullWidth ? ctaWidthFull : ctaWidthInline;
     const cls =
       `${ctaBaseShared} ${ctaWidth} ${justify} ${sizeCls} ${ctaSurface[variant]} ${shadow} ${dis} ${className}`.trim();
 
     const ctaName = plainTextLabel(children);
-    const labelLayoutClass = ctaLabelLayoutClass(ctaJustify, Boolean(useArrow));
+    const labelLayoutClass = leadingContent
+      ? `${ctaLabelClass} max-w-full shrink text-left`
+      : ctaLabelLayoutClass(ctaJustify, ctaFullWidth);
     const inner = (
       <>
-        <CtaLabel layoutClass={labelLayoutClass}>{children}</CtaLabel>
+        {leadingContent ? (
+          <span data-cta-leading className="inline-flex shrink-0">
+            {leadingContent}
+          </span>
+        ) : null}
+        <CtaLabel layoutClass={labelLayoutClass} typographyClass={labelTypography}>
+          {children}
+        </CtaLabel>
         {useArrow ? (
-          <span data-cta-arrow className="inline-flex shrink-0 will-change-[transform]">
+          <span data-cta-arrow className="inline-flex shrink-0 items-center justify-center will-change-[transform]">
             {arrowContent ?? (
               <ArrowInCircle
+                className={ctaArrowSizeClass[ctaSize]}
                 variant={ctaArrowVariant[variant]}
-                className={arrowClassName ?? "h-5 w-5 shrink-0"}
                 brandImage={variant === "ctaBrand" ? ctaBrandArrowImage : undefined}
               />
             )}

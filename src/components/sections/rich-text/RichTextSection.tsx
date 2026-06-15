@@ -1,4 +1,5 @@
 import { Container } from "@/components/ui/Container";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { RichText } from "@/components/ui/RichText";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { RichTextSectionT } from "@/types/sections";
@@ -15,11 +16,11 @@ export function RichTextSection({ section }: { section: RichTextSectionT; lang: 
     <section className="py-12">
       <Container>
         {section.title && (
-          <h2
+          <SectionHeading
+            as="h2"
+            text={section.title}
             className={`${REVEAL_ITEM} text-3xl font-semibold leading-tight text-navy sm:text-4xl lg:text-[48px] lg:leading-[56px]`}
-          >
-            {section.title}
-          </h2>
+          />
         )}
         {section.body && (
           <RichText html={section.body} className={`${REVEAL_ITEM} mt-4 text-muted ${w[section.contentWidth]}`} />

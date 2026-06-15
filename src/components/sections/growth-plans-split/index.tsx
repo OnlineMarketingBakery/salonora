@@ -3,30 +3,14 @@ import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
+import { formatHeadingLines } from "@/lib/i18n/format-heading";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
+import { SECTION_SHELL_SPLIT_TIGHT_BOTTOM } from "@/lib/layout/section-spacing";
 import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
 import type { GrowthPlansSplitSectionT } from "@/types/sections";
 import type { WpImage } from "@/types/wordpress";
-
-function CtaTrailingIcon({ image }: { image: WpImage | null }) {
-  if (!image) return null;
-  return (
-    <span
-      className="inline-flex size-7 shrink-0 items-center justify-center [&_img]:object-contain"
-      aria-hidden
-    >
-      <Media
-        image={image}
-        width={28}
-        height={28}
-        className="h-7 w-7"
-        sizes="28px"
-        preferLargestSource
-      />
-    </span>
-  );
-}
+import { CtaTrailingIcon } from "@/components/ui/CtaTrailingIcon";
 
 /** Collage column **30.25rem** wide; circle slots vs Figma ellipses — align CMS repeater order. */
 const FLOATING_CIRCLE_LAYOUT = [
@@ -62,10 +46,7 @@ export function GrowthPlansSplitSection({
   section: GrowthPlansSplitSectionT;
   lang: Locale;
 }) {
-  const titleLines = section.title
-    .split(/\r?\n+/)
-    .map((l) => l.trim())
-    .filter(Boolean);
+  const titleLines = formatHeadingLines(section.title ?? "");
 
   const primaryCta = section.ctas[0];
   const ctaResolved = primaryCta ? resolveLink(primaryCta.url, lang) : null;
@@ -141,22 +122,20 @@ export function GrowthPlansSplitSection({
       ) : null}
 
       {ctaHref && ctaLabel ? (
-        <div>
-          <Button
-            href={ctaHref}
-            target={ctaResolved?.target}
-            variant="ctaBrand"
-            ctaElevation="none"
-            ctaJustify="between"
-            ctaSize="promo"
-            ctaFullWidth={false}
-            showArrow={Boolean(section.cta_trailing_icon)}
-            arrowContent={<CtaTrailingIcon image={section.cta_trailing_icon} />}
-            className="min-h-[54px] w-auto max-w-[15.8125rem] shrink-0 border-0 px-[18px] text-[20px] font-normal !bg-[linear-gradient(135deg,var(--palette-brand)_0%,var(--palette-brand-strong)_100%)] text-white shadow-[0px_6px_10px_color-mix(in_srgb,var(--palette-brand)_54%,transparent)]"
-          >
-            {ctaLabel}
-          </Button>
-        </div>
+        <Button
+          href={ctaHref}
+          target={ctaResolved?.target}
+          variant="ctaBrand"
+          ctaFullWidth={false}
+          className="shrink-0 self-start"
+          arrowContent={
+            section.cta_trailing_icon ? (
+              <CtaTrailingIcon image={section.cta_trailing_icon} />
+            ) : undefined
+          }
+        >
+          {ctaLabel}
+        </Button>
       ) : null}
     </div>
   );
@@ -200,8 +179,8 @@ export function GrowthPlansSplitSection({
   );
 
   return (
-    <section className="bg-[var(--palette-white)] py-16 md:py-24">
-      <Container className="!max-w-[85rem]">
+    <section className={`bg-[var(--palette-white)] ${SECTION_SHELL_SPLIT_TIGHT_BOTTOM}`}>
+      <Container>
         <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-2 lg:gap-x-8 lg:gap-y-10 xl:gap-x-10">
           {section.media_position === "left" ? (
             <>

@@ -1,13 +1,15 @@
-import Image from "next/image";
+﻿import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
+import { formatHeadingLines } from "@/lib/i18n/format-heading";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
+import { SECTION_SHELL_WHITE } from "@/lib/layout/section-spacing";
 import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
 import type { PartnerIntroSplitSectionT } from "@/types/sections";
 
-/** Figma Ellipse 1997 — exported gradient circle + white stroke (see `public/partner-intro-ellipse.svg`). */
+/** Figma Ellipse 1997 â€” exported gradient circle + white stroke (see `public/partner-intro-ellipse.svg`). */
 const PARTNER_INTRO_ELLIPSE_SRC = "/partner-intro-ellipse.svg";
 
 export function PartnerIntroSplitSection({
@@ -17,10 +19,7 @@ export function PartnerIntroSplitSection({
   section: PartnerIntroSplitSectionT;
   lang: Locale;
 }) {
-  const titleLines = section.title
-    .split(/\r?\n+/)
-    .map((l) => l.trim())
-    .filter(Boolean);
+  const titleLines = formatHeadingLines(section.title ?? "");
 
   const primaryCta = section.ctas[0];
   const ctaLink = primaryCta ? resolveLink(primaryCta.url, lang) : null;
@@ -29,9 +28,9 @@ export function PartnerIntroSplitSection({
     primaryCta?.text || ctaLink?.label || (ctaHref ? "Meer informatie" : "");
 
   return (
-    <section className="bg-[var(--palette-white)] py-16 md:py-24">
+    <section className={`bg-[var(--palette-white)] ${SECTION_SHELL_WHITE}`}>
       {/*
-        Full-bleed 50/50 split: no outer Container — Figma runs navy + surface edge-to-edge.
+        Full-bleed 50/50 split: no outer Container â€” Figma runs navy + surface edge-to-edge.
         Inner columns keep their own padding (photo strip / copy column).
       */}
       <div className="w-full">
@@ -40,9 +39,9 @@ export function PartnerIntroSplitSection({
           <div
             className={`${REVEAL_ITEM} relative flex min-h-[360px] w-full shrink-0 flex-col items-center justify-end overflow-hidden bg-navy-deep lg:w-1/2 lg:max-w-none lg:flex-1 lg:items-center lg:pb-12 lg:pt-14`}
           >
-            {/* Figma asset: gradient ellipse + white rim — replaces CSS-only circle for pixel match */}
+            {/* Figma asset: gradient ellipse + white rim â€” replaces CSS-only circle for pixel match */}
             <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-              {/* Anchor ~ Figma `left-[calc(12.5%+50.8px)]` + `rotate-[22.57deg]` on the 757×757 ellipse */}
+              {/* Anchor ~ Figma `left-[calc(12.5%+50.8px)]` + `rotate-[22.57deg]` on the 757Ã—757 ellipse */}
               <div className="absolute left-[28%] top-12 flex size-[min(757px,132vw)] max-h-[757px] max-w-[757px] -translate-x-1/2 rotate-[22.57deg] sm:left-[30%] sm:top-10 lg:left-[32%] lg:top-8">
                 <Image
                   src={PARTNER_INTRO_ELLIPSE_SRC}
@@ -108,10 +107,8 @@ export function PartnerIntroSplitSection({
                   href={ctaHref}
                   target={ctaLink?.target}
                   variant="ctaBrand"
-                  ctaElevation="none"
                   ctaFullWidth={false}
-                  className="mt-1 h-12! max-w-full self-start whitespace-normal shadow-[0px_6px_10px_color-mix(in_srgb,var(--palette-brand)_54%,transparent)] sm:whitespace-nowrap"
-                  arrowClassName="h-6 w-6"
+                  className="mt-1 max-w-full self-start whitespace-normal sm:whitespace-nowrap"
                 >
                   {ctaLabel}
                 </Button>

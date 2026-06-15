@@ -1,9 +1,17 @@
 /** @see Figma **1727:27** ("Group 612") — deep-navy hero, floating avatars, dual CTAs, flat
- *  dashboard mockup over a white wave (panel 1714:111, copy 1714:1252, dashboard 1714:114). */
+ *  dashboard mockup over a white wave (panel 1714:111, copy 1714:1252, dashboard 1714:114).
+ *
+ * Typography (1714:1252 / 1714:1253):
+ * - Eyebrow **1714:1254**: 20px / medium / leading 1.6
+ * - Title **1714:1255**: 60px / semibold / leading 64px
+ * - Offer **1714:1256**: 36px / semibold / leading 1.1
+ * - CTA label **1714:1260**: 16px / regular / leading normal, pill h-48 px-20
+ * - Copy stack gap 24px; copy→CTA gap 38px; CTA row gap 14px */
 import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { Locale } from "@/lib/i18n/locales";
 import { ctaVariantAt } from "@/lib/ui/ctaAlternation";
@@ -102,29 +110,31 @@ export function HeroWaveDashboardSection({
       ) : null}
 
       {/* Frame 2147229999 — copy + CTAs, then the dashboard, all in normal flow. */}
-      <div className="relative z-10 mx-auto flex w-full max-w-360 flex-col items-center px-6 pt-[clamp(8rem,13vw,11.625rem)]">
+      <div className="relative z-10 mx-auto flex w-full min-w-0 max-w-360 flex-col items-center px-6 pt-[clamp(8rem,13vw,11.625rem)]">
         {hasCopy ? (
-          <div className="flex w-full max-w-167.5 flex-col items-center gap-6 text-center">
+          <div className="flex w-full min-w-0 max-w-167.5 flex-col items-center gap-5 text-center sm:gap-[24px]">
             {section.eyebrow.trim() ? (
               <p
-                className={`${REVEAL_ITEM} m-0 font-sans text-base font-medium leading-[1.6] lg:text-[20px]`}
+                className={`${REVEAL_ITEM} m-0 max-w-full font-sans text-sm font-medium leading-[1.6] text-white sm:text-base lg:text-[20px]`}
               >
                 {section.eyebrow.trim()}
               </p>
             ) : null}
 
             {section.title.trim() ? (
-              <h1
-                className={`${REVEAL_ITEM} m-0 font-sans text-[1.875rem] font-semibold leading-[1.08] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.75rem] lg:leading-16`}
-              >
-                {section.title.trim()}
-              </h1>
+              <SectionHeading
+                as="h1"
+                text={section.title}
+                multiline
+                className={`${REVEAL_ITEM} m-0 max-w-full break-words font-sans text-[1.75rem] font-semibold leading-[1.15] text-white sm:text-4xl sm:leading-tight md:text-5xl lg:text-[60px] lg:leading-[64px] [&_span]:break-words [&_span]:text-inherit [&_span]:font-semibold [&_span]:leading-inherit`}
+              />
             ) : null}
 
             {section.offerText.replace(/<[^>]+>/g, "").trim() ? (
               <RichText
+                prose={false}
                 html={section.offerText}
-                className={`${REVEAL_ITEM} !prose-p:mb-0 !prose-p:mt-0 !prose-p:max-w-none !prose-p:font-semibold !prose-p:leading-[1.1] !prose-p:text-white sm:!prose-p:text-[1.75rem] lg:!prose-p:text-[2.25rem]`}
+                className={`${REVEAL_ITEM} max-w-full break-words text-xl font-semibold leading-[1.1] text-white sm:text-2xl lg:text-[36px] [&_p]:m-0 [&_p]:break-words [&_p]:text-inherit [&_p]:font-semibold [&_p]:leading-[1.1] [&_p]:text-white lg:[&_p]:text-[36px]`}
               />
             ) : null}
           </div>
@@ -132,7 +142,7 @@ export function HeroWaveDashboardSection({
 
         {section.ctas.length > 0 ? (
           <div
-            className={`${REVEAL_ITEM} mt-9.5 flex w-full max-w-167.5 flex-col items-stretch gap-[14px] sm:flex-row sm:items-center sm:justify-center`}
+            className={`${REVEAL_ITEM} mt-8 flex w-full min-w-0 max-w-167.5 flex-col items-center gap-[14px] sm:mt-[38px] sm:flex-row sm:items-center sm:justify-center`}
           >
             {section.ctas.map((cta, i) => {
               const r = resolveLink(cta.url, lang);
@@ -144,11 +154,10 @@ export function HeroWaveDashboardSection({
                   href={r.href}
                   target={r.target}
                   variant={variant}
-                  ctaSize="compact"
-                  ctaJustify="between"
+                  ctaSize="default"
                   ctaElevation={variant === "ctaWhite" ? "footerSecondary" : "none"}
                   ctaFullWidth={false}
-                  className="h-12 min-h-12 w-full justify-between px-5 sm:w-49 sm:min-w-49"
+                  className="self-center"
                 >
                   {cta.text || r.label}
                 </Button>

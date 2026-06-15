@@ -2,13 +2,15 @@ import { Container } from "@/components/ui/Container";
 import { RichText } from "@/components/ui/RichText";
 import { Accordion } from "@/components/ui/Accordion";
 import { Button } from "@/components/ui/Button";
-import { Media } from "@/components/ui/Media";
+import { CtaTrailingIcon } from "@/components/ui/CtaTrailingIcon";
 import { resolveLink } from "@/lib/utils/links";
 import { CF7Form } from "@/components/forms/CF7Form";
-import { ContactCtaPill } from "@/components/sections/faq-contact-split/ContactCtaPill";
+import { formatHeadingLines } from "@/lib/i18n/format-heading";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
+import { SECTION_SHELL_DUAL_CARDS } from "@/lib/layout/section-spacing";
 import type { FaqContactSplitSectionT } from "@/types/sections";
-import type { Locale } from "@/lib/i18n/locales";
+import { SITE_CONTENT_WIDTH_FAQ_ROW } from "@/lib/layout/site-content-width";
 
 export function FaqContactSplitSection({ section, lang }: { section: FaqContactSplitSectionT; lang: Locale }) {
   const accItems = section.items.map((q, i) => ({
@@ -16,33 +18,23 @@ export function FaqContactSplitSection({ section, lang }: { section: FaqContactS
     title: q.question,
     content: q.answer,
   }));
-  const cardTitleLines = section.cardTitle
-    .split(/\r?\n+/)
-    .map((l) => l.trim())
-    .filter(Boolean);
+  const cardTitleLines = formatHeadingLines(section.cardTitle ?? "");
   const hasPricing = section.pricingCtas.length > 0;
   const navyBg = section.sectionBackground === "navy";
 
   return (
     <section
-      className={`py-16 sm:py-20 md:py-24 ${navyBg ? "bg-navy-deep text-white" : "bg-white"}`}
+      className={`${SECTION_SHELL_DUAL_CARDS} ${navyBg ? "bg-navy-deep text-white" : "bg-white"}`}
     >
       <Container>
-        <div className="mx-auto flex w-full max-w-[72.25rem] flex-col items-center gap-10 md:gap-12">
+        <div className={`mx-auto flex w-full ${SITE_CONTENT_WIDTH_FAQ_ROW} flex-col items-center gap-10 md:gap-12`}>
           {section.title && (
-            <h2
+            <SectionHeading
+              as="h2"
+              text={section.title}
               className={`${REVEAL_ITEM} w-full text-center text-[32px] font-semibold leading-[1.1] sm:text-[40px] lg:text-[48px] ${navyBg ? "text-white" : "text-navy"}`}
-            >
-              {section.title.split(/\r?\n+/).map((line, i) => {
-                const t = line.trim();
-                if (!t) return null;
-                return (
-                  <span key={i} className="block">
-                    {t}
-                  </span>
-                );
-              })}
-            </h2>
+              multiline
+            />
           )}
 
           {section.intro && (
@@ -76,22 +68,19 @@ export function FaqContactSplitSection({ section, lang }: { section: FaqContactS
                         target={l.target}
                         variant="ctaNavyDeep"
                         ctaElevation="none"
-                        ctaJustify="between"
+                        ctaJustify="spread"
                         ctaFullWidth
                         showArrow
-                        arrowClassName="!h-6 !w-6 shrink-0"
                         arrowContent={
                           trailing ? (
-                            <Media
+                            <CtaTrailingIcon
                               image={trailing}
-                              width={28}
-                              height={28}
-                              className="h-6 w-6 shrink-0 object-contain brightness-0 invert"
-                              preferLargestSource
+                              imageClassName="brightness-0 invert"
                             />
                           ) : undefined
                         }
-                        className="min-h-[64px] h-auto w-full max-w-full rounded-full px-5 py-3 text-lg font-normal leading-[1.1] sm:h-[79px] sm:min-h-[79px] sm:py-0 sm:text-xl"
+                        ctaSize="package"
+                        className="h-auto min-h-[64px] w-full max-w-full rounded-full sm:h-[79px] sm:min-h-[79px]"
                       >
                         {t}
                       </Button>
@@ -138,19 +127,26 @@ export function FaqContactSplitSection({ section, lang }: { section: FaqContactS
                       />
                     )}
                     {section.contactCtas.length > 0 && (
-                      <div className="mt-0 flex w-full min-w-0 flex-col items-stretch gap-4">
+                      <div className="mt-0 flex w-full min-w-0 flex-col items-center gap-4">
                         {section.contactCtas.map((c, i) => {
                           const l = resolveLink(c.ctaLink, lang);
                           if (!l?.href) return null;
                           return (
-                            <ContactCtaPill
+                            <Button
                               key={i}
                               href={l.href}
-                              text={c.ctaText || l?.label}
-                              icon={c.icon}
                               target={l.target}
-                              iconFallback={i % 2 === 0 ? "mail" : "phone"}
-                            />
+                              variant="ctaWhite"
+                              ctaSize="feature"
+                              ctaElevation="footerSecondary"
+                              ctaFullWidth={false}
+                              arrowContent={
+                                c.icon ? <CtaTrailingIcon image={c.icon} /> : undefined
+                              }
+                              className="max-w-full"
+                            >
+                              {c.ctaText || l?.label}
+                            </Button>
                           );
                         })}
                       </div>

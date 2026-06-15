@@ -51,7 +51,7 @@ export async function PostTemplate({ document: doc, lang }: { document: PostDocu
 
   return (
     <article className="blog-single-post bg-white">
-      <Container className="pb-12 pt-28 sm:px-6 md:pb-16 md:pt-32 lg:px-[70px] lg:pb-20 xl:max-w-[90rem]">
+      <Container className="pb-12 pt-28 sm:px-6 md:pb-16 md:pt-32 lg:px-[70px] lg:pb-20">
         <PostTwoColumnGrid
           aside={
             <aside className="hidden min-w-0 flex-col lg:sticky lg:top-28 lg:flex lg:self-start">

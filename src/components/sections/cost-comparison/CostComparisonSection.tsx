@@ -1,4 +1,5 @@
 import { Container } from "@/components/ui/Container";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { RichText } from "@/components/ui/RichText";
 import { Button } from "@/components/ui/Button";
 import { resolveLink } from "@/lib/utils/links";
@@ -27,9 +28,11 @@ export function CostComparisonSection({ section, lang }: { section: CostComparis
         >
           <div className={`${REVEAL_ITEM} flex w-full max-w-[555px] flex-col items-start gap-6`}>
             {section.title && (
-              <h2 className="text-3xl font-semibold leading-tight text-navy sm:text-4xl lg:text-[48px] lg:leading-[3.5rem]">
-                {section.title}
-              </h2>
+              <SectionHeading
+                as="h2"
+                text={section.title}
+                className="text-3xl font-semibold leading-tight text-navy sm:text-4xl lg:text-[48px] lg:leading-[3.5rem]"
+              />
             )}
             {section.text && (
               <RichText

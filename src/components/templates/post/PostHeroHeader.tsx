@@ -1,3 +1,4 @@
+import { formatHeadingCase } from "@/lib/i18n/format-heading";
 import Link from "next/link";
 import { RichText } from "@/components/ui/RichText";
 import { buildLocalePath } from "@/lib/i18n/get-alternates";
@@ -69,7 +70,7 @@ export function PostHeroHeader({
   lang: Locale;
   shareUrl: string;
 }) {
-  const title = toPlainText(doc.title);
+  const title = formatHeadingCase(toPlainText(doc.title));
   const { eyebrow, leadHtml, leadPlain } = resolveHeroCopy(doc);
   const t = COPY[lang];
   const titlePlain = stripTags(doc.title).trim() || "—";

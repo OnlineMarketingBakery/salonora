@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
@@ -87,9 +88,10 @@ export function PricingPackagesSection({
   section: PricingPackagesSectionT;
   lang: Locale;
 }) {
+  // Figma exception: asymmetric vertical padding (72px top / 116px bottom).
   return (
     <section className="bg-surface py-[72px] pb-[116px] sm:pt-[72px] sm:pb-[116px]">
-      <Container className="!max-w-[85rem]">
+      <Container>
         <div className="mx-auto flex max-w-[1300px] flex-col items-center gap-[44px]">
           <div
             className={`flex w-full max-w-[822px] flex-col items-center gap-5 text-center ${REVEAL_ITEM}`}
@@ -101,9 +103,11 @@ export function PricingPackagesSection({
             )}
             <div className="flex w-full flex-col items-center gap-[15px] text-center">
               {section.title && (
-                <h2 className="max-w-[464px] font-sans text-3xl font-semibold leading-tight text-navy sm:text-4xl sm:leading-tight lg:text-[48px] lg:leading-[56px]">
-                  {section.title}
-                </h2>
+                <SectionHeading
+                  as="h2"
+                  text={section.title}
+                  className="max-w-[464px] font-sans text-3xl font-semibold leading-tight text-navy sm:text-4xl sm:leading-tight lg:text-[48px] lg:leading-[56px]"
+                />
               )}
               {section.intro && (
                 <RichText
@@ -114,7 +118,7 @@ export function PricingPackagesSection({
             </div>
           </div>
 
-          <div className="grid w-full max-w-[1300px] grid-cols-1 gap-10 sm:grid-cols-1 lg:grid-cols-2 lg:items-start lg:justify-center lg:gap-6">
+          <div className="grid w-full grid-cols-1 gap-10 sm:grid-cols-1 lg:grid-cols-2 lg:items-start lg:justify-center lg:gap-6">
             {section.items.map((p, i) => {
               const hasBadge = Boolean(p.badge);
               /** Figma: ribbon + border + navy CTA go together; badge without `featured` still gets chrome. */
@@ -239,7 +243,6 @@ export function PricingPackagesSection({
                               showFeaturedChrome ? "ctaNavyDeep" : "ctaBrand"
                             }
                             ctaSize="package"
-                            ctaJustify="between"
                             ctaFullWidth={false}
                             className={[
                               "self-stretch !w-full min-[640px]:!w-auto min-[640px]:self-start font-sans text-[16px] leading-normal",
@@ -284,15 +287,11 @@ export function PricingPackagesSection({
                     target={l.target}
                     variant={v}
                     ctaSize={i < 2 ? "promo" : "default"}
-                    ctaJustify={i < 2 ? "between" : undefined}
                     ctaElevation={i === 1 ? "footerSecondary" : "default"}
                     className={
                       i < 2
-                        ? [
-                            "w-full min-w-0 max-w-full",
-                            "sm:w-auto sm:max-w-none sm:shrink-0 sm:self-center sm:!px-10 md:!px-12 lg:!px-14",
-                          ].join(" ")
-                        : "h-12 w-full min-w-0 max-w-md rounded-3xl"
+                        ? "w-full min-w-0 max-w-full sm:w-auto sm:max-w-none sm:shrink-0 sm:self-center"
+                        : "w-full min-w-0 max-w-md sm:max-w-none"
                     }
                   >
                     {t}
