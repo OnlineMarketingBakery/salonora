@@ -37,11 +37,16 @@ export async function generateMetadata({ params }: P): Promise<Metadata> {
   const site = getSiteUrl();
   const languages: Record<string, string> = {};
   for (const l of supportedLocales) {
-    languages[l] = `${getSiteUrl()}${buildLocalePath(l, "")}`;
+    const path = buildLocalePath(l, "");
+    languages[l] = `${site}${path === "/" ? "" : path}`;
   }
+  const canonicalPath = buildLocalePath(lang, "");
   return {
     ...seoToMetadata(s, site),
     title: s.title || getSiteName(globals),
-    alternates: { canonical: s.canonical || buildLocalePath(lang, ""), languages },
+    alternates: {
+      canonical: s.canonical || `${site}${canonicalPath === "/" ? "" : canonicalPath}`,
+      languages,
+    },
   };
 }

@@ -129,6 +129,7 @@ If `WORDPRESS_BASE_URL` / `WORDPRESS_API_URL` are unset, **Next Image** runs in 
 | `npm run strip:php-bom` | Strip UTF-8 BOM from PHP under `wordpress/` |
 | `npm run plugins:package` | Zip OMB plugins into `dist/` (add `-- --with-theme` or `--with-mu-plugin` when needed) |
 | `npm run plugins:deploy` | Deploy **omb-headless-core** + **omb-form-builder** via SSH (add `-- --with-theme` for ACF JSON / theme changes) |
+| `npm run backup:wp` | WPvivid full backup on Ploi (deletes oldest backup first). Use before risky CMS/plugin deploys. Add `-- --dry-run` to preview. |
 
 ## Key workflows & features
 

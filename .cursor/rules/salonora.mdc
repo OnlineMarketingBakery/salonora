@@ -10,5 +10,6 @@ Scoped rules (Cursor loads these automatically by glob):
 - **`acf.mdc`** — normalizer, field mappers, registry, ACF Local JSON (`src/lib/acf/**`, `wordpress/wp-content/themes/omb-headless/acf-json/**`)
 - **`wordpress.mdc`** — wpFetch, REST fetchers, Polylang, CF7, ISR (`src/lib/wordpress/**`, `src/app/api/**`)
 - **`types.mdc`** — discriminated union, CoreSection, AnySectionT, no-any rule (`src/types/**`)
+- **`wpvivid-backup.mdc`** — mandatory WPvivid backup before risky WordPress/CMS changes (always applied)
 
 For setup and deployment, use **`README.md`** and **`.env.example`**. For WordPress REST troubleshooting, use **`docs/wordpress-connection-guide.md`**. When you add env vars or change conventions, update **`.env.example`**, **`README.md`**, and the relevant `.cursor/rules/*.mdc` file.

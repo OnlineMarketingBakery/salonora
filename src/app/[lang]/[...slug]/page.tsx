@@ -55,15 +55,19 @@ export async function generateMetadata({ params }: P): Promise<Metadata> {
   const resolved = await resolveRoute(lang, slug, globals);
   if (!resolved) return { title: "Not found" };
   const s = resolved.document.seo;
-  const path = `/${slug.join("/")}`;
   const site = getSiteUrl();
   const languages: Record<string, string> = {};
   for (const l of supportedLocales) {
-    languages[l] = `${getSiteUrl()}${buildLocalePath(l, slug.join("/"))}`;
+    const localePath = buildLocalePath(l, slug.join("/"));
+    languages[l] = `${site}${localePath}`;
   }
+  const canonicalPath = buildLocalePath(lang, slug.join("/"));
   return {
     ...seoToMetadata(s, site),
     title: s.title || getSiteName(globals),
-    alternates: { canonical: s.canonical || `${getSiteUrl()}${buildLocalePath(lang, path.replace(/^\//, ""))}`, languages },
+    alternates: {
+      canonical: s.canonical || `${site}${canonicalPath}`,
+      languages,
+    },
   };
 }

@@ -21,6 +21,31 @@
             "selected": 0
         },
         {
+            "key": "field_omb_headless_primary_language",
+            "label": "Headless primary language",
+            "name": "headless_primary_language",
+            "type": "select",
+            "instructions": "This Polylang locale is served without a URL prefix on the Next.js frontend (e.g. / instead of /nl/). Should match Polylang default language.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "nl": "Nederlands (nl)",
+                "en": "English (en)"
+            },
+            "default_value": "",
+            "return_format": "value",
+            "multiple": 0,
+            "allow_null": 1,
+            "ui": 1,
+            "ajax": 0,
+            "placeholder": "Use Polylang default"
+        },
+        {
             "key": "field_omb_site_name_override",
             "label": "Site Name Override",
             "name": "site_name_override",
@@ -186,5 +211,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1781264867
+    "modified": 1781514497
 }

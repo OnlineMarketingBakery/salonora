@@ -51,13 +51,8 @@ add_action('rest_api_init', function () {
         ],
     ]);
 
-            if (!function_exists('omb_rest_acf_cleanup_duplicate_field_groups')) {
-                return new WP_REST_Response(['error' => 'cleanup_unavailable'], 503);
-            }
-            return new WP_REST_Response(omb_rest_acf_cleanup_duplicate_field_groups(['dry_run' => $dry_run]), 200);
-        },
-    ]);
 });
+
 
 /**
  * ACF option page slugs (must match acf_add_options_sub_page menu_slug values).
@@ -120,6 +115,7 @@ function omb_rest_globals_field_keys_by_menu_slug(): array {
             'site_name_override',
             'default_tagline',
             'default_og_image',
+            'headless_primary_language',
             'global_cta_title',
             'global_cta_text',
             'global_cta_link',
@@ -399,6 +395,7 @@ function omb_rest_get_site_payload(WP_REST_Request $request): WP_REST_Response {
         'name' => get_bloginfo('name'),
         'description' => get_bloginfo('description'),
         'url' => home_url('/'),
+        'primary_language' => omb_get_primary_language_slug(),
         'languages' => omb_get_available_languages(),
         'menus' => [
             'primary' => has_nav_menu('primary'),

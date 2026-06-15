@@ -132,7 +132,7 @@ export function HeroWaveDashboardSection({
 
         {section.ctas.length > 0 ? (
           <div
-            className={`${REVEAL_ITEM} mt-9.5 flex w-full max-w-167.5 flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center sm:gap-[14px]`}
+            className={`${REVEAL_ITEM} mt-9.5 flex w-full max-w-167.5 flex-col items-stretch gap-[14px] sm:flex-row sm:items-center sm:justify-center`}
           >
             {section.ctas.map((cta, i) => {
               const r = resolveLink(cta.url, lang);

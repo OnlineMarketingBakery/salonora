@@ -1,6 +1,7 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { Media } from "@/components/ui/Media";
+import { isBuiltInCtaBrandArrow } from "@/lib/ui/default-cta-brand-arrow";
 import { getImageUrl, getLargestImageUrl } from "@/lib/utils/media";
 import type { WpImage } from "@/types/wordpress";
 
@@ -44,7 +45,7 @@ export function ArrowInCircle({
     );
   }
 
-  if (variant === "on-brand" && brandImage != null) {
+  if (variant === "on-brand" && brandImage != null && !isBuiltInCtaBrandArrow(brandImage)) {
     const src = getLargestImageUrl(brandImage) || getImageUrl(brandImage);
     if (src) {
       return (
@@ -67,16 +68,16 @@ export function ArrowInCircle({
 
   return (
     <span
-      className={`inline-flex h-5 w-5 shrink-0 items-center justify-center ${className}`.trim()}
+      className={`inline-flex shrink-0 items-center justify-center ${className}`.trim()}
       aria-hidden
     >
       <Image
         src={ICON_BY_VARIANT[variant]}
-        width={20}
-        height={20}
+        width={27}
+        height={27}
         alt=""
         unoptimized
-        className="block h-full w-full min-h-0 min-w-0 object-contain"
+        className="block size-full min-h-0 min-w-0 object-contain"
         role="presentation"
       />
     </span>

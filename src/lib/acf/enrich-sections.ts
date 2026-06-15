@@ -16,6 +16,8 @@ import type { Locale } from "@/lib/i18n/locales";
 import { filterPostsByLocale } from "@/lib/i18n/post-language";
 import { toPlainText, stripTags } from "@/lib/utils/strings";
 import type { GlobalSettings } from "@/types/globals";
+import type { SiteConfig } from "@/lib/wordpress/fetch-site-config";
+import { fetchSiteConfig } from "@/lib/wordpress/fetch-site-config";
 import { fetchBlogPostsCollection, fetchBlogOverviewPostCardById } from "@/lib/wordpress/fetch-blog-posts-collection";
 import { fetchCaseStudiesCollection, fetchCaseStudyOverviewCardById } from "@/lib/wordpress/fetch-case-studies-collection";
 type WpCptList = {
@@ -54,6 +56,8 @@ function resolvedContactFormId(primary: number, globals: GlobalSettings): number
 export type EnrichContext = {
   lang: Locale;
   globals: GlobalSettings;
+  /** WP Polylang URL prefixes for filtering REST collections by `link`. */
+  siteConfig?: SiteConfig;
   /** Slug path after locale (e.g. `blog`) for blog overview forms and pagination. */
   pageSlugPath?: string;
   /** When set, blog archive pages apply these query params to the blog overview section. */
@@ -69,7 +73,9 @@ export async function enrichSections(
   sections: AnySectionT[],
   ctx: EnrichContext
 ): Promise<AnySectionT[]> {
+  const siteConfig = ctx.siteConfig ?? (await fetchSiteConfig());
   const { lang, globals } = ctx;
+  const resolvedCtx = { ...ctx, siteConfig };
   const out: AnySectionT[] = [];
   for (const s of sections) {
     if (s.type === "testimonials") {
@@ -81,13 +87,13 @@ export async function enrichSections(
         out.push(t);
       }
     } else if (s.type === "latest_posts") {
-      out.push(await enrichLatest(s as LatestPostsSectionT, ctx));
+      out.push(await enrichLatest(s as LatestPostsSectionT, resolvedCtx));
     } else if (s.type === "blog_post_overview") {
-      out.push(await enrichBlogPostOverview(s as BlogPostOverviewSectionT, ctx));
+      out.push(await enrichBlogPostOverview(s as BlogPostOverviewSectionT, resolvedCtx));
     } else if (s.type === "case_study_overview") {
-      out.push(await enrichCaseStudyOverview(s as CaseStudyOverviewSectionT, ctx));
+      out.push(await enrichCaseStudyOverview(s as CaseStudyOverviewSectionT, resolvedCtx));
     } else if (s.type === "design_showcase_grid") {
-      out.push(await enrichDesignShowcaseGrid(s as DesignShowcaseGridSectionT, ctx));
+      out.push(await enrichDesignShowcaseGrid(s as DesignShowcaseGridSectionT, resolvedCtx));
     } else if (s.type === "form_embed") {
       const fid = resolvedContactFormId(s.formId, globals);
       const def = fid ? await fetchCf7Form(fid, lang) : null;
@@ -103,7 +109,11 @@ export async function enrichSections(
 }
 
 /** Fetches newest services with featured media embed; paginates past the default REST per_page cap. */
-async function fetchServicesEmbeddedUpTo(lang: Locale, limit: number): Promise<WpServiceListEmbedded[]> {
+async function fetchServicesEmbeddedUpTo(
+  lang: Locale,
+  limit: number,
+  siteConfig?: SiteConfig
+): Promise<WpServiceListEmbedded[]> {
   const rest = getCptRestBase("service");
   const out: WpServiceListEmbedded[] = [];
   let page = 1;
@@ -115,8 +125,7 @@ async function fetchServicesEmbeddedUpTo(lang: Locale, limit: number): Promise<W
       { lang, revalidate: 30 }
     );
     if (!chunk?.length) break;
-    const matching = filterPostsByLocale(chunk, lang);
-    console.log(`[services-grid] lang=${lang} before=${chunk.length} after=${matching.length} sampleLink=${chunk[0]?.link}`);
+    const matching = filterPostsByLocale(chunk, lang, siteConfig);
     out.push(...matching);
     if (chunk.length < batch) break;
     page++;
@@ -126,10 +135,10 @@ async function fetchServicesEmbeddedUpTo(lang: Locale, limit: number): Promise<W
 
 async function enrichDesignShowcaseGrid(
   s: DesignShowcaseGridSectionT,
-  { lang }: EnrichContext
+  { lang, siteConfig }: EnrichContext
 ): Promise<DesignShowcaseGridSectionT> {
   const n = s.count;
-  const list = await fetchServicesEmbeddedUpTo(lang, n);
+  const list = await fetchServicesEmbeddedUpTo(lang, n, siteConfig);
   const tint = s.cardPanelTint ?? "surface";
   const cards = list.map((p) => {
       const featured = p._embedded?.["wp:featuredmedia"]?.[0];
@@ -197,6 +206,7 @@ async function enrichBlogPostOverview(
     page: currentPage,
     perPage,
     search: searchQuery,
+    siteConfig: ctx.siteConfig,
   });
 
   if (!fetched) {
@@ -253,6 +263,7 @@ async function enrichCaseStudyOverview(
     page: currentPage,
     perPage,
     search: searchQuery,
+    siteConfig: ctx.siteConfig,
   });
 
   if (!fetched) {

@@ -1,6 +1,7 @@
 import { wpFetchOptional } from "@/lib/wordpress/client";
 import { buildLocalePath } from "@/lib/i18n/get-alternates";
 import { filterPostsByLocale } from "@/lib/i18n/post-language";
+import type { SiteConfig } from "@/lib/wordpress/fetch-site-config";
 import type { Locale } from "@/lib/i18n/locales";
 import type { BlogPostOverviewCardT } from "@/types/sections";
 import { stripTags, toPlainText } from "@/lib/utils/strings";
@@ -57,7 +58,8 @@ export async function fetchRelatedPostCards(
   lang: Locale,
   excludePostId: number,
   categoryIds: number[],
-  limit: number
+  limit: number,
+  siteConfig?: SiteConfig
 ): Promise<BlogPostOverviewCardT[]> {
   const safeLimit = Math.min(12, Math.max(1, limit));
   const per = Math.min(24, Math.max(safeLimit, safeLimit * 4));
@@ -66,7 +68,7 @@ export async function fetchRelatedPostCards(
   const path = cat ? `/wp/v2/posts?categories=${cat}&${base}` : `/wp/v2/posts?${base}`;
   const rows = await wpFetchOptional<WpPostListRow[]>(path, { lang, revalidate: 60 });
   if (!Array.isArray(rows)) return [];
-  const localeScoped = filterPostsByLocale(rows, lang);
+  const localeScoped = filterPostsByLocale(rows, lang, siteConfig);
   const pool = localeScoped.length > 0 ? localeScoped : rows;
   return pool.slice(0, safeLimit).map((p) => mapRow(p, lang));
 }

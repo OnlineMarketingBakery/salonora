@@ -2,7 +2,7 @@ import { cache } from "react";
 import { getSiteUrl, getWordpressBaseUrl, getMenuId } from "./config";
 import { wpFetchOptional } from "./client";
 import type { MenuItem } from "@/types/menu";
-import { buildLocalePath } from "@/lib/i18n/get-alternates";
+import { buildLocalePath, stripPrimaryLocalePrefix } from "@/lib/i18n/locale-url";
 import type { Locale } from "@/lib/i18n/locales";
 import { logger } from "@/lib/utils/logger";
 
@@ -19,19 +19,18 @@ function mapUrlToHref(url: string, lang: Locale): string {
   const site = getSiteUrl();
   const wp = getWordpressBaseUrl();
   try {
+    const toHref = (pathname: string) => {
+      const stripped = stripPrimaryLocalePrefix(pathname === "/" ? "/" : pathname);
+      const slug = stripped === "/" ? "" : stripped.replace(/^\//, "");
+      return buildLocalePath(lang, slug);
+    };
     if (url.startsWith(site)) {
-      const p = new URL(url).pathname.replace(new URL(site).pathname, "");
-      if (p.startsWith(`/${lang}/`) || p === `/${lang}`) return p;
-      if (p === "" || p === "/") return `/${lang}`;
-      return buildLocalePath(lang, p.replace(/^\//, "").replace(new RegExp(`^${lang}/`), ""));
+      const p = new URL(url).pathname.replace(new URL(site).pathname, "") || "/";
+      return toHref(p);
     }
     if (url.startsWith(wp) || url.startsWith(`${wp}/`)) {
       const p = new URL(url).pathname;
-      if (p.startsWith(`/${lang}/`) || p === `/${lang}`) return p;
-      if (p === "" || p === "/") return `/${lang}`;
-      const rest = p.replace(/^\//, "").replace("wp-content", "");
-      if (!rest || rest === "/") return `/${lang}`;
-      return buildLocalePath(lang, rest);
+      return toHref(p);
     }
   } catch {
     /* keep url */

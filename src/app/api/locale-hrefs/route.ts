@@ -1,18 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { buildLocalePath } from "@/lib/i18n/get-alternates";
+import { pathAfterLocale } from "@/lib/i18n/locale-url";
 import { supportedLocales } from "@/lib/i18n/config";
 import type { Locale } from "@/lib/i18n/locales";
 import { getLocaleHrefsForPathname } from "@/lib/wordpress/polylang-locale-hrefs";
-
-function pathAfterLocale(pathname: string): string {
-  const s = pathname.split("/").filter(Boolean);
-  if (s.length < 1) return "";
-  const [first, ...r] = s;
-  if (supportedLocales.includes(first as Locale)) {
-    return r.join("/");
-  }
-  return s.join("/");
-}
 
 function sameSlugHrefsForPathname(pathname: string): Record<Locale, string> {
   const p = pathAfterLocale(pathname);

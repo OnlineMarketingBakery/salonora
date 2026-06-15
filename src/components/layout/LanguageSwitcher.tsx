@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useLayoutEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import { buildLocalePath } from "@/lib/i18n/get-alternates";
+import { pathAfterLocale } from "@/lib/i18n/locale-url";
 import { supportedLocales } from "@/lib/i18n/config";
 import type { Locale } from "@/lib/i18n/locales";
 
@@ -17,19 +18,8 @@ type Props = {
   serverLocaleHrefs: Record<Locale, string> | null;
 };
 
-/** Path after the first segment if it is a supported locale. */
-function pathAfterLocalePrefix(pathname: string): string {
-  const segments = pathname.split("/").filter(Boolean);
-  if (segments.length === 0) return "";
-  const [first, ...rest] = segments;
-  if (supportedLocales.includes(first as Locale)) {
-    return rest.join("/");
-  }
-  return segments.join("/");
-}
-
 function sameSlugHrefs(pathname: string): Record<Locale, string> {
-  const p = pathAfterLocalePrefix(pathname);
+  const p = pathAfterLocale(pathname);
   return Object.fromEntries(
     supportedLocales.map((l) => [l, buildLocalePath(l, p)])
   ) as Record<Locale, string>;
@@ -86,7 +76,7 @@ export function LanguageSwitcher({
           <span key={l} className="flex items-center">
             {i > 0 ? <span className="mx-1.5 h-3 w-px shrink-0 bg-muted/25" aria-hidden /> : null}
             <Link
-              href={hrefs[l] ?? buildLocalePath(l, pathAfterLocalePrefix(pathname))}
+              href={hrefs[l] ?? buildLocalePath(l, pathAfterLocale(pathname))}
               className={
                 l === lang
                   ? "rounded-full bg-zinc-100/95 px-3 py-1.5 text-[12px] font-semibold text-navy"
@@ -107,7 +97,7 @@ export function LanguageSwitcher({
       {supportedLocales.map((l) => (
         <Link
           key={l}
-          href={hrefs[l] ?? buildLocalePath(l, pathAfterLocalePrefix(pathname))}
+          href={hrefs[l] ?? buildLocalePath(l, pathAfterLocale(pathname))}
           className={
             l === lang
               ? "rounded-md bg-surface px-2 py-1 text-foreground"

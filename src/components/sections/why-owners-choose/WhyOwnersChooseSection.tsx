@@ -44,11 +44,11 @@ const cardsPanelBackdropStyle: CSSProperties = {
 };
 
 function accentBarClass(accent: SalonValueCardAccentT) {
-  return accent === "rose" ? "bg-[#d27e91]" : "bg-[#3990f0]";
+  return accent === "rose" ? "bg-rose" : "bg-brand";
 }
 
 function iconTileClass(accent: SalonValueCardAccentT) {
-  return accent === "rose" ? "bg-[#d27e91]" : "bg-[#398ce9]";
+  return accent === "rose" ? "bg-rose-soft" : "bg-brand-soft";
 }
 
 function OwnersChooseCard({
@@ -189,7 +189,7 @@ export function WhyOwnersChooseSection({
           <div className="grid w-full grid-cols-1 items-stretch gap-8 lg:grid-cols-2 lg:gap-10">
             {/* Figma 1714:1118 — 638×668, p-48, absolute bg 1714:1119 behind cards */}
             <div
-              className={`${REVEAL_ITEM} relative isolate flex min-h-[min(560px,100%)] flex-col justify-center overflow-hidden rounded-[14px] p-6 sm:p-10 lg:min-h-[668px] lg:p-12`}
+              className={`${REVEAL_ITEM} relative isolate order-2 flex min-h-[min(560px,100%)] flex-col justify-center overflow-hidden rounded-[14px] p-6 sm:p-10 lg:order-1 lg:min-h-[668px] lg:p-12`}
             >
               <WhyOwnersChooseCardsPanelBackdrop />
               <div className="relative z-10 flex flex-col gap-[20px]">
@@ -204,7 +204,7 @@ export function WhyOwnersChooseSection({
 
             {/* Figma Frame 2147229423 (597:6055): 638×668, copy inset 48px */}
             <div
-              className={`${REVEAL_ITEM} relative isolate flex min-h-[580px] flex-col overflow-hidden rounded-[14px] px-6 pt-6 sm:min-h-[560px] sm:px-10 sm:pt-10 lg:min-h-[668px] lg:p-12 ${
+              className={`${REVEAL_ITEM} relative isolate order-1 flex min-h-[580px] flex-col overflow-hidden rounded-[14px] px-6 pt-6 sm:min-h-[560px] sm:px-10 sm:pt-10 lg:order-2 lg:min-h-[668px] lg:p-12 ${
                 section.panelImage
                   ? "pb-[min(52vw,260px)] sm:pb-10 lg:pb-12"
                   : "pb-6"
@@ -245,8 +245,10 @@ export function WhyOwnersChooseSection({
                       variant="ctaBrand"
                       ctaElevation="none"
                       ctaFullWidth={false}
-                      className="!h-12 !min-h-12 !w-[196px] !min-w-[196px] !max-w-[196px] shrink-0 self-start !rounded-[24px] !px-[17px] !text-base !font-normal whitespace-nowrap shadow-[0px_6px_10px_color-mix(in_srgb,var(--palette-brand)_54%,transparent)]"
-                      arrowClassName="!size-5"
+                      ctaJustify="between"
+                      showArrow
+                      className="inline-flex h-12 min-h-12 w-[196px] max-w-full shrink-0 items-center justify-start gap-[26px] rounded-[24px] bg-brand pl-[17px] pr-5 text-base font-normal leading-normal text-white shadow-[0px_6px_10px_color-mix(in_srgb,var(--palette-brand)_54%,transparent)]"
+                      arrowClassName="size-5 shrink-0"
                     >
                       {ctaLabel}
                     </Button>

@@ -10,7 +10,11 @@
     "strip:php-bom": "node scripts/strip-php-bom.mjs",
     "plugins:package": "node scripts/package-wordpress.mjs",
     "plugins:deploy": "node scripts/deploy-plugins.mjs",
-    "validate:sections": "node scripts/validate-sections.mjs"
+    "validate:sections": "node scripts/validate-sections.mjs",
+    "audit:links": "node scripts/audit-site-links.mjs",
+    "fix:links": "node scripts/fix-site-links.mjs",
+    "fix:links:apply": "node scripts/fix-site-links.mjs --apply",
+    "backup:wp": "node scripts/wpvivid-backup.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

@@ -1,4 +1,5 @@
 /** @see Figma **1482:4890** + **1482:4939** (Homepage Header Option 1 — apps orbit visual + pill, title, intro, divider, feature row). */
+import "./image-intro-split.css";
 import { Container } from "@/components/ui/Container";
 import { RichText } from "@/components/ui/RichText";
 import { Media } from "@/components/ui/Media";
@@ -91,13 +92,15 @@ export function ImageIntroSplitSection({ section }: { section: ImageIntroSplitSe
     "font-sans text-[32px] font-semibold text-navy sm:text-[40px] sm:leading-[1.18] lg:text-[48px] lg:leading-[59px]";
 
   return (
-    <section className="bg-white pt-10 pb-16 sm:pt-12 sm:pb-20 md:pt-14 md:pb-24">
+    <section className="image-intro-split bg-white pt-10 pb-16 sm:pt-12 sm:pb-20 md:pt-14 md:pb-24">
       <Container className="!max-w-[85rem]">
         {/* Figma split: 490px visual + 74px gutter + 535px copy, geometric centers aligned */}
-        <div className="mx-auto grid w-full max-w-[1099px] grid-cols-1 items-center gap-10 lg:grid-cols-[490px_535px] lg:gap-x-[74px] lg:gap-y-0">
-          <div className={`${REVEAL_ITEM} flex w-full justify-center lg:justify-start`}>
+        <div className="image-intro-split__grid mx-auto grid w-full max-w-[1099px] grid-cols-1 items-center gap-10 lg:grid-cols-[490px_535px] lg:gap-x-[74px] lg:gap-y-0">
+          <div
+            className={`image-intro-split__visual ${REVEAL_ITEM} order-1 flex w-full justify-center lg:justify-start`}
+          >
             {section.image ? (
-              <div className="relative aspect-[490/512] w-full max-w-[490px]">
+              <div className="image-intro-split__visual-frame relative aspect-[490/512] w-full max-w-[490px]">
                 <Media
                   image={section.image}
                   width={980}
@@ -111,7 +114,7 @@ export function ImageIntroSplitSection({ section }: { section: ImageIntroSplitSe
           </div>
 
           {/* Figma **1482:4939** — gap-[24px] between intro block and feature block */}
-          <div className={`${REVEAL_ITEM} flex min-w-0 flex-col gap-6 lg:w-[535px]`}>
+          <div className={`${REVEAL_ITEM} order-2 flex min-w-0 flex-col gap-6 lg:w-[535px]`}>
             {/* Figma **1482:4940** — gap-[14px] */}
             <div className="flex w-full flex-col gap-[14px]">
               {section.eyebrow ? (

@@ -15,6 +15,7 @@ import {
 import { estimateReadMinutes } from "@/lib/blog/read-minutes";
 import { toPlainText } from "@/lib/utils/strings";
 import { fetchRelatedPostCards } from "./fetch-related-posts";
+import { fetchSiteConfig } from "./fetch-site-config";
 import {
   fetchBlogSingleTailSections,
   fetchBlogSingleTemplateShowRelatedPosts,
@@ -104,15 +105,16 @@ export async function fetchPostBySlug(
   const raw = list[0];
   const author = await resolvePostAuthor(raw, lang);
   const doc = toDoc(raw, gs, lang, author);
-  const [layoutSections, templateShowRelated] = await Promise.all([
+  const [layoutSections, templateShowRelated, siteConfig] = await Promise.all([
     fetchBlogSingleTailSections(lang, gs),
     fetchBlogSingleTemplateShowRelatedPosts(lang),
+    fetchSiteConfig(),
   ]);
   const showRelatedPosts = resolveBlogShowRelatedPosts(templateShowRelated, doc.showRelatedPosts);
   let merged = { ...doc, layoutSections, showRelatedPosts };
   if (merged.showRelatedPosts) {
     const cats = Array.isArray(raw.categories) ? raw.categories : [];
-    const relatedPosts = await fetchRelatedPostCards(lang, merged.id, cats, 3);
+    const relatedPosts = await fetchRelatedPostCards(lang, merged.id, cats, 3, siteConfig);
     merged = { ...merged, relatedPosts };
   }
   return { doc: merged, raw };

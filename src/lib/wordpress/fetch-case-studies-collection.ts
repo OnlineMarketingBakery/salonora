@@ -3,6 +3,7 @@ import { getCptRestBase } from "@/lib/wordpress/config";
 import { buildLocalePath } from "@/lib/i18n/get-alternates";
 import type { Locale } from "@/lib/i18n/locales";
 import { filterPostsByLocale } from "@/lib/i18n/post-language";
+import type { SiteConfig } from "@/lib/wordpress/fetch-site-config";
 import type { CaseStudyOverviewCardT, CaseStudyOverviewMetricT } from "@/types/sections";
 import { stripTags, toPlainText } from "@/lib/utils/strings";
 
@@ -114,8 +115,9 @@ export async function fetchCaseStudiesCollection(options: {
   page: number;
   perPage: number;
   search: string;
+  siteConfig?: SiteConfig;
 }): Promise<{ items: CaseStudyOverviewCardT[]; total: number; totalPages: number } | null> {
-  const { lang, page, perPage, search } = options;
+  const { lang, page, perPage, search, siteConfig } = options;
   const rest = getCptRestBase("case_study");
   const safePer = Math.min(100, Math.max(1, perPage));
   const safePage = Math.max(1, page);
@@ -133,8 +135,7 @@ export async function fetchCaseStudiesCollection(options: {
   const res = await wpFetchCollectionOptional<WpCaseStudyListRow[]>(path, { lang, revalidate: 30 });
   if (!res) return null;
   const raw = Array.isArray(res.data) ? res.data : [];
-  const filtered = filterPostsByLocale(raw, lang);
-  console.log(`[case-studies-collection] lang=${lang} before=${raw.length} after=${filtered.length} sampleLink=${raw[0]?.link}`);
+  const filtered = filterPostsByLocale(raw, lang, siteConfig);
   const items = filtered.map((p) => mapWpCaseStudyRowToOverviewCard(p, lang));
   return { items, total: res.total, totalPages: res.totalPages };
 }
