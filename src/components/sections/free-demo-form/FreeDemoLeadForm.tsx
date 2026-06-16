@@ -206,9 +206,9 @@ export function FreeDemoLeadForm({
       ) : (
         <fieldset
           disabled={isSubmitting}
-          className="m-0 flex min-h-0 min-w-0 flex-col gap-5 border-0 p-0 disabled:opacity-[0.88]"
+          className="m-0 flex min-h-0 min-w-0 flex-col gap-4 border-0 p-0 disabled:opacity-[0.88] sm:gap-5"
         >
-          <div className="grid w-full grid-cols-1 gap-x-3 gap-y-5 md:grid-cols-2">
+          <div className="grid w-full grid-cols-1 gap-y-4 sm:gap-y-5 lg:grid-cols-2 lg:gap-x-3">
             <Input
               name="first_name"
               label={c.firstName}
@@ -228,7 +228,7 @@ export function FreeDemoLeadForm({
               className={fieldShellClass}
             />
           </div>
-          <div className="grid w-full grid-cols-1 gap-x-3 gap-y-5 md:grid-cols-2">
+          <div className="grid w-full grid-cols-1 gap-y-4 sm:gap-y-5 lg:grid-cols-2 lg:gap-x-3">
             <Input
               name="email"
               type="email"

@@ -112,7 +112,6 @@ export function StepsWithMediaSection({
           href={ctaHref}
           target={resolvedCta?.target}
           variant="ctaBrand"
-          ctaSize="promo"
           ctaFullWidth={false}
           ctaElevation="none"
           className="shrink-0 self-start"

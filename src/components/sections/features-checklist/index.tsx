@@ -13,13 +13,43 @@ import type { FeaturesChecklistSectionT } from "@/types/sections";
 import type { WpImage } from "@/types/wordpress";
 import type { CSSProperties } from "react";
 
-/**
- * Figma 597:4079 â€œMask groupâ€: 528Ã—382 rounded photo **minus** 201Ã—60 rect at (327, 322) â†’ L-shape + BR notch.
- * Percentages are of the media box; CTA sits in the notch on the same navy as the section.
- */
+/** Figma 597:4079 mask artboard — 528×382 photo with BR notch cutout. */
+const FC_MASK_W = 528;
+const FC_MASK_H = 382;
+const FC_NOTCH_X = 327;
+const FC_NOTCH_Y = 322;
+/** Matches outer frame `rounded-[28px]` and notch `rounded-tl-[28px]`. */
+const FC_INNER_CORNER_RADIUS = 28;
+
+function buildFeaturesChecklistImageClip(radiusPx = FC_INNER_CORNER_RADIUS): string {
+  const nx = FC_NOTCH_X;
+  const ny = FC_NOTCH_Y;
+  const r = radiusPx;
+  const pct = (x: number, y: number) => `${(x / FC_MASK_W) * 100}% ${(y / FC_MASK_H) * 100}%`;
+
+  const steps = 12;
+  const arcPoints: string[] = [];
+  for (let i = 0; i <= steps; i++) {
+    const angle = Math.PI / 2 + (Math.PI / 2) * (i / steps);
+    const x = nx + r + r * Math.cos(angle);
+    const y = ny + r + r * Math.sin(angle);
+    arcPoints.push(pct(x, y));
+  }
+
+  return [
+    pct(0, 0),
+    pct(FC_MASK_W, 0),
+    pct(FC_MASK_W, ny),
+    pct(nx + r, ny),
+    ...arcPoints,
+    pct(nx, FC_MASK_H),
+    pct(0, FC_MASK_H),
+  ].join(", ");
+}
+
 const FC_MASKED_IMAGE_CLIP: CSSProperties = {
-  clipPath: `polygon(0% 0%, 100% 0%, 100% ${(322 / 382) * 100}%, ${(327 / 528) * 100}% ${(322 / 382) * 100}%, ${(327 / 528) * 100}% 100%, 0% 100%)`,
-  WebkitClipPath: `polygon(0% 0%, 100% 0%, 100% ${(322 / 382) * 100}%, ${(327 / 528) * 100}% ${(322 / 382) * 100}%, ${(327 / 528) * 100}% 100%, 0% 100%)`,
+  clipPath: `polygon(${buildFeaturesChecklistImageClip()})`,
+  WebkitClipPath: `polygon(${buildFeaturesChecklistImageClip()})`,
 };
 
 function ChecklistGlyph({ icon }: { icon: WpImage | null }) {
@@ -151,13 +181,12 @@ export function FeaturesChecklistSection({
                         />
                       </div>
                       <div
-                        className="pointer-events-none absolute bottom-0 right-0 z-10 flex w-max max-w-[calc(100%-0.75rem)] min-w-[201px] min-h-[72px] items-center justify-center rounded-tl-[32px] bg-[var(--palette-navy-deep)] px-2 py-2 sm:rounded-tl-[40px] sm:px-3 sm:py-2.5"
+                        className="pointer-events-none absolute bottom-0 right-0 z-10 flex w-max max-w-[calc(100%-0.75rem)] min-w-[201px] min-h-[60px] items-center justify-center rounded-tl-[28px] bg-[var(--palette-navy-deep)] p-1.5"
                       >
                         <div className="pointer-events-auto w-max shrink-0">
                           <Button
                             href={ctaHref}
                             variant="ctaBrand"
-                            ctaSize="promo"
                             ctaFullWidth={false}
                             target={resolved?.target}
                             showArrow
@@ -166,7 +195,6 @@ export function FeaturesChecklistSection({
                                 <CtaTrailingIcon image={section.button_trailing_icon} />
                               ) : undefined
                             }
-                            className="shadow-[0px_10px_28px_color-mix(in_srgb,var(--palette-brand)_45%,transparent)]"
                           >
                             {ctaLabel}
                           </Button>

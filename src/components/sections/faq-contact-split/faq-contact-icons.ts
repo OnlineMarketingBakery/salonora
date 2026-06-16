@@ -1,7 +1,7 @@
 import type { WpImage } from "@/types/wordpress";
 
-/** Figma 597:3927 / 597:3934 — 28×28 glyphs inside 50px brand circle. */
-export const FAQ_CONTACT_MAIL_ICON = "/faq-contact-mail.png";
+/** Figma 597:3927 / 597:3934 — 28×28 white glyphs inside 50px brand circle (SVG, transparent). */
+export const FAQ_CONTACT_MAIL_ICON = "/faq-contact-mail.svg";
 export const FAQ_CONTACT_PHONE_ICON = "/faq-contact-phone.svg";
 
 /** Figma 597:3915 — 37×37 circled arrow on navy pricing CTA. */
