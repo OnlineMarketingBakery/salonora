@@ -184,7 +184,7 @@ Figma **1083:46** ("Group 594"): gradient card, `avatar`, `title`, `subtitle`, W
 Figma **597:3120** ("Frame 2147228004"): wide rounded blue gradient strip with faint concentric rings; optional `left_image` / `right_image` cutouts (bottom fade); centered WYSIWYG `headline` + white pill `badge_text` with side rules. Optional `pill_link` — when set with a URL, pill is a `<Link>`; otherwise non-interactive badge.
 
 ### `who_we_are_for`
-Figma **597:3970** ("Frame 2147228606"): centered WYSIWYG `title` + repeater `items` (`icon`, WYSIWYG `label`, select `icon_accent` `brand` | `rose` for rounded icon tile on a light gradient pill). Optional `ctas` repeater (max one row) for a primary `<Button>` below the row.
+Figma **597:3970** ("Frame 2147228606"): centered WYSIWYG `title` + repeater `items` (`icon`, WYSIWYG `label`, select `icon_accent` `brand` | `rose`, optional `link` ACF link — whole pill clickable when set). Optional `ctas` repeater (max one row) for a primary `<Button>` below the row.
 
 ### `features_checklist`
 Figma content **597:4037** ("Frame 2147228715") on decorative shell **597:3568** ("Frame 2147228001"): navy grid/glow background, centered white intro (`title`, `description`), left column white checklist cards (`checklist[]` with per-row `icon` → `list_default_icon` fallback), right column `image` with optional `button` + `button_trailing_icon` overlaid.

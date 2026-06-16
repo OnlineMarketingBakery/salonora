@@ -87,9 +87,15 @@ export function HeroSection({
 
   const heroId = `hero-${section.id ?? "main"}`;
 
-  const containerClassName = [
+  const containerOuterClassName = [
     bothHeroImages ? "px-0 sm:px-4 lg:px-8" : "",
-    foregroundOnly ? "relative max-w-340! w-full" : "",
+    // Section is flex-col + min-height at lg; outer must grow so inner can vertically center.
+    "lg:flex lg:flex-1 lg:flex-col",
+  ]
+    .filter(Boolean)
+    .join(" ");
+  const containerClassName = [
+    foregroundOnly ? "relative w-full" : "",
     "lg:flex lg:flex-1 lg:items-center",
   ]
     .filter(Boolean)
@@ -170,7 +176,10 @@ export function HeroSection({
         aria-hidden
       />
 
-      <Container className={containerClassName}>
+      <Container
+        outerClassName={containerOuterClassName}
+        className={containerClassName}
+      >
         {/* Phone hero: bottom-right inside the content column, not full viewport */}
         {foregroundOnly && section.image ? (
           <div

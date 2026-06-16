@@ -1,39 +1,32 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useRef } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { Media } from "@/components/ui/Media";
+import {
+  FAQ_CONTACT_MAIL_ICON,
+  FAQ_CONTACT_PHONE_ICON,
+  isCompositeIconTile,
+} from "@/components/sections/faq-contact-split/faq-contact-icons";
 import { registerGsapClient } from "@/lib/gsap/register";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { WpImage } from "@/types/wordpress";
 
-function MailGlyph({ className = "h-7 w-7" }: { className?: string }) {
+function ContactPillGlyph({ kind }: { kind: "mail" | "phone" }) {
+  const src = kind === "mail" ? FAQ_CONTACT_MAIL_ICON : FAQ_CONTACT_PHONE_ICON;
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M4 7h16v10H4V7zm0 0 8 5 8-5"
-        stroke="white"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
-function PhoneGlyph({ className = "h-7 w-7" }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
-      <path
-        d="M6.62 10.79a15.91 15.91 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.56.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.56 1 1 0 01-.24 1.01l-2.2 2.2z"
-        stroke="white"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
+    <Image
+      src={src}
+      width={28}
+      height={28}
+      alt=""
+      unoptimized
+      className="size-7 object-contain"
+      aria-hidden
+    />
   );
 }
 
@@ -88,27 +81,27 @@ export function ContactCtaPill({ href, text, icon, iconFallback, target }: Props
       rel={target === "_blank" ? "noopener noreferrer" : undefined}
       className={`${REVEAL_ITEM} flex h-[74px] w-full min-w-0 max-w-full items-center gap-[9px] rounded-[49px] bg-gradient-to-b from-white to-white/70 p-3 drop-shadow-[0px_11px_11.2px_#2463a9] transition hover:brightness-[0.99] will-change-transform`}
     >
-      <span
-        data-pill-icon
-        className="flex h-[50px] w-[50px] shrink-0 items-center justify-center rounded-[25px] bg-brand text-white will-change-transform"
-      >
-        {icon ? (
+      {icon && isCompositeIconTile(icon, 40) ? (
+        <span data-pill-icon className="relative size-[50px] shrink-0 will-change-transform">
           <Media
             image={icon}
-            width={28}
-            height={28}
-            className="h-7 w-7 object-contain"
-            sizes="28px"
+            width={50}
+            height={50}
+            className="size-[50px] object-contain"
+            sizes="50px"
             preferLargestSource
             quality={90}
           />
-        ) : iconFallback === "mail" ? (
-          <MailGlyph className="h-7 w-7" />
-        ) : (
-          <PhoneGlyph className="h-7 w-7" />
-        )}
-      </span>
-      <span className="min-w-0 flex-1 text-pretty text-xl font-regular leading-[1.1] text-slate-900 [text-align:left]">
+        </span>
+      ) : (
+        <span
+          data-pill-icon
+          className="flex size-[50px] shrink-0 items-center justify-center rounded-[25px] bg-brand will-change-transform"
+        >
+          <ContactPillGlyph kind={iconFallback} />
+        </span>
+      )}
+      <span className="min-w-0 flex-1 text-pretty text-[20px] font-medium leading-[1.1] text-slate-900 [text-align:left]">
         {text}
       </span>
     </Link>
