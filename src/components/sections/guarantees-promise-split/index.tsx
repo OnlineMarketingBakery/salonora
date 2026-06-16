@@ -210,7 +210,7 @@ export function GuaranteesPromiseSplitSection({
           </div>
 
           <div
-            className={`${REVEAL_ITEM} order-2 flex min-w-0 max-w-[625px] flex-col items-start gap-5 lg:order-2 lg:gap-[31px]`}
+            className={`${REVEAL_ITEM} order-2 flex min-w-0 max-w-[625px] flex-col items-start gap-5 lg:order-2 lg:self-end lg:gap-[31px]`}
           >
             <div className="flex min-w-0 flex-col gap-5 lg:gap-5">
               {section.badge ? (

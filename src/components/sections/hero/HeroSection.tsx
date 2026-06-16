@@ -58,8 +58,8 @@ export function HeroSection({
         : "pb-0 sm:pt-36 sm:pb-0 lg:pt-52 lg:pb-24 xl:pt-56 xl:pb-28"
       : foregroundOnly
         ? isCompact
-          ? "pb-0 sm:pt-32 md:pt-36 lg:pt-44"
-          : "pb-0 sm:pt-36 lg:pt-52 xl:pt-56"
+          ? "pb-8 sm:pt-32 md:pt-36 lg:pt-44 lg:pb-12"
+          : "pb-8 sm:pt-36 lg:pt-52 lg:pb-16 xl:pt-56 xl:pb-16"
         : isCompact
           ? "pb-0 sm:pt-32 sm:pb-0 md:pt-36 lg:pb-20"
           : "pb-0 sm:pt-36 sm:pb-0 lg:pt-44 lg:pb-24 xl:pt-48 xl:pb-28"

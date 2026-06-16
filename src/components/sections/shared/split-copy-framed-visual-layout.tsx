@@ -18,7 +18,8 @@ export type SplitChecklistRowModel = {
 export type SplitChecklistVariant = "filled_disc" | "outlined_tile";
 
 /** Figma **696:3562** promo checklist — white ring + brand check (ignores CMS row icons for this variant). */
-function FilledDiscListGlyph(_props: { icon: WpImage | null }) {
+function FilledDiscListGlyph({ icon }: { icon: WpImage | null }) {
+  void icon;
   return <PromoChecklistGlyph />;
 }
 

@@ -37,16 +37,13 @@ export const SECTION_SHELL_DARK = "py-16 sm:py-20 md:py-24";
 /** Guarantee-style split — guarantee_split on homepage. */
 export const SECTION_SHELL_GUARANTEE = "py-20 md:py-24";
 
-/** Guarantee split before dual-card CTA — standard top, slightly tighter bottom. */
+/** Guarantee split before dual-card CTA — standard top; modest bottom before talk_dual_cards. */
 export const SECTION_SHELL_GUARANTEE_TIGHT_BOTTOM =
-  "pt-20 pb-14 md:pt-24 md:pb-16";
+  "pt-20 pb-8 sm:pt-24 sm:pb-8 md:pb-10";
 
-/** Dual-card CTA row — faq_contact_split / talk_dual_cards. */
-export const SECTION_SHELL_DUAL_CARDS = "py-16 sm:py-20 md:py-24";
-
-/** Dual-card row after a split section — less top air, same bottom as dual cards. */
+/** talk_dual_cards after guarantees_promise_split — modest top; standard bottom. */
 export const SECTION_SHELL_DUAL_CARDS_TIGHT_TOP =
-  "pt-6 pb-16 sm:pt-8 sm:pb-20 md:pt-8 md:pb-24";
+  "pt-4 pb-16 sm:pt-6 sm:pb-20 md:pt-8 md:pb-24";
 
 /** White faq_contact_split — tight top after split; modest bottom before our_promises. */
 export const SECTION_SHELL_FAQ_WHITE =
@@ -56,9 +53,21 @@ export const SECTION_SHELL_FAQ_WHITE =
 export const SECTION_SHELL_OUR_PROMISES =
   "pt-10 pb-16 sm:pt-12 sm:pb-20 md:pt-12 md:pb-20 lg:pb-[4.5rem]";
 
-/** Testimonial carousel band — homepage testimonials section. */
+/** Testimonial carousel — modest top; tighter bottom before is_this_for_you. */
 export const SECTION_SHELL_TESTIMONIALS =
-  "pt-10 pb-16 sm:pt-12 sm:pb-20 md:pt-14 md:pb-24";
+  "pt-10 pb-16 sm:pt-10 sm:pb-14 md:pt-10 md:pb-16";
+
+/** is_this_for_you (split_copy_framed flush) — pairs with FAQ_WHITE below. */
+export const SECTION_SHELL_IS_THIS_FOR_YOU =
+  "pt-10 pb-6 sm:pt-12 sm:pb-7 md:pt-12 md:pb-10";
+
+/** pricing_packages — Figma 72px top; reduced bottom (was 116px). */
+export const SECTION_SHELL_PRICING_PACKAGES =
+  "pt-[72px] pb-20 sm:pt-[72px] sm:pb-20 md:pb-24";
+
+/** steps_with_media — aligned with split-row rhythm. */
+export const SECTION_SHELL_STEPS_WITH_MEDIA =
+  "pt-12 pb-16 sm:pt-14 sm:pb-20 md:pt-16 md:pb-24";
 
 /** audience_promo_card (split_copy_framed card_grid) — compact top; room before pricing band. */
 export const SECTION_SHELL_AUDIENCE_PROMO_CARD =
