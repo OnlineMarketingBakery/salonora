@@ -13,7 +13,6 @@ import type { FounderStorySplitSectionT } from "@/types/sections";
 const CARD_BG_SRC = "/founder-story-card-bg.png";
 /** Figma `1083:46` / `597:2279` — card 1298×756, r20 */
 const CARD_MAX = 1298;
-const CARD_HEIGHT_LG = 756;
 
 export function FounderStorySplitSection(props: {
   section: FounderStorySplitSectionT;
