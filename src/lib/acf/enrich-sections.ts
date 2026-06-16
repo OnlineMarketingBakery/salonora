@@ -20,6 +20,7 @@ import type { SiteConfig } from "@/lib/wordpress/fetch-site-config";
 import { fetchSiteConfig } from "@/lib/wordpress/fetch-site-config";
 import { fetchBlogPostsCollection, fetchBlogOverviewPostCardById } from "@/lib/wordpress/fetch-blog-posts-collection";
 import { fetchCaseStudiesCollection, fetchCaseStudyOverviewCardById } from "@/lib/wordpress/fetch-case-studies-collection";
+import { resolvePostTranslationId } from "@/lib/wordpress/polylang-locale-hrefs";
 type WpCptList = {
   id: number;
   slug: string;
@@ -230,7 +231,8 @@ async function enrichBlogPostOverview(
     pinId != null &&
     pinId > 0
   ) {
-    const pinned = await fetchBlogOverviewPostCardById(ctx.lang, pinId);
+    const resolvedPinId = await resolvePostTranslationId(pinId, ctx.lang);
+    const pinned = await fetchBlogOverviewPostCardById(ctx.lang, resolvedPinId);
     if (pinned) {
       const rest = items.filter((i) => i.id !== pinned.id).slice(0, Math.max(0, perPage - 1));
       items = [pinned, ...rest];

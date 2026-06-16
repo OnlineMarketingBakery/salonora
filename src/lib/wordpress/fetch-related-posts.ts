@@ -6,12 +6,9 @@ import type { Locale } from "@/lib/i18n/locales";
 import type { BlogPostOverviewCardT } from "@/types/sections";
 import { stripTags, toPlainText } from "@/lib/utils/strings";
 import { estimateReadMinutes } from "@/lib/blog/read-minutes";
-import { formatPostMonthYear } from "@/lib/i18n/format-post-month-year";
-
-type WpEmbeddedAuthor = {
-  name?: string;
-  avatar_urls?: Record<string, string | undefined>;
-};
+import { formatPostFullDate } from "@/lib/i18n/format-post-month-year";
+import { resolveWpAuthorAvatarUrl } from "@/lib/wordpress/wp-embedded-author";
+import type { WpEmbeddedAuthor } from "@/types/wordpress";
 
 type WpPostListRow = {
   id: number;
@@ -31,8 +28,7 @@ function mapRow(p: WpPostListRow, lang: Locale): BlogPostOverviewCardT {
   const titlePlain = stripTags(p.title.rendered);
   const featured = p._embedded?.["wp:featuredmedia"]?.[0];
   const author = p._embedded?.author?.[0];
-  const avatar =
-    author?.avatar_urls?.["96"] || author?.avatar_urls?.["48"] || author?.avatar_urls?.["24"] || null;
+  const avatar = resolveWpAuthorAvatarUrl(author);
   const image =
     featured?.source_url && featured.source_url !== ""
       ? { url: featured.source_url, alt: featured.alt_text || titlePlain }
@@ -42,7 +38,7 @@ function mapRow(p: WpPostListRow, lang: Locale): BlogPostOverviewCardT {
     title: titlePlain,
     excerpt: toPlainText(p.excerpt?.rendered || ""),
     href: buildLocalePath(lang, p.slug),
-    dateLabel: formatPostMonthYear(p.date, lang),
+    dateLabel: formatPostFullDate(p.date, lang),
     authorName: author?.name?.trim() || "",
     authorAvatarUrl: avatar ?? null,
     readMinutes: estimateReadMinutes(p.content?.rendered),
@@ -69,6 +65,5 @@ export async function fetchRelatedPostCards(
   const rows = await wpFetchOptional<WpPostListRow[]>(path, { lang, revalidate: 60 });
   if (!Array.isArray(rows)) return [];
   const localeScoped = filterPostsByLocale(rows, lang, siteConfig);
-  const pool = localeScoped.length > 0 ? localeScoped : rows;
-  return pool.slice(0, safeLimit).map((p) => mapRow(p, lang));
+  return localeScoped.slice(0, safeLimit).map((p) => mapRow(p, lang));
 }

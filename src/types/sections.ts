@@ -896,6 +896,8 @@ export type CaseStudyProductShotSectionT = CoreSection & {
   description: string;
   /** Hairline rule under the block (ACF `show_divider_after`; same as Chapter). */
   showDivider: boolean;
+  /** Stable anchor for Inhoudsopgave (from ACF row `_key`). */
+  tocAnchorId: string;
 };
 
 /** Client quote + optional video (Figma “Klantenrecensie”). */

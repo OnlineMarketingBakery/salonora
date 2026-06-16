@@ -22,7 +22,7 @@ import {
   resolveBlogShowRelatedPosts,
 } from "./fetch-blog-single-tail-sections";
 import { getBlogPageSlug } from "./config";
-import { formatPostMonthYear } from "@/lib/i18n/format-post-month-year";
+import { formatPostFullDate } from "@/lib/i18n/format-post-month-year";
 import { resolveAuthorFromRestEmbed } from "@/lib/wordpress/wp-embedded-author";
 
 async function resolvePostAuthor(p: WpPostRaw, lang: Locale): Promise<PostAuthorT> {
@@ -81,7 +81,7 @@ function toDoc(p: WpPostRaw, gs: GlobalSettings, lang: Locale, author: PostAutho
     layoutSections: [],
     seo: mapYoastToSeo(p, gs, { fallbackTitle: p.title?.rendered || "Post" }),
     publishedAt: p.date || "",
-    dateLabel: formatPostMonthYear(p.date, lang),
+    dateLabel: formatPostFullDate(p.date, lang),
     readMinutes: estimateReadMinutes(rawHtml),
     author,
     showRelatedPosts,

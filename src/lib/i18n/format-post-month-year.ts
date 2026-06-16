@@ -18,3 +18,17 @@ export function formatPostMonthYear(iso: string | undefined, lang: Locale): stri
   }).format(d);
   return capitalizeFirstLetter(raw, locale);
 }
+
+/** Blog cards / post meta — e.g. NL `16 mei 2026`, EN `16 May 2026`. */
+export function formatPostFullDate(iso: string | undefined, lang: Locale): string {
+  if (!iso) return "";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  const locale = lang === "nl" ? "nl-NL" : "en-GB";
+  const raw = new Intl.DateTimeFormat(locale, {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(d);
+  return capitalizeFirstLetter(raw, locale);
+}

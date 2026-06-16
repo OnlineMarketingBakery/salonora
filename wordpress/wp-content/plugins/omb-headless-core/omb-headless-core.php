@@ -24,6 +24,7 @@ require_once OMB_HEADLESS_CORE_PATH . 'includes/options-pages.php';
 require_once OMB_HEADLESS_CORE_PATH . 'includes/languages.php';
 require_once OMB_HEADLESS_CORE_PATH . 'includes/polylang.php';
 require_once OMB_HEADLESS_CORE_PATH . 'includes/rest.php';
+require_once OMB_HEADLESS_CORE_PATH . 'includes/user-profile.php';
 require_once OMB_HEADLESS_CORE_PATH . 'includes/contact-form-7.php';
 
 add_action('init', function () {

@@ -4,28 +4,39 @@ import type { PostAuthorT } from "@/types/documents";
 import type { WpEmbeddedAuthor } from "@/types/wordpress";
 import { toPlainText } from "@/lib/utils/strings";
 
+function authorSocialUrl(raw: string | undefined): string | null {
+  const t = raw?.trim() ?? "";
+  if (!t || t === "#") return null;
+  return t;
+}
+
+export function resolveWpAuthorAvatarUrl(u: WpEmbeddedAuthor | null | undefined): string | null {
+  const custom = u?.omb_author_avatar_url?.trim();
+  if (custom) return custom;
+  return u?.avatar_urls?.["96"] || u?.avatar_urls?.["48"] || u?.avatar_urls?.["24"] || null;
+}
+
 /** Map WordPress REST user / embedded author shape → headless author card fields. */
 export function wpEmbeddedUserToAuthor(u: WpEmbeddedAuthor | null | undefined): PostAuthorT {
   const name = u?.name?.trim() || "";
-  const avatarUrl =
-    u?.avatar_urls?.["96"] || u?.avatar_urls?.["48"] || u?.avatar_urls?.["24"] || null;
+  const avatarUrl = resolveWpAuthorAvatarUrl(u);
   const rawUrl = typeof u?.url === "string" && u.url.trim() ? u.url.trim() : null;
   const soc = u?.omb_author_social;
-  const liFromSoc = typeof soc?.linkedin === "string" ? soc.linkedin.trim() : "";
+  const liFromSoc = authorSocialUrl(typeof soc?.linkedin === "string" ? soc.linkedin : undefined);
   const linkedinFromCoreUrl = rawUrl && /linkedin\.com/i.test(rawUrl) ? rawUrl : "";
-  const linkedinUrl = (liFromSoc || linkedinFromCoreUrl) || null;
+  const linkedinUrl = liFromSoc || linkedinFromCoreUrl || null;
   const profileUrl = rawUrl && !linkedinFromCoreUrl && !liFromSoc ? rawUrl : null;
   const bio = toPlainText(u?.description || "");
-  const fb = typeof soc?.facebook === "string" ? soc.facebook.trim() : "";
-  const ig = typeof soc?.instagram === "string" ? soc.instagram.trim() : "";
+  const fb = authorSocialUrl(typeof soc?.facebook === "string" ? soc.facebook : undefined);
+  const ig = authorSocialUrl(typeof soc?.instagram === "string" ? soc.instagram : undefined);
   return {
     name,
     avatarUrl,
     bio,
     profileUrl,
     linkedinUrl,
-    facebookUrl: fb || null,
-    instagramUrl: ig || null,
+    facebookUrl: fb,
+    instagramUrl: ig,
   };
 }
 
@@ -58,7 +69,7 @@ export async function resolveAuthorFromRestEmbed(
   const fromFetch = wpEmbeddedUserToAuthor(u);
   return {
     name: fromFetch.name.trim() ? fromFetch.name : fromEmbed.name,
-    avatarUrl: fromEmbed.avatarUrl || fromFetch.avatarUrl,
+    avatarUrl: fromFetch.avatarUrl || fromEmbed.avatarUrl,
     bio: fromFetch.bio.trim() ? fromFetch.bio : fromEmbed.bio,
     profileUrl: fromFetch.profileUrl || fromEmbed.profileUrl,
     linkedinUrl: fromFetch.linkedinUrl || fromEmbed.linkedinUrl,

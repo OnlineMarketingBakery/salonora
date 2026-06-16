@@ -86,6 +86,10 @@ export function HeroSection({
         : "text-xl sm:text-2xl lg:text-[36px]";
 
   const heroId = `hero-${section.id ?? "main"}`;
+  /** Phone-mockup heroes use an absolute right image; cap copy width so text does not run under it. */
+  const foregroundCopyMaxWidthClass = foregroundOnly
+    ? "lg:max-w-[37rem] xl:max-w-[38rem]"
+    : "";
 
   const containerOuterClassName = [
     bothHeroImages ? "px-0 sm:px-4 lg:px-8" : "",
@@ -249,9 +253,7 @@ export function HeroSection({
             <SectionHeading
               as="h1"
               text={section.title}
-              className={`${REVEAL_ITEM} ${titleSizeClass}${
-                foregroundOnly ? " lg:max-w-[37rem] xl:max-w-[38rem]" : ""
-              }`}
+              className={`${REVEAL_ITEM} ${titleSizeClass} ${foregroundCopyMaxWidthClass}`}
               lineClassName={
                 isCompact ? "max-lg:whitespace-normal lg:whitespace-nowrap" : ""
               }
@@ -259,19 +261,19 @@ export function HeroSection({
             {section.text && (
               <RichText
                 html={section.text}
-                className={`${REVEAL_ITEM} mt-3.5 text-sm leading-relaxed text-muted sm:text-base`}
+                className={`${REVEAL_ITEM} mt-3.5 text-sm leading-relaxed text-muted sm:text-base ${foregroundCopyMaxWidthClass}`}
               />
             )}
             {section.offerText && (
               <RichText
                 html={section.offerText}
-                className={`${REVEAL_ITEM} mt-2 !prose-p:text-inherit ${offerSizeClass} font-semibold !text-accent !prose-p:text-inherit !prose-strong:text-navy lg:mt-4 [&_p]:!m-0 [&_p]:leading-tight`}
+                className={`${REVEAL_ITEM} mt-2 !prose-p:text-inherit ${offerSizeClass} font-semibold !text-accent !prose-p:text-inherit !prose-strong:text-navy lg:mt-4 [&_p]:!m-0 [&_p]:leading-tight ${foregroundCopyMaxWidthClass}`}
               />
             )}
             {section.ctas.length > 0 && (
               // Mobile: content-width stacked buttons, centered. sm+: auto-width inline row.
               <div
-                className={`${REVEAL_ITEM} mt-6 flex w-full min-w-0 flex-col items-center gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5`}
+                className={`${REVEAL_ITEM} mt-6 flex w-full min-w-0 flex-col items-center gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-5 ${foregroundCopyMaxWidthClass}`}
               >
                 {section.ctas.map((cta, i) => {
                   const r = resolveLink(cta.url, lang);
@@ -294,7 +296,7 @@ export function HeroSection({
             )}
             {showSocial && (
               <div
-                className={`${REVEAL_ITEM} mt-6 flex flex-col items-start justify-start gap-2 sm:mt-9 sm:flex-row sm:items-center sm:gap-4`}
+                className={`${REVEAL_ITEM} mt-6 flex flex-col items-start justify-start gap-2 sm:mt-9 sm:flex-row sm:items-center sm:gap-4 ${foregroundCopyMaxWidthClass}`}
               >
                 {section.trustImage && (
                   <Media

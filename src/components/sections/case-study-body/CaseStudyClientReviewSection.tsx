@@ -11,21 +11,59 @@ const COPY = {
 
 function PlayIcon({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 64 64" fill="none" aria-hidden>
-      <circle cx="32" cy="32" r="30" fill="rgba(255,255,255,0.92)" />
-      <path d="M28 22v20l16-10-16-10z" fill="var(--palette-brand)" />
-    </svg>
+    <span
+      className={`relative z-10 inline-flex items-center justify-center rounded-full bg-[color-mix(in_srgb,var(--palette-rose-soft)_80%,transparent)] ${className ?? ""}`}
+      aria-hidden
+    >
+      <svg className="ml-0.5 size-5" viewBox="0 0 20 20" fill="none">
+        <path d="M7 5v10l8-5-8-5z" fill="var(--palette-white)" />
+      </svg>
+    </span>
   );
 }
 
-function QuoteMark({ className }: { className?: string }) {
+function VideoPlayOverlay({
+  hasVideoLink,
+  videoUrl,
+  playLabel,
+}: {
+  hasVideoLink: boolean;
+  videoUrl: string;
+  playLabel: string;
+}) {
+  const button = <PlayIcon className="size-[57px]" />;
+
+  if (hasVideoLink) {
+    return (
+      <Link
+        href={videoUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="absolute inset-0 z-[1] flex items-center justify-center transition hover:opacity-95"
+        aria-label={playLabel}
+      >
+        {button}
+      </Link>
+    );
+  }
+
   return (
-    <span
-      className={`shrink-0 select-none font-serif text-[3.25rem] font-bold leading-none text-[color-mix(in_srgb,var(--palette-brand)_38%,transparent)] ${className ?? ""}`}
+    <div className="pointer-events-none absolute inset-0 z-[1] flex items-center justify-center" aria-hidden>
+      {button}
+    </div>
+  );
+}
+
+function QuoteMarkIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={`h-10 w-[55px] shrink-0 text-brand ${className ?? ""}`}
+      viewBox="0 0 55 40"
+      fill="currentColor"
       aria-hidden
     >
-      &ldquo;
-    </span>
+      <path d="M0 0H24.6053V21.8571L11.6311 40H3.74868L11.4661 22.8571H0V0ZM30.3947 0H55V21.8571L42.0258 40H34.1434L41.8608 22.8571H30.3947V0Z" />
+    </svg>
   );
 }
 
@@ -38,63 +76,79 @@ export function CaseStudyClientReviewSection({
 }) {
   const t = COPY[lang];
   const heading = section.sectionHeading.trim() || t.defaultHeading;
-  const hasVideo = Boolean(section.videoUrl);
+  const videoUrl = section.videoUrl.trim();
+  const hasVideoLink = Boolean(videoUrl);
   const poster = section.videoPoster?.url;
+
+  const playOverlay = (
+    <VideoPlayOverlay hasVideoLink={hasVideoLink} videoUrl={videoUrl} playLabel={t.playLabel} />
+  );
 
   return (
     <section className="border-b border-[color-mix(in_srgb,var(--palette-navy)_12%,transparent)] pb-8">
       <h2
         id={section.tocAnchorId}
-        className="scroll-mt-28 text-[34px] font-semibold leading-[1.1] text-[var(--palette-navy)]"
+        className="scroll-mt-28 text-[34px] font-semibold leading-[1.1] text-navy"
       >
         {heading}
       </h2>
-      {hasVideo ? (
-        <div className="relative mt-8 aspect-video w-full overflow-hidden rounded-[14px] bg-[color-mix(in_srgb,var(--palette-navy)_18%,transparent)]">
-          {poster ? (
-            <Image src={poster} alt="" fill className="object-cover" sizes="(max-width: 1024px) 100vw, 864px" />
-          ) : null}
-          <Link
-            href={section.videoUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="absolute inset-0 flex items-center justify-center bg-[color-mix(in_srgb,var(--palette-navy)_25%,transparent)] transition hover:bg-[color-mix(in_srgb,var(--palette-navy)_35%,transparent)]"
-            aria-label={t.playLabel}
-          >
-            <PlayIcon className="size-16 sm:size-[4.5rem]" />
-          </Link>
-        </div>
-      ) : null}
-      {section.quote ? (
-        <div className="mt-6 flex gap-5">
-          <QuoteMark className="mt-1" />
-          <RichText
-            html={section.quote}
-            className="post-article-body post-prose max-w-none flex-1 text-base font-normal italic leading-[1.4] text-[var(--palette-muted)] prose-p:my-0 prose-p:leading-[1.4] prose-strong:text-[var(--palette-navy)] prose-a:text-[var(--palette-brand)]"
-          />
-        </div>
-      ) : null}
-      {(section.personName || section.personRole || section.personPhoto?.url) && (
-        <div className="mt-6 flex items-center gap-2">
-          {section.personPhoto?.url ? (
-            <Image
-              src={section.personPhoto.url}
-              alt=""
-              width={46}
-              height={46}
-              className="size-[46px] shrink-0 rounded-full object-cover"
+      <div className="relative mt-[34px] aspect-[859/401] w-full overflow-hidden rounded-[14px] bg-[color-mix(in_srgb,var(--palette-navy)_18%,transparent)]">
+        <div className="absolute inset-x-0 bottom-0 top-[11px] overflow-hidden rounded-[14px]">
+          <div className="relative h-full w-full">
+            {poster ? (
+              <Image
+                src={poster}
+                alt=""
+                fill
+                className="rounded-[14px] object-cover"
+                sizes="(max-width: 1024px) 100vw, 864px"
+              />
+            ) : null}
+            <div
+              className="pointer-events-none absolute inset-0 rounded-[14px] bg-[color-mix(in_srgb,#000_38%,transparent)]"
+              aria-hidden
             />
-          ) : null}
-          <div className="flex min-w-0 flex-col gap-2.5">
-            {section.personName ? (
-              <p className="text-base font-semibold leading-[1.6] text-[var(--palette-navy)]">{section.personName}</p>
-            ) : null}
-            {section.personRole ? (
-              <p className="text-xs font-normal leading-[1.4] text-[#475569]">{section.personRole}</p>
-            ) : null}
+            {playOverlay}
           </div>
         </div>
-      )}
+      </div>
+      {section.quote ||
+      section.personName ||
+      section.personRole ||
+      section.personPhoto?.url ? (
+        <div className="mt-[21px] flex flex-col gap-6">
+          {section.quote ? (
+            <div className="flex items-start gap-5">
+              <QuoteMarkIcon />
+              <RichText
+                html={section.quote}
+                className="post-article-body post-prose max-w-none flex-1 text-base font-normal leading-[1.4] text-muted prose-p:my-0 prose-p:leading-[1.4] prose-strong:text-navy prose-a:text-brand"
+              />
+            </div>
+          ) : null}
+          {(section.personName || section.personRole || section.personPhoto?.url) && (
+            <div className="flex items-center gap-2">
+              {section.personPhoto?.url ? (
+                <Image
+                  src={section.personPhoto.url}
+                  alt=""
+                  width={46}
+                  height={46}
+                  className="size-[46px] shrink-0 rounded-full object-cover"
+                />
+              ) : null}
+              <div className="flex min-w-0 flex-col gap-2.5">
+                {section.personName ? (
+                  <p className="text-base font-semibold leading-[1.6] text-navy">{section.personName}</p>
+                ) : null}
+                {section.personRole ? (
+                  <p className="text-xs font-normal leading-[1.4] text-muted">{section.personRole}</p>
+                ) : null}
+              </div>
+            </div>
+          )}
+        </div>
+      ) : null}
     </section>
   );
 }

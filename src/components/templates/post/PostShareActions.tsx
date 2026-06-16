@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback, useState } from "react";
-import { Button } from "@/components/ui/Button";
 import type { Locale } from "@/lib/i18n/locales";
 
 const COPY = {
@@ -9,15 +8,13 @@ const COPY = {
   en: { share: "Share", copied: "Link copied", copyFail: "Copy failed" },
 } as const;
 
+/** Figma 1643:260 — filled forward/share arrow. */
 function ShareIcon({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 20 20" fill="none" aria-hidden>
+    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden>
       <path
-        d="M12.5 4.5a2 2 0 11-1.06 1.77L7.8 8.45a2 2 0 010 3.1l3.64 2.18a2 2 0 11-.94 1.74L6.86 13.3a3.5 3.5 0 010-5.6l4.64-2.78A2 2 0 0112.5 4.5z"
-        stroke="currentColor"
-        strokeWidth="1.4"
-        strokeLinecap="round"
-        strokeLinejoin="round"
+        d="M13 14H11C7.54202 14 4.53953 15.9502 3.03239 18.8107C3.01093 18.5433 3 18.2729 3 18C3 12.4772 7.47715 8 13 8V3L23 11L13 19V14Z"
+        fill="currentColor"
       />
     </svg>
   );
@@ -57,19 +54,16 @@ export function PostShareActions({
 
   return (
     <div className="flex items-center gap-3">
-      <Button
+      {/* Figma 1643:257 — brand pill, 16px label + 24px share arrow, 18px gap */}
+      <button
         type="button"
         onClick={onShare}
-        variant="ctaBrand"
-        ctaSize="default"
-        ctaFullWidth={false}
-        ctaJustify="center"
-        arrowContent={<ShareIcon className="size-[24px] shrink-0 text-white" />}
-        className="min-w-[111px]"
+        className="inline-flex items-center justify-center gap-[18px] rounded-[24px] bg-brand px-[18px] py-3 text-[16px] font-normal leading-none text-white transition hover:bg-brand-strong focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
       >
         {t.share}
-      </Button>
-      {hint ? <span className="text-xs text-[var(--palette-muted)]">{hint}</span> : null}
+        <ShareIcon className="size-6 shrink-0" />
+      </button>
+      {hint ? <span className="text-xs text-muted">{hint}</span> : null}
     </div>
   );
 }

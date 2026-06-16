@@ -22,6 +22,9 @@ function legacyRedirects(lang: Locale, segment: string): string | null {
   if (segment === "about-us-2") {
     return lang === "nl" ? "/voor-wie-wij-er-zijn" : "/en/for-whom-we-are-here";
   }
+  if (lang === "en" && (segment === "blog" || segment === "blog-2")) {
+    return "/en/blogs";
+  }
   return getFaqLegacyRedirectPath(lang, segment) ?? getLegalLegacyRedirectPath(lang, segment);
 }
 

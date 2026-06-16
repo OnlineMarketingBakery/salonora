@@ -125,13 +125,55 @@
 }
 
 .blog-single-post .post-article-body.post-prose .salonora-band p[style*="text-transform:uppercase"],
-.blog-single-post .post-article-body.post-prose .salonora-band p[style*="text-transform: uppercase"] {
-  margin-bottom: 0.875rem !important;
+.blog-single-post .post-article-body.post-prose .salonora-band p[style*="text-transform: uppercase"],
+.blog-single-post .post-article-body.post-prose .salonora-band .salonora-band__title {
+  margin: 0 0 0.875rem !important;
   font-size: 2.125rem !important;
   font-weight: 600 !important;
   line-height: 1.1 !important;
+  letter-spacing: 0.4px;
   text-transform: uppercase !important;
   color: var(--post-brand) !important;
+}
+
+/* Pill section heading — Figma 1643:430/445/289: #ebf3fe 10px pill + 20px navy title */
+.blog-single-post .post-article-body.post-prose .salonora-step-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 2rem 0 0.5rem;
+}
+
+.blog-single-post .post-article-body.post-prose .salonora-step-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 8.375rem;
+  min-height: 2.875rem;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  background: var(--post-surface);
+  color: var(--post-brand);
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.blog-single-post .post-article-body.post-prose .salonora-step-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--post-navy);
+}
+
+/* Brand sub-heading — Figma 1643:296 etc.: 20px semibold brand */
+.blog-single-post .post-article-body.post-prose .salonora-subhead {
+  margin: 1.875rem 0 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--post-brand);
 }
 
 /* Tinted wrappers without band markup — surface + brand footer strip */

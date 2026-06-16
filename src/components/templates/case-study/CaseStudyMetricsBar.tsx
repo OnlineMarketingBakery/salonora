@@ -1,21 +1,30 @@
+import { Fragment } from "react";
 import type { CaseStudyOverviewMetricT } from "@/types/sections";
 
-/** Single case study — gradient metrics strip (Figma 879:27: 24px below lead, 152px band, 54×46 padding, 42px column gap, 10px label/value). */
+/** Figma 879:27 / 919:436 — 152px band, 54×46 padding, left-aligned metrics, 42px gaps, 59.5px dividers. */
 export function CaseStudyMetricsBar({ metrics }: { metrics: CaseStudyOverviewMetricT[] }) {
   if (metrics.length === 0) return null;
+
   return (
-    <div className="mt-6 w-full overflow-hidden rounded-[14px] bg-gradient-to-b from-[var(--palette-brand)] to-[var(--palette-brand-strong)] px-4 py-8 text-[var(--palette-white)] sm:min-h-[152px] sm:px-[54px] sm:py-[46px]">
-      <ul className="flex h-full flex-col divide-y divide-white/25 sm:flex-row sm:divide-y-0">
-        {metrics.map((m, i) => (
-          <li
-            key={`${m.label}-${m.value}-${i}`}
-            className={`flex min-w-0 flex-col gap-2.5 py-5 first:pt-0 last:pb-0 sm:flex-1 sm:justify-center sm:border-l sm:border-white/25 sm:py-0 sm:pl-10 sm:first:border-l-0 sm:first:pl-0`}
-          >
-            <p className="text-base font-normal leading-[1.4] text-white">{m.label}</p>
-            <p className="text-[34px] font-medium leading-[58px]">{m.value}</p>
-          </li>
-        ))}
-      </ul>
+    <div className="mt-6 w-full overflow-hidden rounded-[14px] bg-linear-to-b from-brand to-brand-strong px-6 py-8 text-white sm:h-[152px] sm:px-[54px] sm:py-0">
+      <div className="flex h-full items-center">
+        <div className="grid w-full grid-cols-2 gap-x-6 gap-y-8 sm:flex sm:flex-nowrap sm:items-center sm:gap-[42px]">
+          {metrics.map((m, i) => (
+            <Fragment key={`${m.label}-${m.value}-${i}`}>
+              {i > 0 ? (
+                <div
+                  className="hidden h-[59.5px] w-px shrink-0 self-center bg-white/25 sm:block"
+                  aria-hidden
+                />
+              ) : null}
+              <div className="flex min-w-0 flex-col items-start gap-2.5 text-left sm:shrink-0">
+                <p className="text-base font-normal leading-[1.4]">{m.label}</p>
+                <p className="text-[34px] font-medium leading-[58px]">{m.value}</p>
+              </div>
+            </Fragment>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

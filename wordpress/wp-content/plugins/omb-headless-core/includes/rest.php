@@ -454,16 +454,12 @@ function omb_rest_user_plain_bio(string $html): string {
 /** Sanitize optional author social URL for REST JSON. */
 function omb_rest_author_social_url(string $raw): string {
     $t = trim($raw);
-    if ($t === '') {
+    if ($t === '' || $t === '#') {
         return '';
     }
     $u = esc_url_raw($t);
     if (is_string($u) && $u !== '') {
         return $u;
-    }
-    // esc_url_raw() drops fragment-only values (e.g. ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã¢â‚¬Å“#ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â placeholders in dev); keep them for headless UI stubs.
-    if ($t === '#') {
-        return '#';
     }
 
     return '';
@@ -540,6 +536,21 @@ function omb_rest_user_description_for_lang(int $user_id, string $lang_slug): st
 /**
  * @param WP_REST_Response $response
  */
+
+/** Full-size custom author photo URL from user meta (omb_author_avatar_id). */
+function omb_rest_user_avatar_url(int $user_id): string {
+    if (function_exists('omb_author_avatar_url_for_user')) {
+        return omb_author_avatar_url_for_user($user_id);
+    }
+    $id = (int) get_user_meta($user_id, 'omb_author_avatar_id', true);
+    if ($id < 1) {
+        return '';
+    }
+    $url = wp_get_attachment_image_url($id, 'full');
+
+    return is_string($url) && $url !== '' ? $url : '';
+}
+
 function omb_rest_prepare_user_i18n_description($response, WP_User $user, WP_REST_Request $request) {
     $data = $response->get_data();
     if (!is_array($data)) {
@@ -547,6 +558,7 @@ function omb_rest_prepare_user_i18n_description($response, WP_User $user, WP_RES
     }
 
     $uid = (int) $user->ID;
+    $data['omb_author_avatar_url'] = omb_rest_user_avatar_url($uid);
     $data['omb_author_social'] = [
         'facebook' => omb_rest_author_social_url(
             omb_rest_user_meta_first_string(

@@ -74,6 +74,19 @@ function normalizePolylangTranslationIdMap(
   return Object.keys(o).length ? o : null;
 }
 
+/** Resolve a post ID to its Polylang-linked translation for `lang`, or return `postId` unchanged. */
+export async function resolvePostTranslationId(postId: number, lang: Locale): Promise<number> {
+  if (!Number.isFinite(postId) || postId < 1) return postId;
+  const raw = await wpFetchOptional<{ translations?: unknown }>(`/wp/v2/posts/${postId}`, {
+    lang,
+    revalidate: 300,
+  });
+  const t = normalizePolylangTranslationIdMap(raw?.translations);
+  if (!t) return postId;
+  const id = valueForLocaleStringKey(t, lang);
+  return id != null && id > 0 ? id : postId;
+}
+
 type HeadlessPathsRes = { paths: Record<string, string> };
 
 /**

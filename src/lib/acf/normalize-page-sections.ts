@@ -1393,6 +1393,7 @@ function mapKnownPageSectionLayout(
         description: asHtml(row.description),
         showDivider:
           row.show_divider_after === undefined || row.show_divider_after === null ? true : asBool(row.show_divider_after),
+        tocAnchorId: caseStudyChapterAnchorFromAcfKey(base._key),
       };
     case "case_study_client_review":
       return {

@@ -15,7 +15,12 @@ import { CaseStudyBreadcrumbs } from "@/components/templates/case-study/CaseStud
 import { CaseStudyMetricsBar } from "@/components/templates/case-study/CaseStudyMetricsBar";
 import { CaseStudyRelatedGrid } from "@/components/templates/case-study/CaseStudyRelatedGrid";
 import { CaseStudyBodySections } from "@/components/sections/case-study-body/CaseStudyBodySections";
-import { caseStudyHasFlexibleMainBody, isCaseStudyMainBodySection, tocItemsFromCaseStudySections } from "@/lib/case-study-body";
+import {
+  CASE_STUDY_ABOUT_ANCHOR,
+  caseStudyHasFlexibleMainBody,
+  isCaseStudyMainBodySection,
+  tocItemsFromCaseStudySections,
+} from "@/lib/case-study-body";
 
 export async function CaseStudyTemplate({
   document: doc,
@@ -27,7 +32,9 @@ export async function CaseStudyTemplate({
   const formDef = doc.featuredFormId ? await fetchCf7Form(doc.featuredFormId, lang) : null;
   const lead = toPlainText(doc.excerpt);
   const useFlexibleBody = caseStudyHasFlexibleMainBody(doc.sections);
-  const tocFromChapters = tocItemsFromCaseStudySections(doc.sections, lang);
+  const tocFromChapters = tocItemsFromCaseStudySections(doc.sections, lang, {
+    leadHtml: doc.caseStudyLeadHtml,
+  });
   const toc =
     useFlexibleBody && tocFromChapters.length > 0
       ? tocFromChapters
@@ -42,21 +49,25 @@ export async function CaseStudyTemplate({
       <Container className="pb-12 pt-28 md:pb-16 md:pt-32 lg:pb-20">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,25.125rem)_minmax(0,1fr)] lg:gap-x-10 lg:gap-y-0">
           <div className="min-w-0 lg:col-start-2 lg:row-start-1 lg:max-w-[53.6875rem]">
-            <header className="flex flex-col gap-6">
+            <header className="flex flex-col gap-[34px]">
               <CaseStudyBreadcrumbs
                 lang={lang}
                 caseStudyArchivePath={doc.caseStudyArchivePath}
                 caseStudyTitleHtml={doc.title}
                 breadcrumbParent={doc.breadcrumbParent}
               />
-              {doc.projectLabel ? (
-                <p className="text-2xl font-medium leading-[1.6] text-[var(--palette-brand)]">{doc.projectLabel}</p>
+              {doc.projectLabel || doc.title ? (
+                <div className="flex flex-col gap-6">
+                  {doc.projectLabel ? (
+                    <p className="text-2xl font-medium leading-[1.6] text-[var(--palette-brand)]">{doc.projectLabel}</p>
+                  ) : null}
+                  <h1 className="text-[2rem] font-semibold leading-[1.1] text-[var(--palette-navy)] sm:text-[2.375rem] md:text-[2.75rem] lg:text-[48px] lg:leading-[1.1]">
+                    {formatHeadingCase(toPlainText(doc.title))}
+                  </h1>
+                </div>
               ) : null}
-              <h1 className="text-[2rem] font-semibold leading-[1.1] text-[var(--palette-navy)] sm:text-[2.375rem] md:text-[2.75rem] lg:text-[48px] lg:leading-[1.1]">
-                {formatHeadingCase(toPlainText(doc.title))}
-              </h1>
               {doc.featuredImage ? (
-                <div className="relative aspect-[16/9] w-full overflow-hidden rounded-[14px] bg-[var(--palette-surface)]">
+                <div className="relative aspect-[859/379] w-full overflow-hidden rounded-[14px] bg-[var(--palette-surface)]">
                   <Image
                     src={doc.featuredImage}
                     alt={doc.featuredImageAlt}
@@ -68,14 +79,17 @@ export async function CaseStudyTemplate({
                 </div>
               ) : null}
               {doc.caseStudyLeadHtml ? (
-                <div className="max-w-[52rem] text-[16px] font-normal leading-[1.4] text-[var(--palette-muted)] md:max-w-[48.5rem]">
+                <div
+                  id={CASE_STUDY_ABOUT_ANCHOR}
+                  className="w-full text-[16px] font-normal leading-[1.4] text-[var(--palette-muted)]"
+                >
                   <RichText
                     html={doc.caseStudyLeadHtml}
-                    className="post-lead max-w-none prose-p:my-0 prose-p:text-[16px] prose-p:leading-[1.4] prose-headings:text-[var(--palette-navy)] prose-p:text-[var(--palette-muted)] prose-strong:text-[var(--palette-navy)] prose-a:text-[var(--palette-brand)]"
+                    className="post-lead max-w-none prose-p:my-0 [&_p+p]:mt-6 prose-p:text-[16px] prose-p:leading-[1.4] prose-headings:text-[var(--palette-navy)] prose-p:text-[var(--palette-muted)] prose-strong:text-[var(--palette-navy)] prose-a:text-[var(--palette-brand)]"
                   />
                 </div>
               ) : lead ? (
-                <p className="max-w-[52rem] text-[16px] font-normal leading-[1.4] text-[var(--palette-muted)] md:max-w-[48.5rem]">
+                <p className="w-full text-[16px] font-normal leading-[1.4] text-[var(--palette-muted)]">
                   {lead}
                 </p>
               ) : null}

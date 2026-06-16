@@ -18,10 +18,10 @@ export function CaseStudyConversionCtaSection({
   if (!section.title.trim() && !section.subtitle.trim() && !resolved) return null;
 
   return (
-    <section className="relative overflow-hidden rounded-[24px] bg-[var(--palette-navy-deep)] px-6 py-12 text-white sm:px-12 sm:py-14 md:px-[117px] md:py-15">
+    <section className="relative flex min-h-[277px] items-center overflow-hidden rounded-[14px] bg-[var(--palette-navy-deep)] px-6 py-12 text-white sm:px-12 sm:py-14 md:px-[117px] md:py-[60px]">
       {/** Figma: `#002752` base + soft brand glows top-left & bottom-right (mesh-style depth) */}
       <div
-        className="pointer-events-none absolute inset-0 overflow-hidden rounded-[24px]"
+        className="pointer-events-none absolute inset-0 overflow-hidden rounded-[14px]"
         aria-hidden
         style={{
           background: [
@@ -30,7 +30,7 @@ export function CaseStudyConversionCtaSection({
           ].join(","),
         }}
       />
-      <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[24px] blur-3xl opacity-40" aria-hidden>
+      <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[14px] blur-3xl opacity-40" aria-hidden>
         <div
           className="absolute -left-[22%] -top-[42%] size-[min(85%,28rem)] rounded-full"
           style={{
@@ -44,22 +44,22 @@ export function CaseStudyConversionCtaSection({
           }}
         />
       </div>
-      <div className="relative z-10 mx-auto flex min-h-0 w-full max-w-[53.6875rem] flex-col items-center text-center">
-        {section.title.trim() ? (
-          <SectionHeading
-            as="h2"
-            text={section.title}
-            className="text-[34px] font-semibold leading-[1.1] text-white"
-          />
-        ) : null}
-        {section.subtitle ? (
-          <div className={section.title.trim() ? "mt-4 w-full" : "w-full"}>
+      <div className="relative z-10 mx-auto flex w-full max-w-[39rem] flex-col items-center gap-[18px] text-center">
+        <div className="flex w-full flex-col items-center gap-4">
+          {section.title.trim() ? (
+            <SectionHeading
+              as="h2"
+              text={section.title}
+              className="text-[34px] font-semibold leading-[1.1] text-white"
+            />
+          ) : null}
+          {section.subtitle ? (
             <RichText
               html={section.subtitle}
               className="max-w-none text-base font-normal leading-[1.4] text-white prose-p:my-0 prose-p:text-base prose-p:leading-[1.4] prose-p:text-white prose-a:text-white prose-strong:text-white"
             />
-          </div>
-        ) : null}
+          ) : null}
+        </div>
         {resolved ? (
           <Button
             href={resolved.href}
@@ -68,7 +68,7 @@ export function CaseStudyConversionCtaSection({
             ctaSize="default"
             ctaFullWidth={false}
             ctaJustify="center"
-            className="mt-5 min-w-[10rem] shrink-0"
+            className="min-w-[10rem] shrink-0"
           >
             {resolved.label}
           </Button>
