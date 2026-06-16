@@ -14,7 +14,7 @@ import { CF7Form } from "@/components/forms/CF7Form";
 import { formatHeadingLines } from "@/lib/i18n/format-heading";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
-import { SECTION_SHELL_DUAL_CARDS } from "@/lib/layout/section-spacing";
+import { SECTION_SHELL_FAQ_WHITE } from "@/lib/layout/section-spacing";
 import type { FaqContactSplitSectionT } from "@/types/sections";
 import type { Locale } from "@/lib/i18n/locales";
 import { SITE_CONTENT_WIDTH_FAQ_ROW } from "@/lib/layout/site-content-width";
@@ -81,9 +81,13 @@ export function FaqContactSplitSection({ section, lang }: { section: FaqContactS
   const hasPricing = section.pricingCtas.length > 0;
   const navyBg = section.sectionBackground === "navy";
 
+  const sectionShell = navyBg
+    ? "py-16 sm:py-20 md:py-24"
+    : SECTION_SHELL_FAQ_WHITE;
+
   return (
     <section
-      className={`${SECTION_SHELL_DUAL_CARDS} ${navyBg ? "bg-navy-deep text-white" : "bg-white"}`}
+      className={`${sectionShell} ${navyBg ? "bg-navy-deep text-white" : "bg-white"}`}
     >
       <Container>
         <div className={`mx-auto flex w-full ${SITE_CONTENT_WIDTH_FAQ_ROW} flex-col items-center gap-10 md:gap-12`}>

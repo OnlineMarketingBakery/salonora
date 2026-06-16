@@ -2,7 +2,7 @@ import type { WpImage } from "@/types/wordpress";
 
 /** Figma 597:3927 / 597:3934 — 28×28 glyphs inside 50px brand circle. */
 export const FAQ_CONTACT_MAIL_ICON = "/faq-contact-mail.png";
-export const FAQ_CONTACT_PHONE_ICON = "/faq-contact-phone.png";
+export const FAQ_CONTACT_PHONE_ICON = "/faq-contact-phone.svg";
 
 /** Figma 597:3915 — 37×37 circled arrow on navy pricing CTA. */
 export const FAQ_PRICING_CTA_ARROW = "/faq-pricing-cta-arrow.png";
@@ -20,4 +20,14 @@ export function isCompositeIconTile(image: WpImage | null | undefined, minSide =
   const dim = getWpImageDimensions(image);
   if (!dim) return false;
   return Math.min(dim.w, dim.h) >= minSide;
+}
+
+/** WP SVG/PNG glyphs (often 0×0 in REST) — render inside the brand circle, not as a full tile. */
+export function shouldUseCmsContactGlyph(
+  image: WpImage | null | undefined,
+  minCompositeSide = 40
+): boolean {
+  if (!image || isCompositeIconTile(image, minCompositeSide)) return false;
+  if (typeof image === "string") return image.trim().length > 0;
+  return Boolean(image.url?.trim() || image.id);
 }

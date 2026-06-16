@@ -50,7 +50,7 @@ export function CombinedStrengthsSection({
 
   return (
     <section lang={lang} className={`bg-[var(--palette-white)] ${SECTION_SHELL_WHITE_TIGHT_TOP}`}>
-      <Container className="max-w-340!">
+      <Container>
         <div className="mx-auto flex w-full flex-col gap-6">
           {/* Top: equal-height columns, 24px gutter — matches Figma 732 − (70+638) */}
           <div className="grid grid-cols-1 items-stretch gap-6 lg:grid-cols-2 lg:gap-6">

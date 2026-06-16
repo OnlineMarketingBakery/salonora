@@ -2,6 +2,7 @@ import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
+import { SECTION_SHELL_WHITE } from "@/lib/layout/section-spacing";
 import type { Locale } from "@/lib/i18n/locales";
 import { getImageUrl, getLargestImageUrl } from "@/lib/utils/media";
 import type { ProblemSolutionSectionT } from "@/types/sections";
@@ -165,7 +166,7 @@ export function ProblemSolutionSection({
     "relative flex h-full min-h-0 w-full flex-col overflow-hidden rounded-[24px] px-8 py-10 sm:px-10 sm:py-11 lg:px-[46px] lg:py-[46px]";
 
   return (
-    <section className="bg-[var(--palette-white)] py-12 md:py-16">
+    <section className={`bg-[var(--palette-white)] ${SECTION_SHELL_WHITE}`}>
       <Container>
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-stretch lg:gap-6">
           <article

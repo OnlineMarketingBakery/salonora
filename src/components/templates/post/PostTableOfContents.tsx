@@ -31,10 +31,13 @@ export function PostTableOfContents({
   items,
   lang,
   variant = "post",
+  layout = "sidebar",
 }: {
   items: PostTocItem[];
   lang: Locale;
   variant?: "post" | "case_study";
+  /** `inline` — collapsible full-width block for mobile article column; `sidebar` — sticky desktop card. */
+  layout?: "sidebar" | "inline";
 }) {
   if (items.length === 0) return null;
   const t = COPY[lang];
@@ -86,11 +89,66 @@ export function PostTableOfContents({
     );
   }
 
+  if (layout === "inline") {
+    let sectionNum = 0;
+    return (
+      <details className="post-mobile-toc group w-full">
+        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 rounded-xl border border-[color-mix(in_srgb,var(--palette-brand)_18%,transparent)] bg-white px-4 py-3.5 shadow-sm marker:content-none [&::-webkit-details-marker]:hidden">
+          <span className="flex min-w-0 items-center gap-2.5 text-base font-semibold text-navy">
+            <TocListIcon className="size-5 shrink-0 text-brand" />
+            <span>{t.title}</span>
+          </span>
+          <span
+            className="flex size-8 shrink-0 items-center justify-center rounded-full bg-surface text-brand transition-transform group-open:rotate-180"
+            aria-hidden
+          >
+            ▾
+          </span>
+        </summary>
+        <nav
+          className="mt-3 rounded-xl border border-surface bg-white p-2 shadow-sm"
+          aria-label={t.title}
+        >
+          <ol className="m-0 flex list-none flex-col p-0">
+            {items.map((item) => {
+              const isSub = item.level === 3;
+              if (!isSub) sectionNum += 1;
+              return (
+                <li key={`${item.level}-${item.id}`}>
+                  <a
+                    href={`#${item.id}`}
+                    className={`flex gap-2.5 rounded-lg px-3 py-2.5 text-[15px] leading-snug transition-colors hover:bg-surface hover:text-brand ${
+                      isSub
+                        ? "ps-9 text-muted"
+                        : "font-medium text-navy"
+                    }`}
+                  >
+                    {isSub ? (
+                      <span
+                        className="mt-2 size-1.5 shrink-0 rounded-full bg-brand"
+                        aria-hidden
+                      />
+                    ) : (
+                      <span className="shrink-0 tabular-nums text-brand">
+                        {sectionNum}.
+                      </span>
+                    )}
+                    <span className="min-w-0">{item.label}</span>
+                  </a>
+                </li>
+              );
+            })}
+          </ol>
+        </nav>
+      </details>
+    );
+  }
+
   /** Figma 1643:210–233 — blog single TOC (307×556, brand header, white rows). */
   return (
     <nav
       aria-labelledby="post-toc-heading"
-      className="flex max-h-none w-full max-w-[19.1875rem] flex-col overflow-hidden rounded-[12px] bg-[#ebf3fe] lg:max-h-[34.75rem]"
+      className="flex max-h-none w-full max-w-[19.1875rem] flex-col overflow-hidden rounded-[12px] bg-surface lg:max-h-[34.75rem]"
     >
       <div className="flex h-[52px] shrink-0 items-center gap-[7px] rounded-t-[14px] bg-brand pl-[19px] pr-[19px]">
         <TocListIcon className="size-[22px] shrink-0 text-white" />

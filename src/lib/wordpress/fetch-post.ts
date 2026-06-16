@@ -10,6 +10,7 @@ import {
   injectHeadingIds,
   markStyleTintedDivs,
   preparePostContentHtml,
+  stripBlogBodyConclusionDuplicate,
   upgradeNumberedRows,
 } from "@/lib/blog/post-html";
 import { estimateReadMinutes } from "@/lib/blog/read-minutes";
@@ -56,14 +57,24 @@ function mapShowToc(acf: Record<string, unknown>): boolean {
   return asBool(v);
 }
 
-function toDoc(p: WpPostRaw, gs: GlobalSettings, lang: Locale, author: PostAuthorT): PostDocument {
+function toDoc(
+  p: WpPostRaw,
+  gs: GlobalSettings,
+  lang: Locale,
+  author: PostAuthorT,
+  conclusionTitle?: string
+): PostDocument {
   const acf = p.acf || {};
   const featured = p._embedded?.["wp:featuredmedia"]?.[0];
   const featuredForm = (acf as { featured_form?: { id?: number } | null }).featured_form;
   const showRelatedPosts = asBool((acf as { show_related_posts?: unknown }).show_related_posts);
   const rawHtml = p.content?.rendered || "";
+  let prepared = preparePostContentHtml(rawHtml);
+  if (conclusionTitle?.trim()) {
+    prepared = stripBlogBodyConclusionDuplicate(prepared, conclusionTitle);
+  }
   const content = injectHeadingIds(
-    upgradeNumberedRows(markStyleTintedDivs(preparePostContentHtml(rawHtml)))
+    upgradeNumberedRows(markStyleTintedDivs(prepared))
   );
   return {
     kind: "post",
@@ -82,7 +93,7 @@ function toDoc(p: WpPostRaw, gs: GlobalSettings, lang: Locale, author: PostAutho
     seo: mapYoastToSeo(p, gs, { fallbackTitle: p.title?.rendered || "Post" }),
     publishedAt: p.date || "",
     dateLabel: formatPostFullDate(p.date, lang),
-    readMinutes: estimateReadMinutes(rawHtml),
+    readMinutes: estimateReadMinutes(prepared),
     author,
     showRelatedPosts,
     relatedPosts: [],
@@ -104,12 +115,15 @@ export async function fetchPostBySlug(
   if (!list?.[0]) return null;
   const raw = list[0];
   const author = await resolvePostAuthor(raw, lang);
-  const doc = toDoc(raw, gs, lang, author);
   const [layoutSections, templateShowRelated, siteConfig] = await Promise.all([
     fetchBlogSingleTailSections(lang, gs),
     fetchBlogSingleTemplateShowRelatedPosts(lang),
     fetchSiteConfig(),
   ]);
+  const conclusionPanel = layoutSections.find((s) => s.type === "blog_conclusion_panel");
+  const conclusionTitle =
+    conclusionPanel?.type === "blog_conclusion_panel" ? conclusionPanel.title : undefined;
+  const doc = toDoc(raw, gs, lang, author, conclusionTitle);
   const showRelatedPosts = resolveBlogShowRelatedPosts(templateShowRelated, doc.showRelatedPosts);
   let merged = { ...doc, layoutSections, showRelatedPosts };
   if (merged.showRelatedPosts) {

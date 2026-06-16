@@ -6,9 +6,8 @@ import type { Locale } from "@/lib/i18n/locales";
 import type { PostDocument } from "@/types/documents";
 import { decodeHtmlEntitiesPlain } from "@/lib/utils/decode-html-entities-plain";
 import { stripTags, toPlainText } from "@/lib/utils/strings";
-import { PostArticleMeta } from "./PostArticleMeta";
+import { PostHeroMetaBand } from "./PostHeroMetaBand";
 import { PostHeroEyebrow } from "./PostHeroEyebrow";
-import { PostShareActions } from "./PostShareActions";
 
 const COPY = {
   nl: { blog: "Blog" },
@@ -55,7 +54,7 @@ function resolveHeroCopy(doc: PostDocument) {
 function HeroDivider() {
   return (
     <div
-      className="h-px w-full shrink-0 bg-[#acc6ea]"
+      className="h-px w-full min-w-0 shrink-0 bg-[color-mix(in_srgb,var(--palette-brand)_35%,var(--palette-white))]"
       aria-hidden
     />
   );
@@ -98,9 +97,9 @@ export function PostHeroHeader({
       {/* Figma 1643:234 — brand line above H1 */}
       {eyebrow ? <PostHeroEyebrow text={eyebrow} /> : null}
 
-      {/* Figma 1643:235 — 48px semibold navy */}
+      {/* Figma 1643:235 — 48px semibold navy (scaled down on narrow viewports) */}
       <h1
-        className={`text-[48px] font-semibold leading-[1.1] text-navy ${eyebrow ? "mt-[18px]" : ""}`}
+        className={`text-balance text-[2rem] font-semibold leading-[1.1] text-navy sm:text-[2.5rem] lg:text-[3rem] ${eyebrow ? "mt-[18px]" : ""}`}
       >
         {title}
       </h1>
@@ -109,26 +108,25 @@ export function PostHeroHeader({
       {leadHtml ? (
         <RichText
           html={leadHtml}
-          className="post-lead mt-[18px] max-w-none text-[24px] font-medium leading-[1.4] prose-p:my-0 prose-p:text-[24px] prose-p:font-medium prose-p:leading-[1.4] prose-headings:text-navy prose-p:text-navy prose-strong:text-navy prose-a:text-brand"
+          className="post-lead mt-[18px] max-w-none text-lg font-medium leading-[1.4] prose-p:my-0 prose-p:text-lg prose-p:font-medium prose-p:leading-[1.4] prose-headings:text-navy prose-p:text-navy prose-strong:text-navy prose-a:text-brand sm:prose-p:text-xl sm:text-xl lg:prose-p:text-[24px] lg:text-[24px]"
         />
       ) : leadPlain ? (
-        <p className="mt-[18px] text-[24px] font-medium leading-[1.4] text-navy">
+        <p className="mt-[18px] text-lg font-medium leading-[1.4] text-navy sm:text-xl lg:text-[24px]">
           {decodeHtmlEntitiesPlain(leadPlain)}
         </p>
       ) : null}
 
-      {/* Figma 1643:237–262 — 77px band: divider, meta, divider */}
-      <div className="mt-7 flex min-h-[77px] w-full max-w-[59.3125rem] flex-col justify-between">
+      {/* Figma 1643:237–262 — meta band: divider, meta + share, divider */}
+      <div className="mt-7 flex w-full min-w-0 flex-col gap-3 py-2">
         <HeroDivider />
-        <div className="flex w-full flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-          <PostArticleMeta
-            author={doc.author}
-            dateLabel={doc.dateLabel}
-            readMinutes={doc.readMinutes}
-            lang={lang}
-          />
-          <PostShareActions lang={lang} shareUrl={shareUrl} shareTitle={title} />
-        </div>
+        <PostHeroMetaBand
+          author={doc.author}
+          dateLabel={doc.dateLabel}
+          readMinutes={doc.readMinutes}
+          lang={lang}
+          shareUrl={shareUrl}
+          shareTitle={title}
+        />
         <HeroDivider />
       </div>
     </header>

@@ -23,13 +23,13 @@ export function PostRelatedGrid({
   if (items.length === 0) return null;
   const t = COPY[lang];
   return (
-    <section className="blog-single-related bg-white py-14 md:py-20">
+    <section className="blog-single-related bg-white">
       <Container>
-        <div className="mx-auto w-full max-w-[81.1875rem]">
-          <h2 className={`text-center text-4xl font-semibold leading-[1.1] text-navy md:text-[48px] ${REVEAL_ITEM}`}>
+        <div className="flex w-full min-w-0 flex-col gap-10 md:gap-16">
+          <h2 className="text-center text-4xl font-semibold leading-[1.1] text-navy md:text-[48px]">
             {t.title}
           </h2>
-          <ul className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
+          <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
             {items.map((card) => (
               <li key={card.id} className="flex justify-center">
                 <article

@@ -9,7 +9,7 @@ import "./testimonials-carousel.css";
 
 const MOBILE_MQ = "(max-width: 767px)";
 const SWIPE_THRESHOLD_PX = 48;
-const VIEWPORT_HEIGHT_BUFFER_PX = 8;
+const VIEWPORT_HEIGHT_BUFFER_PX = 16;
 
 function chunk<T>(arr: T[], size: number): T[][] {
   if (size < 1) return [];
@@ -93,7 +93,7 @@ function useMobileCarousel(): boolean {
 function TestimonialCard({ testimonial }: { testimonial: TestimonialDocument }) {
   return (
     <blockquote
-      className={`testimonials-carousel__card surface-light ${REVEAL_ITEM} relative flex h-full min-h-[200px] flex-col overflow-hidden rounded-[14px] bg-linear-to-b from-white to-[rgba(255,255,255,0.48)] p-6 shadow-[0px_18px_48px_0px_rgba(67,87,128,0.08)] sm:p-[34px]`}
+      className={`testimonials-carousel__card ${REVEAL_ITEM} relative flex h-full min-h-[200px] flex-col overflow-hidden rounded-[14px] bg-white p-6 shadow-[0_8px_20px_rgba(67,87,128,0.06)] sm:p-[34px]`}
     >
       <QuoteGlyph className="mb-[23px] shrink-0" />
       <RichText

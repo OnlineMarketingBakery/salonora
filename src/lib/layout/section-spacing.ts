@@ -48,14 +48,30 @@ export const SECTION_SHELL_DUAL_CARDS = "py-16 sm:py-20 md:py-24";
 export const SECTION_SHELL_DUAL_CARDS_TIGHT_TOP =
   "pt-6 pb-16 sm:pt-8 sm:pb-20 md:pt-8 md:pb-24";
 
+/** White faq_contact_split — tight top after split; modest bottom before our_promises. */
+export const SECTION_SHELL_FAQ_WHITE =
+  "pt-6 pb-12 sm:pt-8 sm:pb-14 md:pt-8 md:pb-16";
+
+/** our_promises — reduced top when paired with FAQ; standard bottom before next band. */
+export const SECTION_SHELL_OUR_PROMISES =
+  "pt-10 pb-16 sm:pt-12 sm:pb-20 md:pt-12 md:pb-20 lg:pb-[4.5rem]";
+
 /** Testimonial carousel band — homepage testimonials section. */
 export const SECTION_SHELL_TESTIMONIALS =
   "pt-10 pb-16 sm:pt-12 sm:pb-20 md:pt-14 md:pb-24";
+
+/** audience_promo_card (split_copy_framed card_grid) — compact top; room before pricing band. */
+export const SECTION_SHELL_AUDIENCE_PROMO_CARD =
+  "pt-7 pb-14 sm:pt-8 sm:pb-16 md:pt-8 md:pb-20";
 
 /** salon_value_proposition simple layout. */
 export const SECTION_SHELL_SALON_VALUE_SIMPLE =
   "pt-16 pb-12 sm:pt-20 sm:pb-14 md:pt-24 md:pb-16";
 
-/** salon_value_proposition featured / split — slightly tighter bottom when paired. */
+/** pricing_dual_cards — standard top; modest bottom before salon_value_proposition. */
+export const SECTION_SHELL_PRICING_DUAL =
+  "pb-8 pt-12 sm:pb-10 sm:pt-14 lg:pb-12 lg:pt-[112px]";
+
+/** salon_value_proposition featured / split — tighter top when following pricing; tight bottom when paired. */
 export const SECTION_SHELL_SALON_VALUE_FEATURED =
-  "pt-16 pb-6 sm:pt-20 sm:pb-7 md:pt-24 md:pb-8";
+  "pt-10 pb-6 sm:pt-12 sm:pb-7 md:pt-12 md:pb-8";

@@ -47,6 +47,10 @@ export function HeroSection({
   // Other variants: same NAV_HEIGHT so eyebrow text clears the nav.
   const MOBILE_TOP_PAD = NAV_HEIGHT;
 
+  // Small extra breathing room between the floating header and the hero, applied
+  // uniformly across every breakpoint/variant.
+  const HERO_TOP_GAP = 48;
+
   const sectionVerticalClass = useLooseHeroLayout
     ? behindOnly
       ? isCompact
@@ -54,8 +58,8 @@ export function HeroSection({
         : "pb-0 sm:pt-36 sm:pb-0 lg:pt-52 lg:pb-24 xl:pt-56 xl:pb-28"
       : foregroundOnly
         ? isCompact
-          ? "pb-0 sm:pt-32 md:pt-36 lg:pt-40"
-          : "pb-0 sm:pt-36 lg:pt-44 xl:pt-48"
+          ? "pb-0 sm:pt-32 md:pt-36 lg:pt-44"
+          : "pb-0 sm:pt-36 lg:pt-52 xl:pt-56"
         : isCompact
           ? "pb-0 sm:pt-32 sm:pb-0 md:pt-36 lg:pb-20"
           : "pb-0 sm:pt-36 sm:pb-0 lg:pt-44 lg:pb-24 xl:pt-48 xl:pb-28"
@@ -100,7 +104,9 @@ export function HeroSection({
     .join(" ");
   const containerClassName = [
     foregroundOnly ? "relative w-full" : "",
-    "lg:flex lg:flex-1 lg:items-center",
+    // foregroundOnly: top-align the copy so the heading sits near the top of the
+    // hero band (image stays pinned bottom-right). Other variants stay centered.
+    foregroundOnly ? "lg:flex lg:flex-1 lg:items-start" : "lg:flex lg:flex-1 lg:items-center",
   ]
     .filter(Boolean)
     .join(" ");
@@ -117,8 +123,8 @@ export function HeroSection({
         : 208
       : foregroundOnly
         ? isCompact
-          ? 160
-          : 176
+          ? 176
+          : 208
         : isCompact
           ? 160
           : 176;
@@ -130,8 +136,8 @@ export function HeroSection({
         : 224
       : foregroundOnly
         ? isCompact
-          ? 176
-          : 192
+          ? 192
+          : 224
         : isCompact
           ? 176
           : 192;
@@ -140,7 +146,7 @@ export function HeroSection({
     <section
       id={heroId}
       className={`relative flex flex-col overflow-hidden ${sectionVerticalClass}`}
-      style={{ paddingTop: `${MOBILE_TOP_PAD}px` }}
+      style={{ paddingTop: `${MOBILE_TOP_PAD + HERO_TOP_GAP}px` }}
     >
       {/*
         Explicit @media overrides for sm/md/lg/xl — needed because inline style
@@ -152,10 +158,10 @@ export function HeroSection({
       <style>{`
         /* Override inline paddingTop at each breakpoint for all variants.
            Inline styles beat Tailwind classes, so we need explicit px values here. */
-        @media (min-width: 640px)  { #${heroId} { padding-top: ${smPt}px; } }
-        @media (min-width: 768px)  { #${heroId} { padding-top: ${mdPt}px; } }
-        @media (min-width: 1024px) { #${heroId} { padding-top: ${lgPt}px; min-height: ${HERO_BAND_MIN_HEIGHT_LG}px; } }
-        @media (min-width: 1280px) { #${heroId} { padding-top: ${xlPt}px; } }
+        @media (min-width: 640px)  { #${heroId} { padding-top: ${smPt + HERO_TOP_GAP}px; } }
+        @media (min-width: 768px)  { #${heroId} { padding-top: ${mdPt + HERO_TOP_GAP}px; } }
+        @media (min-width: 1024px) { #${heroId} { padding-top: ${lgPt + HERO_TOP_GAP}px; min-height: ${HERO_BAND_MIN_HEIGHT_LG}px; } }
+        @media (min-width: 1280px) { #${heroId} { padding-top: ${xlPt + HERO_TOP_GAP}px; } }
         ${
           bothHeroImages
             ? `
@@ -187,15 +193,15 @@ export function HeroSection({
         {/* Phone hero: bottom-right inside the content column, not full viewport */}
         {foregroundOnly && section.image ? (
           <div
-            className={`${REVEAL_ITEM} pointer-events-none absolute bottom-0 right-0 z-[5] hidden lg:block`}
+            className={`${REVEAL_ITEM} pointer-events-none absolute inset-y-0 right-0 z-[5] hidden items-end justify-end lg:flex`}
             aria-hidden
           >
             <Media
               image={section.image}
-              className="hero-phone-img h-[min(630px,calc(100%-0.5rem))] w-auto max-w-[min(100%,620px)] object-contain object-bottom object-right"
+              className="hero-phone-img h-auto max-h-[calc(100%-0.5rem)] w-auto max-w-[min(100%,760px)] object-contain object-bottom object-right"
               width={900}
               height={1120}
-              sizes="(min-width: 1024px) 620px"
+              sizes="(min-width: 1024px) 760px"
               preferLargestSource
             />
           </div>
@@ -226,7 +232,7 @@ export function HeroSection({
                   // pt-5: breathing room between image bottom and copy.
                   "order-2 lg:order-1 px-4 sm:px-0 pt-5 sm:pt-0 pb-8 sm:pb-6 lg:self-center lg:pb-0"
                 : foregroundOnly
-                  ? "self-start py-8 sm:py-14 lg:self-center lg:py-0"
+                  ? "self-start py-8 sm:py-14 lg:self-start lg:py-0"
                   : behindOnly
                     ? "self-start py-8 lg:self-center lg:py-0"
                     : "self-start py-8 lg:self-center lg:py-0"

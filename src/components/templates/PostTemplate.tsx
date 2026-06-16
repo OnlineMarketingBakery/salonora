@@ -16,16 +16,21 @@ import { PostArticleBody } from "./post/PostArticleBody";
 
 export async function PostTemplate({ document: doc, lang }: { document: PostDocument; lang: Locale }) {
   const formDef = doc.featuredFormId ? await fetchCf7Form(doc.featuredFormId, lang) : null;
-  const postSections = doc.sections.filter(
-    (s) => s.type !== "faq_contact_split" && s.type !== "blog_conclusion_panel"
-  );
-  const toc = buildBlogPostToc(doc.content, doc.layoutSections);
+  const isTailSection = (type: string) =>
+    type === "faq_contact_split" || type === "blog_conclusion_panel";
+  const postSections = doc.sections.filter((s) => !isTailSection(s.type));
+  // Per-post FAQ/conclusion (from post_sections) override the shared template tail when present.
+  const perPostTail = doc.sections.filter((s) => isTailSection(s.type));
+  const tailSections = perPostTail.length > 0 ? perPostTail : doc.layoutSections;
+  const toc = buildBlogPostToc(doc.content, tailSections);
   const site = getSiteUrl();
   const path = buildLocalePath(lang, doc.slug).replace(/^\//, "");
   const shareUrl = `${site}/${path}`;
 
+  const hasTailLayout = tailSections.length > 0;
+
   let faqBlockIndex = 0;
-  const templateTailNodes = doc.layoutSections.map((section) => {
+  const templateTailNodes = tailSections.map((section) => {
     if (section.type === "faq_contact_split") {
       const isFirstFaq = faqBlockIndex === 0;
       faqBlockIndex += 1;
@@ -51,7 +56,9 @@ export async function PostTemplate({ document: doc, lang }: { document: PostDocu
 
   return (
     <article className="blog-single-post bg-white">
-      <Container className="pb-12 pt-28 sm:px-6 md:pb-16 md:pt-32 lg:px-[70px] lg:pb-20">
+      <Container
+        className={`pt-28 md:pt-32 ${hasTailLayout ? "pb-0" : "pb-12 md:pb-16 lg:pb-20"}`}
+      >
         <PostTwoColumnGrid
           aside={
             <aside className="hidden min-w-0 flex-col lg:sticky lg:top-28 lg:flex lg:self-start">
@@ -61,7 +68,7 @@ export async function PostTemplate({ document: doc, lang }: { document: PostDocu
         >
           <PostHeroHeader doc={doc} lang={lang} shareUrl={shareUrl} />
           {doc.featuredImage ? (
-            <div className="relative mt-[30px] aspect-[968/421] w-full overflow-hidden rounded-[12px] bg-[#ebf3fe]">
+            <div className="relative mt-[30px] aspect-[968/421] w-full overflow-hidden rounded-[12px] bg-surface">
               <Image
                 src={doc.featuredImage}
                 alt={doc.featuredImageAlt}
@@ -74,7 +81,7 @@ export async function PostTemplate({ document: doc, lang }: { document: PostDocu
           ) : null}
           {doc.showToc ? (
             <div className="mt-8 lg:hidden">
-              <PostTableOfContents items={toc} lang={lang} variant="post" />
+              <PostTableOfContents items={toc} lang={lang} variant="post" layout="inline" />
             </div>
           ) : null}
           <PostArticleBody html={doc.content} />

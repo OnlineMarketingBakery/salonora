@@ -4,6 +4,7 @@ import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
 import { formatHeadingLines } from "@/lib/i18n/format-heading";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
+import { SECTION_SHELL_OUR_PROMISES } from "@/lib/layout/section-spacing";
 import type { Locale } from "@/lib/i18n/locales";
 import type { OurPromisesSectionT, WhoWeAreForItemAccentT } from "@/types/sections";
 
@@ -47,7 +48,7 @@ export function OurPromisesSection({
   );
 
   return (
-    <section lang={lang} className="bg-white py-16 md:py-20 lg:py-[4.5rem]">
+    <section lang={lang} className={`bg-white ${SECTION_SHELL_OUR_PROMISES}`}>
       <Container>
         <div
           className={`${REVEAL_ITEM} mx-auto flex w-full max-w-[76.8125rem] flex-col items-center gap-10 sm:gap-14 lg:gap-[4.8125rem]`}
