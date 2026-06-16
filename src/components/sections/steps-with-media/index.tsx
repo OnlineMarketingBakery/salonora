@@ -5,6 +5,7 @@ import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
 import { formatHeadingLines } from "@/lib/i18n/format-heading";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
+import { SECTION_SHELL_STEPS_WITH_MEDIA } from "@/lib/layout/section-spacing";
 import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
 import type { StepsWithMediaSectionT, StepsWithMediaStepIconColorT } from "@/types/sections";
@@ -125,7 +126,7 @@ export function StepsWithMediaSection({
   return (
     <section
       lang={lang}
-      className="bg-[var(--palette-white)] pt-20 pb-14 md:py-24 lg:py-[103px]"
+      className={`bg-[var(--palette-white)] ${SECTION_SHELL_STEPS_WITH_MEDIA}`}
     >
       <Container>
         <div className="grid items-center gap-y-12 gap-x-12 lg:grid-cols-2 lg:gap-x-[57px] lg:gap-y-0">

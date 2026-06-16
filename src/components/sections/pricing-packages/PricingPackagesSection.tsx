@@ -5,6 +5,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
+import { SECTION_SHELL_PRICING_PACKAGES } from "@/lib/layout/section-spacing";
 import type { Locale } from "@/lib/i18n/locales";
 import { ctaVariantAt } from "@/lib/ui/ctaAlternation";
 import { resolveLink } from "@/lib/utils/links";
@@ -88,9 +89,8 @@ export function PricingPackagesSection({
   section: PricingPackagesSectionT;
   lang: Locale;
 }) {
-  // Figma exception: asymmetric vertical padding (72px top / 116px bottom).
   return (
-    <section className="bg-surface py-[72px] pb-[116px] sm:pt-[72px] sm:pb-[116px]">
+    <section className={`bg-surface ${SECTION_SHELL_PRICING_PACKAGES}`}>
       <Container>
         <div className="mx-auto flex max-w-[1300px] flex-col items-center gap-[44px]">
           <div

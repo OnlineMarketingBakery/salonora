@@ -28,6 +28,5 @@ export function shouldUseCmsContactGlyph(
   minCompositeSide = 40
 ): boolean {
   if (!image || isCompositeIconTile(image, minCompositeSide)) return false;
-  if (typeof image === "string") return image.trim().length > 0;
   return Boolean(image.url?.trim() || image.id);
 }
