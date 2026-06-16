@@ -347,6 +347,80 @@ export function isBlogTocMainSectionItem(item: PostTocItem): boolean {
   return true;
 }
 
+const CONCLUSION_HEADING_PREFIX_RE =
+  /^(?:tot\s+slot|finally|samenvattend|conclusie|in\s+conclusie)\b/i;
+
+function normalizeConclusionHeadingLabel(label: string): string {
+  return stripTags(label)
+    .trim()
+    .toLowerCase()
+    .replace(/[.:;!?'"“”‘’]/g, "")
+    .replace(/\s+/g, " ");
+}
+
+function headingMatchesBlogConclusionPanel(headingLabel: string, conclusionTitle: string): boolean {
+  const heading = normalizeConclusionHeadingLabel(headingLabel);
+  const title = normalizeConclusionHeadingLabel(conclusionTitle);
+  if (!heading) return false;
+  if (title && (heading === title || heading.includes(title) || title.includes(heading))) {
+    return true;
+  }
+  const headingPrefix = heading.split(/\s+/).slice(0, 5).join(" ");
+  const titlePrefix = title.split(/\s+/).slice(0, 5).join(" ");
+  if (title && headingPrefix === titlePrefix) return true;
+  return CONCLUSION_HEADING_PREFIX_RE.test(heading);
+}
+
+type PostHeadingBlock = { index: number; label: string };
+
+function collectPostH2Blocks(html: string): PostHeadingBlock[] {
+  const blocks: PostHeadingBlock[] = [];
+  const h2Re = /<h2\b[^>]*>([\s\S]*?)<\/h2>/gi;
+  let m: RegExpExecArray | null;
+  while ((m = h2Re.exec(html)) !== null) {
+    blocks.push({ index: m.index, label: stripTags(m[1]) });
+  }
+  const salRe = /<div[^>]*\bdata-sal-heading\s*=\s*["']2["'][^>]*>([\s\S]*?)<\/div>/gi;
+  while ((m = salRe.exec(html)) !== null) {
+    blocks.push({ index: m.index, label: stripTags(m[1]) });
+  }
+  return blocks.sort((a, b) => a.index - b.index);
+}
+
+function trimPrecedingPostSeparators(html: string, cutIndex: number): number {
+  let out = html.slice(0, cutIndex).trimEnd();
+  const trailingRe =
+    /(?:\s*<hr\b[^>]*>|\s*<!--\s*wp:separator[\s\S]*?-->|\s*<p>\s*<\/p>)+\s*$/i;
+  for (let pass = 0; pass < 8; pass++) {
+    const next = out.replace(trailingRe, "");
+    if (next === out) break;
+    out = next.trimEnd();
+  }
+  return out.length;
+}
+
+/**
+ * When `blog_conclusion_panel` renders below FAQ, drop the duplicate closing
+ * chapter from post HTML (n8n/Gutenberg often still paste it into `content`).
+ */
+export function stripBlogBodyConclusionDuplicate(html: string, conclusionTitle: string): string {
+  if (!html.trim()) return html;
+  const blocks = collectPostH2Blocks(html);
+  if (!blocks.length) return html;
+
+  let matchIndex = -1;
+  for (let i = blocks.length - 1; i >= 0; i--) {
+    if (headingMatchesBlogConclusionPanel(blocks[i].label, conclusionTitle)) {
+      matchIndex = blocks[i].index;
+      break;
+    }
+  }
+  if (matchIndex < 0) return html;
+
+  const cutAt = trimPrecedingPostSeparators(html, matchIndex);
+  return html.slice(0, cutAt).trimEnd();
+}
+
 /** Blog single TOC — only main chapter headings; subsections stay in the article. */
 export function filterBlogPostTocItems(items: PostTocItem[]): PostTocItem[] {
   return items.filter(isBlogTocMainSectionItem);

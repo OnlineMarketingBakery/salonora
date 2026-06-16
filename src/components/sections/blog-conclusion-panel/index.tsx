@@ -15,10 +15,10 @@ export function BlogConclusionPanelSection({
   if (!section.title?.trim() && !section.body?.trim()) return null;
 
   return (
-    <section className="blog-single-conclusion bg-white pb-12 md:pb-16">
+    <section className="blog-single-conclusion bg-white">
       <Container>
         <BlogSingleTailWidth>
-          <div className="rounded-t-[12px] bg-surface px-6 py-10 sm:px-10 sm:py-12 md:px-[70px] md:py-16">
+          <div className="rounded-t-[12px] bg-surface px-6 py-8 sm:px-10 sm:py-10 md:py-12">
             {section.title?.trim() ? (
               <SectionHeading
                 as="h2"

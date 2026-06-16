@@ -89,32 +89,32 @@ export function BlogPostMetaRow({
 
   if (isFeatured) {
     return (
-      <div className="flex flex-wrap items-center gap-6 text-base font-medium leading-[1.4] text-navy">
-        <span className="inline-flex items-center gap-[7px]">
+      <div className="flex min-w-0 flex-wrap items-center gap-x-4 gap-y-3 text-sm font-medium leading-[1.4] text-navy sm:gap-x-6 sm:gap-y-3 sm:text-base">
+        <span className="inline-flex min-w-0 max-w-full items-center gap-2 sm:gap-[7px]">
           {authorAvatarUrl ? (
             <Image
               src={authorAvatarUrl}
               alt=""
               width={44}
               height={44}
-              className="size-11 shrink-0 rounded-full object-cover"
+              className="size-9 shrink-0 rounded-full object-cover sm:size-11"
               unoptimized
             />
           ) : (
             <span
-              className="size-11 shrink-0 rounded-full bg-pill ring-1 ring-[color-mix(in_srgb,var(--palette-brand)_18%,var(--palette-white))]"
+              className="size-9 shrink-0 rounded-full bg-pill ring-1 ring-[color-mix(in_srgb,var(--palette-brand)_18%,var(--palette-white))] sm:size-11"
               aria-hidden
             />
           )}
-          <span>{author}</span>
+          <span className="min-w-0 break-words">{author}</span>
         </span>
-        <span className="inline-flex items-center gap-2">
-          <BlogMetaCalendarWell className="size-11 shrink-0" />
-          <span>{dateLabel || "—"}</span>
+        <span className="inline-flex min-w-0 max-w-full items-center gap-2">
+          <BlogMetaCalendarWell className="size-9 shrink-0 sm:size-11" />
+          <span className="min-w-0 whitespace-nowrap">{dateLabel || "—"}</span>
         </span>
-        <span className="inline-flex items-center gap-2">
-          <BlogMetaClockWell className="size-11 shrink-0" />
-          <span>{readLabel}</span>
+        <span className="inline-flex min-w-0 max-w-full items-center gap-2">
+          <BlogMetaClockWell className="size-9 shrink-0 sm:size-11" />
+          <span className="min-w-0 whitespace-nowrap">{readLabel}</span>
         </span>
       </div>
     );

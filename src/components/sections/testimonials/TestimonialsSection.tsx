@@ -44,7 +44,7 @@ export function TestimonialsSection({
   const narrowSingleTotal = items.length === 1;
 
   return (
-    <section className={`relative isolate overflow-hidden ${SECTION_SHELL_TESTIMONIALS}`}>
+    <section className={`relative isolate ${SECTION_SHELL_TESTIMONIALS}`}>
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden" aria-hidden>
         <div
           className="absolute inset-0"

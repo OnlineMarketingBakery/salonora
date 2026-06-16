@@ -24,10 +24,14 @@ export function PostShareActions({
   lang,
   shareUrl,
   shareTitle,
+  className = "",
+  size = "default",
 }: {
   lang: Locale;
   shareUrl: string;
   shareTitle: string;
+  className?: string;
+  size?: "default" | "compact";
 }) {
   const t = COPY[lang];
   const [hint, setHint] = useState<string | null>(null);
@@ -52,16 +56,21 @@ export function PostShareActions({
     }
   }, [shareTitle, shareUrl, t.copied, t.copyFail]);
 
+  const isCompact = size === "compact";
+
   return (
-    <div className="flex items-center gap-3">
-      {/* Figma 1643:257 — brand pill, 16px label + 24px share arrow, 18px gap */}
+    <div className={`flex min-w-0 items-center gap-2 ${className}`.trim()}>
       <button
         type="button"
         onClick={onShare}
-        className="inline-flex items-center justify-center gap-[18px] rounded-[24px] bg-brand px-[18px] py-3 text-[16px] font-normal leading-none text-white transition hover:bg-brand-strong focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+        className={
+          isCompact
+            ? "inline-flex shrink-0 items-center justify-center gap-2 rounded-full bg-brand px-3.5 py-2 text-sm font-medium leading-none text-white transition hover:bg-brand-strong focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+            : "inline-flex items-center justify-center gap-[18px] rounded-[24px] bg-brand px-[18px] py-3 text-[16px] font-normal leading-none text-white transition hover:bg-brand-strong focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+        }
       >
         {t.share}
-        <ShareIcon className="size-6 shrink-0" />
+        <ShareIcon className={isCompact ? "size-5 shrink-0" : "size-6 shrink-0"} />
       </button>
       {hint ? <span className="text-xs text-muted">{hint}</span> : null}
     </div>

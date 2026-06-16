@@ -4,6 +4,7 @@ import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
+import { SECTION_SHELL_PRICING_DUAL } from "@/lib/layout/section-spacing";
 import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
 import type {
@@ -272,7 +273,7 @@ export function PricingDualCardsSection({
   }
 
   return (
-    <section className="relative z-0 overflow-x-clip pb-10 pt-12 sm:pb-12 sm:pt-14 lg:pb-14 lg:pt-[112px]">
+    <section className={`relative z-0 overflow-x-clip ${SECTION_SHELL_PRICING_DUAL}`}>
       <Container className="relative z-0 flex flex-col gap-10 lg:gap-14">
         {hasIntro ? (
           <div className={`${REVEAL_ITEM} relative`}>

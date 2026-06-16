@@ -810,14 +810,20 @@ a {
   color: color-mix(in srgb, var(--palette-brand) 75%, var(--palette-navy));
 }
 
-/* Blog single tail — Figma 1643:54 (FAQ → conclusion → related) */
+/* Blog single tail — FAQ + conclusion (Figma 1643:460→266, 266→147) */
 .post-single-faq > section {
-  padding-top: 5rem;
+  padding-top: 2.5rem;
   padding-bottom: 2.5rem;
 }
 
+@media (min-width: 768px) {
+  .post-single-faq > section {
+    padding-bottom: 3.5rem; /* 56px — FAQ → conclusion surface */
+  }
+}
+
 .post-single-faq > section > div > div.mx-auto.flex.flex-col.items-center {
-  gap: 38px;
+  gap: 1.75rem;
 }
 
 .post-single-faq > section h2 {
@@ -844,12 +850,22 @@ a {
   color: var(--palette-navy);
 }
 
+/* Conclusion band — gap to related posts lives on .blog-single-related */
 .blog-single-conclusion {
   padding-top: 0;
+  padding-bottom: 0;
 }
 
 .blog-single-related {
-  padding-top: 0;
+  padding-top: 2.5rem;
+  padding-bottom: 3.5rem;
+}
+
+@media (min-width: 768px) {
+  .blog-single-related {
+    padding-top: 5.875rem; /* 94px — conclusion → Gerelateerde blogs */
+    padding-bottom: 5rem;
+  }
 }
 
 @media (min-width: 1024px) {

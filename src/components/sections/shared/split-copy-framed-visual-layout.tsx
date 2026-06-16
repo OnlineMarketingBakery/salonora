@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 
 import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
+import { PromoChecklistGlyph } from "@/components/ui/PromoChecklistGlyph";
 import type { Locale } from "@/lib/i18n/locales";
 import type { WpImage } from "@/types/wordpress";
 
@@ -16,43 +17,9 @@ export type SplitChecklistRowModel = {
 
 export type SplitChecklistVariant = "filled_disc" | "outlined_tile";
 
-/** Figma promo checklist: solid brand disc + optional CMS icon or white check. */
-function FilledDiscListGlyph({ icon }: { icon: WpImage | null }) {
-  if (icon) {
-    return (
-      <span className="relative mt-0.5 inline-flex size-[39px] shrink-0 items-center justify-center overflow-hidden rounded-full bg-[var(--palette-brand)] p-1.5 [&_img]:object-contain">
-        <Media
-          image={icon}
-          width={39}
-          height={39}
-          className="h-full w-full"
-          sizes="39px"
-          preferLargestSource
-        />
-      </span>
-    );
-  }
-  return (
-    <span
-      className="relative mt-0.5 inline-flex size-[39px] shrink-0 items-center justify-center rounded-full bg-[var(--palette-brand)]"
-      aria-hidden
-    >
-      <svg
-        className="h-[13px] w-[15px] text-[var(--palette-white)]"
-        viewBox="0 0 15 13"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M1 6.5L5.5 11L14 1"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    </span>
-  );
+/** Figma **696:3562** promo checklist — white ring + brand check (ignores CMS row icons for this variant). */
+function FilledDiscListGlyph(_props: { icon: WpImage | null }) {
+  return <PromoChecklistGlyph />;
 }
 
 /** Figma editorial checklist: optional row icon on surface pad, else thin ring + brand check. */
@@ -132,29 +99,44 @@ export function SplitChecklistRows({
   );
 }
 
+/** Figma **1325:36** / **692:194** — 497×556 shell; brand panel **296:2422**; photo mask **296:2424**. */
+const FRAMED_PHOTO_LEFT = "3.68%";
+const FRAMED_PHOTO_TOP = "3.04%";
+const FRAMED_PHOTO_WIDTH = "92.56%";
+const FRAMED_PHOTO_HEIGHT = "94.07%";
+const FRAMED_BRAND_WIDTH = "92.56%";
+const FRAMED_BRAND_HEIGHT = "94.25%";
+
 function FramedTiltedVisual({ image }: { image: WpImage }) {
-  /**
-   * Fanned stack matching Figma exactly:
-   * - White card (front): rotated +3deg CW, leans right at top.
-   * - Blue backing (behind): rotated -4deg CCW, leans left at top, centered behind
-   *   so it peeks top-left, left edge, bottom-left, and bottom-right.
-   */
   return (
-    <div className="relative w-[26rem] max-w-full shrink-0">
-      {/* Blue backing — centered behind, rotated CCW */}
+    <div className="relative aspect-[497/556] w-[min(100%,497px)] shrink-0">
+      {/* Brand backing — rotate -4.13deg; only layer behind photo (no white card stack). */}
       <div
+        className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+        style={{ width: FRAMED_BRAND_WIDTH, height: FRAMED_BRAND_HEIGHT }}
         aria-hidden
-        className="pointer-events-none absolute inset-0 z-0 mx-auto aspect-[460/523] w-[24rem] origin-[50%_50%] rotate-[-4deg] rounded-[16px] bg-[var(--palette-brand)]"
-      />
-      {/* White card — on top, rotated CW */}
-      <div className="relative z-10 aspect-[460/523] w-[24rem] origin-[50%_50%] rotate-[3deg] overflow-hidden rounded-[16px] bg-[var(--palette-white)] shadow-[0px_8px_22px_color-mix(in_srgb,var(--palette-navy-deep)_10%,transparent)]">
+      >
+        <div className="flex h-full w-full items-center justify-center">
+          <div className="h-full w-full rotate-[-4.13deg] rounded-[14px] bg-brand" />
+        </div>
+      </div>
+
+      {/* Photo — rounded 14px mask, object-cover (Figma mask group). */}
+      <div
+        className="absolute overflow-hidden rounded-[14px]"
+        style={{
+          left: FRAMED_PHOTO_LEFT,
+          top: FRAMED_PHOTO_TOP,
+          width: FRAMED_PHOTO_WIDTH,
+          height: FRAMED_PHOTO_HEIGHT,
+        }}
+      >
         <Media
           image={image}
           width={920}
           height={1046}
-          className="h-full w-full object-contain object-center"
-          sizes="(min-width: 1024px) 384px, 90vw"
-          unoptimized
+          className="h-full w-full object-cover object-center"
+          sizes="(min-width: 1024px) 460px, 90vw"
         />
       </div>
     </div>
@@ -225,16 +207,13 @@ export function SplitCopyFramedVisualLayout({
         : "flex w-full flex-col items-stretch gap-10 lg:flex-row lg:items-center lg:justify-center lg:gap-x-8 xl:gap-x-10";
 
   return (
-    <section
-      lang={lang}
-      className={`py-16 lg:py-24 ${sectionClassName ?? ""}`.trim()}
-    >
+    <section lang={lang} className={sectionClassName?.trim() || "py-16 lg:py-24"}>
       <Container className={containerClassName}>
         <div className={`${cardShell} ${innerClassName ?? ""}`.trim()}>
           {visualNode ? (
             <>
               <div
-                className={`${visualOrderMobile} ${visualOrderLg} flex shrink-0 justify-center ${visualInnerClassName ?? ""}`.trim()}
+                className={`${visualOrderMobile} ${visualOrderLg} flex w-[min(100%,497px)] shrink-0 justify-center self-center ${visualInnerClassName ?? ""}`.trim()}
               >
                 {visualNode}
               </div>

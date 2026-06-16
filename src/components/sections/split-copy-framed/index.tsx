@@ -12,6 +12,7 @@ import { RichText } from "@/components/ui/RichText";
 import { formatHeadingLines } from "@/lib/i18n/format-heading";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
+import { SECTION_SHELL_AUDIENCE_PROMO_CARD } from "@/lib/layout/section-spacing";
 import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
 import type { SplitCopyFramedSectionT } from "@/types/sections";
@@ -173,8 +174,8 @@ export function SplitCopyFramedSection({
       cardShadow={section.show_card_shadow}
       sectionClassName={
         isCard
-          ? "bg-[var(--palette-white)] py-7 md:py-8"
-          : "bg-[var(--palette-white)] py-16 md:py-24"
+          ? `bg-[var(--palette-white)] ${SECTION_SHELL_AUDIENCE_PROMO_CARD}`
+          : "bg-[var(--palette-white)] pt-16 sm:pt-20 md:pt-24 pb-6 sm:pb-8 md:pb-10"
       }
       innerClassName={isCard ? REVEAL_ITEM : undefined}
       visualInnerClassName={!isCard && section.image != null ? REVEAL_ITEM : undefined}

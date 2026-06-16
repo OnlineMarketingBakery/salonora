@@ -10,20 +10,23 @@ import {
   FAQ_CONTACT_MAIL_ICON,
   FAQ_CONTACT_PHONE_ICON,
   isCompositeIconTile,
+  shouldUseCmsContactGlyph,
 } from "@/components/sections/faq-contact-split/faq-contact-icons";
+import { getImageUrl } from "@/lib/utils/media";
 import { registerGsapClient } from "@/lib/gsap/register";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import type { WpImage } from "@/types/wordpress";
 
 function ContactPillGlyph({ kind }: { kind: "mail" | "phone" }) {
   const src = kind === "mail" ? FAQ_CONTACT_MAIL_ICON : FAQ_CONTACT_PHONE_ICON;
+  const isSvg = src.endsWith(".svg");
   return (
     <Image
       src={src}
       width={28}
       height={28}
       alt=""
-      unoptimized
+      unoptimized={isSvg}
       className="size-7 object-contain"
       aria-hidden
     />
@@ -91,6 +94,20 @@ export function ContactCtaPill({ href, text, icon, iconFallback, target }: Props
             sizes="50px"
             preferLargestSource
             quality={90}
+          />
+        </span>
+      ) : shouldUseCmsContactGlyph(icon) && getImageUrl(icon) ? (
+        <span
+          data-pill-icon
+          className="flex size-[50px] shrink-0 items-center justify-center rounded-[25px] bg-brand will-change-transform"
+        >
+          <Media
+            image={icon}
+            width={28}
+            height={28}
+            className="size-7 object-contain"
+            sizes="28px"
+            unoptimized
           />
         </span>
       ) : (
