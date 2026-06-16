@@ -123,7 +123,7 @@ export function repairProblemSolutionHtml(html: string): string {
   const raw = (html ?? "").trim();
   if (!raw) return "";
 
-  const matches = [...raw.matchAll(/<p[^>]*>(.*?)<\/p>/gis)];
+  const matches = [...raw.matchAll(/<p[^>]*>([\s\S]*?)<\/p>/gi)];
   if (matches.length === 0) {
     const text = fixRunOnSentences(stripInlineMarkup(raw));
     return text ? `<p>${text}</p>` : "" ;
