@@ -1,0 +1,38 @@
+{
+  "authorId": 4,
+  "nlBlogPageId": 38222,
+  "featuredNlPostId": 41352,
+  "posts": [
+    {
+      "nlId": 40820,
+      "title": "Starting a Beauty Salon: The Complete Guide for 2026",
+      "slug": "starting-a-beauty-salon-complete-guide-2026",
+      "excerpt": "",
+      "post_lead": "From your first idea to your first client. Everything you need to know about costs, permits, and essentials when starting a beauty salon.",
+      "contentFile": "40820.html"
+    },
+    {
+      "nlId": 41348,
+      "title": "Starting a Hair Salon in 2026: The Complete Guide",
+      "slug": "starting-a-hair-salon-in-2026",
+      "excerpt": "",
+      "post_lead": "The complete guide for anyone who wants to start their own hair salon or barbershop in the Netherlands.",
+      "contentFile": "41348.html"
+    },
+    {
+      "nlId": 41352,
+      "title": "24/7 Online Booking: Why Clients Book With You or Your Competitor in the Evening",
+      "slug": "24-7-online-booking-why-clients-book-with-you-or-your-competitor-in-the-evening",
+      "excerpt": "For salon owners who do not want to lose evening clients to competitors.",
+      "post_lead": "SALON · 24/7 BOOKINGS · CLIENT BEHAVIOR",
+      "contentFile": "41352.html"
+    }
+  ],
+  "blogPage": {
+    "title": "Blog",
+    "slug": "blogs",
+    "sectionTitle": "Latest blog posts",
+    "sectionIntro": "Stay up to date with our latest articles, insights, and industry trends.",
+    "readMoreLabel": "Read article"
+  }
+}

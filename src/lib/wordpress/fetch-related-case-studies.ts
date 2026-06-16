@@ -1,5 +1,7 @@
 import { wpFetchOptional } from "@/lib/wordpress/client";
 import { getCptRestBase } from "@/lib/wordpress/config";
+import { filterPostsByLocale } from "@/lib/i18n/post-language";
+import { fetchSiteConfig } from "@/lib/wordpress/fetch-site-config";
 import type { Locale } from "@/lib/i18n/locales";
 import type { CaseStudyOverviewCardT } from "@/types/sections";
 import { mapWpCaseStudyRowToOverviewCard, type WpCaseStudyListRow } from "@/lib/wordpress/fetch-case-studies-collection";
@@ -17,5 +19,7 @@ export async function fetchRelatedCaseStudyCards(
   const path = `/wp/v2/${rest}?exclude=${excludeId}&per_page=${per}&orderby=date&order=desc&_embed=1&acf_format=standard`;
   const rows = await wpFetchOptional<WpCaseStudyListRow[]>(path, { lang, revalidate: 60 });
   if (!Array.isArray(rows)) return [];
-  return rows.map((p) => mapWpCaseStudyRowToOverviewCard(p, lang));
+  const siteConfig = await fetchSiteConfig();
+  const localeScoped = filterPostsByLocale(rows, lang, siteConfig);
+  return localeScoped.map((p) => mapWpCaseStudyRowToOverviewCard(p, lang));
 }

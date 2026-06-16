@@ -24,6 +24,8 @@ export type WpEmbeddedAuthor = {
   url?: string;
   description?: string;
   avatar_urls?: Record<string, string | undefined>;
+  /** Custom profile photo from user meta `omb_author_avatar_id` (omb-headless-core). */
+  omb_author_avatar_url?: string;
   /** Added by omb-headless-core `rest_prepare_user` */
   omb_author_social?: {
     facebook?: string;
