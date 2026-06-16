@@ -298,10 +298,9 @@ export function SiteFooter({
                       href={primaryCta.href}
                       target={primaryCta.target}
                       variant="ctaBrand"
-                      ctaJustify="between"
+                      ctaJustify="spread"
                       ctaElevation="none"
                       ctaFullWidth={false}
-                      arrowClassName="h-5 w-5 shrink-0"
                       className="max-w-full self-start gap-[15px] pl-[18px] pr-3.5 leading-[normal] [&_[data-cta-label]]:whitespace-normal lg:[&_[data-cta-label]]:whitespace-nowrap"
                     >
                       {g.footer.footerCtaPrimaryLink?.title || primaryCta.label}
@@ -312,10 +311,9 @@ export function SiteFooter({
                       href={secondaryCta.href}
                       target={secondaryCta.target}
                       variant="ctaWhite"
-                      ctaJustify="between"
+                      ctaJustify="spread"
                       ctaElevation="footerSecondary"
                       ctaFullWidth={false}
-                      arrowClassName="h-5 w-5 shrink-0"
                       className="text-navy-deep max-w-full self-start gap-[17px] px-4 leading-[normal] [&_[data-cta-label]]:whitespace-normal lg:[&_[data-cta-label]]:whitespace-nowrap"
                     >
                       {g.footer.footerCtaSecondaryLink?.title ||
