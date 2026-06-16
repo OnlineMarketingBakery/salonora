@@ -1,0 +1,81 @@
+{
+  "source_nl_post_id": 44051,
+  "slug": "how-voetzorg-roermond-transformed-their-booking-experience",
+  "title": "How Voetzorg Roermond transformed their booking experience",
+  "excerpt": "Voetzorg Roermond replaced manual scheduling with Salonora's online booking module — cutting admin time, filling more appointment slots, and delivering a smoother client experience.",
+  "featured_media_id": 44052,
+  "author_id": 4,
+  "yoast_title": "How Voetzorg Roermond transformed their booking experience - Salonora",
+  "yoast_metadesc": "Discover how Voetzorg Roermond simplified online bookings with Salonora, reduced admin work by 42%, and achieved payback in just two months.",
+  "acf": {
+    "case_study_project_label": "Voetzorg Roermond",
+    "case_study_lead": "<p>Voetzorg Roermond is a specialist foot-care practice in Roermond. Before Salonora, appointments were managed through phone calls, messages, and a patchwork of spreadsheets — costing the team hours every week and creating gaps in the schedule.</p>\n<p>By switching to Salonora's booking module, the practice now lets clients book treatments online 24/7, keeps therapists' calendars in sync, and gives the front desk a clear view of the day ahead. The result: less admin, fewer no-shows, and a booking flow that feels as professional as the care they deliver.</p>\n",
+    "case_study_outcome_metrics": [
+      {
+        "metric_label": "Cost savings",
+        "metric_value": "42%"
+      },
+      {
+        "metric_label": "Payback period",
+        "metric_value": "2 months"
+      },
+      {
+        "metric_label": "Overall ROI",
+        "metric_value": "2.5x"
+      }
+    ],
+    "show_toc": true,
+    "breadcrumb_parent": "",
+    "show_related_case_studies": true,
+    "featured_form": false,
+    "media_ids": {
+      "product_shot_image": 46652,
+      "client_review_video_poster": 49057,
+      "client_review_person_photo": 36647
+    },
+    "case_study_sections": [
+      {
+        "acf_fc_layout": "case_study_chapter",
+        "heading": "The challenge",
+        "body": "<p>Like many foot-care practices, Voetzorg Roermond relied on phone bookings and manual diary updates. Clients could only book during opening hours, reminders were sent individually, and last-minute changes often meant double work for the team.</p>\n<p>As demand grew, the admin burden increased. Therapists lost time chasing confirmations, empty slots appeared when cancellations were not rebooked quickly, and the practice had no single source of truth for availability across services and staff.</p>\n",
+        "show_divider_after": true
+      },
+      {
+        "acf_fc_layout": "case_study_chapter",
+        "heading": "The solution",
+        "body": "<p>Voetzorg Roermond implemented Salonora's online booking module and connected it to their existing website. Clients can now choose a treatment, pick an available therapist, and confirm an appointment in a few clicks — without waiting on a callback.</p>\n<p>The team configured service durations, buffer times, and automated reminders inside Salonora. Front-desk staff use one dashboard to manage the week, while therapists see only their own calendar. The setup was live within days, with onboarding support from the Salonora team.</p>\n",
+        "show_divider_after": true
+      },
+      {
+        "acf_fc_layout": "case_study_product_shot",
+        "title": "How Salonora's booking module supports Voetzorg",
+        "description": "<p>Salonora's booking module gives Voetzorg a branded booking flow that matches their site, syncs with staff calendars, and sends automatic confirmations and reminders. Clients book foot-care treatments online at any time, while the practice keeps full control over services, availability, and pricing.</p>\n<p>Because everything lives in one platform, the team spends less time on admin and more time with clients — exactly the outcome Voetzorg was looking for when they chose Salonora.</p>\n",
+        "show_divider_after": true
+      },
+      {
+        "acf_fc_layout": "case_study_chapter",
+        "heading": "The results",
+        "body": "<p>Within two months of going live, Voetzorg Roermond saw a measurable drop in time spent on scheduling and follow-ups. Online bookings now account for a growing share of new appointments, and same-day gaps are filled faster thanks to automated waitlist and reminder flows.</p>\n<p>The practice estimates a 42% reduction in booking-related admin costs and an overall return of 2.5× on their Salonora investment — with clients commenting on how easy it is to book and reschedule online.</p>\n",
+        "show_divider_after": true
+      },
+      {
+        "acf_fc_layout": "case_study_client_review",
+        "section_heading": "Client review",
+        "video_url": "https://mail.google.com",
+        "quote": "<p>Salonora changed how we run the practice. Clients book online whenever it suits them, and we finally have one clear overview of the week. We spend far less time on the phone and more time on care — that is exactly what we needed.</p>\n",
+        "person_name": "Melanie Koelemeijer",
+        "person_role": "Voetzorg Roermond"
+      },
+      {
+        "acf_fc_layout": "case_study_conversion_cta",
+        "title": "Want the same results for your salon?",
+        "subtitle": "<p>Salonora helps you attract more clients, manage bookings effortlessly, and grow your business — without the hassle.</p>\n",
+        "cta": {
+          "title": "Book a Demo",
+          "url": "https://backend.salonora.eu/demo-page/",
+          "target": ""
+        }
+      }
+    ]
+  }
+}
