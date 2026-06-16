@@ -156,16 +156,17 @@ export function SiteHeader({
                 </div>
               )}
               {globals.header.showHeaderCta && c && (
-                <Button
-                  href={c.href}
-                  target={c.target}
-                  variant="ctaNavy"
-                  ctaSize="compact"
-                  ctaFullWidth={false}
-                  className="hidden md:inline-flex"
-                >
-                  <span className="truncate sm:whitespace-nowrap">{c.label}</span>
-                </Button>
+                <div className="hidden shrink-0 md:block">
+                  <Button
+                    href={c.href}
+                    target={c.target}
+                    variant="ctaNavy"
+                    ctaSize="compact"
+                    ctaFullWidth={false}
+                  >
+                    <span className="truncate sm:whitespace-nowrap">{c.label}</span>
+                  </Button>
+                </div>
               )}
               <MobileNavDrawer
                 className="md:hidden"

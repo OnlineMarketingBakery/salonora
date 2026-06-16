@@ -19,14 +19,13 @@ import type { WpImage } from "@/types/wordpress";
 
 function ContactPillGlyph({ kind }: { kind: "mail" | "phone" }) {
   const src = kind === "mail" ? FAQ_CONTACT_MAIL_ICON : FAQ_CONTACT_PHONE_ICON;
-  const isSvg = src.endsWith(".svg");
   return (
     <Image
       src={src}
       width={28}
       height={28}
       alt=""
-      unoptimized={isSvg}
+      unoptimized
       className="size-7 object-contain"
       aria-hidden
     />

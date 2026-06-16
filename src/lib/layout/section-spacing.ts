@@ -24,6 +24,10 @@ export const SECTION_SHELL_SPLIT =
 export const SECTION_SHELL_SPLIT_TIGHT_BOTTOM =
   "pt-12 pb-6 sm:pt-14 sm:pb-8 md:pt-16 md:pb-10";
 
+/** founder_story_split — minimal top (pairs with origin_story); balanced bottom. */
+export const SECTION_SHELL_FOUNDER_STORY =
+  "pt-0 pb-12 sm:pt-1 sm:pb-14 md:pt-4 md:pb-14";
+
 /** Split row following a tight section — reduced top air on mobile, standard bottom. */
 export const SECTION_SHELL_SPLIT_TIGHT_TOP =
   "pt-4 pb-16 sm:pt-6 sm:pb-20 md:pt-16 md:pb-24";
@@ -45,17 +49,17 @@ export const SECTION_SHELL_GUARANTEE_TIGHT_BOTTOM =
 export const SECTION_SHELL_DUAL_CARDS_TIGHT_TOP =
   "pt-4 pb-16 sm:pt-6 sm:pb-20 md:pt-8 md:pb-24";
 
-/** White faq_contact_split — tight top after split; modest bottom before our_promises. */
+/** White faq_contact_split — room above title; modest bottom before our_promises. */
 export const SECTION_SHELL_FAQ_WHITE =
-  "pt-6 pb-12 sm:pt-8 sm:pb-14 md:pt-8 md:pb-16";
+  "pt-12 pb-12 sm:pt-14 sm:pb-14 md:pt-16 md:pb-16";
 
 /** our_promises — reduced top when paired with FAQ; standard bottom before next band. */
 export const SECTION_SHELL_OUR_PROMISES =
   "pt-10 pb-16 sm:pt-12 sm:pb-20 md:pt-12 md:pb-20 lg:pb-[4.5rem]";
 
-/** Testimonial carousel — modest top; tighter bottom before is_this_for_you. */
+/** Testimonial carousel — room below scrolling_ticker overlap; tighter bottom before is_this_for_you. */
 export const SECTION_SHELL_TESTIMONIALS =
-  "pt-10 pb-16 sm:pt-10 sm:pb-14 md:pt-10 md:pb-16";
+  "pt-14 pb-16 sm:pt-14 sm:pb-14 md:pt-16 md:pb-16";
 
 /** is_this_for_you (split_copy_framed flush) — pairs with FAQ_WHITE below. */
 export const SECTION_SHELL_IS_THIS_FOR_YOU =

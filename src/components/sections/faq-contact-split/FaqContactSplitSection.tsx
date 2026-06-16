@@ -163,9 +163,9 @@ export function FaqContactSplitSection({ section, lang }: { section: FaqContactS
                 </div>
               ) : (
                 <div
-                  className={`faq-split-contact-card flex min-h-0 w-full min-w-0 flex-col items-center justify-center gap-6 rounded-[14px] bg-gradient-to-b from-brand to-[#0569d7] p-8 shadow-[0_14px_40px_-12px_rgba(21,41,81,0.18)] sm:min-h-[520px] md:min-h-[580px] lg:gap-6 lg:p-[44px] ${hasPricing ? "lg:min-h-0 lg:flex-1" : "lg:min-h-[609px]"}`}
+                  className={`faq-split-contact-card flex min-h-0 w-full min-w-0 flex-col rounded-[14px] bg-gradient-to-b from-brand to-[#0569d7] px-8 pt-10 pb-8 shadow-[0_14px_40px_-12px_rgba(21,41,81,0.18)] sm:min-h-[520px] sm:pt-11 md:min-h-[580px] lg:gap-6 lg:px-[44px] lg:pt-[52px] lg:pb-[44px] ${hasPricing ? "lg:min-h-0 lg:flex-1" : "lg:min-h-[609px]"}`}
                 >
-                  <div className="flex w-full min-w-0 max-w-[401px] flex-col items-center gap-[27px] text-center text-white">
+                  <div className="my-auto flex w-full min-w-0 max-w-[401px] flex-col items-center gap-[27px] text-center text-white">
                     {(cardTitleLines.length > 0 || section.cardText) && (
                       <div className="flex w-full flex-col items-center gap-5">
                         {cardTitleLines.length > 0 && (

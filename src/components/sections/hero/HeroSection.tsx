@@ -58,8 +58,8 @@ export function HeroSection({
         : "pb-0 sm:pt-36 sm:pb-0 lg:pt-52 lg:pb-24 xl:pt-56 xl:pb-28"
       : foregroundOnly
         ? isCompact
-          ? "pb-8 sm:pt-32 md:pt-36 lg:pt-44 lg:pb-12"
-          : "pb-8 sm:pt-36 lg:pt-52 lg:pb-16 xl:pt-56 xl:pb-16"
+          ? "pb-0 sm:pt-32 md:pt-36 lg:pt-44 lg:pb-0"
+          : "pb-0 sm:pt-36 lg:pt-52 lg:pb-0 xl:pt-56 xl:pb-0"
         : isCompact
           ? "pb-0 sm:pt-32 sm:pb-0 md:pt-36 lg:pb-20"
           : "pb-0 sm:pt-36 sm:pb-0 lg:pt-44 lg:pb-24 xl:pt-48 xl:pb-28"
@@ -90,6 +90,8 @@ export function HeroSection({
         : "text-xl sm:text-2xl lg:text-[36px]";
 
   const heroId = `hero-${section.id ?? "main"}`;
+  /** Phone-mockup heroes size to copy + image — fixed 650px band leaves a dead zone below the visual. */
+  const useHeroBandMinHeight = !foregroundOnly;
   /** Phone-mockup heroes use an absolute right image; cap copy width so text does not run under it. */
   const foregroundCopyMaxWidthClass = foregroundOnly
     ? "lg:max-w-[37rem] xl:max-w-[38rem]"
@@ -97,16 +99,15 @@ export function HeroSection({
 
   const containerOuterClassName = [
     bothHeroImages ? "px-0 sm:px-4 lg:px-8" : "",
-    // Section is flex-col + min-height at lg; outer must grow so inner can vertically center.
-    "lg:flex lg:flex-1 lg:flex-col",
+    useHeroBandMinHeight ? "lg:flex lg:flex-1 lg:flex-col" : "",
   ]
     .filter(Boolean)
     .join(" ");
   const containerClassName = [
-    foregroundOnly ? "relative w-full" : "",
-    // foregroundOnly: top-align the copy so the heading sits near the top of the
-    // hero band (image stays pinned bottom-right). Other variants stay centered.
-    foregroundOnly ? "lg:flex lg:flex-1 lg:items-start" : "lg:flex lg:flex-1 lg:items-center",
+    foregroundOnly ? "relative w-full lg:min-h-[500px]" : "",
+    foregroundOnly
+      ? "lg:flex lg:items-start"
+      : "lg:flex lg:flex-1 lg:items-center",
   ]
     .filter(Boolean)
     .join(" ");
@@ -160,7 +161,7 @@ export function HeroSection({
            Inline styles beat Tailwind classes, so we need explicit px values here. */
         @media (min-width: 640px)  { #${heroId} { padding-top: ${smPt + HERO_TOP_GAP}px; } }
         @media (min-width: 768px)  { #${heroId} { padding-top: ${mdPt + HERO_TOP_GAP}px; } }
-        @media (min-width: 1024px) { #${heroId} { padding-top: ${lgPt + HERO_TOP_GAP}px; min-height: ${HERO_BAND_MIN_HEIGHT_LG}px; } }
+        @media (min-width: 1024px) { #${heroId} { padding-top: ${lgPt + HERO_TOP_GAP}px;${useHeroBandMinHeight ? ` min-height: ${HERO_BAND_MIN_HEIGHT_LG}px;` : ""} } }
         @media (min-width: 1280px) { #${heroId} { padding-top: ${xlPt + HERO_TOP_GAP}px; } }
         ${
           bothHeroImages
@@ -232,7 +233,7 @@ export function HeroSection({
                   // pt-5: breathing room between image bottom and copy.
                   "order-2 lg:order-1 px-4 sm:px-0 pt-5 sm:pt-0 pb-8 sm:pb-6 lg:self-center lg:pb-0"
                 : foregroundOnly
-                  ? "self-start py-8 sm:py-14 lg:self-start lg:py-0"
+                  ? "self-start pt-8 pb-0 sm:pt-14 lg:self-start lg:pt-8 lg:pb-0"
                   : behindOnly
                     ? "self-start py-8 lg:self-center lg:py-0"
                     : "self-start py-8 lg:self-center lg:py-0"
@@ -396,7 +397,7 @@ export function HeroSection({
                 bothHeroImages
                   ? "order-1 lg:order-2"
                   : foregroundOnly
-                    ? `${REVEAL_ITEM} justify-end lg:hidden`
+                    ? `${REVEAL_ITEM} mt-8 justify-end sm:mt-10 lg:hidden`
                     : `${REVEAL_ITEM} ${!useLooseHeroLayout ? "" : "justify-end"}`
               }`}
             >

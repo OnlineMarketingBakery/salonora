@@ -13,16 +13,10 @@
       "answer": "Wij werken alleen voor salons: kappers, nagelstudio's, barbershops en beauty. Wij kennen jouw branche en weten precies wat jouw klanten nodig hebben — geen generieke templates of losse plugins."
     },
     {
-      "id": "minimale-looptijd",
-      "category": "general",
-      "question": "Is er een minimale looptijd?",
-      "answer": "Ja, er geldt een minimale looptijd van één jaar. Daarna is het maandelijks opzegbaar. Eerlijk en duidelijk."
-    },
-    {
       "id": "prijzen-laag",
       "category": "pricing",
       "question": "Blijven de prijzen zo laag?",
-      "answer": "Eerlijk gezegd: de prijzen gaan in de toekomst omhoog terwijl wij het platform verder uitbouwen. Wie nu instapt, behoudt zijn prijs — voor altijd."
+      "answer": "Eerlijk gezegd: nee. Wij rekenen nu bewust lage prijzen om het platform samen met onze klanten op te bouwen. De prijzen gaan in de toekomst omhoog. Maar wie nu instapt, behoudt zijn prijs. Voor altijd!"
     },
     {
       "id": "wat-kost",
@@ -58,7 +52,7 @@
       "id": "terugkerend",
       "category": "features",
       "question": "Kunnen klanten terugkerende afspraken inplannen?",
-      "answer": "Waar uw salon dat aanbiedt, ondersteunt het systeem terugkerende boekingen volgens uw instellingen."
+      "answer": "Ja! Na elke behandeling vraagt het systeem automatisch of de klant de volgende afspraak direct wil vastleggen. Zo komen ze altijd terug!"
     },
     {
       "id": "walk-ins",
@@ -70,13 +64,175 @@
       "id": "bestaande-website",
       "category": "getting_started",
       "question": "Wat als ik al een website heb?",
-      "answer": "We kunnen uw bestaande domein koppelen en u helpen overstappen zonder dat klanten uw URL hoeven te onthouden."
+      "answer": "Dan beginnen we gewoon met de boekingsmodule. Wil je later overstappen naar een complete website? Dan regelen we dat samen!"
     },
     {
       "id": "zelf-aanpassen",
       "category": "getting_started",
       "question": "Kan ik het zelf aanpassen? En heb je een kleine wijziging nodig?",
       "answer": "Ja, dat kan — en dan kijken wij gewoon met je mee. Je kunt diensten, teksten en beschikbaarheid zelf bijwerken; voor grotere wijzigingen helpen wij graag."
+    },
+    {
+      "id": "kost-de-demo-echt-niks-",
+      "category": "pricing",
+      "question": "Kost de demo echt niks?",
+      "answer": "Ja, de demo is volledig gratis! Er zijn geen verborgen kosten en je zit nergens aan vast!"
+    },
+    {
+      "id": "moet-ik-daarna-direct-beslissen-",
+      "category": "technical",
+      "question": "Moet ik daarna direct beslissen?",
+      "answer": "Nee, helemaal niet! Je bekijkt de demo op je eigen tempo. Beslissen doe jij wanneer jij er klaar voor bent!"
+    },
+    {
+      "id": "proberen-jullie-me-te-verkopen-",
+      "category": "general",
+      "question": "Proberen jullie me te verkopen?",
+      "answer": "Nee! We laten je gewoon zien hoe het werkt. Past het niet bij jouw salon? Dan zeggen we dat eerlijk. We willen alleen blije klanten!"
+    },
+    {
+      "id": "bellen-jullie-me-daarna-ongevraagd-",
+      "category": "technical",
+      "question": "Bellen jullie me daarna ongevraagd?",
+      "answer": "Nee, dat doen we niet! We sturen je de demo video toe. Wil je daarna contact? Dan neem jij de volgende stap!"
+    },
+    {
+      "id": "wat-als-ik-technisch-niet-onderlegd-ben-",
+      "category": "technical",
+      "question": "Wat als ik technisch niet onderlegd ben?",
+      "answer": "Geen probleem! De demo laat zien hoe simpel het is. Geen technische kennis nodig. Echt niet!"
+    },
+    {
+      "id": "welke-salon-types-zijn-geschikt-",
+      "category": "general",
+      "question": "Welke salon types zijn geschikt?",
+      "answer": "Kapsalon, nagelstudio, beautysalon, barbershop, pedicure. Als jij afspraken maakt met klanten, dan is Salonora voor jou!"
+    },
+    {
+      "id": "werkt-salonora-ook-voor-kleine-salons-",
+      "category": "general",
+      "question": "Werkt Salonora ook voor kleine salons?",
+      "answer": "Ja, zeker! Salonora is juist gemaakt voor de zelfstandige ondernemer. Of je nu alleen werkt of met een klein team. Het werkt voor iedereen!"
+    },
+    {
+      "id": "kan-ik-meerdere-behandelingen-instellen-",
+      "category": "pricing",
+      "question": "Kan ik meerdere behandelingen instellen?",
+      "answer": "Ja! Je stelt zelf in welke behandelingen je aanbiedt, hoe lang ze duren en wat ze kosten. Jij hebt de controle!"
+    },
+    {
+      "id": "kan-ik-het-zelf-aanpassen-ja-dat-kan-en-heb-je-een-kleine-wi",
+      "category": "getting_started",
+      "question": "Kan ik het zelf aanpassen? Ja, dat kan! En heb je een kleine wijziging nodig?",
+      "answer": "Dan kijken wij gewoon met je mee. Helemaal geen gedoe!"
+    },
+    {
+      "id": "ik-ben-niet-technisch-genoeg",
+      "category": "technical",
+      "question": "Ik ben niet technisch genoeg",
+      "answer": "Dat hoef je ook niet te zijn! De boekingsmodule stel je zelf in naar jouw wensen. Meer hoef je niet te weten. Echt niet!"
+    },
+    {
+      "id": "ik-heb-nu-geen-tijd",
+      "category": "general",
+      "question": "Ik heb nu geen tijd",
+      "answer": "Aanmelden duurt tien minuten. Wij doen de rest. Jij hoeft er zelf niets voor te doen!"
+    },
+    {
+      "id": "10-per-maand-klinkt-te-goedkoop-is-dit-wel-goed-",
+      "category": "pricing",
+      "question": "€10 per maand klinkt te goedkoop. Is dit wel goed?",
+      "answer": "Goede vraag! Wij rekenen bewust lage prijzen omdat we het platform samen met onze klanten opbouwen. We verdienen er zelf nog nauwelijks op. Maar dat verandert. Wie nu instapt, profiteert voor altijd van de lanceringsprijs!"
+    },
+    {
+      "id": "ik-heb-al-een-website",
+      "category": "technical",
+      "question": "Ik heb al een website",
+      "answer": "Prima! Begin dan gewoon met de boekingsmodule. Klanten kunnen direct bij je boeken. Meer klanten. Minder werk. Direct resultaat!"
+    },
+    {
+      "id": "wat-als-het-tegenvalt-",
+      "category": "features",
+      "question": "Wat als het tegenvalt?",
+      "answer": "Dan krijg je je geld terug. Geen online boeking binnen 30 dagen? Geld terug. Zonder vragen. Dat is onze belofte!"
+    },
+    {
+      "id": "werkt-dit-ook-als-ik-aan-huis-of-mobiel-werk-",
+      "category": "technical",
+      "question": "Werkt dit ook als ik aan huis of mobiel werk?",
+      "answer": "Ja! Jouw website werkt zonder vast adres. We vermelden duidelijk dat jij bij klanten thuis komt of op locatie werkt en in welke regio je actief bent!"
+    },
+    {
+      "id": "kunnen-mijn-certificaten-op-de-website-",
+      "category": "technical",
+      "question": "Kunnen mijn certificaten op de website?",
+      "answer": "Ja! Certificaten en opleidingen wekken vertrouwen bij nieuwe klanten. We zetten ze er gewoon goed zichtbaar op!"
+    },
+    {
+      "id": "kan-ik-behandelingen-van-verschillende-lengtes-instellen-",
+      "category": "features",
+      "question": "Kan ik behandelingen van verschillende lengtes instellen?",
+      "answer": "Ja! Je stelt zelf de tijdsduur per behandeling in. Het systeem blokkeert automatisch de juiste tijd in je agenda!"
+    },
+    {
+      "id": "kan-ik-al-mijn-behandelingen-erop-zetten-",
+      "category": "pricing",
+      "question": "Kan ik al mijn behandelingen erop zetten?",
+      "answer": "Ja! Je stelt zelf in welke behandelingen je aanbiedt, hoe lang ze duren en wat ze kosten. Voeg je later een nieuwe behandeling toe? Dat regelen we samen!"
+    },
+    {
+      "id": "werkt-dit-ook-als-ik-alleen-wimpers-of-wenkbrauwen-doe-",
+      "category": "features",
+      "question": "Werkt dit ook als ik alleen wimpers of wenkbrauwen doe?",
+      "answer": "Ja! Als jij afspraken maakt met klanten, dan werkt Salonora voor jou. Ongeacht welke behandelingen je aanbiedt!"
+    },
+    {
+      "id": "komen-mijn-certificaten-ook-op-de-website-",
+      "category": "technical",
+      "question": "Komen mijn certificaten ook op de website?",
+      "answer": "Ja! Certificaten en opleidingen wekken vertrouwen bij nieuwe klanten. We zetten ze er gewoon op!"
+    },
+    {
+      "id": "werkt-dit-met-meerdere-kappers-",
+      "category": "features",
+      "question": "Werkt dit met meerdere kappers?",
+      "answer": "Ja! Elke kapper krijgt zijn eigen agenda. Klanten kiezen hun favoriete kapper of de eerste beschikbare. Jij stelt het in zoals het voor jou werkt!"
+    },
+    {
+      "id": "wat-als-ik-geen-goede-foto-s-heb-",
+      "category": "getting_started",
+      "question": "Wat als ik geen goede foto's heb?",
+      "answer": "Geen probleem! We helpen je op weg. Een paar goede foto's van je werk zijn genoeg om mee te beginnen!"
+    },
+    {
+      "id": "kan-ik-walk-ins-en-boekingen-combineren-",
+      "category": "features",
+      "question": "Kan ik walk-ins en boekingen combineren?",
+      "answer": "Ja! Jij bepaalt hoeveel slots je openzet voor boekingen en hoeveel je vrijhoudt voor walk-ins. Jij hebt de controle!"
+    },
+    {
+      "id": "wat-als-ik-meerdere-barbiers-heb-",
+      "category": "general",
+      "question": "Wat als ik meerdere barbiers heb?",
+      "answer": "Neem even contact met ons op. Dan kijken we samen wat de beste oplossing is voor jouw situatie!"
+    },
+    {
+      "id": "werkt-dit-ook-voor-een-mobiele-pedicure-",
+      "category": "technical",
+      "question": "Werkt dit ook voor een mobiele pedicure?",
+      "answer": "Ja! Jouw website werkt zonder vast adres. We vermelden duidelijk dat jij bij klanten thuis komt en in welke regio je werkt!"
+    },
+    {
+      "id": "kan-ik-zowel-medische-als-cosmetische-behandelingen-laten-zi",
+      "category": "features",
+      "question": "Kan ik zowel medische als cosmetische behandelingen laten zien?",
+      "answer": "Ja! Je stelt zelf in welke behandelingen je aanbiedt. Van basis pedicure tot medische voetverzorging en spa-behandelingen!"
+    },
+    {
+      "id": "is-er-een-minimale-looptijd",
+      "category": "general",
+      "question": "Is er een minimale looptijd?",
+      "answer": "Ja, er geldt een minimale looptijd van één jaar. Daarna is het maandelijks opzegbaar. Eerlijk en duidelijk!"
     }
   ],
   "en": [
@@ -102,7 +258,7 @@
       "id": "prices-low",
       "category": "pricing",
       "question": "Will prices stay this low?",
-      "answer": "Honestly, prices will increase over time as we grow the platform. Salons who join now keep their price — for good."
+      "answer": "Honestly, no. We deliberately charge low prices right now to build the platform together with our clients. Prices will go up in the future. But those who sign up now keep their price. Forever!"
     },
     {
       "id": "what-cost",
@@ -138,7 +294,7 @@
       "id": "recurring",
       "category": "features",
       "question": "Can clients book recurring appointments?",
-      "answer": "Where your salon offers that, the system supports recurring bookings per your settings."
+      "answer": "Yes! After every treatment the system automatically asks whether the client wants to lock in the next appointment straight away. So they always come back!"
     },
     {
       "id": "walk-ins",
@@ -150,13 +306,187 @@
       "id": "existing-website",
       "category": "getting_started",
       "question": "What if I already have a website?",
-      "answer": "We can connect your existing domain and help you switch without confusing your clients."
+      "answer": "Then we simply start with the booking module. Want to switch to a complete website later? We will sort that out together!"
     },
     {
       "id": "change-yourself",
       "category": "getting_started",
       "question": "Can I change things myself? What if I only need a small tweak?",
-      "answer": "Yes — and we're happy to help with small changes. You can update services, copy and availability yourself; we're here for bigger updates too."
+      "answer": "Yes — and we&#8217;re happy to help with small changes. You can update services, copy and availability yourself; we&#8217;re here for bigger updates too."
+    },
+    {
+      "id": "is-the-demo-really-free-",
+      "category": "pricing",
+      "question": "Is the demo really free?",
+      "answer": "Yes, the demo is completely free! There are no hidden costs and you are not committed to anything!"
+    },
+    {
+      "id": "do-i-have-to-make-a-decision-straight-after-",
+      "category": "technical",
+      "question": "Do I have to make a decision straight after?",
+      "answer": "No, not at all! You watch the demo at your own pace. You decide when you are ready!"
+    },
+    {
+      "id": "are-you-going-to-try-to-sell-me-something-",
+      "category": "general",
+      "question": "Are you going to try to sell me something?",
+      "answer": "No! We simply show you how it works. If it is not the right fit for your salon? We will be honest about that. We only want happy clients!"
+    },
+    {
+      "id": "will-you-call-me-afterwards-without-asking-",
+      "category": "technical",
+      "question": "Will you call me afterwards without asking?",
+      "answer": "No, we will not do that! We send you the demo video. If you want to get in touch after that? Then you take the next step!"
+    },
+    {
+      "id": "what-if-i-am-not-technically-savvy-",
+      "category": "technical",
+      "question": "What if I am not technically savvy?",
+      "answer": "No problem! The demo shows you just how simple it is. No technical knowledge needed. Really!"
+    },
+    {
+      "id": "what-salon-types-are-suitable-",
+      "category": "general",
+      "question": "What salon types are suitable?",
+      "answer": "Hair salon, nail studio, beauty salon, barbershop, pedicure. If you make appointments with clients, then Salonora is for you!"
+    },
+    {
+      "id": "does-salonora-work-for-small-salons-too-",
+      "category": "general",
+      "question": "Does Salonora work for small salons too?",
+      "answer": "Yes, absolutely! Salonora is built specifically for the self-employed professional. Whether you work alone or with a small team. It works for everyone!"
+    },
+    {
+      "id": "can-i-set-up-multiple-treatments-",
+      "category": "pricing",
+      "question": "Can I set up multiple treatments?",
+      "answer": "Yes! You decide which treatments you offer, how long they take and what they cost. You are in control!"
+    },
+    {
+      "id": "is-there-a-minimum-contract-period-",
+      "category": "general",
+      "question": "Is there a minimum contract period?",
+      "answer": "Yes, there is a minimum contract period of one year. After that it is cancellable on a monthly basis. Fair and straightforward!"
+    },
+    {
+      "id": "why-are-you-different-from-other-web-agencies-",
+      "category": "general",
+      "question": "Why are you different from other web agencies?",
+      "answer": "We work exclusively for salons. Hair salons, nail studios, barbershops and beauty. We know your industry and know exactly what your clients need!"
+    },
+    {
+      "id": "can-i-make-changes-myself-",
+      "category": "getting_started",
+      "question": "Can I make changes myself?",
+      "answer": "Yes, you can! And if you need a small change? We will simply look at it together. No hassle at all!"
+    },
+    {
+      "id": "do-i-need-to-be-technically-savvy-",
+      "category": "technical",
+      "question": "Do I need to be technically savvy?",
+      "answer": "No, you do not! You set up the booking module yourself according to your preferences. That is really all you need to know!"
+    },
+    {
+      "id": "i-am-not-technical-enough",
+      "category": "technical",
+      "question": "I am not technical enough",
+      "answer": "You do not need to be! You set up the booking module yourself according to your preferences. That is really all you need to know!"
+    },
+    {
+      "id": "i-do-not-have-time-right-now",
+      "category": "general",
+      "question": "I do not have time right now",
+      "answer": "Signing up takes ten minutes. We do the rest. You do not have to do a thing!"
+    },
+    {
+      "id": "10-per-month-sounds-too-cheap-can-it-really-be-good-",
+      "category": "pricing",
+      "question": "€10 per month sounds too cheap. Can it really be good?",
+      "answer": "Great question! We deliberately charge low prices because we are building the platform together with our clients. We are barely making a profit on it ourselves. But that will change. Those who sign up now benefit from the launch price forever!"
+    },
+    {
+      "id": "i-already-have-a-website",
+      "category": "technical",
+      "question": "I already have a website",
+      "answer": "No problem! Just start with the booking module. Clients can book with you straight away. More clients. Less work. Immediate results!"
+    },
+    {
+      "id": "what-if-it-does-not-work-out-",
+      "category": "general",
+      "question": "What if it does not work out?",
+      "answer": "Then you get your money back. No online booking within 30 days? Money back. No questions. That is our promise!"
+    },
+    {
+      "id": "does-this-work-if-i-work-mobile-or-at-home-",
+      "category": "technical",
+      "question": "Does this work if I work mobile or at home?",
+      "answer": "Yes! Your website works without a fixed address. We clearly state that you visit clients at home or work on location and show which areas you cover!"
+    },
+    {
+      "id": "can-my-certificates-be-on-the-website-",
+      "category": "technical",
+      "question": "Can my certificates be on the website?",
+      "answer": "Yes! Qualifications and certificates build trust with new clients. We make sure they are clearly visible on your website!"
+    },
+    {
+      "id": "can-i-set-treatments-with-different-durations-",
+      "category": "general",
+      "question": "Can I set treatments with different durations?",
+      "answer": "Yes! You set the duration per treatment yourself. The system automatically blocks out the right amount of time in your calendar!"
+    },
+    {
+      "id": "can-i-add-all-my-treatments-",
+      "category": "pricing",
+      "question": "Can I add all my treatments?",
+      "answer": "Yes! You decide which treatments you offer, how long they take and what they cost. Adding a new treatment later? We will sort that out together!"
+    },
+    {
+      "id": "does-this-work-if-i-only-do-lashes-or-eyebrows-",
+      "category": "general",
+      "question": "Does this work if I only do lashes or eyebrows?",
+      "answer": "Yes! If you make appointments with clients, then Salonora works for you. Regardless of which treatments you offer!"
+    },
+    {
+      "id": "will-my-certificates-be-on-the-website-too-",
+      "category": "technical",
+      "question": "Will my certificates be on the website too?",
+      "answer": "Yes! Certificates and qualifications build trust with new clients. We simply add them to your website!"
+    },
+    {
+      "id": "does-this-work-with-multiple-stylists-",
+      "category": "features",
+      "question": "Does this work with multiple stylists?",
+      "answer": "Yes! Each stylist gets their own calendar. Clients choose their favourite stylist or the first available. You set it up the way that works for you!"
+    },
+    {
+      "id": "what-if-i-do-not-have-great-photos-",
+      "category": "getting_started",
+      "question": "What if I do not have great photos?",
+      "answer": "No problem! We will help you get started. A few decent photos of your work are more than enough to begin with!"
+    },
+    {
+      "id": "can-i-combine-walk-ins-and-bookings-",
+      "category": "features",
+      "question": "Can I combine walk-ins and bookings?",
+      "answer": "Yes! You decide how many slots you open up for bookings and how many you keep free for walk-ins. You are in control!"
+    },
+    {
+      "id": "what-if-i-have-multiple-barbers-",
+      "category": "general",
+      "question": "What if I have multiple barbers?",
+      "answer": "Get in touch with us. We will look at the best solution for your situation together!"
+    },
+    {
+      "id": "does-this-work-for-a-mobile-pedicurist-",
+      "category": "technical",
+      "question": "Does this work for a mobile pedicurist?",
+      "answer": "Yes! Your website works without a fixed address. We clearly state that you visit clients at home and show which areas you cover!"
+    },
+    {
+      "id": "can-i-show-both-medical-and-cosmetic-treatments-",
+      "category": "general",
+      "question": "Can I show both medical and cosmetic treatments?",
+      "answer": "Yes! You decide which treatments you offer. From basic pedicure to medical foot care and spa treatments!"
     }
   ]
 }

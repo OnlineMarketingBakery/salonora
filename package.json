@@ -14,7 +14,8 @@
     "audit:links": "node scripts/audit-site-links.mjs",
     "fix:links": "node scripts/fix-site-links.mjs",
     "fix:links:apply": "node scripts/fix-site-links.mjs --apply",
-    "backup:wp": "node scripts/wpvivid-backup.mjs"
+    "backup:wp": "node scripts/wpvivid-backup.mjs",
+    "merge:faqs": "node --import dotenv/config src/lib/legal/merge-site-faqs.mjs dotenv_config_path=.env.local"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

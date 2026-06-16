@@ -12,6 +12,10 @@ import {
   mapCtaRepeater,
   newSectionId,
 } from "./field-mappers";
+import {
+  repairProblemSolutionHtml,
+  repairSolutionListItems,
+} from "./repair-problem-solution-html";
 
 type RawRow = Record<string, unknown> & { acf_fc_layout: string };
 
@@ -1318,24 +1322,28 @@ function mapKnownPageSectionLayout(
             })
           : [],
       };
-    case "problem_solution":
+    case "problem_solution": {
+      const solutionListRaw = Array.isArray(row.solution_list)
+        ? (row.solution_list as { item?: unknown }[])
+            .map((r) => ({ text: asString(r.item) }))
+            .filter((r) => r.text.trim() !== "")
+        : [];
       return {
         ...base,
         type: "problem_solution",
         problem_title: asString(row.problem_title),
-        problem_text: asHtml(row.problem_text),
+        problem_text: repairProblemSolutionHtml(asHtml(row.problem_text)),
         problem_image: asImage(row.problem_image),
         solution_title: asString(row.solution_title),
-        solution_text: asHtml(row.solution_text),
+        solution_text: repairProblemSolutionHtml(asHtml(row.solution_text)),
         solution_list_icon: asImage(row.solution_list_icon),
-        solution_list: Array.isArray(row.solution_list)
-          ? (row.solution_list as { item?: unknown }[])
-              .map((r) => ({ text: asString(r.item) }))
-              .filter((r) => r.text.trim() !== "")
-          : [],
-        solution_bottom_text: asHtml(row.solution_bottom_text),
+        solution_list: repairSolutionListItems(solutionListRaw),
+        solution_bottom_text: repairProblemSolutionHtml(
+          asHtml(row.solution_bottom_text),
+        ),
         solution_image: asImage(row.solution_image),
       };
+    }
     case "talk_dual_cards":
       return {
         ...base,

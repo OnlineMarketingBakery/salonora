@@ -4,6 +4,7 @@ import {
   getFaqCategoryLabel,
   type FaqCategoryId,
 } from "./faq-categories";
+import { faqQuestionMatchesLocale } from "./faq-lang-detect";
 import faqData from "./faq-data.json";
 
 export type FaqEntry = {
@@ -21,8 +22,15 @@ export type FaqCategoryGroup = {
 
 const SKIP_QUESTION_RE = /^(meer vragen|more questions)\??$/i;
 
-const FAQ_NL = (faqData.nl as FaqEntry[]).filter((it) => !SKIP_QUESTION_RE.test(it.question.trim()));
-const FAQ_EN = (faqData.en as FaqEntry[]).filter((it) => !SKIP_QUESTION_RE.test(it.question.trim()));
+function filterCatalog(items: FaqEntry[], lang: Locale): FaqEntry[] {
+  return items.filter(
+    (it) =>
+      !SKIP_QUESTION_RE.test(it.question.trim()) && faqQuestionMatchesLocale(it.question, lang)
+  );
+}
+
+const FAQ_NL = filterCatalog(faqData.nl as FaqEntry[], "nl");
+const FAQ_EN = filterCatalog(faqData.en as FaqEntry[], "en");
 
 export function getGlobalFaqItems(lang: Locale): FaqEntry[] {
   return lang === "nl" ? FAQ_NL : FAQ_EN;
@@ -63,6 +71,7 @@ export function normalizeFaqItemsFromWp(
 
   for (const row of wpItems) {
     if (SKIP_QUESTION_RE.test(row.question.trim())) continue;
+    if (!faqQuestionMatchesLocale(row.question, lang)) continue;
     const key = row.question.trim().toLowerCase();
     if (seen.has(key)) continue;
     seen.add(key);

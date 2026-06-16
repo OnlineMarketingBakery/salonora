@@ -24,10 +24,13 @@ const cardDescProse = [
   "!prose-p:text-muted prose-strong:text-navy-deep",
 ].join(" ");
 
-/** Primary price line — Figma **1714:169** / **1714:228** accent 20px medium. */
+/** Primary price line — Figma **1714:169** / **1714:228**: Outfit 20px medium, accent, 122% lh, 5px paragraph gap. */
 const priceHighlightProse = [
-  "!prose-p:my-0 !prose-p:text-xl !prose-p:font-medium !prose-p:leading-[1.22]",
-  "!prose-p:text-accent prose-strong:text-accent",
+  "font-sans text-[20px] font-medium leading-[1.22] tracking-normal text-accent",
+  "[&_p]:!m-0 [&_p]:!max-w-none [&_p]:!font-sans [&_p]:!text-[20px] [&_p]:!font-medium [&_p]:!leading-[1.22] [&_p]:!tracking-normal [&_p]:!text-accent",
+  "[&_p+p]:!mt-[5px]",
+  "[&_strong]:!font-medium [&_strong]:!text-accent",
+  "[&_span]:!text-accent [&_em]:!text-accent",
 ].join(" ");
 
 const priceSecondaryProse = [
@@ -52,24 +55,18 @@ const heroShell: CSSProperties = {
 const HERO_PERSON_W = 370;
 const HERO_PERSON_H = 433;
 
-/** Hero: thin rule between title and intro â€” opaque white left, fades out ~mid-width */
-const heroTitleDivider: CSSProperties = {
-  height: "1px",
-  backgroundImage:
-    "linear-gradient(90deg, rgb(255 255 255 / 0.92) 0%, rgb(255 255 255 / 0.22) 44%, transparent 56%)",
-};
+/** Hero: thin rule under title — full-width white within copy column (Figma **1714:805**). */
+const heroTitleDividerClass =
+  "h-px w-full max-w-[568px] shrink-0 bg-[color-mix(in_srgb,var(--palette-white)_92%,transparent)]";
 
 const elevatedCardShadow: CSSProperties = {
   boxShadow:
     "0 4px 40px color-mix(in srgb, var(--palette-muted) 13%, transparent)",
 };
 
-/** Between header and features â€” solid muted left, fades out mid-row (aligned via lg subgrid) */
-const cardIntroDivider: CSSProperties = {
-  height: "1px",
-  backgroundImage:
-    "linear-gradient(90deg, color-mix(in srgb, var(--palette-muted) 72%, transparent) 0%, color-mix(in srgb, var(--palette-muted) 22%, transparent) 42%, transparent 58%)",
-};
+/** Between card header and features — Figma 1px `#3990F0` @ 31% opacity, full width. */
+const cardIntroDividerClass =
+  "h-px w-full shrink-0 bg-[color-mix(in_srgb,var(--palette-brand)_31%,transparent)]";
 
 function cardHasBody(card: PricingDualCardsCardItemT): boolean {
   const feats = (card.features ?? []).filter((f) => f.text?.trim());
@@ -176,12 +173,8 @@ function PricingPackageCard({
                 />
               ) : null}
             </div>
-            {hasHeader ? (
-              <div
-                className="h-px w-full max-w-xl shrink-0 self-start"
-                style={cardIntroDivider}
-                aria-hidden
-              />
+            {hasHeader && features.length > 0 ? (
+              <div className={cardIntroDividerClass} aria-hidden />
             ) : null}
           </div>
 
@@ -217,6 +210,7 @@ function PricingPackageCard({
           <div className="flex flex-col gap-3">
             {card.price_highlight?.trim() ? (
               <RichText
+                prose={false}
                 html={card.price_highlight}
                 className={`max-w-xl ${priceHighlightProse}`}
               />
@@ -282,7 +276,7 @@ export function PricingDualCardsSection({
               className="relative max-lg:overflow-visible overflow-hidden rounded-[20px]"
               style={heroShell}
             >
-              <div className="relative flex flex-col px-6 pt-8 pb-0 sm:px-10 sm:pt-10 sm:pb-0 lg:px-12 lg:py-9">
+              <div className="relative flex flex-col px-6 pt-10 pb-0 sm:px-10 sm:pt-12 sm:pb-0 lg:px-12 lg:py-11">
                 <div className="relative z-1 flex min-w-0 flex-col gap-5 lg:max-w-[55%]">
                   {section.badge?.trim() ? (
                     <span className="inline-flex h-[42px] min-h-[42px] w-fit shrink-0 items-center justify-center rounded-[21px] bg-white px-3 text-base font-medium leading-[1.6] text-brand">
@@ -298,11 +292,7 @@ export function PricingDualCardsSection({
                       />
                     ) : null}
                     {section.title?.trim() && section.intro?.trim() ? (
-                      <div
-                        className="h-px w-full shrink-0 self-start"
-                        style={heroTitleDivider}
-                        aria-hidden
-                      />
+                      <div className={heroTitleDividerClass} aria-hidden />
                     ) : null}
                     {section.intro?.trim() ? (
                       <RichText

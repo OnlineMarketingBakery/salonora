@@ -7,7 +7,7 @@ import type { Locale } from "@/lib/i18n/locales";
 import { getImageUrl, getLargestImageUrl } from "@/lib/utils/media";
 import type { ProblemSolutionSectionT } from "@/types/sections";
 import type { WpImage } from "@/types/wordpress";
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 /** Figma **1306:29** left card — deep navy stack + soft TR highlight. */
 const PROBLEM_CARD_BG: CSSProperties = {
@@ -25,34 +25,15 @@ const SOLUTION_CARD_BG: CSSProperties = {
   ].join(", "),
 };
 
+/** Figma **1306:29** — lead line + 14px body, 14px paragraph rhythm. */
 const CARD_PROSE =
-  "text-left max-w-none [&_p:not(:first-child)]:mt-3.5 !prose-p:mb-0 !prose-p:mt-0 !prose-p:text-[14px] !prose-p:leading-[1.6] !prose-p:text-[var(--palette-white)] !prose-strong:font-semibold !prose-strong:text-[var(--palette-white)] !prose-li:text-[var(--palette-white)] !prose-a:text-[var(--palette-white)] prose-a:underline [&_*]:text-[var(--palette-white)]";
+  "text-left max-w-none [&_p]:m-0 [&_p+p]:mt-3.5 [&_p:first-child]:text-[15px] [&_p:first-child]:font-medium [&_p:first-child]:leading-[1.55] !prose-p:text-[14px] !prose-p:leading-[1.6] !prose-p:text-[var(--palette-white)] !prose-strong:font-semibold !prose-strong:text-[var(--palette-white)] !prose-li:text-[var(--palette-white)] !prose-a:text-[var(--palette-white)] prose-a:underline [&_*]:text-[var(--palette-white)]";
 
-/** Invisible float: `shape-outside` nudges only the last lines around the bottom-right portrait (paired with absolute `Media`). */
-function BottomRightWrapRail({
-  wPx,
-  hPx,
-  shapeOutside,
-  pullUpClass,
-}: {
-  wPx: number;
-  hPx: number;
-  shapeOutside: string;
-  pullUpClass: string;
-}) {
-  return (
-    <div
-      aria-hidden
-      className={`invisible float-right clear-both hidden shrink-0 lg:block ${pullUpClass}`}
-      style={{
-        width: wPx,
-        height: hPx,
-        shapeOutside,
-        shapeMargin: "0.625rem",
-      }}
-    />
-  );
-}
+const CARD_SHELL =
+  "relative flex h-full min-h-0 w-full flex-col overflow-hidden rounded-[24px] px-8 py-10 sm:px-10 sm:py-11 lg:min-h-[320px] lg:px-[46px] lg:py-[46px]";
+
+const CARD_TITLE =
+  "w-full font-sans text-[clamp(1.625rem,3.2vw,2.125rem)] font-semibold leading-[0.98] tracking-[-0.01em] text-[var(--palette-white)]";
 
 /** `public/grid.svg` — clipped to the **top half** of the card only. */
 function CardGridWash() {
@@ -130,7 +111,7 @@ function SolutionCheckRow({
     );
 
   return (
-    <li className="flex items-end gap-1.5">
+    <li className="flex items-start gap-2">
       {marker}
       <p className="min-w-0 flex-1 font-sans text-[14px] leading-[1.6] text-[var(--palette-white)]">
         {text}
@@ -139,19 +120,27 @@ function SolutionCheckRow({
   );
 }
 
-/** Figma **1306:29** — portrait box (logical px). */
-const PROBLEM_FIGURE = { w: 235, h: 353 };
-const SOLUTION_FIGURE = { w: 288, h: 363 };
-
-/** Mobile: reserve space so copy does not run under bottom-right cutouts. */
-const PROBLEM_CONTENT_PB = "pb-[clamp(10.5rem,44vw,15.5rem)] lg:pb-0";
-const SOLUTION_CONTENT_PB = "pb-[clamp(11.5rem,48vw,17rem)] lg:pb-0";
-
-const FIGURE_BLEED = "-mb-10 -mr-8 sm:-mb-11 sm:-mr-10 lg:mb-0 lg:mr-0";
-
-const PROBLEM_FIGURE_SHELL = `pointer-events-none absolute bottom-0 right-0 z-[1] flex items-end justify-end overflow-visible ${FIGURE_BLEED} w-[200px] sm:h-[clamp(220px,50vw,360px)] sm:w-[clamp(188px,54vw,260px)] lg:h-[353px] lg:w-[235px]`;
-
-const SOLUTION_FIGURE_SHELL = `pointer-events-none absolute bottom-0 right-0 z-[1] flex items-end justify-end overflow-visible ${FIGURE_BLEED} w-[245px] sm:h-[clamp(240px,52vw,380px)] sm:w-[clamp(200px,58vw,288px)] lg:h-[363px] lg:w-[288px]`;
+function ProblemSolutionCard({
+  title,
+  backgroundStyle,
+  children,
+}: {
+  title: string | null;
+  backgroundStyle: CSSProperties;
+  children: ReactNode;
+}) {
+  return (
+    <article className={`${REVEAL_ITEM} ${CARD_SHELL}`} style={backgroundStyle}>
+      <CardGridWash />
+      <div className="relative z-10 flex min-h-0 flex-1 flex-col gap-[22px]">
+        {title ? <h2 className={CARD_TITLE}>{title}</h2> : null}
+        <div className="flex min-h-0 flex-1 flex-col gap-[14px] [overflow-wrap:anywhere]">
+          {children}
+        </div>
+      </div>
+    </article>
+  );
+}
 
 export function ProblemSolutionSection({
   section,
@@ -162,117 +151,45 @@ export function ProblemSolutionSection({
 }) {
   void lang;
   const listIcon = section.solution_list_icon;
-  const cardShell =
-    "relative flex h-full min-h-0 w-full flex-col overflow-hidden rounded-[24px] px-8 py-10 sm:px-10 sm:py-11 lg:px-[46px] lg:py-[46px]";
+  const hasChecklist = section.solution_list.length > 0;
 
   return (
     <section className={`bg-[var(--palette-white)] ${SECTION_SHELL_AFTER_HERO}`}>
       <Container>
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:items-stretch lg:gap-6">
-          <article
-            className={`${REVEAL_ITEM} ${cardShell}`}
-            style={PROBLEM_CARD_BG}
+        <div className="mx-auto grid w-full max-w-[1300px] grid-cols-1 items-stretch gap-6 lg:grid-cols-2 lg:gap-6">
+          <ProblemSolutionCard
+            title={section.problem_title}
+            backgroundStyle={PROBLEM_CARD_BG}
           >
-            <CardGridWash />
-            <div
-              className={`relative z-[1] flex min-h-0 w-full min-w-0 flex-col gap-[22px] self-stretch [overflow-wrap:anywhere] ${section.problem_image ? PROBLEM_CONTENT_PB : ""}`}
-            >
-              {section.problem_title ? (
-                <h2 className="w-full font-sans text-[clamp(1.5rem,3.5vw,2.125rem)] font-semibold leading-[0.98] text-[var(--palette-white)]">
-                  {section.problem_title}
-                </h2>
-              ) : null}
-              <div className="relative min-h-0 w-full min-w-0 self-stretch lg:block lg:flow-root">
-                {section.problem_text ? (
-                  <RichText
-                    html={section.problem_text}
-                    className={`relative z-[2] max-w-[30.1875rem] lg:max-w-none ${CARD_PROSE}`}
-                  />
-                ) : null}
-                {section.problem_image ? (
-                  <BottomRightWrapRail
-                    wPx={PROBLEM_FIGURE.w + 12}
-                    hPx={PROBLEM_FIGURE.h}
-                    shapeOutside="ellipse(78% 68% at 88% 100%)"
-                    pullUpClass="-mt-[min(300px,42vw)]"
-                  />
-                ) : null}
-              </div>
-            </div>
-            {section.problem_image ? (
-              <div className={PROBLEM_FIGURE_SHELL} aria-hidden>
-                <Media
-                  image={section.problem_image}
-                  width={470}
-                  height={706}
-                  className="h-full w-full max-h-none max-w-none object-contain object-bottom object-right"
-                  sizes="(max-width: 1024px) 58vw, 235px"
-                  preferLargestSource
-                />
-              </div>
+            {section.problem_text ? (
+              <RichText html={section.problem_text} className={CARD_PROSE} />
             ) : null}
-          </article>
+          </ProblemSolutionCard>
 
-          <article
-            className={`${REVEAL_ITEM} ${cardShell}`}
-            style={SOLUTION_CARD_BG}
+          <ProblemSolutionCard
+            title={section.solution_title}
+            backgroundStyle={SOLUTION_CARD_BG}
           >
-            <CardGridWash />
-            <div
-              className={`relative z-[1] flex min-h-0 w-full min-w-0 flex-col gap-[22px] self-stretch [overflow-wrap:anywhere] ${section.solution_image ? SOLUTION_CONTENT_PB : ""}`}
-            >
-              {section.solution_title ? (
-                <h2 className="w-full font-sans text-[clamp(1.5rem,3.5vw,2.125rem)] font-semibold leading-[0.98] text-[var(--palette-white)]">
-                  {section.solution_title}
-                </h2>
-              ) : null}
-              <div className="relative min-h-0 w-full min-w-0 self-stretch lg:block lg:flow-root">
-                {section.solution_text ? (
-                  <RichText
-                    html={section.solution_text}
-                    className={`relative z-[2] max-w-[33.5rem] lg:max-w-none ${CARD_PROSE}`}
-                  />
-                ) : null}
-                {section.solution_list.length > 0 ? (
-                  <ul className="relative z-[2] mt-1 flex max-w-[22.3125rem] flex-col gap-3 lg:max-w-none">
-                    {section.solution_list.map((row, i) => (
-                      <SolutionCheckRow
-                        key={`${row.text}-${i}`}
-                        text={row.text}
-                        listIcon={listIcon}
-                      />
-                    ))}
-                  </ul>
-                ) : null}
-                {section.solution_bottom_text ? (
-                  <RichText
-                    html={section.solution_bottom_text}
-                    className={`relative z-[2] mt-3.5 max-w-[33.5rem] lg:max-w-none ${CARD_PROSE}`}
-                  />
-                ) : null}
-                {section.solution_image ? (
-                  <BottomRightWrapRail
-                    wPx={SOLUTION_FIGURE.w + 14}
-                    hPx={SOLUTION_FIGURE.h}
-                    shapeOutside="ellipse(80% 70% at 86% 100%)"
-                    pullUpClass="-mt-[min(320px,44vw)]"
-                  />
-                ) : null}
-              </div>
-            </div>
-            {section.solution_image ? (
-              <div className={SOLUTION_FIGURE_SHELL} aria-hidden>
-                <Media
-                  image={section.solution_image}
-                  width={576}
-                  height={726}
-                  className="h-full w-full max-h-none max-w-none object-contain object-bottom object-right"
-                  sizes="(max-width: 1024px) 62vw, 288px"
-                  preferLargestSource
-                />
+            {section.solution_text ? (
+              <RichText html={section.solution_text} className={CARD_PROSE} />
+            ) : null}
+            {hasChecklist ? (
+              <div className="mt-1 rounded-[16px] bg-[color-mix(in_srgb,var(--palette-white)_14%,transparent)] p-5 sm:p-6">
+                <ul className="flex flex-col gap-3">
+                  {section.solution_list.map((row, i) => (
+                    <SolutionCheckRow
+                      key={`${row.text}-${i}`}
+                      text={row.text}
+                      listIcon={listIcon}
+                    />
+                  ))}
+                </ul>
               </div>
             ) : null}
-          </article>
+            {section.solution_bottom_text ? (
+              <RichText html={section.solution_bottom_text} className={CARD_PROSE} />
+            ) : null}
+          </ProblemSolutionCard>
         </div>
       </Container>
     </section>

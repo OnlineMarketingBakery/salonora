@@ -2,10 +2,10 @@ import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
-import { SparkMark } from "@/components/ui/SparkMark";
+import { SplitPhotoStack } from "@/components/ui/SplitPhotoStack";
 import { formatHeadingLines } from "@/lib/i18n/format-heading";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
-import { SECTION_SHELL_SPLIT_TIGHT_TOP } from "@/lib/layout/section-spacing";
+import { SECTION_SHELL_FOUNDER_STORY } from "@/lib/layout/section-spacing";
 import type { Locale } from "@/lib/i18n/locales";
 import type { FounderStorySplitSectionT } from "@/types/sections";
 
@@ -14,6 +14,8 @@ const CARD_BG_SRC = "/founder-story-card-bg.png";
 /** Figma `1083:46` / `597:2279` — card 1298×756, r20 */
 const CARD_MAX = 1298;
 
+/** Mask crop **597:2290** — 78×133px inset on 608×912 artboard. */
+const FOUNDER_PHOTO_OBJECT_POSITION = `${(78 / 608) * 100}% ${(133 / 912) * 100}%`;
 export function FounderStorySplitSection(props: {
   section: FounderStorySplitSectionT;
   lang: Locale;
@@ -22,7 +24,7 @@ export function FounderStorySplitSection(props: {
   const titleLines = formatHeadingLines(section.title ?? "");
 
   return (
-    <section className={`bg-[var(--palette-white)] ${SECTION_SHELL_SPLIT_TIGHT_TOP}`}>
+    <section className={`bg-[var(--palette-white)] ${SECTION_SHELL_FOUNDER_STORY}`}>
       <Container className="max-w-340!">
         <div className="mx-auto w-full max-w-[1298px]">
           <div
@@ -53,8 +55,8 @@ export function FounderStorySplitSection(props: {
             </div>
 
             {/* Figma `1701:80` — pl102 pr118; copy 528; gap90; image460 (+14px offset) */}
-            <div className="relative z-[1] overflow-visible px-6 py-10 sm:px-10 sm:py-12 lg:grid lg:h-full lg:grid-cols-[528px_460px] lg:items-start lg:gap-x-[90px] lg:px-[102px] lg:pr-[118px] lg:py-0">
-              <div className="flex min-w-0 flex-col gap-[24px] lg:w-[528px] lg:max-w-[528px] lg:pt-[157px]">
+            <div className="relative z-[1] overflow-visible px-6 py-10 sm:px-10 sm:py-12 lg:grid lg:h-full lg:grid-cols-[528px_minmax(0,497px)] lg:items-center lg:gap-x-[90px] lg:px-[102px] lg:pr-[118px] lg:py-0">
+              <div className="flex min-w-0 flex-col gap-[24px] lg:w-[528px] lg:max-w-[528px]">
                 <div className="flex flex-col gap-[27px]">
                   <div className="flex flex-wrap items-center gap-[10px]">
                     {section.avatar ? (
@@ -104,33 +106,14 @@ export function FounderStorySplitSection(props: {
                 ) : null}
               </div>
 
-              {/* Figma `597:2287` blue 460×524 −4.13°; `597:2290` photo offset; `597:2283` spark top-left */}
               {section.main_image ? (
                 <div
-                  className={`${REVEAL_ITEM} relative mx-auto mt-8 w-full max-w-[460px] shrink-0 overflow-visible sm:mt-10 lg:mx-0 lg:mt-[112px] lg:w-[460px]`}
+                  className={`${REVEAL_ITEM} mx-auto mt-8 w-full min-w-0 overflow-visible sm:mt-10 lg:mx-0 lg:ml-[9.72px]`}
                 >
-                  <div
-                    aria-hidden
-                    className="pointer-events-none absolute -left-2 -top-3 z-30 text-brand lg:-left-[18px] lg:-top-[16px]"
-                  >
-                    <SparkMark />
-                  </div>
-
-                  <div
-                    aria-hidden
-                    className="pointer-events-none absolute inset-0 z-0 rotate-[-4.13deg] rounded-[14px] bg-brand lg:inset-auto lg:left-0 lg:top-0 lg:h-[524px] lg:w-[460px]"
+                  <SplitPhotoStack
+                    image={section.main_image}
+                    objectPosition={FOUNDER_PHOTO_OBJECT_POSITION}
                   />
-
-                  <div className="relative z-10 aspect-[460/523] w-full translate-x-[2%] overflow-hidden rounded-[14px] sm:translate-x-[14px] lg:translate-x-[14px]">
-                    <Media
-                      image={section.main_image}
-                      width={920}
-                      height={1046}
-                      className="h-full w-full object-cover object-center"
-                      sizes="(min-width: 1024px) 460px, 90vw"
-                      preferLargestSource
-                    />
-                  </div>
                 </div>
               ) : null}
             </div>

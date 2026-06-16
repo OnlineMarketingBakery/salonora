@@ -178,7 +178,7 @@ export function IsDemoForYouSection({
   return (
     <section className="py-8 md:py-12 lg:py-14">
       <Container>
-        <div className="flex flex-col gap-10 md:gap-12">
+        <div className="flex w-full min-w-0 flex-col gap-10 md:gap-12">
           {title ? (
             <SectionHeading
               as="h2"
@@ -189,9 +189,9 @@ export function IsDemoForYouSection({
 
           {(hasLists || hasPortrait) && (
             <div
-              className={`grid gap-8 lg:grid-cols-2 lg:items-stretch lg:gap-x-8 ${REVEAL_ITEM}`}
+              className={`grid w-full min-w-0 gap-8 lg:grid-cols-2 lg:items-stretch lg:gap-x-8 ${REVEAL_ITEM}`}
             >
-              <div className="flex min-w-0 flex-col gap-6">
+              <div className="flex min-w-0 w-full flex-col gap-6">
                 <QualCard
                   heading={section.for_you_heading}
                   rows={section.for_you_list}
@@ -208,7 +208,7 @@ export function IsDemoForYouSection({
 
               {hasPortrait ? (
                 <div
-                  className={`${REVEAL_ITEM} relative isolate mx-auto flex aspect-[576/677] w-full max-w-[36rem] flex-col overflow-hidden rounded-xl lg:mx-0`}
+                  className={`${REVEAL_ITEM} relative isolate mx-auto flex w-full max-w-[36rem] flex-col overflow-hidden rounded-xl max-lg:aspect-[576/677] lg:mx-0 lg:h-full lg:max-w-none lg:min-h-0`}
                   style={panelGradient}
                 >
                   <div
@@ -218,14 +218,14 @@ export function IsDemoForYouSection({
                     <PortraitPanelRings />
                   </div>
                   {/* Figma 696:4128 â€” portrait starts ~56px from panel top (8.3%). */}
-                  <div className="relative z-10 flex min-h-0 flex-1 flex-col justify-end px-2 pt-[8.3%] sm:px-4 lg:px-0">
-                    <div className="relative mx-auto w-full max-w-[34.125rem]">
+                  <div className="relative z-10 flex min-h-0 flex-1 flex-col justify-end px-2 pt-[8.3%] sm:px-4 lg:min-h-[677px] lg:px-0">
+                    <div className="relative mx-auto w-full max-w-[34.125rem] lg:max-w-none">
                       <Media
                         image={portraitImage}
                         width={546}
                         height={621}
                         className="mx-auto h-auto w-full max-h-[min(38.625rem,78vh)] object-contain object-bottom lg:max-h-[38.8125rem]"
-                        sizes="(min-width: 1024px) 34.125rem, 92vw"
+                        sizes="(min-width: 1024px) 50vw, 92vw"
                         preferLargestSource
                       />
                     </div>
