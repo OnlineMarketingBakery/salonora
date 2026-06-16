@@ -7,6 +7,7 @@ import { Container } from "@/components/ui/Container";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
 import { buildLocalePath } from "@/lib/i18n/get-alternates";
 import type { Locale } from "@/lib/i18n/locales";
+import type { BlogPostOverviewSectionT } from "@/types/sections";
 import { BlogFeaturedMetaBand, BlogPostMetaRow } from "@/components/blog/BlogPostMetaRow";
 import type { CSSProperties } from "react";
 
