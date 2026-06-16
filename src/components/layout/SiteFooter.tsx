@@ -2,6 +2,11 @@ import { Button } from "@/components/ui/Button";
 import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
+import {
+  SITE_CONTENT_GUTTER_CLASS,
+  SITE_CONTENT_INNER_CLASS,
+  SITE_CONTENT_MAX_WIDTH_CLASS,
+} from "@/lib/layout/site-content-width";
 import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
 import type { GlobalSettings } from "@/types/globals";
@@ -240,18 +245,19 @@ export function SiteFooter({
             </svg>
           )}
 
-          <div
-            className={[
-              "relative z-10 mx-auto w-full min-w-0 max-w-[1276px] overflow-x-clip px-6 pb-0 lg:px-0",
-              g.footer.footerLogo
-                ? useNotchMask
-                  ? "pt-[100px] md:pt-[120px]"
-                  : "sm:pt-32 md:pt-36"
-                : "pt-14 sm:pt-16",
-            ]
-              .filter(Boolean)
-              .join(" ")}
-          >
+          <div className={`relative z-10 ${SITE_CONTENT_GUTTER_CLASS} pb-0`}>
+            <div
+              className={[
+                `overflow-x-clip ${SITE_CONTENT_INNER_CLASS}`,
+                g.footer.footerLogo
+                  ? useNotchMask
+                    ? "pt-[100px] md:pt-[120px]"
+                    : "sm:pt-32 md:pt-36"
+                  : "pt-14 sm:pt-16",
+              ]
+                .filter(Boolean)
+                .join(" ")}
+            >
             {/*
               At `lg` (1024–1279) the left block flexes to fill the row so longer Dutch CTAs can
               stay side-by-side; at `xl+` we lock to the Figma-exact 625px width with the 183px
@@ -467,6 +473,7 @@ export function SiteFooter({
                 )}
               </div>
             )}
+            </div>
           </div>
 
           {/*
@@ -515,7 +522,9 @@ export function SiteFooter({
               </svg>
             </div>
             {/* DESKTOP wave — natural image (unchanged). */}
-            <div className="pointer-events-none relative mx-auto hidden w-full max-w-[1300px] [filter:drop-shadow(0_-10px_44px_rgba(57,144,240,0.22))_drop-shadow(0_-30px_100px_rgba(57,144,240,0.1))_drop-shadow(0_-56px_160px_rgba(57,144,240,0.04))] lg:block">
+            <div
+              className={`pointer-events-none relative mx-auto hidden w-full ${SITE_CONTENT_MAX_WIDTH_CLASS} [filter:drop-shadow(0_-10px_44px_rgba(57,144,240,0.22))_drop-shadow(0_-30px_100px_rgba(57,144,240,0.1))_drop-shadow(0_-56px_160px_rgba(57,144,240,0.04))] lg:block`}
+            >
               <Image
                 src="/footer-shape-top.svg"
                 width={1283}

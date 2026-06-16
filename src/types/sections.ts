@@ -205,6 +205,7 @@ export type WhoWeAreForItemT = {
   icon: WpImage | null;
   label: string;
   icon_accent: WhoWeAreForItemAccentT;
+  link: WpAcfLink | null;
 };
 
 export type WhoWeAreForSectionT = CoreSection & {

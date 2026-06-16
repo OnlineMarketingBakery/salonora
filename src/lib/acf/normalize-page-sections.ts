@@ -550,6 +550,7 @@ function mapKnownPageSectionLayout(
                 icon?: unknown;
                 label?: unknown;
                 icon_accent?: unknown;
+                link?: unknown;
               }[]
             ).map((item) => {
               const a = asString(item.icon_accent);
@@ -558,6 +559,7 @@ function mapKnownPageSectionLayout(
                 icon: asImage(item.icon),
                 label: asHtml(item.label),
                 icon_accent,
+                link: asLink(item.link),
               };
             })
           : [],

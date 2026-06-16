@@ -38,13 +38,15 @@ export function FaqContactBanner({
   return (
     <aside className="faq-contact-banner w-full" aria-label={copy.title}>
       <div className="faq-split-contact-card flex w-full min-w-0 flex-col items-center justify-center gap-6 rounded-[14px] bg-gradient-to-b from-brand to-[#0569d7] p-8 shadow-[0_14px_40px_-12px_rgba(21,41,81,0.18)] sm:p-10 md:p-11">
-        <div className="flex w-full min-w-0 max-w-[401px] flex-col items-center gap-6 text-center text-white">
-          <h2 className="w-full text-[32px] font-medium leading-tight sm:text-[40px] sm:leading-[47px]">
-            {copy.title}
-          </h2>
-          <p className="w-full text-lg font-semibold leading-[1.2] text-white sm:text-2xl">
-            {copy.subtitle}
-          </p>
+        <div className="flex w-full min-w-0 max-w-[401px] flex-col items-center gap-[27px] text-center text-white">
+          <div className="flex w-full flex-col items-center gap-5">
+            <h2 className="w-full max-w-[351px] text-[32px] font-medium leading-tight sm:text-[40px] sm:leading-[47px] lg:text-[48px]">
+              {copy.title}
+            </h2>
+            <p className="w-full max-w-[307px] text-lg font-semibold leading-[1.2] text-white sm:text-2xl">
+              {copy.subtitle}
+            </p>
+          </div>
 
           <div className="flex w-full min-w-0 flex-col items-stretch gap-4">
             <ContactCtaPill

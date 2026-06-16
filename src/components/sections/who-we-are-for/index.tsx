@@ -1,8 +1,9 @@
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
-import { Media } from "@/components/ui/Media";
 import { RichText } from "@/components/ui/RichText";
+import { WhoWeAreForPill } from "@/components/sections/who-we-are-for/WhoWeAreForPill";
 import { REVEAL_ITEM } from "@/lib/animation-classes";
+import { SECTION_SHELL_WHITE } from "@/lib/layout/section-spacing";
 import type { Locale } from "@/lib/i18n/locales";
 import { resolveLink } from "@/lib/utils/links";
 import type { WhoWeAreForSectionT } from "@/types/sections";
@@ -24,51 +25,30 @@ export function WhoWeAreForSection({
   const ctaLabel = primaryCta?.text?.trim() || resolvedCta?.label?.trim() || "";
 
   return (
-    <section lang={lang} className="bg-white py-16 md:py-24">
+    <section lang={lang} className={`bg-white ${SECTION_SHELL_WHITE}`}>
       <Container>
         <div
-          className={`${REVEAL_ITEM} mx-auto flex w-full max-w-[81.375rem] flex-col items-center gap-[52px]`}
+          className={`${REVEAL_ITEM} mx-auto flex w-full max-w-[81.375rem] flex-col items-center gap-6 sm:gap-8 lg:gap-[52px]`}
         >
           {section.title ? (
             <RichText
               html={section.title}
-              className="mx-auto max-w-[458px] text-center font-sans text-[clamp(1.75rem,4.2vw,3rem)] font-semibold leading-[1.15] text-navy sm:text-[40px] sm:leading-[1.12] lg:text-[48px] lg:leading-[56px] [&_*]:text-navy [&_p]:mb-0 [&_p]:mt-0 [&_p+p]:mt-2 prose-headings:text-navy prose-strong:text-navy"
+              className="mx-auto max-w-[458px] text-center font-sans text-[32px] font-semibold leading-[1.15] text-navy sm:text-[40px] sm:leading-[1.12] lg:text-[48px] lg:leading-[56px] [&_*]:text-navy [&_p]:mb-0 [&_p]:mt-0 [&_p+p]:mt-2 prose-headings:text-navy prose-strong:text-navy"
             />
           ) : null}
 
           {/*
-            Figma 597:3972 — one row at lg (1302px). CMS icons are 57×57 full-tile PNGs;
-            render at full bleed — no CSS tile bg or inner padding.
+            Figma 597:3972 — one row at lg. Mobile/tablet: flex-wrap + justify-center so an
+            odd last pill centers instead of hanging left in a 2-col grid.
           */}
-          <div className="flex w-full max-w-[81.375rem] flex-wrap justify-center gap-5 lg:flex-nowrap">
+          <div className="flex w-full max-w-[81.375rem] flex-wrap justify-center gap-x-4 gap-y-4 sm:gap-x-5 sm:gap-y-5 lg:flex-nowrap lg:justify-center lg:gap-5">
             {section.items.map((item, index) => (
-              <div
+              <WhoWeAreForPill
                 key={`${section.id}-item-${index}`}
-                className={`flex h-[227px] w-[min(245px,44vw)] shrink-0 flex-col items-center justify-center rounded-[200px] bg-[linear-gradient(180deg,var(--palette-surface)_0%,var(--palette-white)_100%)] p-6 ${pillWidthClass(index)}`}
-              >
-                <div className="flex flex-col items-center gap-[30px]">
-                  {item.icon ? (
-                    <div className="relative size-[57px] shrink-0 overflow-hidden rounded-[12px]">
-                      <Media
-                        image={item.icon}
-                        width={57}
-                        height={57}
-                        className="size-full object-cover"
-                        sizes="57px"
-                        preferLargestSource
-                      />
-                    </div>
-                  ) : (
-                    <div className="size-[57px] shrink-0" aria-hidden />
-                  )}
-                  {item.label ? (
-                    <RichText
-                      html={item.label}
-                      className="max-w-[166px] text-center font-sans text-2xl font-medium leading-[1.1] text-navy [&_*]:text-navy [&_p]:mb-0 [&_p]:mt-0 [&_p+p]:mt-[5px]"
-                    />
-                  ) : null}
-                </div>
-              </div>
+                item={item}
+                lang={lang}
+                className={pillWidthClass(index)}
+              />
             ))}
           </div>
 

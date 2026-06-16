@@ -22,12 +22,6 @@ const FC_MASKED_IMAGE_CLIP: CSSProperties = {
   WebkitClipPath: `polygon(0% 0%, 100% 0%, 100% ${(322 / 382) * 100}%, ${(327 / 528) * 100}% ${(322 / 382) * 100}%, ${(327 / 528) * 100}% 100%, 0% 100%)`,
 };
 
-const FC_NOTCH_SLOT: CSSProperties = {
-  width: `${(201 / 528) * 100}%`,
-  height: `${(60 / 382) * 100}%`,
-  minHeight: "72px",
-};
-
 function ChecklistGlyph({ icon }: { icon: WpImage | null }) {
   if (icon) {
     return (
@@ -78,10 +72,6 @@ export function FeaturesChecklistSection({
     resolved?.label?.trim() || section.button?.title?.trim() || "";
   const ctaHref = resolved?.href;
 
-  const trailing = section.button_trailing_icon ? (
-    <CtaTrailingIcon image={section.button_trailing_icon} imageClassName="brightness-0 invert" />
-  ) : undefined;
-
   const hasBody =
     Boolean(section.title?.trim()) ||
     Boolean(section.description?.trim()) ||
@@ -90,23 +80,26 @@ export function FeaturesChecklistSection({
 
   if (!hasBody) return null;
 
-  const sectionPad = "py-36 md:py-40";
+  const sectionPad = "py-10 sm:py-14 md:py-24 lg:py-36 xl:py-40";
+  const whiteTopBand = "pt-6 sm:pt-8 md:pt-12";
 
   return (
-    <section className={`relative isolate overflow-hidden bg-navy-deep ${sectionPad}`}>
-      <NavyStarfieldBackdrop />
+    <section className={`bg-[var(--palette-white)] ${whiteTopBand}`}>
+      <div className={`relative isolate overflow-hidden bg-navy-deep ${sectionPad}`}>
+        <NavyStarfieldBackdrop />
 
-      <Container className="relative z-[1]">
-        <div className={`flex flex-col gap-9 ${REVEAL_ITEM}`}>
-          {(section.title || section.description) && (
-            <header className="mx-auto flex w-full max-w-[800px] flex-col items-center gap-3.5 text-center text-[var(--palette-white)] sm:gap-4">
-              {section.title ? (
-                <SectionHeading
-                  as="h2"
-                  text={section.title}
-                  className="w-full max-w-[720px] text-pretty font-sans text-[clamp(1.75rem,5vw,3rem)] font-semibold leading-[1.12] text-[var(--palette-white)] lg:text-[48px] lg:leading-[1.1]"
-                />
-              ) : null}
+        <Container className="relative z-[1]">
+          <div className={`flex flex-col gap-5 sm:gap-7 lg:gap-9 ${REVEAL_ITEM}`}>
+            {(section.title || section.description) && (
+              <header className="mx-auto flex w-full max-w-[800px] flex-col items-center gap-3 text-center text-[var(--palette-white)] sm:gap-3.5 lg:gap-4">
+                {section.title ? (
+                  <SectionHeading
+                    as="h2"
+                    text={section.title}
+                    multiline
+                    className="w-full max-w-[720px] text-pretty font-sans text-[32px] font-semibold leading-[1.15] text-[var(--palette-white)] sm:text-[40px] sm:leading-[1.12] lg:text-[48px] lg:leading-[1.1]"
+                  />
+                ) : null}
               {section.description ? (
                 <RichText
                   html={section.description}
@@ -158,14 +151,9 @@ export function FeaturesChecklistSection({
                         />
                       </div>
                       <div
-                        className="pointer-events-none absolute bottom-0 right-0 z-10 flex items-center justify-center rounded-tl-[40px] bg-[var(--palette-navy-deep)] px-2 py-2 sm:px-3 sm:py-2.5"
-                        style={FC_NOTCH_SLOT}
+                        className="pointer-events-none absolute bottom-0 right-0 z-10 flex w-max max-w-[calc(100%-0.75rem)] min-w-[201px] min-h-[72px] items-center justify-center rounded-tl-[32px] bg-[var(--palette-navy-deep)] px-2 py-2 sm:rounded-tl-[40px] sm:px-3 sm:py-2.5"
                       >
-                        <div className="pointer-events-auto w-max min-w-0 max-w-full">
-                          {/*
-                            `Button` only renders the trailing slot when `showArrow` is true; `arrowContent`
-                            replaces the default circled arrow when set.
-                          */}
+                        <div className="pointer-events-auto w-max shrink-0">
                           <Button
                             href={ctaHref}
                             variant="ctaBrand"
@@ -173,7 +161,11 @@ export function FeaturesChecklistSection({
                             ctaFullWidth={false}
                             target={resolved?.target}
                             showArrow
-                            arrowContent={trailing}
+                            arrowContent={
+                              section.button_trailing_icon ? (
+                                <CtaTrailingIcon image={section.button_trailing_icon} />
+                              ) : undefined
+                            }
                             className="shadow-[0px_10px_28px_color-mix(in_srgb,var(--palette-brand)_45%,transparent)]"
                           >
                             {ctaLabel}
@@ -196,8 +188,9 @@ export function FeaturesChecklistSection({
               </div>
             ) : null}
           </div>
-        </div>
-      </Container>
+          </div>
+        </Container>
+      </div>
     </section>
   );
 }
