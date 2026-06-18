@@ -17,7 +17,7 @@ import { htmlRoughFromCaseStudySections } from "@/lib/case-study-body";
 import { resolveAuthorFromRestEmbed } from "@/lib/wordpress/wp-embedded-author";
 
 async function resolveCaseStudyAuthor(p: WpCaseStudyRaw, lang: Locale): Promise<PostAuthorT> {
-  return resolveAuthorFromRestEmbed(p._embedded?.author?.[0], p.author, lang);
+  return resolveAuthorFromRestEmbed(p._embedded?.author?.[0], p.author, lang, p.author_card);
 }
 
 function mapBreadcrumbParent(acf: Record<string, unknown>): PostBreadcrumbParentT | null {

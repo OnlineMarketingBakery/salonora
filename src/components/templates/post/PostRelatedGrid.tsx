@@ -59,7 +59,7 @@ export function PostRelatedGrid({
                     <div className="flex min-h-0 flex-1 flex-col gap-3">
                       <h3 className="text-2xl font-semibold leading-[1.24] text-navy">{card.title}</h3>
                       {card.excerpt ? (
-                        <p className="line-clamp-3 flex-1 text-base font-normal leading-[1.4] text-muted">
+                        <p className="line-clamp-3 text-base font-normal leading-[1.4] text-muted">
                           {card.excerpt}
                         </p>
                       ) : null}

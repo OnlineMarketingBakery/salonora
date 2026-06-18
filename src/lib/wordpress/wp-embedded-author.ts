@@ -1,13 +1,36 @@
 import { wpFetchOptional } from "@/lib/wordpress/client";
 import type { Locale } from "@/lib/i18n/locales";
 import type { PostAuthorT } from "@/types/documents";
-import type { WpEmbeddedAuthor } from "@/types/wordpress";
+import type { OmbAuthorCard, WpEmbeddedAuthor } from "@/types/wordpress";
 import { toPlainText } from "@/lib/utils/strings";
 
 function authorSocialUrl(raw: string | undefined): string | null {
   const t = raw?.trim() ?? "";
   if (!t || t === "#") return null;
   return t;
+}
+
+/**
+ * Author from the `author_card` REST field on the post (omb-headless-core).
+ * This is the primary source; the core `/wp/v2/users` endpoint is locked down,
+ * so `_embedded.author` cannot resolve on this install. Returns null when the
+ * card carries no usable display fields so callers can fall back to the embed.
+ */
+export function authorFromOmbCard(card: OmbAuthorCard | null | undefined): PostAuthorT | null {
+  if (!card) return null;
+  const name = card.name?.trim() || "";
+  const avatarUrl = card.avatar_url?.trim() || null;
+  const bio = toPlainText(card.bio || "");
+  if (!name && !avatarUrl && !bio) return null;
+  return {
+    name,
+    avatarUrl,
+    bio,
+    profileUrl: authorSocialUrl(card.profile_url),
+    linkedinUrl: authorSocialUrl(card.linkedin),
+    facebookUrl: authorSocialUrl(card.facebook),
+    instagramUrl: authorSocialUrl(card.instagram),
+  };
 }
 
 export function resolveWpAuthorAvatarUrl(u: WpEmbeddedAuthor | null | undefined): string | null {
@@ -57,9 +80,26 @@ export function authorIdFromWpPostLike(p: { author?: unknown }): number | null {
 export async function resolveAuthorFromRestEmbed(
   embedded: WpEmbeddedAuthor | undefined,
   authorField: unknown,
-  lang: Locale
+  lang: Locale,
+  card?: OmbAuthorCard | null
 ): Promise<PostAuthorT> {
   const fromEmbed = wpEmbeddedUserToAuthor(embedded);
+
+  // Primary source: author_card on the post (omb-headless-core). Merge embed as
+  // a secondary fill so any field the card omits still resolves when available.
+  const fromCard = authorFromOmbCard(card);
+  if (fromCard) {
+    return {
+      name: fromCard.name || fromEmbed.name,
+      avatarUrl: fromCard.avatarUrl || fromEmbed.avatarUrl,
+      bio: fromCard.bio || fromEmbed.bio,
+      profileUrl: fromCard.profileUrl || fromEmbed.profileUrl,
+      linkedinUrl: fromCard.linkedinUrl || fromEmbed.linkedinUrl,
+      facebookUrl: fromCard.facebookUrl || fromEmbed.facebookUrl,
+      instagramUrl: fromCard.instagramUrl || fromEmbed.instagramUrl,
+    };
+  }
+
   const id = authorIdFromWpPostLike({ author: authorField });
   if (id == null) return fromEmbed;
 
