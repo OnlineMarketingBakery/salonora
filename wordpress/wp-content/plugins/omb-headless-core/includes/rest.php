@@ -609,3 +609,163 @@ function omb_rest_prepare_user_i18n_description($response, WP_User $user, WP_RES
 }
 
 add_filter('rest_prepare_user', 'omb_rest_prepare_user_i18n_description', 20, 3);
+
+
+/**
+ * Headless author card on the POST/CASE_STUDY REST response.
+ *
+ * The frontend needs the author display name, custom avatar, bio and socials,
+ * but the core `/wp/v2/users` endpoint is intentionally locked down on this
+ * install (no user enumeration). `rest_prepare_user` therefore never runs for
+ * public/embedded author requests. Exposing the author card directly on the
+ * already-public post response keeps the users endpoint closed while still
+ * giving headless clients exactly the public display fields they need.
+ *
+ * @return array<string, mixed>
+ */
+function omb_rest_author_card_payload(int $user_id, string $lang): array {
+    if ($user_id < 1) {
+        return [];
+    }
+    $user = get_userdata($user_id);
+    if (!$user instanceof WP_User) {
+        return [];
+    }
+
+    $bio = '';
+    if ($lang !== '') {
+        $bio = omb_rest_user_description_for_lang($user_id, $lang);
+    }
+    if ($bio === '') {
+        $desc = get_user_meta($user_id, 'description', true);
+        $bio = is_string($desc) ? $desc : '';
+    }
+
+    return [
+        'id'          => $user_id,
+        'name'        => (string) $user->display_name,
+        'avatar_url'  => omb_rest_user_avatar_url($user_id),
+        'bio'         => omb_rest_user_plain_bio($bio),
+        'profile_url' => omb_rest_author_social_url((string) $user->user_url),
+        'facebook'    => omb_rest_author_social_url(
+            omb_rest_user_meta_first_string($user_id, ['omb_author_facebook', 'facebook_profile_url', 'facebook_url', 'facebook'])
+        ),
+        'instagram'   => omb_rest_author_social_url(
+            omb_rest_user_meta_first_string($user_id, ['omb_author_instagram', 'instagram_profile_url', 'instagram_url', 'instagram'])
+        ),
+        'linkedin'    => omb_rest_author_social_url(
+            omb_rest_user_meta_first_string($user_id, ['omb_author_linkedin', 'linkedin_profile_url', 'linkedin_url', 'linkedin'])
+        ),
+    ];
+}
+
+/**
+ * @param array<string, mixed> $post_arr
+ *
+ * @return array<string, mixed>|null
+ */
+function omb_rest_author_card_get_field($post_arr, string $field_name, WP_REST_Request $request) {
+    $post_id = isset($post_arr['id']) ? (int) $post_arr['id'] : 0;
+    if ($post_id < 1) {
+        return null;
+    }
+    $author_id = (int) get_post_field('post_author', $post_id);
+    if ($author_id < 1) {
+        return null;
+    }
+    $lang = (string) $request->get_param('lang');
+
+    return omb_rest_author_card_payload($author_id, $lang);
+}
+
+add_action('rest_api_init', function () {
+    foreach (['post', 'case_study'] as $post_type) {
+        register_rest_field($post_type, 'author_card', [
+            'get_callback' => 'omb_rest_author_card_get_field',
+            'schema'       => [
+                'description' => 'Headless author card: display name, custom avatar URL, bio, and social links.',
+                'type'        => 'object',
+                'context'     => ['view', 'embed'],
+            ],
+        ]);
+    }
+});
+
+
+/**
+ * Public, read-only nav menu by theme location (Polylang-aware).
+ *
+ * Core `/wp/v2/menu-items` requires authentication (`rest_cannot_view`) and this
+ * install locks down user/menu enumeration, so headless clients cannot read menus
+ * there. This route resolves the menu for a theme location + language server-side
+ * and returns only the public link fields the frontend needs.
+ */
+function omb_resolve_menu_id_for_location(string $location, string $lang): int {
+    // Polylang stores per-language location assignments in the `polylang` option
+    // under nav_menus[theme][location][lang]; read it directly so resolution is
+    // deterministic in the REST context (frontend location filters may not run).
+    if ($lang !== '') {
+        $pll_opts = get_option('polylang');
+        $theme = (string) get_option('stylesheet');
+        if (is_array($pll_opts) && isset($pll_opts['nav_menus'][$theme][$location][$lang])) {
+            $mid = (int) $pll_opts['nav_menus'][$theme][$location][$lang];
+            if ($mid > 0) {
+                return $mid;
+            }
+        }
+    }
+
+    $locations = get_nav_menu_locations();
+
+    return isset($locations[$location]) ? (int) $locations[$location] : 0;
+}
+
+function omb_rest_get_menu(WP_REST_Request $request): WP_REST_Response {
+    $location = (string) $request->get_param('location');
+    $lang = (string) $request->get_param('lang');
+    omb_rest_switch_polylang_lang($lang !== '' ? $lang : null);
+
+    $menu_id = omb_resolve_menu_id_for_location($location, $lang);
+    $items = [];
+
+    if ($menu_id > 0) {
+        $nav_items = wp_get_nav_menu_items($menu_id, ['update_post_term_cache' => false]);
+        if (is_array($nav_items)) {
+            foreach ($nav_items as $it) {
+                $items[] = [
+                    'id'         => (int) $it->ID,
+                    'parent'     => (int) $it->menu_item_parent,
+                    'title'      => ['rendered' => (string) $it->title],
+                    'url'        => (string) $it->url,
+                    'menu_order' => (int) $it->menu_order,
+                    'target'     => (string) $it->target,
+                ];
+            }
+        }
+    }
+
+    return new WP_REST_Response([
+        'location' => $location,
+        'lang'     => $lang,
+        'menu_id'  => $menu_id,
+        'items'    => $items,
+    ], 200);
+}
+
+add_action('rest_api_init', function () {
+    register_rest_route('omb-headless/v1', '/menu', [
+        'methods'             => 'GET',
+        'permission_callback' => '__return_true',
+        'callback'            => 'omb_rest_get_menu',
+        'args'                => [
+            'location' => [
+                'required'          => true,
+                'sanitize_callback' => 'sanitize_key',
+            ],
+            'lang' => [
+                'required'          => false,
+                'sanitize_callback' => 'sanitize_text_field',
+            ],
+        ],
+    ]);
+});

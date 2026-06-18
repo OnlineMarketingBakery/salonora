@@ -27,7 +27,7 @@ import { formatPostFullDate } from "@/lib/i18n/format-post-month-year";
 import { resolveAuthorFromRestEmbed } from "@/lib/wordpress/wp-embedded-author";
 
 async function resolvePostAuthor(p: WpPostRaw, lang: Locale): Promise<PostAuthorT> {
-  return resolveAuthorFromRestEmbed(p._embedded?.author?.[0], p.author, lang);
+  return resolveAuthorFromRestEmbed(p._embedded?.author?.[0], p.author, lang, p.author_card);
 }
 
 function mapBreadcrumbParent(acf: Record<string, unknown>): PostBreadcrumbParentT | null {

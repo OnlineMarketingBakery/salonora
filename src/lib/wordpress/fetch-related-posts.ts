@@ -7,8 +7,8 @@ import type { BlogPostOverviewCardT } from "@/types/sections";
 import { stripTags, toPlainText } from "@/lib/utils/strings";
 import { estimateReadMinutes } from "@/lib/blog/read-minutes";
 import { formatPostFullDate } from "@/lib/i18n/format-post-month-year";
-import { resolveWpAuthorAvatarUrl } from "@/lib/wordpress/wp-embedded-author";
-import type { WpEmbeddedAuthor } from "@/types/wordpress";
+import { authorFromOmbCard, resolveWpAuthorAvatarUrl } from "@/lib/wordpress/wp-embedded-author";
+import type { OmbAuthorCard, WpEmbeddedAuthor } from "@/types/wordpress";
 
 type WpPostListRow = {
   id: number;
@@ -18,6 +18,7 @@ type WpPostListRow = {
   title: { rendered: string };
   excerpt: { rendered: string };
   content?: { rendered: string };
+  author_card?: OmbAuthorCard | null;
   _embedded?: {
     "wp:featuredmedia"?: { source_url?: string; alt_text?: string }[];
     author?: WpEmbeddedAuthor[];
@@ -28,7 +29,9 @@ function mapRow(p: WpPostListRow, lang: Locale): BlogPostOverviewCardT {
   const titlePlain = stripTags(p.title.rendered);
   const featured = p._embedded?.["wp:featuredmedia"]?.[0];
   const author = p._embedded?.author?.[0];
-  const avatar = resolveWpAuthorAvatarUrl(author);
+  const fromCard = authorFromOmbCard(p.author_card);
+  const authorName = fromCard?.name || author?.name?.trim() || "";
+  const authorAvatarUrl = fromCard?.avatarUrl ?? resolveWpAuthorAvatarUrl(author) ?? null;
   const image =
     featured?.source_url && featured.source_url !== ""
       ? { url: featured.source_url, alt: featured.alt_text || titlePlain }
@@ -39,8 +42,8 @@ function mapRow(p: WpPostListRow, lang: Locale): BlogPostOverviewCardT {
     excerpt: toPlainText(p.excerpt?.rendered || ""),
     href: buildLocalePath(lang, p.slug),
     dateLabel: formatPostFullDate(p.date, lang),
-    authorName: author?.name?.trim() || "",
-    authorAvatarUrl: avatar ?? null,
+    authorName,
+    authorAvatarUrl,
     readMinutes: estimateReadMinutes(p.content?.rendered),
     image,
   };
