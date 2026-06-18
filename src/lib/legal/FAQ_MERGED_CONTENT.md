@@ -123,5 +123,5 @@ Harvested **2026-06-04** from:
 
 ## Not in accordion (CTA banner only)
 
-- **NL:** Meer vragen? → mail info@salonora.nl / hoi@salonora.nl  
+- **NL:** Meer vragen? → mail hi@salonora.eu  
 - **EN:** More questions? → same emails + contact link when configured
