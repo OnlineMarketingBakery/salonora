@@ -52,7 +52,7 @@ export function FaqPageShell({
   showHero?: boolean;
 }) {
   const copy = COPY[lang];
-  const email = contact.mainEmail.trim() || "hoi@salonora.nl";
+  const email = contact.mainEmail.trim() || "hi@salonora.eu";
   const phone = contact.mainPhone.trim();
   const phoneHref = phone ? telHref(phone) : null;
   const [query, setQuery] = useState("");

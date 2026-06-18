@@ -15,6 +15,8 @@
     "fix:links": "node scripts/fix-site-links.mjs",
     "fix:links:apply": "node scripts/fix-site-links.mjs --apply",
     "backup:wp": "node scripts/wpvivid-backup.mjs",
+    "replace:contact-email": "node src/lib/cms/replace-contact-email.mjs",
+    "replace:contact-email:apply": "node src/lib/cms/replace-contact-email.mjs --apply",
     "merge:faqs": "node --import dotenv/config src/lib/legal/merge-site-faqs.mjs dotenv_config_path=.env.local"
   },
   "dependencies": {

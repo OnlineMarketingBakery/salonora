@@ -17,7 +17,7 @@ const COPY = {
   },
 } as const;
 
-const FALLBACK_EMAIL = "hoi@salonora.nl";
+const FALLBACK_EMAIL = "hi@salonora.eu";
 
 function telHref(phone: string): string | null {
   const normalized = phone.replace(/[^\d+]/g, "");
