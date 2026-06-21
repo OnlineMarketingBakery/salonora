@@ -183,6 +183,7 @@ export function TestimonialsCarousel({
       const measure = () => {
         const h = Math.ceil(el.getBoundingClientRect().height);
         setSlideHeights((prev) => {
+          if (prev[idx] === h) return prev;
           const next = [...prev];
           next[idx] = h;
           return next;
@@ -200,7 +201,9 @@ export function TestimonialsCarousel({
 
   useEffect(() => {
     const h = slideHeights[active] ?? 0;
-    if (h > 0) setViewportHeight(h + VIEWPORT_HEIGHT_BUFFER_PX);
+    if (h <= 0) return;
+    const next = h + VIEWPORT_HEIGHT_BUFFER_PX;
+    setViewportHeight((prev) => (prev === next ? prev : next));
   }, [active, slideHeights]);
 
   const go = useCallback(
@@ -229,14 +232,21 @@ export function TestimonialsCarousel({
 
   if (!items.length) return null;
 
+  const singleCardWrapClass =
+    narrowSingleTotal && !isMobile ? "mx-auto w-full max-w-[637px]" : "w-full";
+
+  if (items.length === 1) {
+    return (
+      <div className={singleCardWrapClass}>
+        <TestimonialCard testimonial={items[0]} />
+      </div>
+    );
+  }
+
   const slideFractionPct = slides.length ? 100 / slides.length : 100;
 
   return (
-    <div
-      className={
-        narrowSingleTotal && !isMobile ? "mx-auto w-full max-w-[637px]" : "w-full"
-      }
-    >
+    <div className={singleCardWrapClass}>
       <div
         className={`testimonials-carousel__viewport relative w-full overflow-hidden will-change-[height] [transition-property:height] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none`}
         style={viewportHeight != null ? { height: viewportHeight } : undefined}
