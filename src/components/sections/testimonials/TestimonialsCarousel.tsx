@@ -160,6 +160,8 @@ export function TestimonialsCarousel({
 }) {
   const isMobile = useMobileCarousel();
   const effectivePerView = isMobile ? 1 : perView;
+  /** One item in a multi-column grid only fills the first column (half width on desktop). */
+  const gridPerView = items.length === 1 ? 1 : effectivePerView;
   const slides = useMemo(() => chunk(items, effectivePerView), [items, effectivePerView]);
   const [active, setActive] = useState(0);
   const slideRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -258,7 +260,7 @@ export function TestimonialsCarousel({
                 ref={(el) => {
                   slideRefs.current[slideIdx] = el;
                 }}
-                className={`grid w-full items-stretch gap-6 ${gridColsClass(effectivePerView)}`}
+                className={`grid w-full items-stretch gap-6 ${gridColsClass(gridPerView)}`}
               >
                 {slideItems.map((t) => (
                   <TestimonialCard key={t.id} testimonial={t} />
