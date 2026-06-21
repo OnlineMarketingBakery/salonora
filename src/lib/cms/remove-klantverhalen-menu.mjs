@@ -46,7 +46,6 @@ function resolveWpCli() {
 }
 
 const WP_CLI = resolveWpCli();
-const ids = MENU_ITEM_IDS.join(" ");
 
 const php = `<?php
 $ids = [${MENU_ITEM_IDS.join(", ")}];
