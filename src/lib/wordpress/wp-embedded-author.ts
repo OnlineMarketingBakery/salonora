@@ -1,4 +1,5 @@
 import { wpFetchOptional } from "@/lib/wordpress/client";
+import { resolvePublicMediaSrc } from "@/lib/utils/media";
 import type { Locale } from "@/lib/i18n/locales";
 import type { PostAuthorT } from "@/types/documents";
 import type { OmbAuthorCard, WpEmbeddedAuthor } from "@/types/wordpress";
@@ -10,8 +11,14 @@ function authorSocialUrl(raw: string | undefined): string | null {
   return t;
 }
 
+function normalizeAuthorAvatarUrl(url: string | null | undefined): string | null {
+  const trimmed = url?.trim();
+  if (!trimmed) return null;
+  return resolvePublicMediaSrc(trimmed) ?? trimmed;
+}
+
 /**
- * Author from the `author_card` REST field on the post (omb-headless-core).
+ * Author from the `author_card` REST field on the post (bakery-core).
  * This is the primary source; the core `/wp/v2/users` endpoint is locked down,
  * so `_embedded.author` cannot resolve on this install. Returns null when the
  * card carries no usable display fields so callers can fall back to the embed.
@@ -19,7 +26,7 @@ function authorSocialUrl(raw: string | undefined): string | null {
 export function authorFromOmbCard(card: OmbAuthorCard | null | undefined): PostAuthorT | null {
   if (!card) return null;
   const name = card.name?.trim() || "";
-  const avatarUrl = card.avatar_url?.trim() || null;
+  const avatarUrl = normalizeAuthorAvatarUrl(card.avatar_url);
   const bio = toPlainText(card.bio || "");
   if (!name && !avatarUrl && !bio) return null;
   return {
@@ -35,8 +42,10 @@ export function authorFromOmbCard(card: OmbAuthorCard | null | undefined): PostA
 
 export function resolveWpAuthorAvatarUrl(u: WpEmbeddedAuthor | null | undefined): string | null {
   const custom = u?.omb_author_avatar_url?.trim();
-  if (custom) return custom;
-  return u?.avatar_urls?.["96"] || u?.avatar_urls?.["48"] || u?.avatar_urls?.["24"] || null;
+  if (custom) return normalizeAuthorAvatarUrl(custom);
+  const embedded =
+    u?.avatar_urls?.["96"] || u?.avatar_urls?.["48"] || u?.avatar_urls?.["24"] || null;
+  return normalizeAuthorAvatarUrl(embedded);
 }
 
 /** Map WordPress REST user / embedded author shape → headless author card fields. */
@@ -85,7 +94,7 @@ export async function resolveAuthorFromRestEmbed(
 ): Promise<PostAuthorT> {
   const fromEmbed = wpEmbeddedUserToAuthor(embedded);
 
-  // Primary source: author_card on the post (omb-headless-core). Merge embed as
+  // Primary source: author_card on the post (bakery-core). Merge embed as
   // a secondary fill so any field the card omits still resolves when available.
   const fromCard = authorFromOmbCard(card);
   if (fromCard) {

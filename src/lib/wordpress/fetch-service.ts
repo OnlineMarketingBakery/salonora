@@ -38,7 +38,12 @@ function toDoc(p: WpServiceRaw, gs: GlobalSettings): { doc: ServiceDocument; raw
     useCustomFooter: asBool((acf as { use_custom_footer?: unknown }).use_custom_footer),
     footerSections: normalizePageFooterSections(footerSectionsRaw),
     sections,
-    seo: mapYoastToSeo(p, gs, { fallbackTitle: p.title?.rendered || "Service" }),
+    seo: mapYoastToSeo(p, gs, {
+      fallbackTitle: p.title?.rendered || "Service",
+      fallbackDescription:
+        p.excerpt?.rendered ||
+        asString((acf as { service_intro?: string }).service_intro),
+    }),
   };
   return { doc, raw: p };
 }

@@ -14,6 +14,7 @@ import { PageFooter } from "@/components/layout/PageFooter";
 import { PageScrollAnimations } from "@/components/animations/PageScrollAnimations";
 import { getSiteName } from "@/lib/seo/map-yoast-to-metadata";
 import { CtaBrandArrowProvider } from "@/components/providers/CtaBrandArrowProvider";
+import { SiteJsonLd } from "@/components/seo/SiteJsonLd";
 
 /** Cache layout data fetches (globals, menus) across requests; on-demand via POST /api/revalidate. */
 export const revalidate = 60;
@@ -39,11 +40,7 @@ export default async function LangLayout({ children, params }: Props) {
   ]);
   return (
     <>
-      {globals.integrations.gtmId && (
-        <Script id="gtm" strategy="afterInteractive">
-          {`(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','${globals.integrations.gtmId}');`}
-        </Script>
-      )}
+      <SiteJsonLd globals={globals} lang={lang} />
       {globals.integrations.ga4Id && (
         <Script src={`https://www.googletagmanager.com/gtag/js?id=${globals.integrations.ga4Id}`} strategy="afterInteractive" />
       )}

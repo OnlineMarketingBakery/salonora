@@ -784,7 +784,7 @@ class CFB_Frontend {
 	 * @param int   $context_post_id Optional context post (ACF etc.).
 	 * @return array|\WP_Error { message, redirect_url } on success.
 	 */
-	public function process_form_submission( $form_id, $raw, $visible_list, $files_cfb, $context_post_id = 0 ) {
+	public function process_form_submission( $form_id, $raw, $visible_list, $files_cfb, $context_post_id = 0, $meta = array() ) {
 		$form_id = (int) $form_id;
 		if ( ! $form_id ) {
 			return new \WP_Error( 'cfb_invalid', __( 'Invalid form.', 'custom-form-builder' ) );
@@ -979,6 +979,12 @@ class CFB_Frontend {
 
 			do_action( 'cfb_after_submit', $form_id, $entry_data, $post_id );
 
+			$lang = 'nl';
+			if ( is_array( $meta ) && isset( $meta['lang'] ) ) {
+				$lang = CFB_Email_Template::normalize_lang( $meta['lang'] );
+			}
+			$headers = class_exists( 'CFB_Email_Template' ) ? CFB_Email_Template::mail_headers() : array( 'Content-Type: text/html; charset=UTF-8' );
+
 			// Send notification email to admin if enabled in form settings.
 			$send_admin_email = ! isset( $settings['send_admin_email'] ) || ! empty( $settings['send_admin_email'] );
 			if ( $send_admin_email && ! empty( $entry_data ) ) {
@@ -986,11 +992,47 @@ class CFB_Frontend {
 				if ( $to ) {
 					$form_post = get_post( $form_id );
 					$form_title = $form_post && $form_post->post_title ? $form_post->post_title : __( 'Form', 'custom-form-builder' );
-					$subject = sprintf( __( '[%s] New form submission: %s', 'custom-form-builder' ), wp_specialchars_decode( get_bloginfo( 'name' ), ENT_QUOTES ), $form_title );
+					$subject = $lang === 'en'
+						? sprintf( '[Salonora] New submission: %s', $form_title )
+						: sprintf( '[Salonora] Nieuwe inzending: %s', $form_title );
 					$body_html = CFB_Entries::get_entry_data_html_from_array( $form_id, $entry_data );
-					$message = '<p>' . esc_html__( 'You have received a new form submission.', 'custom-form-builder' ) . '</p>' . $body_html;
-					$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+					$message = class_exists( 'CFB_Email_Template' )
+						? CFB_Email_Template::admin_notification_html( $form_title, $body_html, $lang )
+						: '<p>' . esc_html__( 'You have received a new form submission.', 'custom-form-builder' ) . '</p>' . $body_html;
 					wp_mail( $to, $subject, $message, $headers );
+				}
+			}
+
+			// Branded confirmation to submitter (optional per form).
+			$send_confirmation = ! empty( $settings['send_confirmation_email'] );
+			if ( $send_confirmation && class_exists( 'CFB_Email_Template' ) ) {
+				$submitter = CFB_Email_Template::find_submitter_email( $form_id, $entry_data );
+				if ( $submitter === '' ) {
+					if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+						error_log( sprintf( '[CFB] Confirmation skipped for form %d: no submitter email in entry.', (int) $form_id ) );
+					}
+				} else {
+					$first_name = CFB_Email_Template::find_entry_value_by_name( $form_id, $entry_data, 'first_name' );
+					$custom_body = isset( $settings['confirmation_body'] ) ? trim( (string) $settings['confirmation_body'] ) : '';
+					if ( $custom_body !== '' ) {
+						$custom_body = str_replace( '{first_name}', esc_html( $first_name ), $custom_body );
+						$confirm_html = CFB_Email_Template::wrap(
+							array(
+								'title'     => $lang === 'en' ? 'Thank you!' : 'Bedankt!',
+								'body_html' => $custom_body,
+							)
+						);
+					} else {
+						$confirm_html = CFB_Email_Template::confirmation_html( $lang, array( 'first_name' => $first_name ) );
+					}
+					$confirm_subject = isset( $settings['confirmation_subject'] ) ? trim( (string) $settings['confirmation_subject'] ) : '';
+					if ( $confirm_subject === '' ) {
+						$confirm_subject = $lang === 'en' ? 'Your Salonora demo request' : 'Je Salonora demo-aanvraag';
+					}
+					$confirm_sent = wp_mail( $submitter, $confirm_subject, $confirm_html, $headers );
+					if ( ! $confirm_sent && defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+						error_log( sprintf( '[CFB] Confirmation wp_mail failed for form %d to %s', (int) $form_id, $submitter ) );
+					}
 				}
 			}
 

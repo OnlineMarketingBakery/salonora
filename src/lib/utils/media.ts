@@ -1,4 +1,4 @@
-import { getWordpressApiUrl, getWordpressBaseUrl } from "@/lib/wordpress/config";
+import { getWordpressApiUrl, getWordpressBaseUrl, getSiteUrl } from "@/lib/wordpress/config";
 import type { WpImage } from "@/types/wordpress";
 
 function sizeEntryUrl(
@@ -49,9 +49,31 @@ export function resolveAbsoluteMediaUrl(url: string | null | undefined): string 
   if (url == null || typeof url !== "string") return null;
   const u = url.trim();
   if (!u) return null;
-  if (u.startsWith("http://") || u.startsWith("https://")) return u;
+  if (u.startsWith("http://") || u.startsWith("https://")) {
+    const wpBase = getWordpressBaseUrl().replace(/\/$/, "");
+    const site = getSiteUrl().replace(/\/$/, "");
+    if (wpBase && site && wpBase !== site && u.startsWith(`${wpBase}/wp-content/`)) {
+      return `${site}${u.slice(wpBase.length)}`;
+    }
+    // Client components only have NEXT_PUBLIC_SITE_URL — rewrite any /wp-content/ host.
+    if (site) {
+      try {
+        const { pathname } = new URL(u);
+        if (pathname.startsWith("/wp-content/")) {
+          return `${site}${pathname}`;
+        }
+      } catch {
+        /* noop */
+      }
+    }
+    return u;
+  }
   if (u.startsWith("//")) return `https:${u}`;
   if (u.startsWith("/")) {
+    const site = getSiteUrl().replace(/\/$/, "");
+    if (site && u.startsWith("/wp-content/")) {
+      return `${site}${u}`;
+    }
     const base = getWordpressBaseUrl().replace(/\/$/, "");
     if (base) return `${base}${u}`;
     const api = getWordpressApiUrl();
@@ -65,4 +87,44 @@ export function resolveAbsoluteMediaUrl(url: string | null | undefined): string 
     }
   }
   return u;
+}
+
+/**
+ * Public `src` for `<Image>` — root-relative `/wp-content/...` on the marketing
+ * site so the browser and `/_next/image` never see localhost or backend hosts.
+ */
+export function resolvePublicMediaSrc(url: string | null | undefined): string | null {
+  const absolute = resolveAbsoluteMediaUrl(url);
+  if (!absolute) return null;
+  const site = getSiteUrl().replace(/\/$/, "");
+  if (site && absolute.startsWith(`${site}/wp-content/`)) {
+    return absolute.slice(site.length);
+  }
+  if (absolute.startsWith("/wp-content/")) return absolute;
+  return absolute;
+}
+
+/** Rewrite CMS image URLs to root-relative `/wp-content/...` for client-safe RSC props. */
+export function normalizeWpImageForPublic(image: WpImage | null | undefined): WpImage | null {
+  if (!image) return null;
+  if (typeof image === "string") {
+    return { url: resolvePublicMediaSrc(image) ?? image, alt: "" };
+  }
+  const url = image.url ? (resolvePublicMediaSrc(image.url) ?? image.url) : image.url;
+  if (!image.sizes || typeof image.sizes !== "object") {
+    return url === image.url ? image : { ...image, url };
+  }
+  const sizes = { ...image.sizes } as Record<
+    string,
+    string | { url: string; width?: number; height?: number } | undefined
+  >;
+  for (const key of Object.keys(sizes)) {
+    const entry = sizes[key];
+    if (typeof entry === "string") {
+      sizes[key] = resolvePublicMediaSrc(entry) ?? entry;
+    } else if (entry && typeof entry === "object" && typeof entry.url === "string") {
+      sizes[key] = { ...entry, url: resolvePublicMediaSrc(entry.url) ?? entry.url };
+    }
+  }
+  return { ...image, url, sizes: sizes as WpImage["sizes"] };
 }

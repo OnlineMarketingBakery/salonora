@@ -9,6 +9,7 @@ import { ArrowInCircle } from "@/components/ui/ArrowInCircle";
 import { useCtaBrandArrowImage } from "@/components/providers/CtaBrandArrowProvider";
 import { registerGsapClient } from "@/lib/gsap/register";
 import { CTA_ARROW_CLASS, CTA_CARD_ARROW_CLASS, CTA_GAP_CLASS, CTA_PX_DEFAULT } from "@/lib/ui/cta-tokens";
+import { normalizeCtaLabel } from "@/lib/utils/normalize-cta-label";
 
 const textBody = "text-base font-normal font-sans leading-normal";
 const textWhite = "text-white";
@@ -135,10 +136,14 @@ const ctaBaseShared =
 
 function plainTextLabel(children: ReactNode): string | null {
   if (typeof children === "string" || typeof children === "number") {
-    const s = String(children);
+    const s = normalizeCtaLabel(String(children));
     return s.length > 0 ? s : null;
   }
   return null;
+}
+
+function ctaLabelTokens(plain: string): string[] {
+  return plain.split(/(\s+)/).filter((part) => part.length > 0);
 }
 
 function CtaLabel({
@@ -153,15 +158,16 @@ function CtaLabel({
   const plain = plainTextLabel(children);
   const labelClass = `${layoutClass} ${typographyClass}`.trim();
   if (plain) {
+    const tokens = ctaLabelTokens(plain);
     return (
       <span className={labelClass} aria-hidden="true" data-cta-label>
-        {Array.from(plain).map((ch, i) => (
+        {tokens.map((token, i) => (
           <span
             key={i}
             data-cta-char
             className={`inline-block will-change-[transform,opacity] ${typographyClass}`}
           >
-            {ch === " " ? "\u00a0" : ch}
+            {/^\s+$/.test(token) ? "\u00a0" : token}
           </span>
         ))}
       </span>
@@ -212,7 +218,7 @@ function useButtonHover(
               opacity: 1,
               duration: 0.42,
               ease: "power3.out",
-              stagger: { each: 0.024, from: "start" },
+              stagger: { each: 0.055, from: "start" },
             },
           );
         } else if (label) {

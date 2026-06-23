@@ -1,4 +1,4 @@
-import { buildLocalePath, getPrimaryLocaleSync, stripPrimaryLocalePrefix } from "@/lib/i18n/locale-url";
+import { buildLocalePath, getPrimaryLocaleSync, stripLocalePrefix } from "@/lib/i18n/locale-url";
 import type { Locale } from "@/lib/i18n/locales";
 import { getSiteUrl, getWordpressBaseUrl } from "./config";
 
@@ -29,7 +29,7 @@ export function mapWordPressPermalinkToAppPathname(url: string, lang: Locale): s
   };
 
   const mapPath = (rel: string) => {
-    const stripped = stripPrimaryLocalePrefix(rel === "/" ? "/" : rel);
+    const stripped = stripLocalePrefix(rel === "/" ? "/" : rel);
     const slug = stripped === "/" ? "" : stripped.replace(/^\//, "");
     return buildLocalePath(lang, slug);
   };

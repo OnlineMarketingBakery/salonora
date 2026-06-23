@@ -24,7 +24,6 @@ export async function POST(req: Request) {
 
   return NextResponse.json({
     ok: true,
-    message: result.message,
     ...(result.redirect_url ? { redirect_url: result.redirect_url } : {}),
   });
 }

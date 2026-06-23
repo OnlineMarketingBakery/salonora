@@ -6,7 +6,7 @@ import { defaultCtaBrandArrowFallback } from "@/lib/ui/default-cta-brand-arrow";
 import type { Locale } from "@/lib/i18n/locales";
 import { logger } from "@/lib/utils/logger";
 import type { FooterSettings, GlobalSettings, ReadingSettings } from "@/types/globals";
-import { getWordpressApiUrl, getWordpressAuthorizationHeader } from "./config";
+import { getWordpressApiUrl, getWordpressAuthorizationHeader, getOmbHeadlessRestPrefix } from "./config";
 
 /**
  * ACF options GET responses may expose fields at the JSON root or under `acf`
@@ -30,7 +30,7 @@ export type OmbGlobalsRestPayload = {
   site?: Record<string, unknown>;
   integrations?: Record<string, unknown>;
   defaultSeo?: Record<string, unknown>;
-  /** WordPress Settings → Reading (static front page), from omb-headless-core. */
+  /** WordPress Settings → Reading (static front page), from bakery-core. */
   reading?: Record<string, unknown>;
   /** ACF options: blog single tail sections (`blog_single_sections`), per `?lang=`. */
   templates?: Record<string, unknown>;
@@ -49,7 +49,7 @@ export const getOmbGlobalsPayload = cache(async (lang: Locale): Promise<OmbGloba
 async function fetchGlobalsViaOmbRestUncached(lang: Locale): Promise<OmbGlobalsRestPayload | null> {
   const base = getWordpressApiUrl();
   if (!base) return null;
-  const url = new URL(`${base}/omb-headless/v1/globals`);
+  const url = new URL(`${base}${getOmbHeadlessRestPrefix()}/globals`);
   url.searchParams.set("lang", lang);
   const headers = new Headers();
   const auth = getWordpressAuthorizationHeader();
@@ -80,7 +80,7 @@ async function fetchGlobalsViaOmbRestUncached(lang: Locale): Promise<OmbGlobalsR
 async function fetchReadingViaOmbRest(lang: Locale): Promise<Record<string, unknown> | null> {
   const base = getWordpressApiUrl();
   if (!base) return null;
-  const url = new URL(`${base}/omb-headless/v1/reading`);
+  const url = new URL(`${base}${getOmbHeadlessRestPrefix()}/reading`);
   url.searchParams.set("lang", lang);
   const headers = new Headers();
   const auth = getWordpressAuthorizationHeader();
@@ -137,24 +137,23 @@ export const fetchAcfOptions = cache(async (path: string, lang: Locale): Promise
   return null;
 });
 
-const CHECKOUT_URL =
-  "https://salonora.plugandpay.com/checkout/professionele-salon-boekingssysteem";
+const CAMPAIGN_PATH: Record<Locale, string> = { nl: "/nl/campagne", en: "/en/campaign" };
 
 /** CMS fallback when header CTA still points at removed /contact or placeholder #. */
-function repairBrokenHeaderCta(link: WpAcfLink | null): WpAcfLink | null {
+function repairBrokenHeaderCta(link: WpAcfLink | null, lang: Locale): WpAcfLink | null {
   if (!link?.url) return link;
   const url = link.url.trim();
   if (url === "#" || url === "/contact" || url === "/contact/") {
     return {
       ...link,
-      url: CHECKOUT_URL,
-      target: link.target || "_blank",
+      url: CAMPAIGN_PATH[lang],
+      target: link.target || undefined,
     };
   }
   return link;
 }
 
-function fromHeader(o: Record<string, unknown> | null) {
+function fromHeader(o: Record<string, unknown> | null, lang: Locale) {
   if (!o) {
     return {
       headerLogo: null,
@@ -174,7 +173,7 @@ function fromHeader(o: Record<string, unknown> | null) {
     headerSticky: asBool(acfPick(o, "header_sticky", "headerSticky")),
     showLanguageSwitcher: asBool(acfPick(o, "show_language_switcher", "showLanguageSwitcher")),
     showHeaderCta: asBool(acfPick(o, "show_header_cta", "showHeaderCta")),
-    headerCtaLink: repairBrokenHeaderCta(asLink(acfPick(o, "header_cta_link", "headerCtaLink"))),
+    headerCtaLink: repairBrokenHeaderCta(asLink(acfPick(o, "header_cta_link", "headerCtaLink")), lang),
   };
 }
 
@@ -324,7 +323,7 @@ export const fetchGlobals = cache(async (lang: Locale): Promise<GlobalSettings> 
     const siteUnwrapped = unwrapAcfOptionsPayload(omb.site ?? null);
     const footer = footerFromOmbPayload(omb.footer ?? null, siteUnwrapped);
     return {
-      header: fromHeader(unwrapAcfOptionsPayload(omb.header ?? null)),
+      header: fromHeader(unwrapAcfOptionsPayload(omb.header ?? null), lang),
       footer,
       contact: fromContact(unwrapAcfOptionsPayload(omb.contact ?? null)),
       site: fromSite(siteUnwrapped),
@@ -349,7 +348,7 @@ export const fetchGlobals = cache(async (lang: Locale): Promise<GlobalSettings> 
   const footerRawFlat = unwrapAcfOptionsPayload(footerRaw) as Record<string, unknown> | null;
   const footer = mergeFooterCtaMigrations(fromFooter(footerRawFlat), siteUnwrapped);
   return {
-    header: fromHeader(unwrapAcfOptionsPayload(headerRaw)),
+    header: fromHeader(unwrapAcfOptionsPayload(headerRaw), lang),
     footer,
     contact: fromContact(unwrapAcfOptionsPayload(contactRaw)),
     site: fromSite(siteUnwrapped),

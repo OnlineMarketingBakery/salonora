@@ -119,7 +119,11 @@ export function FreeDemoLeadForm({
     }
     const success = res.ok && json.ok !== false;
     if (success) {
-      setMessage((json.message && json.message.trim()) || c.successDefault);
+      setMessage(
+        successMode === "inline"
+          ? c.successDefault
+          : (json.message && json.message.trim()) || c.successDefault
+      );
       if (successMode === "redirect") {
         const target =
           (json.redirect_url && json.redirect_url.trim()) || redirectUrl;

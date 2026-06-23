@@ -74,7 +74,10 @@ function toDoc(p: WpCaseStudyRaw, gs: GlobalSettings, lang: Locale, author: Post
     featuredImageAlt: featured?.alt_text || "",
     featuredFormId: featuredForm && typeof featuredForm === "object" ? featuredForm.id || null : null,
     sections,
-    seo: mapYoastToSeo(p, gs, { fallbackTitle: p.title?.rendered || "Case study" }),
+    seo: mapYoastToSeo(p, gs, {
+      fallbackTitle: p.title?.rendered || "Case study",
+      fallbackDescription: p.excerpt?.rendered || mapCaseStudyLeadHtml(acf) || undefined,
+    }),
     publishedAt: p.date || "",
     dateLabel: formatPostMonthYear(p.date, lang),
     readMinutes,

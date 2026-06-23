@@ -27,6 +27,7 @@ require_once CFB_PLUGIN_DIR . 'includes/class-cfb-admin-builder.php';
 require_once CFB_PLUGIN_DIR . 'includes/class-cfb-calculations.php';
 require_once CFB_PLUGIN_DIR . 'includes/class-cfb-frontend.php';
 require_once CFB_PLUGIN_DIR . 'includes/class-cfb-entries.php';
+require_once CFB_PLUGIN_DIR . 'includes/class-cfb-email-template.php';
 require_once CFB_PLUGIN_DIR . 'includes/class-cfb-rest.php';
 
 /**

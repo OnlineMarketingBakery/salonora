@@ -22,7 +22,7 @@ function omb_normalize_language_slug($item): string {
 }
 
 /**
- * Headless primary language slug (no URL prefix on Next.js). ACF Site Settings, then Polylang default, then nl.
+ * Headless primary language slug. ACF Site Settings, then Polylang default, then nl.
  */
 function omb_get_primary_language_slug(): string {
     if (function_exists('get_field')) {
@@ -45,10 +45,10 @@ function omb_get_primary_language_slug(): string {
 }
 
 /**
- * URL path prefix for a language on the Next.js frontend (null = primary, no prefix).
+ * URL path prefix for a language on the Next.js frontend (all locales prefixed).
  */
 function omb_get_language_url_prefix(string $slug): ?string {
-    return $slug === omb_get_primary_language_slug() ? null : $slug;
+    return $slug;
 }
 
 /**

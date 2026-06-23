@@ -90,7 +90,10 @@ function toDoc(
     featuredFormId: featuredForm && typeof featuredForm === "object" ? featuredForm.id || null : null,
     sections: normalizePostSections((acf as { post_sections?: unknown }).post_sections),
     layoutSections: [],
-    seo: mapYoastToSeo(p, gs, { fallbackTitle: p.title?.rendered || "Post" }),
+    seo: mapYoastToSeo(p, gs, {
+      fallbackTitle: p.title?.rendered || "Post",
+      fallbackDescription: p.excerpt?.rendered || mapPostLeadHtml(acf) || undefined,
+    }),
     publishedAt: p.date || "",
     dateLabel: formatPostFullDate(p.date, lang),
     readMinutes: estimateReadMinutes(prepared),

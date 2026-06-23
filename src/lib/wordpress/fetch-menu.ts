@@ -1,8 +1,8 @@
 import { cache } from "react";
-import { getSiteUrl, getWordpressBaseUrl, getMenuId } from "./config";
+import { getSiteUrl, getWordpressBaseUrl, getMenuId, getOmbHeadlessRestPrefix } from "./config";
 import { wpFetchOptional } from "./client";
 import type { MenuItem } from "@/types/menu";
-import { buildLocalePath, stripPrimaryLocalePrefix } from "@/lib/i18n/locale-url";
+import { buildLocalePath, stripLocalePrefix } from "@/lib/i18n/locale-url";
 import type { Locale } from "@/lib/i18n/locales";
 import { logger } from "@/lib/utils/logger";
 
@@ -20,7 +20,7 @@ function mapUrlToHref(url: string, lang: Locale): string {
   const wp = getWordpressBaseUrl();
   try {
     const toHref = (pathname: string) => {
-      const stripped = stripPrimaryLocalePrefix(pathname === "/" ? "/" : pathname);
+      const stripped = stripLocalePrefix(pathname === "/" ? "/" : pathname);
       const slug = stripped === "/" ? "" : stripped.replace(/^\//, "");
       return buildLocalePath(lang, slug);
     };
@@ -74,8 +74,7 @@ type OmbMenuPayload = {
  *    on the menu, or supply an Application Password).
  * 2) Otherwise falls back to the headless plugin route
  *    `/omb-headless/v1/menu?location=…&lang=…` which is public and resolves the
- *    menu ID server-side from the theme location (Polylang-aware). Add this only
- *    in `omb-headless-core` ≥ the version that registers `/menu`.
+ *    menu ID server-side from the theme location (Polylang-aware).
  */
 export const fetchMenu = cache(async (
   location: "primary" | "footer" | "legal",
@@ -98,7 +97,7 @@ export const fetchMenu = cache(async (
 
   try {
     const payload = await wpFetchOptional<OmbMenuPayload>(
-      `/omb-headless/v1/menu?location=${encodeURIComponent(location)}&lang=${encodeURIComponent(lang)}`,
+      `${getOmbHeadlessRestPrefix()}/menu?location=${encodeURIComponent(location)}&lang=${encodeURIComponent(lang)}`,
       { lang, revalidate: 60 }
     );
     if (payload && Array.isArray(payload.items) && payload.items.length) {

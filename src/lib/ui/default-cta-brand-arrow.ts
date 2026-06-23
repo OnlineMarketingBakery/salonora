@@ -1,7 +1,7 @@
 import type { WpImage } from "@/types/wordpress";
 
 export const BUILT_IN_DEFAULT_CTA_BRAND_ARROW_URL =
-  "https://backend.salonora.eu/wp-content/uploads/2026/05/Frame-7.png";
+  "/wp-content/uploads/2026/05/Frame-7.png";
 
 /** True when the arrow should use the local SVG (Figma) instead of a remote raster. */
 export function isBuiltInCtaBrandArrow(image: WpImage | null | undefined): boolean {

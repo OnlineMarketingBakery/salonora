@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { isLocale, supportedLocales } from "@/lib/i18n/config";
+import { isLocale } from "@/lib/i18n/config";
 import type { Locale } from "@/lib/i18n/locales";
 import { fetchGlobals } from "@/lib/wordpress/fetch-globals";
 import { archiveQueryFromSearchParams } from "@/lib/wordpress/archive-search-params";
@@ -12,9 +12,8 @@ import { isFaqPageSlug } from "@/lib/legal/faq-slugs";
 import { ServiceTemplate } from "@/components/templates/ServiceTemplate";
 import { PostTemplate } from "@/components/templates/PostTemplate";
 import { CaseStudyTemplate } from "@/components/templates/CaseStudyTemplate";
-import { seoToMetadata, getSiteName } from "@/lib/seo/map-yoast-to-metadata";
-import { getSiteUrl } from "@/lib/wordpress/config";
-import { buildLocalePath } from "@/lib/i18n/get-alternates";
+import { YoastJsonLd } from "@/components/seo/YoastJsonLd";
+import { buildPageMetadata } from "@/lib/seo/build-page-metadata";
 
 /** ISR for CMS pages; `searchParams` (?page=, ?s=) still render dynamically per request. */
 export const revalidate = 60;
@@ -35,39 +34,47 @@ export default async function CatchAllPage({
   if (!resolved) notFound();
   const { document: doc } = resolved;
   const urlSlug = slug[slug.length - 1] ?? "";
-  if (doc.kind === "page") {
-    if (isFaqPageSlug(lang, urlSlug) || isFaqPageSlug(lang, doc.slug)) {
-      return <FaqPageTemplate document={doc} lang={lang} contact={globals.contact} />;
+  const isFaq =
+    doc.kind === "page" && (isFaqPageSlug(lang, urlSlug) || isFaqPageSlug(lang, doc.slug));
+  const content = (() => {
+    if (doc.kind === "page") {
+      if (isFaq) {
+        return <FaqPageTemplate document={doc} lang={lang} contact={globals.contact} />;
+      }
+      if (doc.isLegalPage) return <LegalPageTemplate document={doc} lang={lang} />;
+      return <PageTemplate document={doc} lang={lang} />;
     }
-    if (doc.isLegalPage) return <LegalPageTemplate document={doc} lang={lang} />;
-    return <PageTemplate document={doc} lang={lang} />;
-  }
-  if (doc.kind === "case_study") return <CaseStudyTemplate document={doc} lang={lang} />;
-  if (doc.kind === "service") return <ServiceTemplate document={doc} lang={lang} />;
-  return <PostTemplate document={doc} lang={lang} />;
+    if (doc.kind === "case_study") return <CaseStudyTemplate document={doc} lang={lang} />;
+    if (doc.kind === "service") return <ServiceTemplate document={doc} lang={lang} />;
+    return <PostTemplate document={doc} lang={lang} />;
+  })();
+
+  return (
+    <>
+      {!isFaq && <YoastJsonLd schema={doc.seo.schema} />}
+      {content}
+    </>
+  );
 }
 
-export async function generateMetadata({ params }: P): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+  searchParams,
+}: P & { searchParams?: Promise<Record<string, string | string[] | undefined>> }): Promise<Metadata> {
   const { lang: raw, slug } = await params;
   if (!isLocale(raw)) return {};
   const lang = raw as Locale;
   const globals = await fetchGlobals(lang);
+  const sp = searchParams ? await searchParams : {};
+  const aq = archiveQueryFromSearchParams(sp);
   const resolved = await resolveRoute(lang, slug, globals);
   if (!resolved) return { title: "Not found" };
-  const s = resolved.document.seo;
-  const site = getSiteUrl();
-  const languages: Record<string, string> = {};
-  for (const l of supportedLocales) {
-    const localePath = buildLocalePath(l, slug.join("/"));
-    languages[l] = `${site}${localePath}`;
-  }
-  const canonicalPath = buildLocalePath(lang, slug.join("/"));
-  return {
-    ...seoToMetadata(s, site),
-    title: s.title || getSiteName(globals),
-    alternates: {
-      canonical: s.canonical || `${site}${canonicalPath}`,
-      languages,
-    },
-  };
+  return buildPageMetadata({
+    lang,
+    pathAfterLocale: slug.join("/"),
+    seo: resolved.document.seo,
+    globals,
+    archivePage: aq.page,
+    archiveSearch: aq.search,
+  });
 }

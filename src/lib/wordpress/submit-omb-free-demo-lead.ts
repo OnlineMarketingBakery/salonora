@@ -195,7 +195,7 @@ export async function submitOmbFreeDemoLead(
       ok: false,
       status: 503,
       message:
-        "Headless form submit secret is not configured (env: OMB_FORM_BUILDER_SUBMIT_SECRET, CFB_HEADLESS_SUBMIT_SECRET, or REVALIDATION_SECRET; or WordPress Integrations: OMB form submit secret / revalidation secret).",
+        "Headless form submit secret is not configured (env: BAKERY_FORMS_SUBMIT_SECRET, BAKERY_FORMS_SUBMIT_SECRET, or REVALIDATION_SECRET; or WordPress Integrations: OMB form submit secret / revalidation secret).",
     };
   }
 
@@ -214,6 +214,7 @@ export async function submitOmbFreeDemoLead(
     cfb,
     cfb_visible_fields,
     cfb_post_id: 0,
+    cfb_lang: payload.lang,
   };
 
   const headers = new Headers({

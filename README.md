@@ -52,7 +52,7 @@ salonora/
 │   │   ├── i18n/                       # Locales, alternates, middleware default
 │   │   └── seo/                        # Yoast → Next metadata mapping
 │   ├── types/                          # ACF, sections, globals, SEO types
-│   └── middleware.ts                   # `/` → default locale; passes pathname header
+│   └── middleware.ts                   # `/` → `/nl`; legacy unprefixed paths → `/nl/*`; passes pathname header
 ├── wordpress/                          # OMB headless theme, core plugin, Polylang mu-plugin
 │   └── wp-content/
 │       ├── themes/omb-headless/        # Headless theme + ACF JSON bundle
@@ -133,7 +133,7 @@ If `WORDPRESS_BASE_URL` / `WORDPRESS_API_URL` are unset, **Next Image** runs in 
 
 ## Key workflows & features
 
-- **Localized routing:** `src/app/[lang]/` with `[...slug]` for inner pages; middleware sends `/` to the default locale.
+- **Localized routing:** `src/app/[lang]/` with `[...slug]` for inner pages; public URLs use `/{locale}/` for both `nl` and `en`; middleware 301-redirects `/` to `/nl` and legacy unprefixed Dutch paths to `/nl/...`.
 - **Legal & FAQ pages:** Manage in WordPress with ACF layouts **`legal_content`** (privacy/terms) and **`faq`**. See [WORDPRESS-ACF-legal-content.md](WORDPRESS-ACF-legal-content.md). Empty CMS pages fall back to copy in `src/lib/legal/`. Consolidated FAQ Q&A: `src/lib/legal/faq-data.json` (homepage + product questions). Import: `node src/lib/legal/seed-legal-pages.mjs --faq` (add `--force` to refresh). Privacy/terms use `LegalPageTemplate`; FAQ uses `PageTemplate` + `faq` section.
 - **Flexible sections:** WordPress ACF layouts are normalized in `src/lib/acf/` and rendered via `SectionRenderer` + `src/components/sections/*`.
 - **Services, posts & case studies:** Dedicated fetchers and templates (`PageTemplate`, `PostTemplate`, `CaseStudyTemplate`). Blog singles use **Global Templates** options (`blog_single_sections`) for shared FAQ; see [docs/blog-single-template.md](docs/blog-single-template.md).

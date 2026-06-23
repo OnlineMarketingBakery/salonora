@@ -1,5 +1,4 @@
 import type { Locale } from "@/lib/i18n/locales";
-import { getPrimaryLocaleSync, getSecondaryLocales } from "@/lib/i18n/locale-url";
 import type { SiteConfig } from "@/lib/wordpress/fetch-site-config";
 
 export type PostWithLink = {
@@ -18,7 +17,7 @@ function otherWpLinkPrefixes(siteConfig: SiteConfig, lang: Locale): string[] {
 
 /**
  * Match REST `link` URLs to a locale using WP Polylang `url_prefix` from site config.
- * WP default language posts have no prefix; translated posts use `/{prefix}/`.
+ * All locales use `/{prefix}/` on the Next.js frontend.
  */
 function postMatchesLocaleWithWpPrefixes<T extends PostWithLink>(
   post: T,
@@ -27,12 +26,19 @@ function postMatchesLocaleWithWpPrefixes<T extends PostWithLink>(
 ): boolean {
   const link = post.link ?? "";
   const langConfig = siteConfig.languages.find((l) => l.slug === lang);
+  const otherPrefixes = otherWpLinkPrefixes(siteConfig, lang);
 
   if (langConfig?.urlPrefix) {
-    return link.includes(wpLinkPrefixPath(langConfig.urlPrefix));
+    if (link.includes(wpLinkPrefixPath(langConfig.urlPrefix))) {
+      return true;
+    }
+    // Polylang primary-language CPTs often omit /{prefix}/ in REST `link` URLs (e.g. /services/…).
+    if (lang === siteConfig.primaryLanguage && !otherPrefixes.some((p) => link.includes(p))) {
+      return true;
+    }
+    return false;
   }
 
-  const otherPrefixes = otherWpLinkPrefixes(siteConfig, lang);
   if (otherPrefixes.length > 0) {
     return !otherPrefixes.some((p) => link.includes(p));
   }
@@ -40,17 +46,9 @@ function postMatchesLocaleWithWpPrefixes<T extends PostWithLink>(
   return postMatchesLocaleLegacy(post, lang);
 }
 
-/** Fallback when site config is unavailable (dev / offline WP). */
 function postMatchesLocaleLegacy<T extends PostWithLink>(post: T, lang: Locale): boolean {
   const link = post.link ?? "";
-  const ownSlug = lang === getPrimaryLocaleSync() ? null : `/${lang}/`;
-
-  if (ownSlug) {
-    return link.includes(ownSlug);
-  }
-
-  const secondaryPrefixes = getSecondaryLocales().map((l) => `/${l}/`);
-  return !secondaryPrefixes.some((s) => link.includes(s));
+  return link.includes(`/${lang}/`);
 }
 
 export function postMatchesLocale<T extends PostWithLink>(

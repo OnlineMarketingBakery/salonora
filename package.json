@@ -17,6 +17,11 @@
     "backup:wp": "node scripts/wpvivid-backup.mjs",
     "replace:contact-email": "node src/lib/cms/replace-contact-email.mjs",
     "replace:contact-email:apply": "node src/lib/cms/replace-contact-email.mjs --apply",
+    "fix:cta-labels": "node src/lib/cms/fix-cta-label-casing.mjs",
+    "fix:cta-labels:apply": "node src/lib/cms/fix-cta-label-casing.mjs --apply",
+    "seed:service-seo": "node src/lib/cms/seed-service-yoast-descriptions.mjs",
+    "seed:service-seo:apply": "node src/lib/cms/seed-service-yoast-descriptions.mjs --apply",
+    "verify:seo": "node src/lib/cms/verify-seo-config.mjs",
     "merge:faqs": "node --import dotenv/config src/lib/legal/merge-site-faqs.mjs dotenv_config_path=.env.local"
   },
   "dependencies": {

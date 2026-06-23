@@ -11,38 +11,72 @@ const FIGMA_MCP_IMAGE_PATTERN = {
 const IMAGE_QUALITIES = [75, 90, 92, 95] as const;
 
 function imageConfig(): NextConfig["images"] {
-  const raw = process.env.WORDPRESS_BASE_URL || process.env.WORDPRESS_API_URL;
-  if (!raw) {
+  const remotePatterns: NonNullable<NextConfig["images"]>["remotePatterns"] = [
+    FIGMA_MCP_IMAGE_PATTERN,
+  ];
+
+  const addOrigin = (raw: string | undefined) => {
+    if (!raw) return;
+    try {
+      const u = new URL(raw);
+      const hostname = u.hostname;
+      if (remotePatterns.some((p) => p.hostname === hostname)) return;
+      remotePatterns.push({
+        protocol: (u.protocol.replace(":", "") as "https") || "https",
+        hostname,
+        pathname: "/**",
+      });
+    } catch {
+      /* noop */
+    }
+  };
+
+  addOrigin(process.env.WORDPRESS_BASE_URL || process.env.WORDPRESS_API_URL);
+  addOrigin(process.env.NEXT_PUBLIC_SITE_URL);
+
+  const localPatterns: NonNullable<NextConfig["images"]>["localPatterns"] = [
+    { pathname: "/wp-content/**" },
+    { pathname: "/images/**" },
+  ];
+
+  if (remotePatterns.length === 1) {
     return {
       unoptimized: true,
-      remotePatterns: [FIGMA_MCP_IMAGE_PATTERN],
+      remotePatterns,
+      localPatterns,
       qualities: [...IMAGE_QUALITIES],
     };
   }
+
+  return {
+    remotePatterns,
+    localPatterns,
+    qualities: [...IMAGE_QUALITIES],
+  };
+}
+
+function wordpressOrigin(): string | null {
+  const raw = process.env.WORDPRESS_BASE_URL || process.env.WORDPRESS_API_URL;
+  if (!raw) return null;
   try {
-    const u = new URL(raw);
-    return {
-      remotePatterns: [
-        {
-          protocol: (u.protocol.replace(":", "") as "https") || "https",
-          hostname: u.hostname,
-          pathname: "/**",
-        },
-        FIGMA_MCP_IMAGE_PATTERN,
-      ],
-      qualities: [...IMAGE_QUALITIES],
-    };
+    return new URL(raw).origin;
   } catch {
-    return {
-      unoptimized: true,
-      remotePatterns: [FIGMA_MCP_IMAGE_PATTERN],
-      qualities: [...IMAGE_QUALITIES],
-    };
+    return null;
   }
 }
 
 const nextConfig: NextConfig = {
   images: imageConfig(),
+  async rewrites() {
+    const origin = wordpressOrigin();
+    if (!origin) return [];
+    return [
+      {
+        source: "/wp-content/:path*",
+        destination: `${origin}/wp-content/:path*`,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

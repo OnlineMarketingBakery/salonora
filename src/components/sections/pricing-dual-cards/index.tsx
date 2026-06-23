@@ -313,7 +313,6 @@ export function PricingDualCardsSection({
                       className="block h-auto w-[260px] max-w-full sm:w-[280px]"
                       sizes="(max-width: 640px) 260px, 280px"
                       preferLargestSource
-                      unoptimized
                     />
                   </div>
                 ) : null}
@@ -330,7 +329,6 @@ export function PricingDualCardsSection({
                   className="block h-[360px] w-auto max-w-none object-contain object-bottom"
                   sizes="360px"
                   preferLargestSource
-                  unoptimized
                 />
               </div>
             ) : null}

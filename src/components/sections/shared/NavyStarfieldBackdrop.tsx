@@ -10,6 +10,7 @@ export function NavyStarfieldBackdrop() {
         src={NAVY_SHELL_BG_SRC}
         alt=""
         fill
+        unoptimized
         className="object-cover object-center"
         sizes="100vw"
         priority={false}

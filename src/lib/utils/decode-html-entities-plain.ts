@@ -4,6 +4,9 @@
  */
 export function decodeHtmlEntitiesPlain(text: string): string {
   let out = text
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&#0*160;/g, " ")
+    .replace(/&#x0*a0;/gi, " ")
     .replace(/&amp;/gi, "&")
     .replace(/&lt;/gi, "<")
     .replace(/&gt;/gi, ">")
