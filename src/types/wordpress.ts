@@ -24,9 +24,9 @@ export type WpEmbeddedAuthor = {
   url?: string;
   description?: string;
   avatar_urls?: Record<string, string | undefined>;
-  /** Custom profile photo from user meta `omb_author_avatar_id` (omb-headless-core). */
+  /** Custom profile photo from user meta `omb_author_avatar_id` (bakery-core). */
   omb_author_avatar_url?: string;
-  /** Added by omb-headless-core `rest_prepare_user` */
+  /** Added by bakery-core `rest_prepare_user` */
   omb_author_social?: {
     facebook?: string;
     instagram?: string;
@@ -36,7 +36,7 @@ export type WpEmbeddedAuthor = {
 
 /**
  * Author card attached directly to the post/case_study REST response by
- * omb-headless-core (`register_rest_field` → `author_card`). Primary author
+ * bakery-core (`register_rest_field` → `author_card`). Primary author
  * source for headless clients, since the core `/wp/v2/users` endpoint is
  * locked down (no user enumeration) and `_embedded.author` cannot resolve.
  */
@@ -68,7 +68,7 @@ export type WpPageRaw = {
   excerpt: { rendered: string; protected: boolean };
   acf?: Record<string, unknown>;
   yoast_head_json?: WpYoastHeadJson;
-  /** omb-headless-core: public author display fields on the post itself. */
+  /** bakery-core: public author display fields on the post itself. */
   author_card?: OmbAuthorCard | null;
   _embedded?: {
     "wp:featuredmedia"?: { source_url: string; alt_text: string }[];

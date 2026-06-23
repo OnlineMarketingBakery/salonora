@@ -1,21 +1,12 @@
-import { buildLocalePath, getPrimaryLocaleSync, getSecondaryLocales, stripPrimaryLocalePrefix } from "@/lib/i18n/locale-url";
+import { buildLocalePath, getPrimaryLocaleSync, stripLocalePrefix } from "@/lib/i18n/locale-url";
 import type { Locale } from "@/lib/i18n/locales";
 import type { WpAcfLink } from "@/types/wordpress";
 import { getWordpressBaseUrl, getSiteUrl } from "@/lib/wordpress/config";
 
 function toAppHref(path: string, lang: Locale): string {
   let p = path.startsWith("/") ? path : `/${path}`;
-  p = stripPrimaryLocalePrefix(p);
-
-  for (const secondary of getSecondaryLocales()) {
-    if (p === `/${secondary}` || p.startsWith(`/${secondary}/`)) {
-      if (secondary === lang) return p;
-      const slug = p.replace(new RegExp(`^/${secondary}/?`), "");
-      return buildLocalePath(lang, slug);
-    }
-  }
-
-  const slug = p.replace(/^\//, "");
+  p = stripLocalePrefix(p);
+  const slug = p === "/" ? "" : p.replace(/^\//, "");
   return buildLocalePath(lang, slug);
 }
 

@@ -28,7 +28,7 @@ function unwrapAcfOptionsPayload(data: Record<string, unknown> | null): Record<s
 
 /**
  * ACF clone of `page_sections` often nests rows under `page_sections` inside `blog_single_sections`
- * (object), not as a top-level array. `/omb-headless/v1/globals` returns that shape.
+ * (object), not as a top-level array. `/bakery/v1/globals` returns that shape.
  */
 function extractFlexibleSectionRows(value: unknown): unknown[] | null {
   if (Array.isArray(value) && value.length > 0) return value;

@@ -8,6 +8,7 @@ import { stripTags, toPlainText } from "@/lib/utils/strings";
 import { estimateReadMinutes } from "@/lib/blog/read-minutes";
 import { formatPostFullDate } from "@/lib/i18n/format-post-month-year";
 import { authorFromOmbCard, resolveWpAuthorAvatarUrl } from "@/lib/wordpress/wp-embedded-author";
+import { resolvePublicMediaSrc } from "@/lib/utils/media";
 import type { OmbAuthorCard, WpEmbeddedAuthor } from "@/types/wordpress";
 
 type WpPostListRow = {
@@ -35,7 +36,10 @@ export function mapWpPostListRowToBlogOverviewCard(p: WpPostListRow, lang: Local
   const authorAvatarUrl = fromCard?.avatarUrl ?? resolveWpAuthorAvatarUrl(author) ?? null;
   const image =
     featured?.source_url && featured.source_url !== ""
-      ? { url: featured.source_url, alt: featured.alt_text || titlePlain }
+      ? {
+          url: resolvePublicMediaSrc(featured.source_url) ?? featured.source_url,
+          alt: featured.alt_text || titlePlain,
+        }
       : null;
   return {
     id: p.id,

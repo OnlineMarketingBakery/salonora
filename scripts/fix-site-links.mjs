@@ -1,7 +1,6 @@
-﻿#!/usr/bin/env node
-/** Fix CMS links. Dry-run by default. Usage: node scripts/fix-site-links.mjs [--apply] */
+#!/usr/bin/env node
 import {
-  LOCALES, PATHS, CHECKOUT_URL, collectLinks, detectIntent, resolveTarget,
+  LOCALES, PATHS, CAMPAIGN_PATH, collectLinks, recommendLinkTarget,
   loadEnv, getWpConfig, wpFetch, fetchAllPosts, applyLinkFix, cloneDeep, normalizeUrl, langFromSlug, sanitizeAcfForRest,
 } from "./lib/site-links-shared.mjs";
 
@@ -11,16 +10,8 @@ const { apiBase, auth } = getWpConfig();
 
 const MENU_FIXES = {
   en: { "About Us": "/en/about-us", "For whom we are here": "/en/for-whom-we-are-here", "Case Studies": "/en/case-studies", Blogs: "/en/blogs", Home: "/en" },
-  nl: { Thuis: "/", Home: "/", "Over ons": "/over-ons", "Voor wie wij er zijn": "/voor-wie-wij-er-zijn", klantverhalen: "/klantverhalen", Blog: "/blog" },
+  nl: { Thuis: "/nl", Home: "/nl", "Over ons": "/nl/over-ons", "Voor wie wij er zijn": "/nl/voor-wie-wij-er-zijn", klantverhalen: "/nl/klantverhalen", Blog: "/nl/blog" },
 };
-
-function recommend(link) {
-  const lang = langFromSlug(link.slug) || link.lang;
-  if (link.type === "options" && (link.field === "header_cta_link" || link.field === "footer_cta_primary_link")) return CHECKOUT_URL;
-  if ((link.slug === "demo-pagina" || link.slug === "demo-page") && /demo|gratis/i.test(link.title)) return PATHS.demoForm[lang];
-  const intent = detectIntent(link.title, link.field);
-  return resolveTarget(intent, lang, link.url, link.title, link.field);
-}
 
 let changeCount = 0;
 const seen = new Set();
@@ -35,7 +26,7 @@ for (const lang of LOCALES) {
       const links = collectLinks(acf, itemLang, { slug: item.slug, type, id: item.id, path: "acf" });
       let changed = false;
       for (const link of links) {
-        const target = recommend(link);
+        const target = recommendLinkTarget(link);
         if (!target || target === link.url) continue;
         const key = `${item.id}:${link.field}:${target}`;
         if (seen.has(key)) continue;
@@ -47,25 +38,34 @@ for (const lang of LOCALES) {
           console.log(`${apply ? "APPLY" : "DRY"} ${itemLang}/${item.slug} ${field}: ${link.url} -> ${target}`);
         }
       }
-      if (changed && apply) { try { await wpFetch(apiBase, auth, `/wp/v2/${type}/${item.id}`, { method: "POST", lang: itemLang, body: { acf: sanitizeAcfForRest(acf) } }); } catch (e) { console.warn(`FAIL ${itemLang}/${item.slug}: ${e.message}`); } }
+      if (changed && apply) {
+        try { await wpFetch(apiBase, auth, `/wp/v2/${type}/${item.id}`, { method: "POST", lang: itemLang, body: { acf: sanitizeAcfForRest(acf) } }); }
+        catch (e) { console.warn(`FAIL ${itemLang}/${item.slug}: ${e.message}`); }
+      }
     }
   }
 
   const globals = await wpFetch(apiBase, auth, `/omb-headless/v1/globals?lang=${lang}`, { lang });
   const headerLink = globals.header?.header_cta_link;
   const footerPrimary = globals.footer?.footer_cta_primary_link;
-  if (headerLink?.url !== CHECKOUT_URL) {
+  const campaignUrl = CAMPAIGN_PATH[lang];
+
+  if (headerLink?.url !== campaignUrl) {
     changeCount += 1;
-    console.log(`${apply ? "APPLY" : "DRY"} globals/${lang} header_cta_link -> ${CHECKOUT_URL}`);
+    console.log(`${apply ? "APPLY" : "DRY"} globals/${lang} header_cta_link: ${headerLink?.url || ""} -> ${campaignUrl}`);
     if (apply) {
-      try { await wpFetch(apiBase, auth, `/acf/v3/options/omb-header-settings`, { method: "POST", lang, body: { acf: { header_cta_link: { title: headerLink?.title || (lang === "nl" ? "Begin nu" : "Start Now"), url: CHECKOUT_URL, target: "_blank" } } } }); } catch (e) { console.warn(e.message); }
+      try {
+        await wpFetch(apiBase, auth, `/acf/v3/options/omb-header-settings`, { method: "POST", lang, body: { acf: { header_cta_link: { title: headerLink?.title || (lang === "nl" ? "Begin nu" : "Start Now"), url: campaignUrl, target: "" } } } });
+      } catch (e) { console.warn(e.message); }
     }
   }
-  if (footerPrimary?.url !== CHECKOUT_URL) {
+  if (footerPrimary?.url !== campaignUrl) {
     changeCount += 1;
-    console.log(`${apply ? "APPLY" : "DRY"} globals/${lang} footer_cta_primary_link -> ${CHECKOUT_URL}`);
+    console.log(`${apply ? "APPLY" : "DRY"} globals/${lang} footer_cta_primary_link: ${footerPrimary?.url || ""} -> ${campaignUrl}`);
     if (apply) {
-      try { await wpFetch(apiBase, auth, `/acf/v3/options/omb-footer-settings`, { method: "POST", lang, body: { acf: { footer_cta_primary_link: { title: footerPrimary?.title || (lang === "nl" ? "Begin Nu" : "Start Now"), url: CHECKOUT_URL, target: "_blank" } } } }); } catch (e) { console.warn(e.message); }
+      try {
+        await wpFetch(apiBase, auth, `/acf/v3/options/omb-footer-settings`, { method: "POST", lang, body: { acf: { footer_cta_primary_link: { title: footerPrimary?.title || (lang === "nl" ? "Begin Nu" : "Start Now"), url: campaignUrl, target: "" } } } });
+      } catch (e) { console.warn(e.message); }
     }
   }
 }
@@ -87,5 +87,3 @@ for (const [location, ids] of Object.entries(MENU_IDS)) {
 }
 console.log(`\n${apply ? "Applied" : "Planned"} ${changeCount} change(s).`);
 if (!apply && changeCount > 0) console.log("Re-run with --apply to write changes.");
-
-

@@ -1,5 +1,7 @@
 import type { WpAcfLink, WpImage } from "@/types/wordpress";
 import type { CtaItem } from "@/types/sections";
+import { normalizeWpImageForPublic } from "@/lib/utils/media";
+import { normalizeCtaLabel } from "@/lib/utils/normalize-cta-label";
 
 export function mapCtaRepeater(
   rows: Array<{ cta_text?: unknown; cta_url?: unknown }> | null | undefined
@@ -8,8 +10,11 @@ export function mapCtaRepeater(
   return rows
     .map((r) => {
       const url = asLink(r.cta_url);
-      const text = asString(r.cta_text) || url?.title || "";
-      return { text, url };
+      const raw = asString(r.cta_text) || url?.title || "";
+      const text = raw ? normalizeCtaLabel(raw) : "";
+      const normalizedUrl =
+        url && url.title ? { ...url, title: normalizeCtaLabel(url.title) } : url;
+      return { text, url: normalizedUrl };
     })
     .filter((r) => r.text || r.url);
 }
@@ -46,7 +51,10 @@ export function asImage(v: unknown): WpImage | null {
   if (typeof v === "string") {
     const u = v.trim();
     if ((u.startsWith("http://") || u.startsWith("https://") || u.startsWith("//")) && u.length > 8) {
-      return { url: u.startsWith("//") ? `https:${u}` : u, alt: "" };
+      return normalizeWpImageForPublic({
+        url: u.startsWith("//") ? `https:${u}` : u,
+        alt: "",
+      });
     }
     if (/^\d+$/.test(u)) {
       return { url: "", id: parseInt(u, 10), alt: "" };
@@ -116,7 +124,7 @@ export function asImage(v: unknown): WpImage | null {
           ? o.caption
           : "";
   const id = typeof o.id === "number" ? o.id : typeof o.ID === "number" ? o.ID : undefined;
-  return {
+  return normalizeWpImageForPublic({
     url: urlCandidate,
     alt,
     id,
@@ -124,7 +132,7 @@ export function asImage(v: unknown): WpImage | null {
     width: typeof o.width === "number" ? o.width : undefined,
     height: typeof o.height === "number" ? o.height : undefined,
     sizes: sizes && typeof sizes === "object" ? (sizes as WpImage["sizes"]) : undefined,
-  };
+  });
 }
 
 /**

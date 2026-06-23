@@ -1,5 +1,6 @@
 import { cache } from "react";
 import { wpFetchOptional } from "@/lib/wordpress/client";
+import { getOmbHeadlessRestPrefix } from "@/lib/wordpress/config";
 import { defaultLocale, isLocale, supportedLocales } from "@/lib/i18n/config";
 import type { Locale } from "@/lib/i18n/locales";
 
@@ -35,13 +36,13 @@ function toSiteLanguage(raw: WpSiteLanguage, primary: Locale): SiteLanguageConfi
     slug: raw.slug,
     locale: raw.locale ?? raw.slug,
     home: raw.home ?? "",
-    urlPrefix: raw.url_prefix ?? (raw.slug === primary ? null : raw.slug),
+    urlPrefix: raw.url_prefix ?? raw.slug,
     isPrimary: raw.is_primary ?? raw.slug === primary,
   };
 }
 
 export const fetchSiteConfig = cache(async (): Promise<SiteConfig> => {
-  const payload = await wpFetchOptional<WpSitePayload>("/omb-headless/v1/site", {
+  const payload = await wpFetchOptional<WpSitePayload>(`${getOmbHeadlessRestPrefix()}/site`, {
     revalidate: 3600,
   });
 
@@ -63,7 +64,7 @@ export const fetchSiteConfig = cache(async (): Promise<SiteConfig> => {
         slug,
         locale: slug,
         home: "",
-        urlPrefix: slug === primary ? null : slug,
+        urlPrefix: slug,
         isPrimary: slug === primary,
       });
     }

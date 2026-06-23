@@ -1,9 +1,15 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { buildLocalePath } from "@/lib/i18n/get-alternates";
 import { defaultLocale } from "@/lib/i18n/config";
 import { isLocale } from "@/lib/i18n/config";
 import type { Locale } from "@/lib/i18n/locales";
+
+export const metadata: Metadata = {
+  title: "Page not found",
+  robots: { index: false, follow: true },
+};
 
 type P = { params?: Promise<{ lang: string }> };
 

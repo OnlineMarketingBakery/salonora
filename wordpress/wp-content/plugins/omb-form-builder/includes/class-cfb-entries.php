@@ -224,12 +224,12 @@ class CFB_Entries {
 		if ( empty( $entry_data ) ) {
 			return '<p>' . esc_html__( 'No submitted data.', 'custom-form-builder' ) . '</p>';
 		}
-		$out = '<table border="0" cellpadding="8" cellspacing="0" style="border-collapse:collapse; width:100%; max-width:600px;"><tbody>';
+		$out = '<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:collapse;width:100%;max-width:560px;border-radius:12px;overflow:hidden;border:1px solid #d9e8fc;"><tbody>';
 		foreach ( $entry_data as $key => $value ) {
 			$label = isset( $labels[ $key ] ) ? $labels[ $key ] : self::get_field_display_label( array( 'id' => $key ), $key );
 			$type  = isset( $field_types[ $key ] ) ? $field_types[ $key ] : '';
 			$cell  = self::format_entry_value_for_display( $value, $type );
-			$out .= '<tr><th style="width:30%;vertical-align:top;text-align:left;border-bottom:1px solid #ddd;">' . esc_html( $label ) . '</th><td style="border-bottom:1px solid #ddd;">' . $cell . '</td></tr>';
+			$out .= '<tr><th style="width:34%;vertical-align:top;text-align:left;padding:12px 14px;background-color:#ebf3fe;border-bottom:1px solid #d9e8fc;font-family:Outfit,Arial,Helvetica,sans-serif;font-size:14px;font-weight:600;color:#002752;">' . esc_html( $label ) . '</th><td style="padding:12px 14px;border-bottom:1px solid #d9e8fc;font-family:Outfit,Arial,Helvetica,sans-serif;font-size:15px;color:#435780;">' . $cell . '</td></tr>';
 		}
 		$out .= '</tbody></table>';
 		return $out;

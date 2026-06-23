@@ -81,7 +81,7 @@ async function main() {
     for (const p of pages) faqs.push(...extractFromPage(p, lang));
 
     try {
-      const g = await wp(`/omb-headless/v1/globals?lang=${lang}`, lang);
+      const g = await wp(`/bakery/v1/globals?lang=${lang}`, lang);
       const tpl = g?.templates;
       const rows =
         tpl?.blog_single_sections?.page_sections ||

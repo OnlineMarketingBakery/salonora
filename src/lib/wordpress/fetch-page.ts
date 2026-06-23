@@ -38,7 +38,10 @@ function pageToDoc(
     useCustomFooter: asBool((acf as { use_custom_footer?: unknown }).use_custom_footer),
     footerSections: normalizePageFooterSections(footerSectionsRaw),
     sections: pageSections,
-    seo: mapYoastToSeo(p, gs, { fallbackTitle: p.title?.rendered || "Page" }),
+    seo: mapYoastToSeo(p, gs, {
+      fallbackTitle: p.title?.rendered || "Page",
+      fallbackDescription: p.excerpt?.rendered || p.content?.rendered,
+    }),
   };
   return { doc, raw: p };
 }

@@ -1,9 +1,16 @@
 import type { Metadata } from "next";
 import { getSiteUrl } from "@/lib/wordpress/config";
+import type { Locale } from "@/lib/i18n/locales";
 import { supportedLocales, defaultLocale } from "./config";
 import { buildLocalePath } from "./locale-url";
 
 export { buildLocalePath } from "./locale-url";
+
+/** Absolute self-referencing canonical for the current locale + path (headless frontend URL). */
+export function buildAbsoluteCanonical(lang: Locale, path = ""): string {
+  const site = getSiteUrl().replace(/\/$/, "");
+  return `${site}${buildLocalePath(lang, path)}`;
+}
 
 export function buildAlternatesForPath(path: string): NonNullable<Metadata["alternates"]> {
   const site = getSiteUrl();

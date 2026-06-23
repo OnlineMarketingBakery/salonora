@@ -1,9 +1,8 @@
-﻿#!/usr/bin/env node
-/** Read-only audit of CMS links. Usage: node scripts/audit-site-links.mjs [--json] */
+#!/usr/bin/env node
 import { writeFileSync } from "node:fs";
 import { join } from "node:path";
 import {
-  LOCALES, PATHS, CHECKOUT_URL, collectLinks, classifyIssue, detectIntent, resolveTarget,
+  LOCALES, PATHS, collectLinks, classifyIssue, recommendLinkTarget,
   loadEnv, getWpConfig, wpFetch, fetchAllPosts, normalizeUrl, isWpBackendUrl,
 } from "./lib/site-links-shared.mjs";
 
@@ -17,11 +16,6 @@ const MENU_IDS = {
   legal: { nl: process.env.WP_MENU_LEGAL_NL, en: process.env.WP_MENU_LEGAL_EN },
 };
 
-function recommend(link) {
-  const intent = detectIntent(link.title, link.field);
-  return resolveTarget(intent, link.lang, link.url, link.title, link.field);
-}
-
 const findings = [];
 
 for (const lang of LOCALES) {
@@ -30,7 +24,7 @@ for (const lang of LOCALES) {
     for (const item of items) {
       const links = collectLinks(item.acf, lang, { slug: item.slug, type, id: item.id, path: "acf" });
       for (const link of links) {
-        const recommended = recommend(link);
+        const recommended = recommendLinkTarget(link);
         const issues = classifyIssue(link, recommended);
         if (issues.length) findings.push({ ...link, issues: issues.join(","), recommended: recommended || "" });
       }
@@ -45,7 +39,7 @@ for (const lang of LOCALES) {
   ]) {
     if (!value?.url) continue;
     const link = { lang, slug: "globals", type: "options", id: null, field: name, title: value.title || "", url: normalizeUrl(value.url) };
-    const recommended = name.includes("header") || name.includes("primary") ? CHECKOUT_URL : recommend(link);
+    const recommended = recommendLinkTarget(link);
     const issues = classifyIssue(link, recommended);
     if (issues.length) findings.push({ ...link, issues: issues.join(","), recommended: recommended || "" });
   }
@@ -66,9 +60,7 @@ for (const [location, ids] of Object.entries(MENU_IDS)) {
           const parts = path.split("/").filter(Boolean).filter((p) => p !== "nl" && p !== "en");
           const slug = parts[parts.length - 1] || "";
           recommended = slug ? `/${lang}/${slug}` : PATHS.home[lang];
-        } catch {
-          recommended = PATHS.home[lang];
-        }
+        } catch { recommended = PATHS.home[lang]; }
       }
       if (item.title?.rendered === "Thuis" || item.title?.rendered === "Home") recommended = PATHS.home[lang];
       const link = { lang, slug: `menu-${location}`, type: "menu-item", id: item.id, field: item.title?.rendered || "", title: item.title?.rendered || "", url };
@@ -78,12 +70,16 @@ for (const [location, ids] of Object.entries(MENU_IDS)) {
   }
 }
 
-console.log(`Found ${findings.length} link issue(s)\n`);
-for (const f of findings) {
-  console.log(`${f.lang} | ${f.type} | ${f.slug} | ${f.field} | ${f.title} | ${f.url} => ${f.recommended} [${f.issues}]`);
+if (asJson) {
+  console.log(JSON.stringify(findings, null, 2));
+} else {
+  console.log(`Found ${findings.length} link issue(s)\n`);
+  for (const f of findings) {
+    console.log(`${f.lang} | ${f.type} | ${f.slug} | ${f.field} | ${f.title} | ${f.url} => ${f.recommended} [${f.issues}]`);
+  }
 }
 
 const outPath = join(process.cwd(), "scripts", "audit-site-links-report.json");
 writeFileSync(outPath, JSON.stringify(findings, null, 2));
-console.log(`\nReport written to ${outPath}`);
+if (!asJson) console.log(`\nReport written to ${outPath}`);
 process.exit(findings.length ? 1 : 0);

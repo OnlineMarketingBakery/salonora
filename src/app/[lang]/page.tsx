@@ -5,10 +5,8 @@ import type { Locale } from "@/lib/i18n/locales";
 import { fetchGlobals } from "@/lib/wordpress/fetch-globals";
 import { resolveHome } from "@/lib/wordpress/resolve-route";
 import { PageTemplate } from "@/components/templates/PageTemplate";
-import { seoToMetadata, getSiteName } from "@/lib/seo/map-yoast-to-metadata";
-import { getSiteUrl } from "@/lib/wordpress/config";
-import { buildLocalePath } from "@/lib/i18n/get-alternates";
-import { supportedLocales } from "@/lib/i18n/config";
+import { YoastJsonLd } from "@/components/seo/YoastJsonLd";
+import { buildPageMetadata } from "@/lib/seo/build-page-metadata";
 
 /** ISR: reuse cached WordPress fetches between visitors (revalidate on-demand via /api/revalidate). */
 export const revalidate = 60;
@@ -23,7 +21,12 @@ export default async function HomePage({ params }: P) {
   const resolved = await resolveHome(lang, globals);
   if (!resolved) notFound();
   const { document: doc } = resolved;
-  return <PageTemplate document={doc} lang={lang} />;
+  return (
+    <>
+      <YoastJsonLd schema={doc.seo.schema} />
+      <PageTemplate document={doc} lang={lang} />
+    </>
+  );
 }
 
 export async function generateMetadata({ params }: P): Promise<Metadata> {
@@ -33,20 +36,10 @@ export async function generateMetadata({ params }: P): Promise<Metadata> {
   const globals = await fetchGlobals(lang);
   const resolved = await resolveHome(lang, globals);
   if (!resolved) return { title: "Not found" };
-  const s = resolved.document.seo;
-  const site = getSiteUrl();
-  const languages: Record<string, string> = {};
-  for (const l of supportedLocales) {
-    const path = buildLocalePath(l, "");
-    languages[l] = `${site}${path === "/" ? "" : path}`;
-  }
-  const canonicalPath = buildLocalePath(lang, "");
-  return {
-    ...seoToMetadata(s, site),
-    title: s.title || getSiteName(globals),
-    alternates: {
-      canonical: s.canonical || `${site}${canonicalPath === "/" ? "" : canonicalPath}`,
-      languages,
-    },
-  };
+  return buildPageMetadata({
+    lang,
+    pathAfterLocale: "",
+    seo: resolved.document.seo,
+    globals,
+  });
 }

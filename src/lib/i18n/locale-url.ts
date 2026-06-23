@@ -20,26 +20,26 @@ export function isAnyLocalePrefix(segment: string): segment is Locale {
 
 /**
  * Public pathname → app locale.
- * `/en/foo` → en; `/foo` or `/` → primary.
+ * `/nl/foo` or `/en/foo` → that locale; legacy unprefixed paths resolve to primary (middleware redirects).
  */
 export function localeFromPathname(pathname: string): Locale {
   const segments = pathname.split("/").filter(Boolean);
   const first = segments[0];
-  if (first && isSecondaryLocalePrefix(first)) {
+  if (first && isAnyLocalePrefix(first)) {
     return first;
   }
   return getPrimaryLocaleSync();
 }
 
 /**
- * Path segments after the locale prefix (secondary only).
- * `/en/about` → `about`; `/about` → `about`; `/` → ``.
+ * Path segments after the locale prefix.
+ * `/nl/about` → `about`; legacy `/about` → `about`; `/` → ``.
  */
 export function pathAfterLocale(pathname: string): string {
   const clean = (pathname.split("?")[0] ?? pathname).replace(/\/+$/, "") || "/";
   const segments = clean.split("/").filter(Boolean);
   if (segments.length === 0) return "";
-  if (isSecondaryLocalePrefix(segments[0]!)) {
+  if (segments[0] && isAnyLocalePrefix(segments[0])) {
     return segments.slice(1).join("/");
   }
   return segments.join("/");
@@ -47,34 +47,31 @@ export function pathAfterLocale(pathname: string): string {
 
 /**
  * Build a public frontend path for a locale.
- * Primary: `/` or `/slug`; secondary: `/en` or `/en/slug`.
+ * Both locales use an explicit prefix: `/nl`, `/nl/slug`, `/en`, `/en/slug`.
  */
 export function buildLocalePath(lang: Locale, path = ""): string {
   const clean = path.replace(/^\//, "").replace(/\/+$/, "");
-  const primary = getPrimaryLocaleSync();
-
-  if (lang === primary) {
-    return clean ? `/${clean}` : "/";
-  }
-
   return clean ? `/${lang}/${clean}` : `/${lang}`;
 }
 
 /**
- * Strip a legacy primary prefix (`/nl/...`) to the unprefixed public path.
+ * Strip a locale prefix (`/nl/...` or `/en/...`) when normalizing CMS paths.
  */
-export function stripPrimaryLocalePrefix(pathname: string): string {
-  const primary = getPrimaryLocaleSync();
+export function stripLocalePrefix(pathname: string): string {
   const clean = (pathname.split("?")[0] ?? pathname).replace(/\/+$/, "") || "/";
-  if (clean === `/${primary}`) return "/";
-  const prefix = `/${primary}/`;
-  if (clean.startsWith(prefix)) {
-    return `/${clean.slice(prefix.length)}`;
+  const segments = clean.split("/").filter(Boolean);
+  if (segments.length === 0) return "/";
+  if (segments[0] && isAnyLocalePrefix(segments[0])) {
+    const rest = segments.slice(1).join("/");
+    return rest ? `/${rest}` : "/";
   }
   return clean;
 }
 
-/** Map public pathname to internal `[lang]` route path for middleware rewrite. */
+/** @deprecated Use stripLocalePrefix */
+export const stripPrimaryLocalePrefix = stripLocalePrefix;
+
+/** Map public pathname to internal `[lang]` route path (identity when prefixed). */
 export function toInternalAppPath(pathname: string): string {
   const lang = localeFromPathname(pathname);
   const after = pathAfterLocale(pathname);

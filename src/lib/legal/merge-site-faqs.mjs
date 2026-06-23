@@ -183,7 +183,7 @@ async function collectLang(lang) {
   for (const p of services) faqs.push(...extractFromPost(p, lang, "service"));
 
   try {
-    const g = await wp(`/omb-headless/v1/globals?lang=${lang}`, lang);
+    const g = await wp(`/bakery/v1/globals?lang=${lang}`, lang);
     const tpl = g?.templates;
     const rows =
       tpl?.blog_single_sections?.page_sections ||

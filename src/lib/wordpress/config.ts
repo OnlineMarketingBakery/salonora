@@ -12,6 +12,11 @@ export function getWordpressApiUrl(): string {
   return (process.env.WORDPRESS_API_URL || "").replace(/\/$/, "");
 }
 
+/** REST namespace registered by `omb-headless-core` (not `bakery/v1`). */
+export function getOmbHeadlessRestPrefix(): string {
+  return "/omb-headless/v1";
+}
+
 /**
  * HTTP Basic auth for WordPress Application Passwords (server-only env).
  * Required when routes such as `/wp/v2/menu-items` return 401 for anonymous requests.
@@ -45,14 +50,14 @@ export function getDefaultContactFormId(): string | undefined {
 
 /**
  * Bearer secret for `POST …/custom-form-builder/v1/public/forms/{id}/submit` (OMB Form Builder headless).
- * Must match `CFB_HEADLESS_SUBMIT_SECRET` in WordPress `wp-config.php`.
+ * Must match `BAKERY_FORMS_SUBMIT_SECRET` in WordPress `wp-config.php`.
  *
- * Env resolution order: `OMB_FORM_BUILDER_SUBMIT_SECRET`, `CFB_HEADLESS_SUBMIT_SECRET`, `REVALIDATION_SECRET`.
+ * Env resolution order: `BAKERY_FORMS_SUBMIT_SECRET`, `BAKERY_FORMS_SUBMIT_SECRET`, `REVALIDATION_SECRET`.
  * When all unset, the free-demo API route loads WordPress Integrations via `fetchGlobals` (dedicated field, then revalidation secret).
  */
 export function getOmbFormBuilderHeadlessSubmitSecret(): string | undefined {
-  const a = process.env.OMB_FORM_BUILDER_SUBMIT_SECRET?.trim();
-  const b = process.env.CFB_HEADLESS_SUBMIT_SECRET?.trim();
+  const a = process.env.BAKERY_FORMS_SUBMIT_SECRET?.trim();
+  const b = process.env.BAKERY_FORMS_SUBMIT_SECRET?.trim();
   const c = process.env.REVALIDATION_SECRET?.trim();
   return a || b || c || undefined;
 }
