@@ -16,21 +16,29 @@ type WpMenuItem = {
 };
 
 function mapUrlToHref(url: string, lang: Locale): string {
+  if (!url || url === "#" || url.startsWith("#")) return url;
+
+  const toHref = (pathname: string) => {
+    const stripped = stripLocalePrefix(pathname === "/" ? "/" : pathname);
+    const slug = stripped === "/" ? "" : stripped.replace(/^\//, "");
+    return buildLocalePath(lang, slug);
+  };
+
   const site = getSiteUrl();
   const wp = getWordpressBaseUrl();
   try {
-    const toHref = (pathname: string) => {
-      const stripped = stripLocalePrefix(pathname === "/" ? "/" : pathname);
-      const slug = stripped === "/" ? "" : stripped.replace(/^\//, "");
-      return buildLocalePath(lang, slug);
-    };
-    if (url.startsWith(site)) {
-      const p = new URL(url).pathname.replace(new URL(site).pathname, "") || "/";
-      return toHref(p);
+    if (url.startsWith("http://") || url.startsWith("https://")) {
+      if (url.startsWith(site) || url.startsWith(`${site}/`)) {
+        const p = new URL(url).pathname.replace(new URL(site).pathname, "") || "/";
+        return toHref(p);
+      }
+      if (url.startsWith(wp) || url.startsWith(`${wp}/`)) {
+        return toHref(new URL(url).pathname);
+      }
+      return url;
     }
-    if (url.startsWith(wp) || url.startsWith(`${wp}/`)) {
-      const p = new URL(url).pathname;
-      return toHref(p);
+    if (url.startsWith("/")) {
+      return toHref(url);
     }
   } catch {
     /* keep url */

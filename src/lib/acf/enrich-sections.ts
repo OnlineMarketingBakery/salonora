@@ -19,6 +19,7 @@ import type { GlobalSettings } from "@/types/globals";
 import type { SiteConfig } from "@/lib/wordpress/fetch-site-config";
 import { fetchSiteConfig } from "@/lib/wordpress/fetch-site-config";
 import { fetchBlogPostsCollection, fetchBlogOverviewPostCardById } from "@/lib/wordpress/fetch-blog-posts-collection";
+import { fetchWordPressPostsPerPage } from "@/lib/wordpress/fetch-wordpress-posts-per-page";
 import { fetchCaseStudiesCollection, fetchCaseStudyOverviewCardById } from "@/lib/wordpress/fetch-case-studies-collection";
 import { resolvePostTranslationId } from "@/lib/wordpress/polylang-locale-hrefs";
 type WpCptList = {
@@ -198,19 +199,11 @@ async function enrichBlogPostOverview(
 ): Promise<BlogPostOverviewSectionT> {
   const archivePath = ctx.pageSlugPath ?? "";
   const blog = ctx.blogArchive;
-  const currentPage = blog?.page ?? 1;
+  let currentPage = blog?.page ?? 1;
   const searchQuery = blog?.search ?? "";
-  const perPage = Math.min(50, Math.max(1, s.postsPerPage));
+  const perPage = await fetchWordPressPostsPerPage();
 
-  const fetched = await fetchBlogPostsCollection({
-    lang: ctx.lang,
-    page: currentPage,
-    perPage,
-    search: searchQuery,
-    siteConfig: ctx.siteConfig,
-  });
-
-  if (!fetched) {
+  if (!perPage) {
     return {
       ...s,
       archivePath,
@@ -220,6 +213,50 @@ async function enrichBlogPostOverview(
       currentPage,
       searchQuery,
     };
+  }
+
+  const fetchOpts = {
+    lang: ctx.lang,
+    perPage,
+    search: searchQuery,
+    siteConfig: ctx.siteConfig,
+  };
+
+  let fetched = await fetchBlogPostsCollection({ ...fetchOpts, page: currentPage });
+
+  if (!fetched && currentPage > 1) {
+    currentPage = 1;
+    fetched = await fetchBlogPostsCollection({ ...fetchOpts, page: 1 });
+  }
+
+  if (!fetched) {
+    return {
+      ...s,
+      archivePath,
+      postsPerPage: perPage,
+      items: [],
+      total: 0,
+      totalPages: 1,
+      currentPage,
+      searchQuery,
+    };
+  }
+
+  if (currentPage > fetched.totalPages) {
+    currentPage = fetched.totalPages;
+    fetched = await fetchBlogPostsCollection({ ...fetchOpts, page: currentPage });
+    if (!fetched) {
+      return {
+        ...s,
+        archivePath,
+        postsPerPage: perPage,
+        items: [],
+        total: 0,
+        totalPages: 1,
+        currentPage: 1,
+        searchQuery,
+      };
+    }
   }
 
   let items = fetched.items;
@@ -242,6 +279,7 @@ async function enrichBlogPostOverview(
   return {
     ...s,
     archivePath,
+    postsPerPage: perPage,
     items,
     total: fetched.total,
     totalPages: fetched.totalPages,

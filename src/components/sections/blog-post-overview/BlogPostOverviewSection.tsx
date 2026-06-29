@@ -9,6 +9,7 @@ import { buildLocalePath } from "@/lib/i18n/get-alternates";
 import type { Locale } from "@/lib/i18n/locales";
 import type { BlogPostOverviewSectionT } from "@/types/sections";
 import { BlogFeaturedMetaBand, BlogPostMetaRow } from "@/components/blog/BlogPostMetaRow";
+import { BlogArchivePagination } from "@/components/sections/blog-post-overview/BlogArchivePagination";
 import type { CSSProperties } from "react";
 
 /** Figma `68aa8766d05fb7bf86a05084_hero-bg` — blog overview **830:2207** uses same mesh + brand blend as `feature-highlight-split`. */
@@ -31,8 +32,6 @@ const COPY = {
     readFallback: "Lees de blog",
     minRead: (n: number) => `${n} minuten`,
     empty: "Geen artikelen gevonden.",
-    prev: "Vorige",
-    next: "Volgende",
   },
   en: {
     featuredEyebrow: "Featured article",
@@ -41,31 +40,8 @@ const COPY = {
     readFallback: "Read article",
     minRead: (n: number) => `${n} min read`,
     empty: "No articles found.",
-    prev: "Previous",
-    next: "Next",
   },
 } as const;
-
-function listUrl(lang: Locale, archivePath: string, opts: { page?: number; s?: string }) {
-  const base = buildLocalePath(lang, archivePath);
-  const p = new URLSearchParams();
-  if (opts.s) p.set("s", opts.s);
-  if (opts.page && opts.page > 1) p.set("page", String(opts.page));
-  const q = p.toString();
-  return q ? `${base}?${q}` : base;
-}
-
-function visiblePages(total: number, cur: number): number[] {
-  if (total <= 1) return [1];
-  const span = Math.min(7, total);
-  let start = Math.max(1, cur - 3);
-  let end = start + span - 1;
-  if (end > total) {
-    end = total;
-    start = Math.max(1, end - span + 1);
-  }
-  return Array.from({ length: end - start + 1 }, (_, i) => start + i);
-}
 
 function ArrowRightIcon({ className }: { className?: string }) {
   return (
@@ -77,22 +53,6 @@ function ArrowRightIcon({ className }: { className?: string }) {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-    </svg>
-  );
-}
-
-function ChevronLeft({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 20 20" fill="none" aria-hidden>
-      <path d="M12 5l-5 5 5 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function ChevronRight({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 20 20" fill="none" aria-hidden>
-      <path d="M8 5l5 5-5 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -118,7 +78,6 @@ export function BlogPostOverviewSection({
   const path = section.archivePath;
   const searchQ = section.searchQuery;
   const cur = section.currentPage;
-  const pages = visiblePages(section.totalPages, cur);
 
   const showFeatured =
     section.showFeatured &&
@@ -298,56 +257,12 @@ export function BlogPostOverviewSection({
         </div>
 
         {path && section.totalPages > 1 ? (
-          <nav
-            className={`mt-12 flex flex-wrap items-center justify-center gap-2.5 ${REVEAL_ITEM}`}
-            aria-label="Pagination"
-          >
-            {cur <= 1 ? (
-              <span
-                className="inline-flex size-[54px] items-center justify-center rounded-[10px] border border-[color-mix(in_srgb,var(--palette-brand)_25%,transparent)] bg-[var(--palette-brand)]/40 text-[var(--palette-white)]"
-                aria-hidden
-              >
-                <ChevronLeft className="size-6" />
-              </span>
-            ) : (
-              <Link
-                href={listUrl(lang, path, { page: cur - 1, s: searchQ || undefined })}
-                className="inline-flex size-[54px] items-center justify-center rounded-[10px] border border-[color-mix(in_srgb,var(--palette-brand)_25%,transparent)] bg-[var(--palette-brand)] text-[var(--palette-white)] transition hover:opacity-95"
-                aria-label={t.prev}
-              >
-                <ChevronLeft className="size-6" />
-              </Link>
-            )}
-            {pages.map((n) => (
-              <Link
-                key={n}
-                href={listUrl(lang, path, { page: n > 1 ? n : undefined, s: searchQ || undefined })}
-                className={`inline-flex size-[54px] items-center justify-center rounded-[10px] text-2xl font-medium leading-[1.4] ${
-                  n === cur
-                    ? "border border-[rgba(57,144,240,0.27)] bg-[var(--palette-white)] text-[var(--palette-navy)]"
-                    : "bg-[var(--palette-surface)] text-[rgba(21,41,81,0.49)] hover:bg-[color-mix(in_srgb,var(--palette-brand)_8%,var(--palette-white))] hover:text-[var(--palette-brand)]"
-                }`}
-              >
-                {n}
-              </Link>
-            ))}
-            {cur >= section.totalPages ? (
-              <span
-                className="inline-flex size-[54px] items-center justify-center rounded-[10px] border border-[color-mix(in_srgb,var(--palette-brand)_25%,transparent)] bg-[var(--palette-brand)]/40 text-[var(--palette-white)]"
-                aria-hidden
-              >
-                <ChevronRight className="size-6" />
-              </span>
-            ) : (
-              <Link
-                href={listUrl(lang, path, { page: cur + 1, s: searchQ || undefined })}
-                className="inline-flex size-[54px] items-center justify-center rounded-[10px] border border-[color-mix(in_srgb,var(--palette-brand)_25%,transparent)] bg-[var(--palette-brand)] text-[var(--palette-white)] transition hover:opacity-95"
-                aria-label={t.next}
-              >
-                <ChevronRight className="size-6" />
-              </Link>
-            )}
-          </nav>
+          <BlogArchivePagination
+            lang={lang}
+            currentPage={cur}
+            totalPages={section.totalPages}
+            searchQuery={searchQ}
+          />
         ) : null}
       </Container>
     </section>
