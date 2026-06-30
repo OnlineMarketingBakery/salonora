@@ -19,7 +19,6 @@ import type { GlobalSettings } from "@/types/globals";
 import type { SiteConfig } from "@/lib/wordpress/fetch-site-config";
 import { fetchSiteConfig } from "@/lib/wordpress/fetch-site-config";
 import { fetchBlogPostsCollection, fetchBlogOverviewPostCardById } from "@/lib/wordpress/fetch-blog-posts-collection";
-import { fetchWordPressPostsPerPage } from "@/lib/wordpress/fetch-wordpress-posts-per-page";
 import { fetchCaseStudiesCollection, fetchCaseStudyOverviewCardById } from "@/lib/wordpress/fetch-case-studies-collection";
 import { resolvePostTranslationId } from "@/lib/wordpress/polylang-locale-hrefs";
 type WpCptList = {
@@ -201,23 +200,9 @@ async function enrichBlogPostOverview(
   const blog = ctx.blogArchive;
   let currentPage = blog?.page ?? 1;
   const searchQuery = blog?.search ?? "";
-  const perPage = await fetchWordPressPostsPerPage();
-
-  if (!perPage) {
-    return {
-      ...s,
-      archivePath,
-      items: [],
-      total: 0,
-      totalPages: 1,
-      currentPage,
-      searchQuery,
-    };
-  }
 
   const fetchOpts = {
     lang: ctx.lang,
-    perPage,
     search: searchQuery,
     siteConfig: ctx.siteConfig,
   };
@@ -233,7 +218,6 @@ async function enrichBlogPostOverview(
     return {
       ...s,
       archivePath,
-      postsPerPage: perPage,
       items: [],
       total: 0,
       totalPages: 1,
@@ -241,6 +225,8 @@ async function enrichBlogPostOverview(
       searchQuery,
     };
   }
+
+  const perPage = fetched.perPage;
 
   if (currentPage > fetched.totalPages) {
     currentPage = fetched.totalPages;
@@ -271,7 +257,7 @@ async function enrichBlogPostOverview(
     const resolvedPinId = await resolvePostTranslationId(pinId, ctx.lang);
     const pinned = await fetchBlogOverviewPostCardById(ctx.lang, resolvedPinId);
     if (pinned) {
-      const rest = items.filter((i) => i.id !== pinned.id).slice(0, Math.max(0, perPage - 1));
+      const rest = items.filter((i) => i.id !== pinned.id).slice(0, Math.max(0, fetched.perPage - 1));
       items = [pinned, ...rest];
     }
   }
@@ -279,7 +265,7 @@ async function enrichBlogPostOverview(
   return {
     ...s,
     archivePath,
-    postsPerPage: perPage,
+    postsPerPage: fetched.perPage,
     items,
     total: fetched.total,
     totalPages: fetched.totalPages,

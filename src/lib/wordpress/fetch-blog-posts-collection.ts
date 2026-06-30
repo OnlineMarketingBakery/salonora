@@ -3,6 +3,7 @@ import { buildLocalePath } from "@/lib/i18n/get-alternates";
 import type { Locale } from "@/lib/i18n/locales";
 import { filterPostsByLocale } from "@/lib/i18n/post-language";
 import type { SiteConfig } from "@/lib/wordpress/fetch-site-config";
+import { fetchWordPressPostsPerPage } from "@/lib/wordpress/fetch-wordpress-posts-per-page";
 import type { BlogPostOverviewCardT } from "@/types/sections";
 import { stripTags, toPlainText } from "@/lib/utils/strings";
 import { estimateReadMinutes } from "@/lib/blog/read-minutes";
@@ -25,6 +26,25 @@ type WpPostListRow = {
     author?: WpEmbeddedAuthor[];
   };
 };
+
+const PROBE_PER_PAGE = 100;
+
+function postsListPath(opts: {
+  perPage: number;
+  page: number;
+  search: string;
+}): string {
+  const params = new URLSearchParams({
+    per_page: String(opts.perPage),
+    page: String(opts.page),
+    _embed: "1",
+    orderby: "date",
+    order: "desc",
+  });
+  const q = opts.search.trim();
+  if (q) params.set("search", q);
+  return `/wp/v2/posts?${params.toString()}`;
+}
 
 export function mapWpPostListRowToBlogOverviewCard(p: WpPostListRow, lang: Locale): BlogPostOverviewCardT {
   const titlePlain = stripTags(p.title.rendered);
@@ -54,32 +74,57 @@ export function mapWpPostListRowToBlogOverviewCard(p: WpPostListRow, lang: Local
   };
 }
 
+export type BlogPostsCollectionResult = {
+  items: BlogPostOverviewCardT[];
+  total: number;
+  totalPages: number;
+  perPage: number;
+};
+
 export async function fetchBlogPostsCollection(options: {
   lang: Locale;
   page: number;
-  perPage: number;
+  perPage?: number;
   search: string;
   siteConfig?: SiteConfig;
-}): Promise<{ items: BlogPostOverviewCardT[]; total: number; totalPages: number } | null> {
-  const { lang, page, perPage, search, siteConfig } = options;
-  const safePer = Math.min(100, Math.max(1, perPage));
+}): Promise<BlogPostsCollectionResult | null> {
+  const { lang, page, search, siteConfig } = options;
+  const resolvedPerPage = options.perPage ?? (await fetchWordPressPostsPerPage());
+  const safePer = Math.min(100, Math.max(1, resolvedPerPage));
   const safePage = Math.max(1, page);
-  const params = new URLSearchParams({
-    per_page: String(safePer),
-    page: String(safePage),
-    _embed: "1",
-    orderby: "date",
-    order: "desc",
-  });
-  const q = search.trim();
-  if (q) params.set("search", q);
-  const path = `/wp/v2/posts?${params.toString()}`;
+  const path = postsListPath({ perPage: safePer, page: safePage, search });
   const res = await wpFetchCollectionOptional<WpPostListRow[]>(path, { lang, revalidate: 30 });
   if (!res) return null;
+
   const raw = Array.isArray(res.data) ? res.data : [];
   const filtered = filterPostsByLocale(raw, lang, siteConfig);
   const items = filtered.map((p) => mapWpPostListRowToBlogOverviewCard(p, lang));
-  return { items, total: res.total, totalPages: res.totalPages };
+
+  let total = res.total;
+  let totalPages = res.totalPages;
+
+  const searchQ = search.trim();
+  const localeLeak = !searchQ && filtered.length < raw.length;
+
+  if (localeLeak) {
+    const probePath = postsListPath({ perPage: PROBE_PER_PAGE, page: 1, search: "" });
+    const probe = await wpFetchCollectionOptional<WpPostListRow[]>(probePath, { lang, revalidate: 30 });
+    if (probe && probe.totalPages === 1) {
+      total = probe.total;
+      totalPages = probe.totalPages;
+    }
+  }
+
+  console.log("[salonora] blogArchiveFetch", {
+    per_page: safePer,
+    page: safePage,
+    lang,
+    xWpTotal: total,
+    xWpTotalPages: totalPages,
+    localeLeak,
+  });
+
+  return { items, total, totalPages, perPage: safePer };
 }
 
 /** Single post for pinned “featured” slot on the blog archive (page 1). */
