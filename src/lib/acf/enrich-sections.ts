@@ -198,17 +198,21 @@ async function enrichBlogPostOverview(
 ): Promise<BlogPostOverviewSectionT> {
   const archivePath = ctx.pageSlugPath ?? "";
   const blog = ctx.blogArchive;
-  const currentPage = blog?.page ?? 1;
+  let currentPage = blog?.page ?? 1;
   const searchQuery = blog?.search ?? "";
-  const perPage = Math.min(50, Math.max(1, s.postsPerPage));
 
-  const fetched = await fetchBlogPostsCollection({
+  const fetchOpts = {
     lang: ctx.lang,
-    page: currentPage,
-    perPage,
     search: searchQuery,
     siteConfig: ctx.siteConfig,
-  });
+  };
+
+  let fetched = await fetchBlogPostsCollection({ ...fetchOpts, page: currentPage });
+
+  if (!fetched && currentPage > 1) {
+    currentPage = 1;
+    fetched = await fetchBlogPostsCollection({ ...fetchOpts, page: 1 });
+  }
 
   if (!fetched) {
     return {
@@ -220,6 +224,25 @@ async function enrichBlogPostOverview(
       currentPage,
       searchQuery,
     };
+  }
+
+  const perPage = fetched.perPage;
+
+  if (currentPage > fetched.totalPages) {
+    currentPage = fetched.totalPages;
+    fetched = await fetchBlogPostsCollection({ ...fetchOpts, page: currentPage });
+    if (!fetched) {
+      return {
+        ...s,
+        archivePath,
+        postsPerPage: perPage,
+        items: [],
+        total: 0,
+        totalPages: 1,
+        currentPage: 1,
+        searchQuery,
+      };
+    }
   }
 
   let items = fetched.items;
@@ -234,7 +257,7 @@ async function enrichBlogPostOverview(
     const resolvedPinId = await resolvePostTranslationId(pinId, ctx.lang);
     const pinned = await fetchBlogOverviewPostCardById(ctx.lang, resolvedPinId);
     if (pinned) {
-      const rest = items.filter((i) => i.id !== pinned.id).slice(0, Math.max(0, perPage - 1));
+      const rest = items.filter((i) => i.id !== pinned.id).slice(0, Math.max(0, fetched.perPage - 1));
       items = [pinned, ...rest];
     }
   }
@@ -242,6 +265,7 @@ async function enrichBlogPostOverview(
   return {
     ...s,
     archivePath,
+    postsPerPage: fetched.perPage,
     items,
     total: fetched.total,
     totalPages: fetched.totalPages,

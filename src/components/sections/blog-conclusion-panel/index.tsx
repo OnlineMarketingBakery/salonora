@@ -15,7 +15,7 @@ export function BlogConclusionPanelSection({
   if (!section.title?.trim() && !section.body?.trim()) return null;
 
   return (
-    <section className="blog-single-conclusion bg-white">
+    <section className="blog-single-conclusion bg-white mt-10">
       <Container>
         <BlogSingleTailWidth>
           <div className="rounded-t-[12px] bg-surface px-6 py-8 sm:px-10 sm:py-10 md:py-12">
